@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 // ============================================================================
-// PERSONA LOOM v4 - Complete Character Creation Tool
-// Merged version with all rich content and fixed tab navigation
+// PERSONA LOOM v6 - Complete Character Creation Tool
+// Comprehensive character profiling with qualitative voice system
 // ============================================================================
 
 // ============================================================================
@@ -31,6 +31,8 @@ const Icons = {
   Check: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>),
   ChevronRight: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>),
   ChevronDown: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>),
+  Sliders: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></svg>),
+  AlertCircle: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>),
 };
 
 // ============================================================================
@@ -70,7 +72,7 @@ const TABS_CONFIG = [
     label: 'VOICE', 
     color: '#6B4423', 
     icon: Icons.Mic,
-    subtabs: ['Vocal Characteristics', 'Speech Patterns', 'Languages & Expression']
+    subtabs: ['Voice Design', 'Speech Patterns', 'Languages & Accent', 'Voice Preview']
   },
   { 
     id: 'history', 
@@ -84,7 +86,7 @@ const TABS_CONFIG = [
     label: 'RELATIONS', 
     color: '#6B3A3A', 
     icon: Icons.Users,
-    subtabs: ['Social Patterns', 'Current Circle', 'Romantic History', 'Family Ties', 'Relationship with Self']
+    subtabs: ['Key NPCs', 'Social Patterns', 'Current Circle', 'Romantic History', 'Family Ties']
   },
   { 
     id: 'intimacy', 
@@ -144,18 +146,25 @@ const TABS_CONFIG = [
     subtabs: ['Short-Term Goals', 'Long-Term Aspirations', 'Internal Conflicts', 'External Conflicts']
   },
   { 
+    id: 'directives', 
+    label: 'DIRECTIVES', 
+    color: '#6B2D5B', 
+    icon: Icons.Sliders,
+    subtabs: ['Formatting', 'Writing Style', 'Narrative', 'Content', 'Directive Preview', 'Ruler Builder', 'Ruler Preview', 'Proactive Mode', 'Proactive Preview']
+  },
+  { 
     id: 'database', 
     label: 'DATABASE', 
     color: '#1a365d', 
     icon: Icons.Database,
-    subtabs: []
+    subtabs: ['Overview', 'Browse Data', 'Statistics', 'Validation', 'Quick Edit', 'Compare']
   },
   { 
     id: 'export', 
     label: 'EXPORT', 
     color: '#2C3E50', 
     icon: Icons.Share,
-    subtabs: []
+    subtabs: ['Quick Export', 'Platform Templates', 'Custom Export', 'Import/Backup', 'Character Card', 'Share']
   },
 ];
 
@@ -170,10 +179,53 @@ const createInitialCharacterData = () => ({
     cultural: { primaryCulture: '', primaryCultureCustom: '', regionalCulture: '', regionalCultureCustom: '', religion: '', religionCustom: '', socialClassOrigin: '', subcultures: [], subculturesCustom: '' }
   },
   appearance: {
-    face: { faceShape: '', skinTone: '', eyeColor: '', eyeShape: '', eyebrows: '', noseType: '', lipShape: '', facialHair: '', distinctiveMarks: '' },
-    hair: { naturalColor: '', currentColor: '', texture: '', length: '', typicalStyle: '' },
-    body: { height: '', weight: '', bodyType: '', posture: '', gait: '' },
-    style: { fashionStyle: '', signatureItems: '', groomingLevel: '', tattoos: '', piercings: '', overallVibe: '' }
+    face: { 
+      faceShape: '', faceLength: '', faceWidth: '',
+      skinTone: '', skinUndertone: '', skinTexture: '', skinCondition: '',
+      foreheadHeight: '', foreheadWidth: '', foreheadShape: '',
+      eyeColor: '', eyeColorPattern: '', eyeShape: '', eyeSize: '', eyeLashes: '',
+      eyebrowShape: '', eyebrowThickness: '', eyebrowColor: '', eyebrowArch: '',
+      noseType: '', noseSize: '', noseBridge: '', noseTip: '', nostrilSize: '',
+      cheekboneHeight: '', cheekboneProminence: '', cheekFullness: '',
+      lipShape: '', lipThickness: '', lipUpperLower: '', lipColor: '', cupidsBow: '',
+      jawlineShape: '', jawlineDefinition: '', chinShape: '', chinSize: '',
+      earSize: '', earShape: '', earLobe: '',
+      facialHairType: '', facialHairDensity: '', facialHairColor: '', facialHairStyle: '', facialHairLength: '',
+      distinctiveMarks: '', wrinkles: '', dimples: '', freckles: ''
+    },
+    hair: { 
+      naturalColor: '', currentColor: '', colorShine: '', grayAmount: '',
+      hairType: '', textureDesc: '', density: '', porosity: '', condition: '',
+      length: '', hairline: '', parting: '', layers: '',
+      styleCategory: '', primaryStyle: '', styleEra: '', eraStyle: '',
+      stylingEffort: '', productsUsed: '', heatStyling: '', accessories: '', styleNotes: ''
+    },
+    body: { 
+      height: '', exactHeight: '', weightCategory: '', exactWeight: '',
+      somatotype: '', build: '', muscleDef: '', bodyFat: '', frameSize: '',
+      torsoLength: '', legLength: '', shoulderWidth: '', hipWidth: '', waist: '',
+      armLength: '', armBuild: '', legBuild: '', handSize: '', handAppearance: '', feetSize: '',
+      bodyHairAmount: '', bodyHairDist: '', bodySkinCondition: '', bodyMarks: '',
+      neckLength: '', neckWidth: '', neckShape: '', adamsApple: '', clavicle: '', shoulderShape: '',
+      backWidth: '', backShape: '', spineVisibility: '', ribcage: '', waistShape: '', hipShape: '',
+      upperArmShape: '', forearmShape: '', elbowShape: '', wristSize: '', wristBones: '', fingerShape: '',
+      thighShape: '', thighGap: '', kneeShape: '', calfShape: '', ankleSize: '', ankleBones: '',
+      legAlignment: '', footArch: '', toeShape: '',
+      nailShapeHands: '', nailLength: '', nailCondition: '',
+      bustSize: '', bustShape: '', buttocks: '',
+      chestMale: '', abdomen: '', buttocksMale: '',
+      chestNB: '', abdomenNB: '', buttocksNB: '',
+      posture: '', gaitStyle: '', presence: '', movementNotes: '',
+      fitnessLevel: '', flexibility: '', stamina: '', disabilities: '', physicalNotes: ''
+    },
+    style: { 
+      fashionStyle: '', secondaryStyle: '', styleEra: '', fashionPriority: '', clothingFit: '', clothingQuality: '', clothingCondition: '',
+      colorPalette: '', favoriteColor: '', patternPreference: '', colorCoordination: '',
+      groomingLevel: '', hygieneLevel: '', fragrance: '', fragranceType: '', makeupUsage: '', makeupStyle: '', skincareRoutine: '',
+      jewelryAmount: '', jewelryStyle: '', jewelryMetal: '', watch: '', eyewear: '', glassesStyle: '', bagStyle: '', hatWearing: '', hatStyle: '', signatureAccessories: '',
+      tattooCoverage: '', tattooStyle: '', tattooDetails: '', piercingAmount: '', piercingLocations: '', piercingDetails: '',
+      firstImpression: '', styleConsistency: '', attentionToAppearance: '', styleNotes: ''
+    }
   },
   psychology: {
     framework: { mbtiType: '', enneagramType: '', enneagramWing: '', tritypeBody: '', tritypeHeart: '', tritypeHead: '', instinctualVariant: '', enneagramHealth: 5, bigFiveO: 5, bigFiveC: 5, bigFiveE: 5, bigFiveA: 5, bigFiveN: 5, temperament: '', darkNarcissism: 1, darkMachiavellianism: 1, darkPsychopathy: 1, narcissismSubtype: '', machiavellianismSubtype: '', psychopathySubtype: '', lightFaith: 5, lightHumanism: 5, lightKantianism: 5 },
@@ -194,24 +246,119 @@ const createInitialCharacterData = () => ({
     }
   },
   physique: {
-    condition: { generalHealth: '', fitnessLevel: '', athleticism: '', flexibility: '', endurance: '' },
-    senses: { vision: '', hearing: '', dominantHand: '', physicalSensitivities: '' },
-    medical: { chronicConditions: '', disabilities: '', allergies: '', pastInjuries: '', bloodType: '' },
-    habits: { sleepPattern: '', dietType: '', substanceUse: '', exerciseRoutine: '', selfCareLevel: '' }
+    condition: { 
+      generalHealth: '', immuneSystem: '', energyLevels: '', recoveryRate: '', painTolerance: '',
+      fitnessLevel: '', athleticism: '', strength: '', speed: '', endurance: '',
+      flexibility: '', balance: '', coordination: '',
+      swimming: '', combat: '', dance: '', otherSkills: ''
+    },
+    senses: { 
+      vision: '', colorVision: '', nightVision: '', lightSensitivity: '',
+      hearing: '', soundSensitivity: '', musicalEar: '', directionalHearing: '',
+      smell: '', taste: '', touch: '', temperatureSensitivity: '', proprioception: '',
+      dominantHand: '', dominantEye: '', motionSensitivity: '', sensoryNotes: ''
+    },
+    medical: { 
+      chronicConditions: '', conditionManagement: '', conditionDetails: '',
+      disabilities: '', mobilityAid: '', disabilityDetails: '',
+      allergySeverity: '', allergyType: '', allergies: '',
+      bloodType: '', organDonor: '', medicalId: '', pastInjuries: '', medications: '',
+      mentalHealthDx: '', mentalHealthTreatment: '', mentalHealthNotes: ''
+    },
+    habits: { 
+      sleepPattern: '', sleepDuration: '', sleepQuality: '', napping: '',
+      dietType: '', eatingHabits: '', mealFrequency: '', cookingAbility: '', hydration: '',
+      alcoholUse: '', tobaccoUse: '', caffeineUse: '', substanceUse: '', substanceNotes: '',
+      exerciseRoutine: '', exerciseType: '', selfCareLevel: '', selfCarePractices: ''
+    }
   },
   voice: {
-    vocal: { pitch: 5, tone: '', volume: 5, speechSpeed: 5, laughType: '' },
-    speech: { sentenceStructure: '', fillerWords: '', profanityLevel: 3, sarcasmFrequency: 5, humorStyle: '' },
-    languages: { nativeLanguage: '', secondLanguages: '', codeSwitching: '', writtenVsSpoken: '' }
+    design: { 
+      voiceGender: '', 
+      voiceAge: '', 
+      pitch: '', 
+      pitchVariation: '',
+      speed: '', 
+      volume: '',
+      timbreWarmth: '',
+      timbreBrightness: '',
+      timbreRichness: '',
+      timbreSmoothness: '',
+      breathiness: '',
+      nasality: '',
+      roughness: '',
+      resonance: '',
+      clarity: '',
+      voiceTexture: '',
+      emotionalTone: ''
+    },
+    speech: { 
+      articulation: '',
+      sentenceStructure: '', 
+      fillerWords: '', 
+      profanityLevel: '', 
+      sarcasmFrequency: '', 
+      humorStyle: '',
+      speechRhythm: '',
+      emphasis: '',
+      pausePattern: '',
+      laughType: '',
+      cryingStyle: '',
+      shoutingStyle: ''
+    },
+    languages: { 
+      nativeLanguage: '', 
+      accent: '',
+      accentStrength: '',
+      accentInfluence: '',
+      secondLanguages: '', 
+      codeSwitching: '', 
+      dialectFeatures: '',
+      writtenVsSpoken: '' 
+    }
   },
   history: {
-    origin: { birthCircumstances: '', earlyChildhood: '', childhood: '', adolescence: '', adulthoodPhases: '' },
-    family: { parents: '', siblings: '', extendedFamily: '', familyDynamics: '', familySecrets: '' },
-    moments: { happiestMemory: '', mostTraumaticEvent: '', turningPoints: '', regrets: '', proudestAchievement: '' },
-    trauma: { coreWounds: '', unprocessedTrauma: '', healingJourney: '', flashbackTriggers: '' },
-    memories: { keyFacts: '' }
+    origin: {
+      birthDate: '', birthPlace: '', birthCircumstances: '', birthOrder: '', plannedPregnancy: '',
+      earlyChildhood: '', childhoodEnvironment: '', childhoodSocioeconomic: '', childhoodStability: '',
+      elementarySchool: '', childhoodFriendships: '', childhoodActivities: [], childhoodPersonality: '',
+      adolescence: '', teenageYears: '', highSchoolExperience: '', firstLove: '', teenageRebellion: '',
+      comingOfAge: '', youngAdulthood: '', adultMilestones: [], currentLifePhase: '', lifePhaseNotes: ''
+    },
+    family: {
+      familyStructure: '', parentsRelationship: '', motherDescription: '', motherRelationship: '', motherStatus: '',
+      fatherDescription: '', fatherRelationship: '', fatherStatus: '', stepParents: '',
+      siblingsCount: '', siblingsDetails: '', siblingsDynamic: '', siblingRivalry: '',
+      grandparentsInfluence: '', extendedFamily: '', familyTraditions: [], familyValues: [],
+      familySecrets: '', familyConflicts: '', inheritedTraits: [], familyExpectations: '',
+      blackSheep: '', goldenChild: '', familyRole: '', familyLegacy: ''
+    },
+    moments: {
+      definingMoments: [], happiestMemory: '', happiestMemoryAge: '', happiestMemoryWhy: '',
+      worstMemory: '', worstMemoryAge: '', worstMemoryImpact: '',
+      turningPoints: [], lifeChangingDecisions: [], biggestRegret: '', regretResolution: '',
+      proudestAchievement: '', achievementAge: '', nearDeathExperience: '', lossesExperienced: [],
+      majorFailures: '', failureLessons: '', luckyBreaks: '', missedOpportunities: ''
+    },
+    trauma: {
+      childhoodTrauma: [], childhoodTraumaImpact: '', traumaAge: '', traumaType: '',
+      coreWounds: [], woundOrigin: '', attachmentWounds: '', abandonmentExperiences: '',
+      betrayalExperiences: '', abuseSurvived: [], neglectExperiences: '', bullyingHistory: '',
+      lossTrauma: '', medicalTrauma: '', witnessedTrauma: '',
+      ptsdSymptoms: [], triggers: [], copingMechanisms: [], unhealthyCoping: [],
+      therapyHistory: '', healingJourney: '', healingProgress: 5, supportSystems: [],
+      resilienceFactors: [], postTraumaticGrowth: '', unprocessedTrauma: ''
+    },
+    memories: {
+      earliestMemory: '', earliestMemoryAge: '', childhoodHome: '', childhoodSmells: '',
+      childhoodSounds: '', favoriteChildhoodToy: '', childhoodHideout: '', childhoodFears: [],
+      schoolMemories: '', teachersRemembered: '', friendshipMemories: '', familyVacations: '',
+      holidayMemories: '', birthdayMemories: '', embarrassingMemories: '', secretMemories: '',
+      sensoryTriggers: [], memoriesRepressed: '', memoriesIdealized: '', photographMoments: ''
+    }
   },
   relationships: {
+    npcs: [],
     patterns: { socialEnergy: 5, trustLevel: 5, conflictStyle: '', loveLanguages: '', friendshipStyle: '' },
     circle: { bestFriends: '', closeFriends: '', acquaintances: '', rivals: '', mentors: '' },
     romantic: { relationshipStatus: '', pastRelationships: '', romanticPatterns: '', dealBreakers: '' },
@@ -219,31 +366,30 @@ const createInitialCharacterData = () => ({
     self: { selfEsteem: 5, selfTalkPattern: '', bodyImage: '', identitySecurity: '' }
   },
   intimacy: {
-    orientation: { sexualOrientation: '', romanticOrientation: '', experienceLevel: '' },
-    preferences: { physicalPreferences: '', emotionalPreferences: '', turnOns: '', turnOffs: '', boundaries: '' },
-    behavior: { initiativeLevel: 5, communicationStyle: '', vulnerabilityLevel: 5, fantasies: '' }
+    orientation: { 
+      sexualOrientation: '', kinseyScale: '', orientationCertainty: '', outnessLevel: '',
+      romanticOrientation: '', relationshipStyle: '', loveLangPrimary: '', loveLangSecondary: '',
+      experienceLevel: '', romanticExperience: '', firstExperienceAge: '', currentStatus: '',
+      partnerCount: '', longestRelationship: ''
+    },
+    preferences: { 
+      preferredBodyType: '', agePreference: '', hairPreference: '', facialHairPref: '', stylePref: '', physicalPreferences: '',
+      personalityPref: '', intelligencePref: '', humorPref: '', emotionalPref: '', emotionalPreferences: '',
+      turnOnCategory: '', turnOffCategory: '', turnOns: '', turnOffs: '',
+      boundaryStyle: '', opennessLevel: '', boundaries: ''
+    },
+    behavior: { 
+      attachmentStyle: '', jealousyLevel: '', communicationStyle: '', conflictStyle: '',
+      initiativeLevel: 5, vulnerabilityLevel: 5,
+      intimacyApproach: '', libido: '', preferredFrequency: '', preferredTime: '', preferredSetting: '',
+      intensityLevel: 5, noiseLevel: 5, durationPref: 5,
+      aftercareNeeds: '', postIntimacyBehavior: '',
+      fantasySharing: '', roleplayInterest: '', fantasies: '',
+      kinks: [], fetishes: []
+    }
   },
   occupation: {
-    current: { 
-      employmentStatus: '', 
-      workArrangement: '', 
-      jobTitle: '', 
-      seniorityLevel: '', 
-      jobDescription: '', 
-      timeInRole: '', 
-      timeAtCompany: '', 
-      managesPeople: '', 
-      hoursPerWeek: '', 
-      industry: '', 
-      functionalAreas: [], 
-      companyName: '', 
-      companyType: '', 
-      companySize: '', 
-      companyReach: '', 
-      companyAge: '', 
-      companyReputation: '', 
-      companyCulture: [] 
-    },
+    jobs: [],
     career: { 
       childhoodDream: '', 
       careerEntry: '', 
@@ -460,6 +606,67 @@ const createInitialCharacterData = () => ({
     longTerm: { lifeDream: '', legacy: '', whatSuccessMeans: '' },
     internal: { headVsHeart: '', dutyVsDesire: '', whoTheyAreVsWant: '' },
     external: { currentProblems: '', enemies: '', systemicObstacles: '' }
+  },
+  directives: {
+    formatting: {
+      responseLength: '',
+      actionStyle: '',
+      dialogueStyle: '',
+      thoughtStyle: '',
+      narrativePerson: '',
+      paragraphStyle: ''
+    },
+    writingStyle: {
+      detailLevel: '',
+      vocabulary: '',
+      pacing: '',
+      focus: '',
+      tone: ''
+    },
+    narrative: {
+      genre: '',
+      plotStyle: '',
+      autonomy: '',
+      agency: '',
+      surprises: '',
+      npcControl: '',
+      collaboration: '',
+      realism: ''
+    },
+    content: {
+      consequences: '',
+      matureContent: '',
+      violence: '',
+      language: '',
+      themes: ''
+    },
+    customDirective: '',
+    ruler: {
+      plotRole: '',
+      responseStructure: '',
+      pacing: '',
+      consistency: '',
+      boundaries: '',
+      interaction: '',
+      autonomyBehavior: '',
+      sliceOfLife: '',
+      adventureRules: '',
+      casualRules: '',
+      importantRules: [],
+      customRules: ''
+    },
+    proactive: {
+      timing: '',
+      frequency: '',
+      quietHours: '',
+      actionTypes: [],
+      triggers: '',
+      limits: '',
+      personality: '',
+      calendarAware: '',
+      inactivityResponse: '',
+      customDirective: ''
+    }
   }
 });
 
@@ -3348,68 +3555,2282 @@ const IdentityContent = ({ data, updateData, subtab }) => {
   return sections[subtab] || sections[0];
 };
 
-const AppearanceContent = ({ data, updateData, subtab }) => {
+const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGender }) => {
   const update = (section, field, value) => {
     updateData('appearance', { ...data, [section]: { ...data[section], [field]: value } });
   };
 
+  // Parse age for conditional rendering
+  const age = parseInt(characterAge) || 0;
+  const isAdult = age >= 18;
+  const isMinor = age > 0 && age < 18;
+  
+  // Determine gender category for body options
+  const gender = (characterGender || '').toLowerCase();
+  const isMale = ['male', 'man', 'masculine', 'trans man', 'trans male', 'ftm'].some(g => gender.includes(g));
+  const isFemale = ['female', 'woman', 'feminine', 'trans woman', 'trans female', 'mtf'].some(g => gender.includes(g));
+  const isNonBinary = !isMale && !isFemale && gender !== '';
+
+  const FaceSelect = ({ label, value, onChange, options, placeholder = "-- Select --" }) => (
+    <div className="mb-3">
+      <label className="font-mono text-[10px] text-gray-600 mb-1 block">{label}</label>
+      <select value={value || ''} onChange={onChange} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs focus:border-teal-400 focus:outline-none">
+        <option value="">{placeholder}</option>
+        {options.map(opt => (
+          <option key={typeof opt === 'string' ? opt : opt.value} value={typeof opt === 'string' ? opt : opt.value}>
+            {typeof opt === 'string' ? opt : opt.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+
+  const FaceInput = ({ label, value, onChange, placeholder }) => (
+    <div className="mb-3">
+      <label className="font-mono text-[10px] text-gray-600 mb-1 block">{label}</label>
+      <input type="text" value={value || ''} onChange={onChange} placeholder={placeholder} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs focus:border-teal-400 focus:outline-none" />
+    </div>
+  );
+
+  const skinToneOptions = [
+    { value: 'porcelain', label: 'Porcelain — Very fair, almost translucent' },
+    { value: 'ivory', label: 'Ivory — Fair with slight yellow undertone' },
+    { value: 'fair', label: 'Fair — Typical light skin' },
+    { value: 'light', label: 'Light — Fair with some color' },
+    { value: 'light-medium', label: 'Light-Medium — Transition tone' },
+    { value: 'medium', label: 'Medium — Balanced medium tone' },
+    { value: 'olive-light', label: 'Light Olive — Light greenish tone' },
+    { value: 'olive', label: 'Olive — Medium greenish tone' },
+    { value: 'tan', label: 'Tan — Warm golden' },
+    { value: 'caramel', label: 'Caramel — Light golden brown' },
+    { value: 'honey', label: 'Honey — Rich golden' },
+    { value: 'brown', label: 'Brown — Classic brown tone' },
+    { value: 'dark-brown', label: 'Dark Brown — Deep brown' },
+    { value: 'espresso', label: 'Espresso — Rich dark brown' },
+    { value: 'ebony', label: 'Ebony — Very dark' },
+    { value: 'deep', label: 'Deep — Intense black' }
+  ];
+
+  const skinUndertoneOptions = [
+    { value: 'cool-pink', label: 'Cool — Pink/Rosy' },
+    { value: 'cool-blue', label: 'Cool — Bluish/Violet' },
+    { value: 'neutral', label: 'Neutral — Balance of warm and cool' },
+    { value: 'warm-yellow', label: 'Warm — Yellow' },
+    { value: 'warm-golden', label: 'Warm — Golden' },
+    { value: 'warm-peach', label: 'Warm — Peach' },
+    { value: 'olive', label: 'Olive — Green-yellow' }
+  ];
+
   const sections = {
-    0: ( // Face
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-        <ArchiveSelect label="Face Shape" value={data.face.faceShape} onChange={(e) => update('face', 'faceShape', e.target.value)} 
-          options={['Oval', 'Round', 'Square', 'Heart', 'Oblong', 'Diamond', 'Triangle']} />
-        <ArchiveInput label="Skin Tone" value={data.face.skinTone} onChange={(e) => update('face', 'skinTone', e.target.value)} placeholder="e.g. Fair, Olive, Dark" />
-        <ArchiveSelect label="Eye Color" value={data.face.eyeColor} onChange={(e) => update('face', 'eyeColor', e.target.value)} 
-          options={['Brown', 'Blue', 'Green', 'Hazel', 'Gray', 'Amber', 'Black', 'Heterochromia']} />
-        <ArchiveSelect label="Eye Shape" value={data.face.eyeShape} onChange={(e) => update('face', 'eyeShape', e.target.value)} 
-          options={['Almond', 'Round', 'Monolid', 'Hooded', 'Downturned', 'Upturned', 'Deep-set', 'Protruding']} />
-        <ArchiveInput label="Eyebrows" value={data.face.eyebrows} onChange={(e) => update('face', 'eyebrows', e.target.value)} placeholder="Shape and thickness" />
-        <ArchiveSelect label="Nose Type" value={data.face.noseType} onChange={(e) => update('face', 'noseType', e.target.value)} 
-          options={['Straight', 'Roman', 'Button', 'Upturned', 'Hawk', 'Wide', 'Thin', 'Crooked']} />
-        <ArchiveInput label="Lip Shape" value={data.face.lipShape} onChange={(e) => update('face', 'lipShape', e.target.value)} placeholder="e.g. Full, Thin, Bow-shaped" />
-        <ArchiveInput label="Facial Hair" value={data.face.facialHair} onChange={(e) => update('face', 'facialHair', e.target.value)} placeholder="If applicable" />
-        <div className="md:col-span-2">
-          <ArchiveInput label="Distinctive Marks" value={data.face.distinctiveMarks} onChange={(e) => update('face', 'distinctiveMarks', e.target.value)} placeholder="Scars, moles, birthmarks" multiline />
+    0: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-rose-900 mb-2">FACE — Complete Detail</h3>
+          <p className="font-mono text-xs text-rose-700">Define every aspect of the character's face for precise visual description.</p>
+        </div>
+
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-4">Face Shape</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Overall Shape" value={data.face?.faceShape} onChange={(e) => update('face', 'faceShape', e.target.value)}
+              options={[
+                { value: 'oval', label: 'Oval — Balanced, slightly wider forehead' },
+                { value: 'round', label: 'Round — Full cheeks, no defined angles' },
+                { value: 'square', label: 'Square — Strong jaw, wide forehead' },
+                { value: 'heart', label: 'Heart — Wide forehead, pointed chin' },
+                { value: 'diamond', label: 'Diamond — Wide cheekbones, narrow forehead/chin' },
+                { value: 'oblong', label: 'Oblong — Elongated, high forehead' },
+                { value: 'triangle', label: 'Triangle — Wide jaw, narrow forehead' }
+              ]} />
+            <FaceSelect label="Face Length" value={data.face?.faceLength} onChange={(e) => update('face', 'faceLength', e.target.value)}
+              options={[
+                { value: 'short', label: 'Short — Compact face' },
+                { value: 'average', label: 'Average — Standard proportion' },
+                { value: 'long', label: 'Long — Elongated' }
+              ]} />
+            <FaceSelect label="Face Width" value={data.face?.faceWidth} onChange={(e) => update('face', 'faceWidth', e.target.value)}
+              options={[
+                { value: 'narrow', label: 'Narrow — Thin face' },
+                { value: 'average', label: 'Average — Standard width' },
+                { value: 'wide', label: 'Wide — Broad face' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">Skin</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Skin Tone" value={data.face?.skinTone} onChange={(e) => update('face', 'skinTone', e.target.value)} options={skinToneOptions} />
+            <FaceSelect label="Skin Undertone" value={data.face?.skinUndertone} onChange={(e) => update('face', 'skinUndertone', e.target.value)} options={skinUndertoneOptions} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Skin Texture" value={data.face?.skinTexture} onChange={(e) => update('face', 'skinTexture', e.target.value)}
+              options={[
+                { value: 'smooth', label: 'Smooth — No visible texture' },
+                { value: 'normal', label: 'Normal — Common texture' },
+                { value: 'rough', label: 'Rough — Noticeable texture' },
+                { value: 'porous', label: 'Porous — Visible pores' },
+                { value: 'scarred', label: 'Scarred — Acne scars' },
+                { value: 'weathered', label: 'Weathered — Sun/time damage' }
+              ]} />
+            <FaceSelect label="Skin Condition" value={data.face?.skinCondition} onChange={(e) => update('face', 'skinCondition', e.target.value)}
+              options={[
+                { value: 'flawless', label: 'Flawless — No imperfections' },
+                { value: 'clear', label: 'Clear — Few imperfections' },
+                { value: 'normal', label: 'Normal — Occasional imperfections' },
+                { value: 'oily', label: 'Oily — Visible shine' },
+                { value: 'dry', label: 'Dry — Slight flaking' },
+                { value: 'combination', label: 'Combination — Oily T-zone' },
+                { value: 'acne-prone', label: 'Acne-Prone — Prone to breakouts' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
+          <h4 className="font-mono text-sm font-bold text-yellow-800 mb-4">Forehead</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Forehead Height" value={data.face?.foreheadHeight} onChange={(e) => update('face', 'foreheadHeight', e.target.value)}
+              options={[
+                { value: 'low', label: 'Low — Short forehead' },
+                { value: 'average', label: 'Average — Normal proportion' },
+                { value: 'high', label: 'High — Prominent forehead' }
+              ]} />
+            <FaceSelect label="Forehead Width" value={data.face?.foreheadWidth} onChange={(e) => update('face', 'foreheadWidth', e.target.value)}
+              options={[
+                { value: 'narrow', label: 'Narrow — Close temples' },
+                { value: 'average', label: 'Average — Normal width' },
+                { value: 'wide', label: 'Wide — Distant temples' }
+              ]} />
+            <FaceSelect label="Forehead Shape" value={data.face?.foreheadShape} onChange={(e) => update('face', 'foreheadShape', e.target.value)}
+              options={[
+                { value: 'flat', label: 'Flat — No curvature' },
+                { value: 'rounded', label: 'Rounded — Soft curve' },
+                { value: 'sloped', label: 'Sloped — Recedes backward' },
+                { value: 'prominent', label: 'Prominent — Projects forward' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-4">Eyebrows</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Eyebrow Shape" value={data.face?.eyebrowShape} onChange={(e) => update('face', 'eyebrowShape', e.target.value)}
+              options={[
+                { value: 'straight', label: 'Straight — Horizontal line' },
+                { value: 'soft-angled', label: 'Soft Angled — Slight peak' },
+                { value: 'hard-angled', label: 'Hard Angled — Defined peak' },
+                { value: 'high-arch', label: 'High Arch — Elevated curve' },
+                { value: 'soft-arch', label: 'Soft Arch — Gentle curve' },
+                { value: 'curved', label: 'Curved — Continuous arc' },
+                { value: 's-shaped', label: 'S-Shaped — Wavy' },
+                { value: 'rounded', label: 'Rounded — No angles' }
+              ]} />
+            <FaceSelect label="Eyebrow Thickness" value={data.face?.eyebrowThickness} onChange={(e) => update('face', 'eyebrowThickness', e.target.value)}
+              options={[
+                { value: 'very-thin', label: 'Very Thin — Almost invisible' },
+                { value: 'thin', label: 'Thin — Delicate' },
+                { value: 'medium', label: 'Medium — Normal thickness' },
+                { value: 'thick', label: 'Thick — Full' },
+                { value: 'very-thick', label: 'Very Thick — Bold' },
+                { value: 'bushy', label: 'Bushy — Untrimmed, wild' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Eyebrow Arch" value={data.face?.eyebrowArch} onChange={(e) => update('face', 'eyebrowArch', e.target.value)}
+              options={[
+                { value: 'no-arch', label: 'No Arch — Completely straight' },
+                { value: 'low', label: 'Low Arch — Minimal curve' },
+                { value: 'medium', label: 'Medium Arch — Standard curve' },
+                { value: 'high', label: 'High Arch — Elevated curve' },
+                { value: 'dramatic', label: 'Dramatic Arch — Very pronounced' }
+              ]} />
+            <FaceSelect label="Eyebrow Color" value={data.face?.eyebrowColor} onChange={(e) => update('face', 'eyebrowColor', e.target.value)}
+              options={['Platinum', 'Blonde', 'Light Brown', 'Medium Brown', 'Dark Brown', 'Black', 'Auburn', 'Red', 'Gray', 'White']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-4">Eyes</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Eye Color" value={data.face?.eyeColor} onChange={(e) => update('face', 'eyeColor', e.target.value)}
+              options={[
+                { value: 'light-blue', label: 'Light Blue' },
+                { value: 'blue', label: 'Blue' },
+                { value: 'dark-blue', label: 'Dark Blue' },
+                { value: 'light-green', label: 'Light Green' },
+                { value: 'green', label: 'Green' },
+                { value: 'hazel-green', label: 'Hazel-Green' },
+                { value: 'hazel-brown', label: 'Hazel-Brown' },
+                { value: 'light-brown', label: 'Light Brown (Honey)' },
+                { value: 'medium-brown', label: 'Medium Brown' },
+                { value: 'dark-brown', label: 'Dark Brown' },
+                { value: 'black', label: 'Black' },
+                { value: 'amber', label: 'Amber (Golden)' },
+                { value: 'gray', label: 'Gray' },
+                { value: 'heterochromia', label: 'Heterochromia — Different colors' }
+              ]} />
+            <FaceSelect label="Eye Shape" value={data.face?.eyeShape} onChange={(e) => update('face', 'eyeShape', e.target.value)}
+              options={[
+                { value: 'almond', label: 'Almond — Classic shape' },
+                { value: 'round', label: 'Round — Open and circular' },
+                { value: 'monolid', label: 'Monolid — No crease' },
+                { value: 'hooded', label: 'Hooded — Hidden lid' },
+                { value: 'downturned', label: 'Downturned — Outer corners down' },
+                { value: 'upturned', label: 'Upturned — Outer corners up' },
+                { value: 'deep-set', label: 'Deep-Set — Recessed' },
+                { value: 'protruding', label: 'Protruding — Prominent' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Eye Size" value={data.face?.eyeSize} onChange={(e) => update('face', 'eyeSize', e.target.value)}
+              options={['Very Small', 'Small', 'Medium', 'Large', 'Very Large']} />
+            <FaceSelect label="Eyelashes" value={data.face?.eyeLashes} onChange={(e) => update('face', 'eyeLashes', e.target.value)}
+              options={[
+                { value: 'sparse', label: 'Sparse — Few lashes' },
+                { value: 'short', label: 'Short' },
+                { value: 'average', label: 'Average' },
+                { value: 'long', label: 'Long' },
+                { value: 'very-long', label: 'Very Long' },
+                { value: 'thick', label: 'Thick/Dense' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
+          <h4 className="font-mono text-sm font-bold text-indigo-800 mb-4">Nose</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Nose Type" value={data.face?.noseType} onChange={(e) => update('face', 'noseType', e.target.value)}
+              options={[
+                { value: 'greek', label: 'Greek — Straight, no curve' },
+                { value: 'roman', label: 'Roman — Convex bridge' },
+                { value: 'aquiline', label: 'Aquiline — Eagle-like curve' },
+                { value: 'button', label: 'Button — Small and rounded' },
+                { value: 'snub', label: 'Snub — Upturned tip' },
+                { value: 'hawk', label: 'Hawk — High curved bridge' },
+                { value: 'nubian', label: 'Nubian — Wide with downward tip' },
+                { value: 'bulbous', label: 'Bulbous — Rounded wide tip' },
+                { value: 'flat', label: 'Flat — Low bridge' },
+                { value: 'crooked', label: 'Crooked — Deviated' }
+              ]} />
+            <FaceSelect label="Nose Size" value={data.face?.noseSize} onChange={(e) => update('face', 'noseSize', e.target.value)}
+              options={['Petite', 'Small', 'Medium', 'Large', 'Prominent']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Nose Bridge" value={data.face?.noseBridge} onChange={(e) => update('face', 'noseBridge', e.target.value)}
+              options={['Low', 'Medium', 'High', 'Bumpy']} />
+            <FaceSelect label="Nose Tip" value={data.face?.noseTip} onChange={(e) => update('face', 'noseTip', e.target.value)}
+              options={['Pointed', 'Rounded', 'Bulbous', 'Upturned', 'Downturned']} />
+            <FaceSelect label="Nostrils" value={data.face?.nostrilSize} onChange={(e) => update('face', 'nostrilSize', e.target.value)}
+              options={['Small', 'Medium', 'Wide', 'Flared']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-4">Cheeks</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Cheekbone Height" value={data.face?.cheekboneHeight} onChange={(e) => update('face', 'cheekboneHeight', e.target.value)}
+              options={['Low', 'Medium', 'High', 'Very High']} />
+            <FaceSelect label="Cheekbone Prominence" value={data.face?.cheekboneProminence} onChange={(e) => update('face', 'cheekboneProminence', e.target.value)}
+              options={['Flat', 'Subtle', 'Defined', 'Prominent', 'Very Prominent']} />
+            <FaceSelect label="Cheek Fullness" value={data.face?.cheekFullness} onChange={(e) => update('face', 'cheekFullness', e.target.value)}
+              options={['Hollow', 'Sunken', 'Slim', 'Average', 'Full', 'Chubby']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-4">Lips</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Lip Shape" value={data.face?.lipShape} onChange={(e) => update('face', 'lipShape', e.target.value)}
+              options={[
+                { value: 'heart', label: 'Heart — Defined cupids bow' },
+                { value: 'bow', label: 'Bow — Classic bow shape' },
+                { value: 'round', label: 'Round — Curved' },
+                { value: 'wide', label: 'Wide — Extend horizontally' },
+                { value: 'thin', label: 'Thin — Little volume' },
+                { value: 'full', label: 'Full — Balanced volume' },
+                { value: 'pouty', label: 'Pouty — Projected lower lip' },
+                { value: 'downturned', label: 'Downturned — Corners down' },
+                { value: 'upturned', label: 'Upturned — Corners up' }
+              ]} />
+            <FaceSelect label="Lip Thickness" value={data.face?.lipThickness} onChange={(e) => update('face', 'lipThickness', e.target.value)}
+              options={[
+                { value: 'very-thin', label: 'Very Thin' },
+                { value: 'thin', label: 'Thin' },
+                { value: 'medium', label: 'Medium' },
+                { value: 'full', label: 'Full' },
+                { value: 'very-full', label: 'Very Full' },
+                { value: 'plump', label: 'Plump' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Upper/Lower Ratio" value={data.face?.lipUpperLower} onChange={(e) => update('face', 'lipUpperLower', e.target.value)}
+              options={['Upper Larger', 'Balanced', 'Lower Slightly Larger', 'Lower Much Larger']} />
+            <FaceSelect label="Natural Lip Color" value={data.face?.lipColor} onChange={(e) => update('face', 'lipColor', e.target.value)}
+              options={['Pale', 'Light Pink', 'Pink', 'Dark Pink', 'Rose', 'Coral', 'Berry', 'Red', 'Brown-Pink', 'Brown']} />
+            <FaceSelect label="Cupids Bow" value={data.face?.cupidsBow} onChange={(e) => update('face', 'cupidsBow', e.target.value)}
+              options={['Undefined', 'Subtle', 'Moderate', 'Defined', 'Pronounced']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-slate-200 rounded-sm p-4 bg-slate-50/30">
+          <h4 className="font-mono text-sm font-bold text-slate-800 mb-4">Jaw and Chin</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Jawline Shape" value={data.face?.jawlineShape} onChange={(e) => update('face', 'jawlineShape', e.target.value)}
+              options={['Square', 'Angular', 'Rounded', 'Soft', 'Tapered', 'V-Shaped', 'Wide', 'Narrow']} />
+            <FaceSelect label="Jawline Definition" value={data.face?.jawlineDefinition} onChange={(e) => update('face', 'jawlineDefinition', e.target.value)}
+              options={['Undefined', 'Soft', 'Moderate', 'Defined', 'Sharp', 'Chiseled']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Chin Shape" value={data.face?.chinShape} onChange={(e) => update('face', 'chinShape', e.target.value)}
+              options={['Pointed', 'Rounded', 'Square', 'Cleft', 'Dimpled', 'Receding', 'Protruding', 'Double']} />
+            <FaceSelect label="Chin Size" value={data.face?.chinSize} onChange={(e) => update('face', 'chinSize', e.target.value)}
+              options={['Small', 'Medium', 'Large', 'Long', 'Short']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-stone-200 rounded-sm p-4 bg-stone-50/30">
+          <h4 className="font-mono text-sm font-bold text-stone-800 mb-4">Facial Hair</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Facial Hair Type" value={data.face?.facialHairType} onChange={(e) => update('face', 'facialHairType', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Smooth face' },
+                { value: 'clean-shaven', label: 'Clean-Shaven' },
+                { value: 'stubble-light', label: 'Light Stubble (1-2 days)' },
+                { value: 'stubble-heavy', label: 'Heavy Stubble (3-5 days)' },
+                { value: 'goatee', label: 'Goatee' },
+                { value: 'mustache', label: 'Mustache' },
+                { value: 'short-beard', label: 'Short Beard' },
+                { value: 'medium-beard', label: 'Medium Beard' },
+                { value: 'full-beard', label: 'Full Beard' },
+                { value: 'long-beard', label: 'Long Beard' }
+              ]} />
+            <FaceSelect label="Hair Density" value={data.face?.facialHairDensity} onChange={(e) => update('face', 'facialHairDensity', e.target.value)}
+              options={['None', 'Sparse', 'Patchy', 'Moderate', 'Full', 'Thick', 'Very Thick']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Facial Hair Color" value={data.face?.facialHairColor} onChange={(e) => update('face', 'facialHairColor', e.target.value)}
+              options={['Blonde', 'Light Brown', 'Brown', 'Dark Brown', 'Black', 'Red', 'Auburn', 'Gray', 'White', 'Salt and Pepper']} />
+            <FaceSelect label="Style" value={data.face?.facialHairStyle} onChange={(e) => update('face', 'facialHairStyle', e.target.value)}
+              options={['Natural', 'Groomed', 'Shaped', 'Wild', 'Styled']} />
+            <FaceSelect label="Length" value={data.face?.facialHairLength} onChange={(e) => update('face', 'facialHairLength', e.target.value)}
+              options={['N/A', 'Shadow', 'Stubble', 'Short', 'Medium', 'Long', 'Very Long']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
+          <h4 className="font-mono text-sm font-bold text-cyan-800 mb-4">Ears</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Ear Size" value={data.face?.earSize} onChange={(e) => update('face', 'earSize', e.target.value)}
+              options={['Small', 'Medium', 'Large', 'Very Large']} />
+            <FaceSelect label="Ear Shape" value={data.face?.earShape} onChange={(e) => update('face', 'earShape', e.target.value)}
+              options={['Round', 'Oval', 'Pointed', 'Flat', 'Protruding']} />
+            <FaceSelect label="Earlobe" value={data.face?.earLobe} onChange={(e) => update('face', 'earLobe', e.target.value)}
+              options={['Attached', 'Detached', 'Stretched']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">Details and Marks</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Freckles" value={data.face?.freckles} onChange={(e) => update('face', 'freckles', e.target.value)}
+              options={['None', 'Few', 'Light', 'Moderate', 'Heavy', 'Concentrated (nose/cheeks)']} />
+            <FaceSelect label="Dimples" value={data.face?.dimples} onChange={(e) => update('face', 'dimples', e.target.value)}
+              options={['None', 'Cheeks', 'Chin', 'One Cheek', 'Cheeks and Chin']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Wrinkles" value={data.face?.wrinkles} onChange={(e) => update('face', 'wrinkles', e.target.value)}
+              options={['None', 'Expression Lines', 'Fine Lines', 'Moderate', 'Pronounced', 'Deep', 'Forehead Lines', 'Crows Feet', 'Smile Lines']} />
+            <FaceInput label="Distinctive Marks" value={data.face?.distinctiveMarks} onChange={(e) => update('face', 'distinctiveMarks', e.target.value)}
+              placeholder="Scars, moles, birthmarks..." />
+          </div>
         </div>
       </div>
     ),
-    1: ( // Hair
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-        <ArchiveInput label="Natural Color" value={data.hair.naturalColor} onChange={(e) => update('hair', 'naturalColor', e.target.value)} placeholder="Birth hair color" />
-        <ArchiveInput label="Current Color" value={data.hair.currentColor} onChange={(e) => update('hair', 'currentColor', e.target.value)} placeholder="Current color (if different)" />
-        <ArchiveSelect label="Texture" value={data.hair.texture} onChange={(e) => update('hair', 'texture', e.target.value)} 
-          options={['Straight', 'Wavy', 'Curly', 'Coily', 'Kinky']} />
-        <ArchiveSelect label="Length" value={data.hair.length} onChange={(e) => update('hair', 'length', e.target.value)} 
-          options={['Bald', 'Buzzed', 'Short', 'Medium', 'Long', 'Very Long']} />
-        <div className="md:col-span-2">
-          <ArchiveInput label="Typical Style" value={data.hair.typicalStyle} onChange={(e) => update('hair', 'typicalStyle', e.target.value)} placeholder="How they usually wear it" />
+
+    1: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">HAIR — Complete Detail</h3>
+          <p className="font-mono text-xs text-amber-700">Comprehensive hair characteristics including color, texture, style by era, and presentation.</p>
+        </div>
+
+        {/* HAIR COLOR */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-4">🎨 Hair Color</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Natural Color" value={data.hair?.naturalColor} onChange={(e) => update('hair', 'naturalColor', e.target.value)}
+              options={[
+                { value: 'black-jet', label: 'Jet Black — Blue-black sheen' },
+                { value: 'black-soft', label: 'Soft Black — Natural black' },
+                { value: 'black-brown', label: 'Off-Black — Very dark brown-black' },
+                { value: 'brown-darkest', label: 'Darkest Brown — Nearly black' },
+                { value: 'brown-dark', label: 'Dark Brown — Deep chocolate' },
+                { value: 'brown-espresso', label: 'Espresso — Rich dark brown' },
+                { value: 'brown-chocolate', label: 'Chocolate Brown — Warm dark' },
+                { value: 'brown-medium', label: 'Medium Brown — Classic brown' },
+                { value: 'brown-chestnut', label: 'Chestnut — Warm medium brown' },
+                { value: 'brown-walnut', label: 'Walnut — Neutral medium brown' },
+                { value: 'brown-light', label: 'Light Brown — Soft brown' },
+                { value: 'brown-caramel', label: 'Caramel Brown — Golden brown' },
+                { value: 'brown-honey', label: 'Honey Brown — Warm light brown' },
+                { value: 'brown-mousy', label: 'Mousy Brown — Dull light brown' },
+                { value: 'auburn-dark', label: 'Dark Auburn — Deep red-brown' },
+                { value: 'auburn', label: 'Auburn — Rich red-brown' },
+                { value: 'auburn-light', label: 'Light Auburn — Soft red-brown' },
+                { value: 'red-deep', label: 'Deep Red — Burgundy red' },
+                { value: 'red-copper', label: 'Copper — Orange-red metallic' },
+                { value: 'red-ginger', label: 'Ginger — Classic orange-red' },
+                { value: 'red-strawberry', label: 'Strawberry — Light orange-red' },
+                { value: 'red-titian', label: 'Titian — Golden red' },
+                { value: 'blonde-dark', label: 'Dark Blonde — Dirty blonde' },
+                { value: 'blonde-golden', label: 'Golden Blonde — Warm yellow' },
+                { value: 'blonde-honey', label: 'Honey Blonde — Rich warm blonde' },
+                { value: 'blonde-caramel', label: 'Caramel Blonde — Brownish blonde' },
+                { value: 'blonde-medium', label: 'Medium Blonde — Classic blonde' },
+                { value: 'blonde-sandy', label: 'Sandy Blonde — Beige blonde' },
+                { value: 'blonde-ash', label: 'Ash Blonde — Cool grayish blonde' },
+                { value: 'blonde-light', label: 'Light Blonde — Pale blonde' },
+                { value: 'blonde-platinum', label: 'Platinum Blonde — Near white' },
+                { value: 'blonde-white', label: 'White Blonde — Towhead' },
+                { value: 'gray-silver', label: 'Silver — Bright metallic gray' },
+                { value: 'gray-steel', label: 'Steel Gray — Blue-tinted gray' },
+                { value: 'gray-salt-pepper', label: 'Salt & Pepper — Mixed gray/dark' },
+                { value: 'gray-charcoal', label: 'Charcoal — Dark gray' },
+                { value: 'gray-dove', label: 'Dove Gray — Soft medium gray' },
+                { value: 'white-pure', label: 'Pure White — Snow white' },
+                { value: 'white-ivory', label: 'Ivory White — Warm white' }
+              ]} />
+            <FaceSelect label="Current Color (if dyed)" value={data.hair?.currentColor} onChange={(e) => update('hair', 'currentColor', e.target.value)}
+              options={[
+                { value: '', label: '— Same as natural —' },
+                { value: 'black-jet', label: 'Jet Black' },
+                { value: 'black-blue', label: 'Blue-Black' },
+                { value: 'brown-dark', label: 'Dark Brown' },
+                { value: 'brown-medium', label: 'Medium Brown' },
+                { value: 'brown-light', label: 'Light Brown' },
+                { value: 'auburn', label: 'Auburn' },
+                { value: 'red-burgundy', label: 'Burgundy' },
+                { value: 'red-copper', label: 'Copper' },
+                { value: 'red-cherry', label: 'Cherry Red' },
+                { value: 'red-fire', label: 'Fire Engine Red' },
+                { value: 'blonde-golden', label: 'Golden Blonde' },
+                { value: 'blonde-platinum', label: 'Platinum Blonde' },
+                { value: 'blonde-ash', label: 'Ash Blonde' },
+                { value: 'gray-silver', label: 'Silver' },
+                { value: 'fantasy-purple', label: 'Purple/Violet' },
+                { value: 'fantasy-blue', label: 'Blue' },
+                { value: 'fantasy-green', label: 'Green' },
+                { value: 'fantasy-pink', label: 'Pink' },
+                { value: 'fantasy-orange', label: 'Orange' },
+                { value: 'fantasy-teal', label: 'Teal' },
+                { value: 'ombre', label: 'Ombré (specify in notes)' },
+                { value: 'balayage', label: 'Balayage highlights' },
+                { value: 'highlights', label: 'Highlights' },
+                { value: 'lowlights', label: 'Lowlights' },
+                { value: 'streaks', label: 'Colored streaks' },
+                { value: 'tips', label: 'Colored tips only' },
+                { value: 'roots', label: 'Visible roots showing' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Color Shine/Luster" value={data.hair?.colorShine} onChange={(e) => update('hair', 'colorShine', e.target.value)}
+              options={['Matte/Dull', 'Low Shine', 'Natural Shine', 'Glossy', 'Very Glossy/Shiny', 'Metallic Sheen']} />
+            <FaceSelect label="Gray/White Amount" value={data.hair?.grayAmount} onChange={(e) => update('hair', 'grayAmount', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No gray' },
+                { value: 'few', label: 'Few strands — Barely noticeable' },
+                { value: 'temples', label: 'Temples only — Distinguished look' },
+                { value: 'scattered', label: 'Scattered — 10-25% gray' },
+                { value: 'salt-pepper', label: 'Salt & Pepper — 25-50% gray' },
+                { value: 'mostly-gray', label: 'Mostly Gray — 50-75% gray' },
+                { value: 'predominantly', label: 'Predominantly Gray — 75-90%' },
+                { value: 'fully-gray', label: 'Fully Gray/White — 90%+' }
+              ]} />
+          </div>
+        </div>
+
+        {/* HAIR TEXTURE & TYPE */}
+        <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
+          <h4 className="font-mono text-sm font-bold text-yellow-800 mb-4">〰️ Texture & Type</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Hair Type (Andre Walker System)" value={data.hair?.hairType} onChange={(e) => update('hair', 'hairType', e.target.value)}
+              options={[
+                { value: '1a', label: 'Type 1A — Pin straight, very fine, shiny' },
+                { value: '1b', label: 'Type 1B — Straight with slight body, medium' },
+                { value: '1c', label: 'Type 1C — Straight, coarse, some wave possible' },
+                { value: '2a', label: 'Type 2A — Loose S-waves, fine, easy to style' },
+                { value: '2b', label: 'Type 2B — Defined S-waves, medium, some frizz' },
+                { value: '2c', label: 'Type 2C — Well-defined waves, coarse, frizzy' },
+                { value: '3a', label: 'Type 3A — Loose spirals, big curls, shiny' },
+                { value: '3b', label: 'Type 3B — Springy ringlets, medium curls' },
+                { value: '3c', label: 'Type 3C — Tight corkscrews, densely packed' },
+                { value: '4a', label: 'Type 4A — Soft S-coils, defined pattern' },
+                { value: '4b', label: 'Type 4B — Z-pattern coils, less defined' },
+                { value: '4c', label: 'Type 4C — Tight zigzag, least definition, shrinkage' }
+              ]} />
+            <FaceSelect label="Hair Texture Feel" value={data.hair?.textureDesc} onChange={(e) => update('hair', 'textureDesc', e.target.value)}
+              options={[
+                { value: 'silky', label: 'Silky — Smooth, soft, slippery' },
+                { value: 'cottony', label: 'Cottony — Soft, dry, absorbs moisture' },
+                { value: 'spongy', label: 'Spongy — Absorbs water, springy' },
+                { value: 'wiry', label: 'Wiry — Coarse, rough texture' },
+                { value: 'thready', label: 'Thready — Low sheen, easy to frizz' },
+                { value: 'fine', label: 'Fine — Delicate, soft strands' },
+                { value: 'medium', label: 'Medium — Average thickness' },
+                { value: 'coarse', label: 'Coarse — Thick, strong strands' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Density/Thickness" value={data.hair?.density} onChange={(e) => update('hair', 'density', e.target.value)}
+              options={[
+                { value: 'very-thin', label: 'Very Thin — Scalp very visible' },
+                { value: 'thin', label: 'Thin — Scalp somewhat visible' },
+                { value: 'medium-thin', label: 'Medium-Thin — Moderate coverage' },
+                { value: 'medium', label: 'Medium — Average density' },
+                { value: 'medium-thick', label: 'Medium-Thick — Good coverage' },
+                { value: 'thick', label: 'Thick — Full head of hair' },
+                { value: 'very-thick', label: 'Very Thick — Abundant, heavy' }
+              ]} />
+            <FaceSelect label="Porosity" value={data.hair?.porosity} onChange={(e) => update('hair', 'porosity', e.target.value)}
+              options={[
+                { value: 'low', label: 'Low — Resists moisture, slow to dry' },
+                { value: 'medium', label: 'Medium/Normal — Balanced' },
+                { value: 'high', label: 'High — Absorbs fast, dries fast, frizzy' }
+              ]} />
+            <FaceSelect label="Hair Condition" value={data.hair?.condition} onChange={(e) => update('hair', 'condition', e.target.value)}
+              options={[
+                { value: 'pristine', label: 'Pristine — Perfect condition' },
+                { value: 'healthy', label: 'Healthy — Good condition' },
+                { value: 'normal', label: 'Normal — Average' },
+                { value: 'dry', label: 'Dry — Needs moisture' },
+                { value: 'oily', label: 'Oily — Gets greasy fast' },
+                { value: 'damaged', label: 'Damaged — Split ends, breakage' },
+                { value: 'over-processed', label: 'Over-processed — Chemical damage' },
+                { value: 'heat-damaged', label: 'Heat Damaged — From styling tools' }
+              ]} />
+          </div>
+        </div>
+
+        {/* LENGTH & STRUCTURE */}
+        <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
+          <h4 className="font-mono text-sm font-bold text-orange-800 mb-4">📏 Length & Structure</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Length" value={data.hair?.length} onChange={(e) => update('hair', 'length', e.target.value)}
+              options={[
+                { value: 'bald', label: 'Bald — No hair' },
+                { value: 'shaved', label: 'Shaved — Razor/clipper no guard' },
+                { value: 'buzzed', label: 'Buzz Cut — 1-3mm' },
+                { value: 'cropped', label: 'Cropped — 5-10mm' },
+                { value: 'short', label: 'Short — Above ears (1-2 inches)' },
+                { value: 'ear-length', label: 'Ear Length — At ears (2-3 inches)' },
+                { value: 'chin-length', label: 'Chin Length — Bob length (4-6 inches)' },
+                { value: 'shoulder-length', label: 'Shoulder Length (8-12 inches)' },
+                { value: 'armpit-length', label: 'Armpit Length (12-16 inches)' },
+                { value: 'mid-back', label: 'Mid-Back (16-22 inches)' },
+                { value: 'waist-length', label: 'Waist Length (22-28 inches)' },
+                { value: 'hip-length', label: 'Hip Length (28-36 inches)' },
+                { value: 'classic-length', label: 'Classic/Tailbone Length (36-42 in)' },
+                { value: 'thigh-length', label: 'Thigh Length (42-52 inches)' },
+                { value: 'knee-length', label: 'Knee Length (52+ inches)' },
+                { value: 'floor-length', label: 'Floor Length — Extreme' }
+              ]} />
+            <FaceSelect label="Hairline" value={data.hair?.hairline} onChange={(e) => update('hair', 'hairline', e.target.value)}
+              options={[
+                { value: 'straight', label: 'Straight — Horizontal line' },
+                { value: 'rounded', label: 'Rounded — Soft curve' },
+                { value: 'widows-peak', label: 'Widows Peak — V-shaped point' },
+                { value: 'double-peak', label: 'Double Widows Peak — M-shape' },
+                { value: 'm-shaped', label: 'M-Shaped — Receding at temples' },
+                { value: 'receding-slight', label: 'Slightly Receding — Early stage' },
+                { value: 'receding-moderate', label: 'Moderately Receding' },
+                { value: 'receding-advanced', label: 'Advanced Recession' },
+                { value: 'high', label: 'Naturally High — Large forehead' },
+                { value: 'low', label: 'Naturally Low — Small forehead' },
+                { value: 'uneven', label: 'Uneven/Asymmetric' },
+                { value: 'cowlick', label: 'Has Cowlick(s)' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Part/Parting" value={data.hair?.parting} onChange={(e) => update('hair', 'parting', e.target.value)}
+              options={[
+                { value: 'none', label: 'No Part — Slicked or combed back' },
+                { value: 'left', label: 'Left Side Part' },
+                { value: 'right', label: 'Right Side Part' },
+                { value: 'center', label: 'Center Part' },
+                { value: 'deep-left', label: 'Deep Left Part' },
+                { value: 'deep-right', label: 'Deep Right Part' },
+                { value: 'zigzag', label: 'Zigzag Part' },
+                { value: 'natural', label: 'Natural/Uneven Part' },
+                { value: 'multiple', label: 'Multiple Parts (cornrows, etc.)' }
+              ]} />
+            <FaceSelect label="Layers" value={data.hair?.layers} onChange={(e) => update('hair', 'layers', e.target.value)}
+              options={[
+                { value: 'none', label: 'No Layers — Blunt cut, one length' },
+                { value: 'minimal', label: 'Minimal Layers — Face framing only' },
+                { value: 'subtle', label: 'Subtle Layers — Barely visible' },
+                { value: 'moderate', label: 'Moderate Layers — Movement' },
+                { value: 'heavy', label: 'Heavy Layers — Lots of texture' },
+                { value: 'choppy', label: 'Choppy Layers — Edgy, uneven' },
+                { value: 'feathered', label: 'Feathered — Soft, wispy ends' },
+                { value: 'razored', label: 'Razored — Sharp, textured' },
+                { value: 'graduated', label: 'Graduated — Shorter in back' }
+              ]} />
+          </div>
+        </div>
+
+        {/* HAIRSTYLE BY CATEGORY */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">💇 Hairstyle — By Category</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Style Category" value={data.hair?.styleCategory} onChange={(e) => update('hair', 'styleCategory', e.target.value)}
+              options={[
+                { value: 'natural', label: '🌿 Natural — Worn as-is, minimal styling' },
+                { value: 'classic', label: '👔 Classic — Timeless, professional' },
+                { value: 'modern', label: '✨ Modern — Current trends' },
+                { value: 'edgy', label: '⚡ Edgy — Bold, unconventional' },
+                { value: 'romantic', label: '💕 Romantic — Soft, feminine' },
+                { value: 'professional', label: '💼 Professional — Office-appropriate' },
+                { value: 'casual', label: '😊 Casual — Relaxed, everyday' },
+                { value: 'athletic', label: '🏃 Athletic — Practical for sports' },
+                { value: 'vintage', label: '📷 Vintage — Retro inspired' },
+                { value: 'cultural', label: '🌍 Cultural — Traditional styles' },
+                { value: 'protective', label: '🛡️ Protective — Protects natural hair' },
+                { value: 'avant-garde', label: '🎨 Avant-Garde — Artistic, experimental' }
+              ]} />
+            <FaceSelect label="Primary Hairstyle" value={data.hair?.primaryStyle} onChange={(e) => update('hair', 'primaryStyle', e.target.value)}
+              options={[
+                { value: '', label: '— Select Style —' },
+                { value: 'natural-loose', label: 'Loose/Down — Natural and free' },
+                { value: 'natural-air-dried', label: 'Air-Dried — Minimal styling' },
+                { value: 'slicked-back', label: 'Slicked Back — Smooth, away from face' },
+                { value: 'side-swept', label: 'Side-Swept — Swept to one side' },
+                { value: 'pompadour', label: 'Pompadour — Volume on top, sides back' },
+                { value: 'quiff', label: 'Quiff — Voluminous front' },
+                { value: 'undercut', label: 'Undercut — Short sides, long top' },
+                { value: 'fade', label: 'Fade — Graduated sides' },
+                { value: 'crew-cut', label: 'Crew Cut — Short all over' },
+                { value: 'buzz-cut', label: 'Buzz Cut — Very short' },
+                { value: 'military', label: 'Military/High and Tight' },
+                { value: 'mohawk', label: 'Mohawk/Faux Hawk' },
+                { value: 'mullet', label: 'Mullet — Business front, party back' },
+                { value: 'shag', label: 'Shag — Layered, messy' },
+                { value: 'bob-blunt', label: 'Blunt Bob — Sharp, one length' },
+                { value: 'bob-layered', label: 'Layered Bob — Textured bob' },
+                { value: 'bob-asymmetric', label: 'Asymmetric Bob — Uneven lengths' },
+                { value: 'bob-inverted', label: 'Inverted Bob — Shorter back' },
+                { value: 'lob', label: 'Lob (Long Bob)' },
+                { value: 'pixie', label: 'Pixie Cut — Very short, feminine' },
+                { value: 'pixie-long', label: 'Long Pixie — Grown out pixie' },
+                { value: 'bangs-full', label: 'With Full Bangs' },
+                { value: 'bangs-side', label: 'With Side Bangs' },
+                { value: 'bangs-curtain', label: 'With Curtain Bangs' },
+                { value: 'bangs-wispy', label: 'With Wispy Bangs' },
+                { value: 'layers-long', label: 'Long Layers' },
+                { value: 'layers-face-frame', label: 'Face-Framing Layers' },
+                { value: 'ponytail-high', label: 'High Ponytail' },
+                { value: 'ponytail-low', label: 'Low Ponytail' },
+                { value: 'ponytail-side', label: 'Side Ponytail' },
+                { value: 'bun-high', label: 'High Bun/Top Knot' },
+                { value: 'bun-low', label: 'Low Bun/Chignon' },
+                { value: 'bun-messy', label: 'Messy Bun' },
+                { value: 'half-up', label: 'Half-Up, Half-Down' },
+                { value: 'updo-elegant', label: 'Elegant Updo' },
+                { value: 'braids-single', label: 'Single Braid' },
+                { value: 'braids-pigtails', label: 'Pigtail Braids' },
+                { value: 'braids-crown', label: 'Crown/Halo Braid' },
+                { value: 'braids-french', label: 'French Braid' },
+                { value: 'braids-dutch', label: 'Dutch Braid' },
+                { value: 'braids-fishtail', label: 'Fishtail Braid' },
+                { value: 'braids-box', label: 'Box Braids' },
+                { value: 'braids-cornrows', label: 'Cornrows' },
+                { value: 'braids-ghana', label: 'Ghana Braids/Feed-in' },
+                { value: 'braids-fulani', label: 'Fulani Braids' },
+                { value: 'braids-goddess', label: 'Goddess Locs/Braids' },
+                { value: 'locs-traditional', label: 'Traditional Locs' },
+                { value: 'locs-freeform', label: 'Freeform Locs' },
+                { value: 'locs-sisterlocks', label: 'Sisterlocks/Microlocs' },
+                { value: 'twists-two-strand', label: 'Two-Strand Twists' },
+                { value: 'twists-flat', label: 'Flat Twists' },
+                { value: 'twists-passion', label: 'Passion Twists' },
+                { value: 'twists-senegalese', label: 'Senegalese Twists' },
+                { value: 'afro-natural', label: 'Natural Afro' },
+                { value: 'afro-picked', label: 'Picked-Out Afro' },
+                { value: 'afro-shaped', label: 'Shaped/Tapered Afro' },
+                { value: 'twist-out', label: 'Twist-Out' },
+                { value: 'braid-out', label: 'Braid-Out' },
+                { value: 'bantu-knots', label: 'Bantu Knots' },
+                { value: 'finger-coils', label: 'Finger Coils' },
+                { value: 'wash-and-go', label: 'Wash and Go' },
+                { value: 'perm-rod-set', label: 'Perm Rod Set' },
+                { value: 'flexi-rod-set', label: 'Flexi Rod Set' },
+                { value: 'roller-set', label: 'Roller Set' },
+                { value: 'blowout', label: 'Blowout — Smooth, voluminous' },
+                { value: 'pressed', label: 'Press/Silk Press' },
+                { value: 'relaxed', label: 'Relaxed/Permed' },
+                { value: 'jheri-curl', label: 'Jheri Curl/S-Curl' },
+                { value: 'waves-360', label: '360 Waves' },
+                { value: 'finger-waves', label: 'Finger Waves' },
+                { value: 'beachy-waves', label: 'Beach Waves' },
+                { value: 'hollywood-waves', label: 'Hollywood Waves — Glamorous' },
+                { value: 'curls-defined', label: 'Defined Curls — Styled' },
+                { value: 'curls-loose', label: 'Loose Curls' },
+                { value: 'curls-tight', label: 'Tight Curls/Ringlets' },
+                { value: 'straight-flat-ironed', label: 'Flat-Ironed Straight' },
+                { value: 'messy-textured', label: 'Messy/Textured — Bedhead' },
+                { value: 'spiky', label: 'Spiky' },
+                { value: 'liberty-spikes', label: 'Liberty Spikes' },
+                { value: 'deathhawk', label: 'Deathhawk' },
+                { value: 'chelsea', label: 'Chelsea Cut' },
+                { value: 'asymmetric', label: 'Asymmetric — Creative uneven' },
+                { value: 'geometric', label: 'Geometric — Sharp lines' },
+                { value: 'headwrap', label: 'Head Wrap/Turban' },
+                { value: 'headband', label: 'With Headband' },
+                { value: 'other', label: 'Other (describe in notes)' }
+              ]} />
+          </div>
+        </div>
+
+        {/* HAIRSTYLE BY DECADE */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">📅 Era-Inspired Style (Optional)</h4>
+          <p className="font-mono text-[10px] text-purple-600 mb-4">If your character has a style inspired by a specific era, select it here.</p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Style Era" value={data.hair?.styleEra} onChange={(e) => update('hair', 'styleEra', e.target.value)}
+              options={[
+                { value: '', label: '— No specific era —' },
+                { value: 'ancient', label: '🏛️ Ancient — Egyptian, Greek, Roman' },
+                { value: 'medieval', label: '🏰 Medieval — Braids, veils, long' },
+                { value: 'renaissance', label: '👑 Renaissance — Elaborate, adorned' },
+                { value: 'victorian', label: '🎩 Victorian (1837-1901) — Updos, ringlets' },
+                { value: 'edwardian', label: '💐 Edwardian (1901-1910) — Gibson Girl, pompadour' },
+                { value: '1920s', label: '🎷 1920s — Bob, finger waves, Marcel' },
+                { value: '1930s', label: '🎬 1930s — Waves, pin curls, glamour' },
+                { value: '1940s', label: '✈️ 1940s — Victory rolls, snoods, practical' },
+                { value: '1950s', label: '🚗 1950s — Poodle cut, DA, ponytails' },
+                { value: '1960s', label: '🚀 1960s — Beehive, bouffant, mod, hippie' },
+                { value: '1970s', label: '🕺 1970s — Farrah, afro, shag, long straight' },
+                { value: '1980s', label: '🎸 1980s — Big hair, perms, mullet, crimped' },
+                { value: '1990s', label: '📺 1990s — Rachel, grunge, frosted tips' },
+                { value: '2000s', label: '📱 2000s — Chunky highlights, emo, scene' },
+                { value: '2010s', label: '💻 2010s — Ombré, lob, undercut, man bun' },
+                { value: '2020s', label: '🌐 2020s — Natural texture, curtain bangs, wolf cut' }
+              ]} />
+            <FaceSelect label="Era-Specific Style" value={data.hair?.eraStyle} onChange={(e) => update('hair', 'eraStyle', e.target.value)}
+              options={[
+                { value: '', label: '— Select era first —' },
+                { value: '1920s-bob', label: '1920s: Classic Bob/Flapper Bob' },
+                { value: '1920s-shingle', label: '1920s: Shingle Bob (short back)' },
+                { value: '1920s-eton', label: '1920s: Eton Crop (very short)' },
+                { value: '1920s-finger-waves', label: '1920s: Finger Waves' },
+                { value: '1920s-marcel', label: '1920s: Marcel Wave' },
+                { value: '1930s-waves', label: '1930s: Sculpted Waves' },
+                { value: '1930s-pin-curls', label: '1930s: Pin Curls' },
+                { value: '1930s-pageboy', label: '1930s: Pageboy' },
+                { value: '1940s-victory-rolls', label: '1940s: Victory Rolls' },
+                { value: '1940s-snood', label: '1940s: Snood Style' },
+                { value: '1940s-pompadour', label: '1940s: Pompadour' },
+                { value: '1940s-waves', label: '1940s: Soft Waves' },
+                { value: '1950s-poodle', label: '1950s: Poodle Cut' },
+                { value: '1950s-da', label: '1950s: DA/Ducktail (greaser)' },
+                { value: '1950s-pompadour', label: '1950s: Pompadour/Elvis' },
+                { value: '1950s-ponytail', label: '1950s: High Ponytail' },
+                { value: '1950s-bouffant', label: '1950s: Early Bouffant' },
+                { value: '1960s-beehive', label: '1960s: Beehive' },
+                { value: '1960s-bouffant', label: '1960s: Bouffant' },
+                { value: '1960s-mod-bob', label: '1960s: Mod Bob/Vidal Sassoon' },
+                { value: '1960s-pixie', label: '1960s: Twiggy Pixie' },
+                { value: '1960s-flip', label: '1960s: Flip' },
+                { value: '1960s-hippie', label: '1960s: Hippie Long & Straight' },
+                { value: '1970s-farrah', label: '1970s: Farrah Fawcett Feathers' },
+                { value: '1970s-shag', label: '1970s: Shag' },
+                { value: '1970s-afro', label: '1970s: Afro' },
+                { value: '1970s-disco', label: '1970s: Disco Curls' },
+                { value: '1970s-long-straight', label: '1970s: Long & Straight' },
+                { value: '1980s-big-hair', label: '1980s: Big Hair/Teased' },
+                { value: '1980s-perm', label: '1980s: Perm' },
+                { value: '1980s-mullet', label: '1980s: Mullet' },
+                { value: '1980s-crimped', label: '1980s: Crimped' },
+                { value: '1980s-side-ponytail', label: '1980s: Side Ponytail' },
+                { value: '1980s-jheri-curl', label: '1980s: Jheri Curl' },
+                { value: '1980s-hi-top-fade', label: '1980s: Hi-Top Fade' },
+                { value: '1990s-rachel', label: '1990s: The Rachel' },
+                { value: '1990s-grunge', label: '1990s: Grunge (messy, undone)' },
+                { value: '1990s-curtains', label: '1990s: Curtain Hair (men)' },
+                { value: '1990s-frosted-tips', label: '1990s: Frosted Tips' },
+                { value: '1990s-spiky', label: '1990s: Spiky Gelled' },
+                { value: '1990s-crimped', label: '1990s: Crimped sections' },
+                { value: '2000s-chunky-highlights', label: '2000s: Chunky Highlights' },
+                { value: '2000s-emo', label: '2000s: Emo Swoop' },
+                { value: '2000s-scene', label: '2000s: Scene Hair' },
+                { value: '2000s-faux-hawk', label: '2000s: Faux Hawk' },
+                { value: '2000s-pouf', label: '2000s: Pouf/Bump' },
+                { value: '2010s-ombre', label: '2010s: Ombré' },
+                { value: '2010s-balayage', label: '2010s: Balayage' },
+                { value: '2010s-undercut', label: '2010s: Undercut' },
+                { value: '2010s-man-bun', label: '2010s: Man Bun' },
+                { value: '2010s-lob', label: '2010s: Lob' },
+                { value: '2020s-wolf-cut', label: '2020s: Wolf Cut' },
+                { value: '2020s-curtain-bangs', label: '2020s: Curtain Bangs' },
+                { value: '2020s-butterfly', label: '2020s: Butterfly Cut' },
+                { value: '2020s-octopus', label: '2020s: Octopus Cut' },
+                { value: '2020s-money-pieces', label: '2020s: Money Pieces' },
+                { value: '2020s-shullet', label: '2020s: Shullet (shag+mullet)' }
+              ]} />
+          </div>
+        </div>
+
+        {/* STYLING & MAINTENANCE */}
+        <div className="border-2 border-teal-200 rounded-sm p-4 bg-teal-50/30">
+          <h4 className="font-mono text-sm font-bold text-teal-800 mb-4">🧴 Styling & Maintenance</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FaceSelect label="Styling Effort" value={data.hair?.stylingEffort} onChange={(e) => update('hair', 'stylingEffort', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No styling at all' },
+                { value: 'minimal', label: 'Minimal — Quick finger-comb' },
+                { value: 'low', label: 'Low — Basic brush/product' },
+                { value: 'moderate', label: 'Moderate — Some time daily' },
+                { value: 'high', label: 'High — Significant daily effort' },
+                { value: 'extensive', label: 'Extensive — Elaborate routine' }
+              ]} />
+            <FaceSelect label="Products Used" value={data.hair?.productsUsed} onChange={(e) => update('hair', 'productsUsed', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Product-free' },
+                { value: 'minimal', label: 'Minimal — Basic shampoo only' },
+                { value: 'basic', label: 'Basic — Shampoo + conditioner' },
+                { value: 'moderate', label: 'Moderate — Plus styling product' },
+                { value: 'extensive', label: 'Extensive — Full routine' },
+                { value: 'natural-only', label: 'Natural/Organic only' }
+              ]} />
+            <FaceSelect label="Heat Styling" value={data.hair?.heatStyling} onChange={(e) => update('hair', 'heatStyling', e.target.value)}
+              options={[
+                { value: 'never', label: 'Never — Heat-free' },
+                { value: 'rarely', label: 'Rarely — Special occasions' },
+                { value: 'sometimes', label: 'Sometimes — Weekly' },
+                { value: 'often', label: 'Often — Several times/week' },
+                { value: 'daily', label: 'Daily — Every day' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Hair Accessories" value={data.hair?.accessories} onChange={(e) => update('hair', 'accessories', e.target.value)}
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'basic-ties', label: 'Basic hair ties only' },
+                { value: 'clips', label: 'Clips/Bobby pins' },
+                { value: 'headbands', label: 'Headbands' },
+                { value: 'scarves', label: 'Scarves/Wraps' },
+                { value: 'decorative', label: 'Decorative clips/pins' },
+                { value: 'flowers', label: 'Flowers/Natural elements' },
+                { value: 'beads', label: 'Beads/Shells' },
+                { value: 'ribbons', label: 'Ribbons/Bows' },
+                { value: 'crowns-tiaras', label: 'Crowns/Tiaras' },
+                { value: 'cultural', label: 'Cultural accessories' },
+                { value: 'various', label: 'Various/Changes often' }
+              ]} />
+            <FaceInput label="Style Notes" value={data.hair?.styleNotes} onChange={(e) => update('hair', 'styleNotes', e.target.value)} 
+              placeholder="Additional details about hair styling, habits, or preferences..." />
+          </div>
         </div>
       </div>
     ),
-    2: ( // Body
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-        <ArchiveInput label="Height" value={data.body.height} onChange={(e) => update('body', 'height', e.target.value)} placeholder="e.g. 5'10 / 178cm" />
-        <ArchiveInput label="Weight" value={data.body.weight} onChange={(e) => update('body', 'weight', e.target.value)} placeholder="e.g. 160 lbs / 73kg" />
-        <ArchiveSelect label="Body Type / Build" value={data.body.bodyType} onChange={(e) => update('body', 'bodyType', e.target.value)} 
-          options={['Ectomorph (Thin)', 'Mesomorph (Athletic)', 'Endomorph (Stocky)', 'Slim', 'Average', 'Muscular', 'Curvy', 'Plus-size']} />
-        <ArchiveSelect label="Posture" value={data.body.posture} onChange={(e) => update('body', 'posture', e.target.value)} 
-          options={['Excellent', 'Good', 'Average', 'Slouched', 'Rigid']} />
-        <div className="md:col-span-2">
-          <ArchiveInput label="Gait / How They Walk" value={data.body.gait} onChange={(e) => update('body', 'gait', e.target.value)} placeholder="Confident stride, shuffle, graceful, etc." />
+
+    2: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-emerald-900 mb-2">BODY — Physical Structure</h3>
+          <p className="font-mono text-xs text-emerald-700">
+            Complete physical characteristics of your character.
+            {!age && <span className="text-amber-600 ml-2">⚠️ Set age in Identity tab for full options.</span>}
+            {!characterGender && <span className="text-amber-600 ml-2">⚠️ Set gender in Identity tab for tailored options.</span>}
+          </p>
+          {isMinor && (
+            <p className="font-mono text-[10px] text-emerald-600 mt-2 bg-emerald-100 p-2 rounded">
+              📋 Simplified body options for characters under 18.
+            </p>
+          )}
+        </div>
+
+        {/* BASIC MEASUREMENTS */}
+        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-4">📏 Basic Measurements</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Height" value={data.body?.height} onChange={(e) => update('body', 'height', e.target.value)}
+              options={[
+                { value: 'very-short', label: 'Very Short — Bottom 5%' },
+                { value: 'short', label: 'Short — Below average' },
+                { value: 'below-average', label: 'Below Average — Slightly short' },
+                { value: 'average', label: 'Average — Typical height' },
+                { value: 'above-average', label: 'Above Average — Slightly tall' },
+                { value: 'tall', label: 'Tall — Above average' },
+                { value: 'very-tall', label: 'Very Tall — Top 5%' },
+                { value: 'exceptionally-tall', label: 'Exceptionally Tall — Top 1%' }
+              ]} />
+            <FaceInput label="Exact Height (optional)" value={data.body?.exactHeight} onChange={(e) => update('body', 'exactHeight', e.target.value)} 
+              placeholder="e.g. 5'9 / 175cm" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Weight Category" value={data.body?.weightCategory} onChange={(e) => update('body', 'weightCategory', e.target.value)}
+              options={[
+                { value: 'underweight', label: 'Underweight — Below healthy range' },
+                { value: 'slim', label: 'Slim — Lower end of healthy' },
+                { value: 'average', label: 'Average — Middle of healthy range' },
+                { value: 'athletic', label: 'Athletic — Muscular weight' },
+                { value: 'above-average', label: 'Above Average — Higher healthy' },
+                { value: 'heavy', label: 'Heavy — Above healthy range' },
+                { value: 'very-heavy', label: 'Very Heavy — Significantly above' }
+              ]} />
+            <FaceInput label="Exact Weight (optional)" value={data.body?.exactWeight} onChange={(e) => update('body', 'exactWeight', e.target.value)} 
+              placeholder="e.g. 154lbs / 70kg" />
+          </div>
+        </div>
+
+        {/* BODY TYPE & BUILD */}
+        <div className="border-2 border-teal-200 rounded-sm p-4 bg-teal-50/30">
+          <h4 className="font-mono text-sm font-bold text-teal-800 mb-4">🏋️ Body Type & Build</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Somatotype (Frame)" value={data.body?.somatotype} onChange={(e) => update('body', 'somatotype', e.target.value)}
+              options={[
+                { value: 'ectomorph', label: 'Ectomorph — Lean, long limbs, fast metabolism' },
+                { value: 'mesomorph', label: 'Mesomorph — Athletic, muscular, medium frame' },
+                { value: 'endomorph', label: 'Endomorph — Wider, stores fat easily, strong' },
+                { value: 'ecto-meso', label: 'Ecto-Mesomorph — Lean but muscular' },
+                { value: 'endo-meso', label: 'Endo-Mesomorph — Powerful, stocky build' },
+                { value: 'ecto-endo', label: 'Ecto-Endomorph — Thin limbs, soft middle' }
+              ]} />
+            <FaceSelect label="Overall Build" value={data.body?.build} onChange={(e) => update('body', 'build', e.target.value)}
+              options={
+                isMale ? [
+                  { value: 'skinny', label: 'Skinny — Very thin, little muscle' },
+                  { value: 'slim', label: 'Slim — Thin but healthy' },
+                  { value: 'lean', label: 'Lean — Low body fat, some muscle' },
+                  { value: 'average', label: 'Average — Typical male build' },
+                  { value: 'fit', label: 'Fit — Good muscle tone' },
+                  { value: 'athletic', label: 'Athletic — Sports-ready physique' },
+                  { value: 'muscular', label: 'Muscular — Well-developed muscles' },
+                  { value: 'bodybuilder', label: 'Bodybuilder — Extreme muscle mass' },
+                  { value: 'stocky', label: 'Stocky — Short, broad, solid' },
+                  { value: 'husky', label: 'Husky — Large frame, some fat' },
+                  { value: 'heavyset', label: 'Heavyset — Large with extra weight' },
+                  { value: 'dad-bod', label: 'Dad Bod — Average with soft middle' },
+                  { value: 'bear', label: 'Bear — Large, hairy, broad' }
+                ] : isFemale ? [
+                  { value: 'petite', label: 'Petite — Small and delicate' },
+                  { value: 'slim', label: 'Slim — Thin, narrow frame' },
+                  { value: 'slender', label: 'Slender — Tall and thin' },
+                  { value: 'lean', label: 'Lean — Low body fat, toned' },
+                  { value: 'average', label: 'Average — Typical female build' },
+                  { value: 'fit', label: 'Fit — Good muscle tone' },
+                  { value: 'athletic', label: 'Athletic — Sports-ready physique' },
+                  { value: 'toned', label: 'Toned — Defined muscles, lean' },
+                  { value: 'curvy', label: 'Curvy — Pronounced curves' },
+                  { value: 'hourglass', label: 'Hourglass — Balanced bust/hips, small waist' },
+                  { value: 'pear', label: 'Pear — Wider hips than bust' },
+                  { value: 'apple', label: 'Apple — Fuller middle, slimmer legs' },
+                  { value: 'rectangle', label: 'Rectangle — Balanced, less curves' },
+                  { value: 'inverted-triangle', label: 'Inverted Triangle — Broad shoulders' },
+                  { value: 'plus-size', label: 'Plus-Size — Full-figured' },
+                  { value: 'bbw', label: 'BBW — Big beautiful woman' }
+                ] : [
+                  { value: 'very-thin', label: 'Very Thin' },
+                  { value: 'slim', label: 'Slim' },
+                  { value: 'lean', label: 'Lean' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'fit', label: 'Fit' },
+                  { value: 'athletic', label: 'Athletic' },
+                  { value: 'muscular', label: 'Muscular' },
+                  { value: 'stocky', label: 'Stocky' },
+                  { value: 'curvy', label: 'Curvy' },
+                  { value: 'heavyset', label: 'Heavyset' },
+                  { value: 'plus-size', label: 'Plus-Size' }
+                ]
+              } />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Muscle Definition" value={data.body?.muscleDef} onChange={(e) => update('body', 'muscleDef', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No visible muscle' },
+                { value: 'soft', label: 'Soft — Hidden under fat/skin' },
+                { value: 'light', label: 'Light — Slight definition' },
+                { value: 'moderate', label: 'Moderate — Visible when flexed' },
+                { value: 'defined', label: 'Defined — Clearly visible' },
+                { value: 'cut', label: 'Cut — Sharp definition' },
+                { value: 'ripped', label: 'Ripped — Extreme definition' }
+              ]} />
+            <FaceSelect label="Body Fat" value={data.body?.bodyFat} onChange={(e) => update('body', 'bodyFat', e.target.value)}
+              options={[
+                { value: 'essential', label: 'Essential Only — Very low (athletes)' },
+                { value: 'low', label: 'Low — Lean, visible abs' },
+                { value: 'fit', label: 'Fit — Athletic level' },
+                { value: 'average', label: 'Average — Healthy range' },
+                { value: 'above-average', label: 'Above Average — Some softness' },
+                { value: 'high', label: 'High — Noticeable fat' },
+                { value: 'very-high', label: 'Very High — Obese range' }
+              ]} />
+            <FaceSelect label="Frame Size" value={data.body?.frameSize} onChange={(e) => update('body', 'frameSize', e.target.value)}
+              options={[
+                { value: 'very-small', label: 'Very Small — Delicate bones' },
+                { value: 'small', label: 'Small — Narrow frame' },
+                { value: 'medium', label: 'Medium — Average frame' },
+                { value: 'large', label: 'Large — Broad frame' },
+                { value: 'very-large', label: 'Very Large — Heavy bones' }
+              ]} />
+          </div>
+        </div>
+
+        {/* PROPORTIONS */}
+        <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
+          <h4 className="font-mono text-sm font-bold text-cyan-800 mb-4">📐 Proportions</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Torso Length" value={data.body?.torsoLength} onChange={(e) => update('body', 'torsoLength', e.target.value)}
+              options={[
+                { value: 'short', label: 'Short Torso — Long legs relative' },
+                { value: 'average', label: 'Average Torso' },
+                { value: 'long', label: 'Long Torso — Short legs relative' }
+              ]} />
+            <FaceSelect label="Leg Length" value={data.body?.legLength} onChange={(e) => update('body', 'legLength', e.target.value)}
+              options={[
+                { value: 'short', label: 'Short Legs' },
+                { value: 'average', label: 'Average Legs' },
+                { value: 'long', label: 'Long Legs' },
+                { value: 'very-long', label: 'Very Long Legs' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Shoulder Width" value={data.body?.shoulderWidth} onChange={(e) => update('body', 'shoulderWidth', e.target.value)}
+              options={[
+                { value: 'narrow', label: 'Narrow — Slim shoulders' },
+                { value: 'average', label: 'Average' },
+                { value: 'broad', label: 'Broad — Wide shoulders' },
+                { value: 'very-broad', label: 'Very Broad' }
+              ]} />
+            <FaceSelect label="Hip Width" value={data.body?.hipWidth} onChange={(e) => update('body', 'hipWidth', e.target.value)}
+              options={[
+                { value: 'narrow', label: 'Narrow Hips' },
+                { value: 'average', label: 'Average Hips' },
+                { value: 'wide', label: 'Wide Hips' },
+                { value: 'very-wide', label: 'Very Wide Hips' }
+              ]} />
+            <FaceSelect label="Waist" value={data.body?.waist} onChange={(e) => update('body', 'waist', e.target.value)}
+              options={[
+                { value: 'very-small', label: 'Very Small — Tiny waist' },
+                { value: 'small', label: 'Small Waist' },
+                { value: 'average', label: 'Average Waist' },
+                { value: 'thick', label: 'Thick Waist' },
+                { value: 'very-thick', label: 'Very Thick — No definition' }
+              ]} />
+          </div>
+        </div>
+
+        {/* LIMBS & EXTREMITIES */}
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-4">🦵 Limbs & Extremities</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Arm Length" value={data.body?.armLength} onChange={(e) => update('body', 'armLength', e.target.value)}
+              options={['Short', 'Average', 'Long', 'Very Long']} />
+            <FaceSelect label="Arm Build" value={data.body?.armBuild} onChange={(e) => update('body', 'armBuild', e.target.value)}
+              options={[
+                { value: 'thin', label: 'Thin — Slender arms' },
+                { value: 'average', label: 'Average' },
+                { value: 'toned', label: 'Toned — Visible definition' },
+                { value: 'muscular', label: 'Muscular — Well-developed' },
+                { value: 'very-muscular', label: 'Very Muscular — Large' },
+                { value: 'soft', label: 'Soft — Little definition' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Leg Build" value={data.body?.legBuild} onChange={(e) => update('body', 'legBuild', e.target.value)}
+              options={[
+                { value: 'thin', label: 'Thin — Slender legs' },
+                { value: 'average', label: 'Average' },
+                { value: 'toned', label: 'Toned — Defined muscles' },
+                { value: 'muscular', label: 'Muscular — Athletic' },
+                { value: 'thick', label: 'Thick — Full, strong' },
+                { value: 'very-thick', label: 'Very Thick — Large' }
+              ]} />
+            <FaceSelect label="Hand Size" value={data.body?.handSize} onChange={(e) => update('body', 'handSize', e.target.value)}
+              options={[
+                { value: 'very-small', label: 'Very Small — Delicate' },
+                { value: 'small', label: 'Small' },
+                { value: 'average', label: 'Average' },
+                { value: 'large', label: 'Large' },
+                { value: 'very-large', label: 'Very Large' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Hand Appearance" value={data.body?.handAppearance} onChange={(e) => update('body', 'handAppearance', e.target.value)}
+              options={[
+                { value: 'elegant', label: 'Elegant — Long, graceful fingers' },
+                { value: 'delicate', label: 'Delicate — Small, fine' },
+                { value: 'average', label: 'Average' },
+                { value: 'strong', label: 'Strong — Capable looking' },
+                { value: 'rough', label: 'Rough — Calloused, worked' },
+                { value: 'stubby', label: 'Stubby — Short fingers' }
+              ]} />
+            <FaceSelect label="Feet Size" value={data.body?.feetSize} onChange={(e) => update('body', 'feetSize', e.target.value)}
+              options={[
+                { value: 'very-small', label: 'Very Small' },
+                { value: 'small', label: 'Small' },
+                { value: 'average', label: 'Average' },
+                { value: 'large', label: 'Large' },
+                { value: 'very-large', label: 'Very Large' }
+              ]} />
+          </div>
+        </div>
+
+        {/* SKIN & BODY DETAILS */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-4">✨ Skin & Body Details</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FaceSelect label="Body Hair (Amount)" value={data.body?.bodyHairAmount} onChange={(e) => update('body', 'bodyHairAmount', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Completely hairless' },
+                { value: 'very-light', label: 'Very Light — Barely visible' },
+                { value: 'light', label: 'Light — Some fine hair' },
+                { value: 'moderate', label: 'Moderate — Average' },
+                { value: 'heavy', label: 'Heavy — Noticeable' },
+                { value: 'very-heavy', label: 'Very Heavy — Very hairy' }
+              ]} />
+            <FaceSelect label="Body Hair Distribution" value={data.body?.bodyHairDist} onChange={(e) => update('body', 'bodyHairDist', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A' },
+                { value: 'arms-legs', label: 'Arms & Legs only' },
+                { value: 'chest', label: 'Chest area' },
+                { value: 'torso', label: 'Full torso' },
+                { value: 'back', label: 'Back included' },
+                { value: 'full-body', label: 'Full body coverage' }
+              ]} />
+            <FaceSelect label="Skin Condition (Body)" value={data.body?.bodySkinCondition} onChange={(e) => update('body', 'bodySkinCondition', e.target.value)}
+              options={[
+                { value: 'flawless', label: 'Flawless — Perfect skin' },
+                { value: 'clear', label: 'Clear — Minor imperfections' },
+                { value: 'normal', label: 'Normal — Average' },
+                { value: 'dry', label: 'Dry — Needs moisture' },
+                { value: 'stretch-marks', label: 'Stretch Marks' },
+                { value: 'scarred', label: 'Scarred — Visible scars' },
+                { value: 'moles-birthmarks', label: 'Moles/Birthmarks' },
+                { value: 'freckled', label: 'Freckled' },
+                { value: 'cellulite', label: 'Cellulite visible' }
+              ]} />
+          </div>
+          <FaceInput label="Body Marks/Scars" value={data.body?.bodyMarks} onChange={(e) => update('body', 'bodyMarks', e.target.value)} 
+            placeholder="Describe any notable scars, birthmarks, moles, or other marks on the body..." />
+        </div>
+
+        {/* BODY FEATURES SHAPES */}
+        <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
+          <h4 className="font-mono text-sm font-bold text-indigo-800 mb-4">🦴 Body Features — Shapes & Structure</h4>
+          
+          {/* NECK & UPPER BODY */}
+          <div className="mb-6">
+            <h5 className="font-mono text-xs font-bold text-indigo-700 mb-3 border-b border-indigo-200 pb-1">Neck & Upper Body</h5>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <FaceSelect label="Neck Length" value={data.body?.neckLength} onChange={(e) => update('body', 'neckLength', e.target.value)}
+                options={[
+                  { value: 'very-short', label: 'Very Short — Almost no neck' },
+                  { value: 'short', label: 'Short — Compact' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'long', label: 'Long — Elegant' },
+                  { value: 'very-long', label: 'Very Long — Swan-like' }
+                ]} />
+              <FaceSelect label="Neck Width" value={data.body?.neckWidth} onChange={(e) => update('body', 'neckWidth', e.target.value)}
+                options={[
+                  { value: 'thin', label: 'Thin — Slender' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'thick', label: 'Thick — Muscular/stocky' },
+                  { value: 'very-thick', label: 'Very Thick — Bull neck' }
+                ]} />
+              <FaceSelect label="Neck Shape" value={data.body?.neckShape} onChange={(e) => update('body', 'neckShape', e.target.value)}
+                options={[
+                  { value: 'straight', label: 'Straight — Vertical' },
+                  { value: 'curved', label: 'Curved — Graceful arch' },
+                  { value: 'muscular', label: 'Muscular — Defined tendons' },
+                  { value: 'veiny', label: 'Veiny — Visible veins' },
+                  { value: 'smooth', label: 'Smooth — No definition' }
+                ]} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FaceSelect label="Adam's Apple" value={data.body?.adamsApple} onChange={(e) => update('body', 'adamsApple', e.target.value)}
+                options={[
+                  { value: 'not-visible', label: 'Not Visible' },
+                  { value: 'subtle', label: 'Subtle — Barely noticeable' },
+                  { value: 'moderate', label: 'Moderate — Visible' },
+                  { value: 'prominent', label: 'Prominent — Very noticeable' }
+                ]} />
+              <FaceSelect label="Clavicle/Collarbone" value={data.body?.clavicle} onChange={(e) => update('body', 'clavicle', e.target.value)}
+                options={[
+                  { value: 'not-visible', label: 'Not Visible — Hidden' },
+                  { value: 'subtle', label: 'Subtle — Slight definition' },
+                  { value: 'visible', label: 'Visible — Clear outline' },
+                  { value: 'prominent', label: 'Prominent — Very defined' },
+                  { value: 'protruding', label: 'Protruding — Strongly visible' }
+                ]} />
+              <FaceSelect label="Shoulder Shape" value={data.body?.shoulderShape} onChange={(e) => update('body', 'shoulderShape', e.target.value)}
+                options={[
+                  { value: 'narrow-sloped', label: 'Narrow & Sloped' },
+                  { value: 'sloped', label: 'Sloped — Downward angle' },
+                  { value: 'rounded', label: 'Rounded — Soft curves' },
+                  { value: 'square', label: 'Square — Angular, straight' },
+                  { value: 'broad-square', label: 'Broad & Square' },
+                  { value: 'athletic', label: 'Athletic — Defined deltoids' },
+                  { value: 'bony', label: 'Bony — Prominent bones' },
+                  { value: 'padded', label: 'Padded — Soft, rounded' }
+                ]} />
+            </div>
+          </div>
+
+          {/* BACK & TORSO */}
+          <div className="mb-6">
+            <h5 className="font-mono text-xs font-bold text-indigo-700 mb-3 border-b border-indigo-200 pb-1">Back & Torso</h5>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <FaceSelect label="Back Width" value={data.body?.backWidth} onChange={(e) => update('body', 'backWidth', e.target.value)}
+                options={[
+                  { value: 'narrow', label: 'Narrow — Slim back' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'wide', label: 'Wide — Broad back' },
+                  { value: 'very-wide', label: 'Very Wide — V-taper' }
+                ]} />
+              <FaceSelect label="Back Shape" value={data.body?.backShape} onChange={(e) => update('body', 'backShape', e.target.value)}
+                options={[
+                  { value: 'flat', label: 'Flat — No curve' },
+                  { value: 'straight', label: 'Straight — Normal alignment' },
+                  { value: 'curved', label: 'Curved — Natural S-curve' },
+                  { value: 'muscular', label: 'Muscular — Defined muscles' },
+                  { value: 'rounded', label: 'Rounded — Soft, curved' },
+                  { value: 'swayback', label: 'Swayback — Lordosis' },
+                  { value: 'hunched', label: 'Hunched — Kyphosis' }
+                ]} />
+              <FaceSelect label="Spine Visibility" value={data.body?.spineVisibility} onChange={(e) => update('body', 'spineVisibility', e.target.value)}
+                options={[
+                  { value: 'not-visible', label: 'Not Visible' },
+                  { value: 'subtle', label: 'Subtle — Slight ridge' },
+                  { value: 'visible', label: 'Visible — Can trace' },
+                  { value: 'prominent', label: 'Prominent — Very defined' }
+                ]} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FaceSelect label="Ribcage" value={data.body?.ribcage} onChange={(e) => update('body', 'ribcage', e.target.value)}
+                options={[
+                  { value: 'not-visible', label: 'Not Visible — Covered' },
+                  { value: 'subtle', label: 'Subtle — Slight outline' },
+                  { value: 'visible', label: 'Visible — Can count ribs' },
+                  { value: 'prominent', label: 'Prominent — Very defined' },
+                  { value: 'barrel', label: 'Barrel — Wide, rounded' }
+                ]} />
+              <FaceSelect label="Waist Shape" value={data.body?.waistShape} onChange={(e) => update('body', 'waistShape', e.target.value)}
+                options={[
+                  { value: 'straight', label: 'Straight — No curve in' },
+                  { value: 'slight-curve', label: 'Slight Curve — Subtle indent' },
+                  { value: 'defined', label: 'Defined — Clear waistline' },
+                  { value: 'cinched', label: 'Cinched — Very narrow' },
+                  { value: 'blocky', label: 'Blocky — No definition' }
+                ]} />
+              <FaceSelect label="Hip Shape" value={data.body?.hipShape} onChange={(e) => update('body', 'hipShape', e.target.value)}
+                options={[
+                  { value: 'narrow', label: 'Narrow — Straight' },
+                  { value: 'straight', label: 'Straight — Minimal curve' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'curved', label: 'Curved — Noticeable flare' },
+                  { value: 'wide', label: 'Wide — Prominent hips' },
+                  { value: 'very-wide', label: 'Very Wide — Full hips' },
+                  { value: 'high', label: 'High Hips — Up on waist' },
+                  { value: 'low', label: 'Low Hips — Below waist' }
+                ]} />
+            </div>
+          </div>
+
+          {/* ARMS DETAILED */}
+          <div className="mb-6">
+            <h5 className="font-mono text-xs font-bold text-indigo-700 mb-3 border-b border-indigo-200 pb-1">Arms — Detailed</h5>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <FaceSelect label="Upper Arm Shape" value={data.body?.upperArmShape} onChange={(e) => update('body', 'upperArmShape', e.target.value)}
+                options={[
+                  { value: 'thin', label: 'Thin — Little mass' },
+                  { value: 'slender', label: 'Slender — Slim' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'toned', label: 'Toned — Defined' },
+                  { value: 'muscular', label: 'Muscular — Bicep visible' },
+                  { value: 'very-muscular', label: 'Very Muscular — Large' },
+                  { value: 'soft', label: 'Soft — Rounded, untoned' }
+                ]} />
+              <FaceSelect label="Forearm Shape" value={data.body?.forearmShape} onChange={(e) => update('body', 'forearmShape', e.target.value)}
+                options={[
+                  { value: 'thin', label: 'Thin — Delicate' },
+                  { value: 'slender', label: 'Slender' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'defined', label: 'Defined — Visible muscles' },
+                  { value: 'muscular', label: 'Muscular — Strong' },
+                  { value: 'veiny', label: 'Veiny — Visible veins' }
+                ]} />
+              <FaceSelect label="Elbow" value={data.body?.elbowShape} onChange={(e) => update('body', 'elbowShape', e.target.value)}
+                options={[
+                  { value: 'smooth', label: 'Smooth — Not prominent' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'bony', label: 'Bony — Prominent' },
+                  { value: 'dimpled', label: 'Dimpled — Soft indents' }
+                ]} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FaceSelect label="Wrist Size" value={data.body?.wristSize} onChange={(e) => update('body', 'wristSize', e.target.value)}
+                options={[
+                  { value: 'very-thin', label: 'Very Thin — Delicate' },
+                  { value: 'thin', label: 'Thin' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'thick', label: 'Thick' },
+                  { value: 'very-thick', label: 'Very Thick' }
+                ]} />
+              <FaceSelect label="Wrist Bones" value={data.body?.wristBones} onChange={(e) => update('body', 'wristBones', e.target.value)}
+                options={[
+                  { value: 'not-visible', label: 'Not Visible' },
+                  { value: 'subtle', label: 'Subtle' },
+                  { value: 'visible', label: 'Visible — Can see bone' },
+                  { value: 'prominent', label: 'Prominent — Very bony' }
+                ]} />
+              <FaceSelect label="Finger Shape" value={data.body?.fingerShape} onChange={(e) => update('body', 'fingerShape', e.target.value)}
+                options={[
+                  { value: 'short-stubby', label: 'Short & Stubby' },
+                  { value: 'short', label: 'Short' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'long', label: 'Long' },
+                  { value: 'long-slender', label: 'Long & Slender — Elegant' },
+                  { value: 'thick', label: 'Thick — Wide fingers' },
+                  { value: 'tapered', label: 'Tapered — Thin at tips' },
+                  { value: 'knobby', label: 'Knobby — Prominent knuckles' }
+                ]} />
+            </div>
+          </div>
+
+          {/* LEGS DETAILED */}
+          <div className="mb-6">
+            <h5 className="font-mono text-xs font-bold text-indigo-700 mb-3 border-b border-indigo-200 pb-1">Legs — Detailed</h5>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <FaceSelect label="Thigh Shape" value={data.body?.thighShape} onChange={(e) => update('body', 'thighShape', e.target.value)}
+                options={[
+                  { value: 'thin', label: 'Thin — Gap between' },
+                  { value: 'slender', label: 'Slender — Slim' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'athletic', label: 'Athletic — Toned' },
+                  { value: 'muscular', label: 'Muscular — Defined quads' },
+                  { value: 'thick', label: 'Thick — Full' },
+                  { value: 'very-thick', label: 'Very Thick — Touch together' },
+                  { value: 'soft', label: 'Soft — Rounded, untoned' }
+                ]} />
+              <FaceSelect label="Thigh Gap" value={data.body?.thighGap} onChange={(e) => update('body', 'thighGap', e.target.value)}
+                options={[
+                  { value: 'none', label: 'None — Thighs touch' },
+                  { value: 'minimal', label: 'Minimal — Small space' },
+                  { value: 'moderate', label: 'Moderate — Clear gap' },
+                  { value: 'wide', label: 'Wide Gap' }
+                ]} />
+              <FaceSelect label="Knee Shape" value={data.body?.kneeShape} onChange={(e) => update('body', 'kneeShape', e.target.value)}
+                options={[
+                  { value: 'smooth', label: 'Smooth — Rounded' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'bony', label: 'Bony — Prominent kneecap' },
+                  { value: 'dimpled', label: 'Dimpled' },
+                  { value: 'knobby', label: 'Knobby — Very bony' }
+                ]} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <FaceSelect label="Calf Shape" value={data.body?.calfShape} onChange={(e) => update('body', 'calfShape', e.target.value)}
+                options={[
+                  { value: 'thin', label: 'Thin — Little definition' },
+                  { value: 'slender', label: 'Slender' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'athletic', label: 'Athletic — Defined' },
+                  { value: 'muscular', label: 'Muscular — Well-developed' },
+                  { value: 'thick', label: 'Thick — Full' },
+                  { value: 'diamond', label: 'Diamond — High, defined' }
+                ]} />
+              <FaceSelect label="Ankle Size" value={data.body?.ankleSize} onChange={(e) => update('body', 'ankleSize', e.target.value)}
+                options={[
+                  { value: 'very-thin', label: 'Very Thin — Delicate' },
+                  { value: 'thin', label: 'Thin' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'thick', label: 'Thick' },
+                  { value: 'cankles', label: 'Cankles — No definition' }
+                ]} />
+              <FaceSelect label="Ankle Bones" value={data.body?.ankleBones} onChange={(e) => update('body', 'ankleBones', e.target.value)}
+                options={[
+                  { value: 'not-visible', label: 'Not Visible' },
+                  { value: 'subtle', label: 'Subtle' },
+                  { value: 'visible', label: 'Visible' },
+                  { value: 'prominent', label: 'Prominent — Very bony' }
+                ]} />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FaceSelect label="Leg Alignment" value={data.body?.legAlignment} onChange={(e) => update('body', 'legAlignment', e.target.value)}
+                options={[
+                  { value: 'straight', label: 'Straight — Normal alignment' },
+                  { value: 'bow-legged', label: 'Bow-Legged — Curve outward' },
+                  { value: 'knock-kneed', label: 'Knock-Kneed — Knees inward' }
+                ]} />
+              <FaceSelect label="Foot Arch" value={data.body?.footArch} onChange={(e) => update('body', 'footArch', e.target.value)}
+                options={[
+                  { value: 'flat', label: 'Flat Feet — No arch' },
+                  { value: 'low', label: 'Low Arch' },
+                  { value: 'normal', label: 'Normal Arch' },
+                  { value: 'high', label: 'High Arch' },
+                  { value: 'very-high', label: 'Very High Arch' }
+                ]} />
+              <FaceSelect label="Toe Shape" value={data.body?.toeShape} onChange={(e) => update('body', 'toeShape', e.target.value)}
+                options={[
+                  { value: 'egyptian', label: 'Egyptian — Big toe longest' },
+                  { value: 'roman', label: 'Roman — First 3 same length' },
+                  { value: 'greek', label: 'Greek — Second toe longest' },
+                  { value: 'germanic', label: 'Germanic — Big toe, others same' },
+                  { value: 'celtic', label: 'Celtic — Second toe longest, others vary' }
+                ]} />
+            </div>
+          </div>
+
+          {/* NAILS */}
+          <div>
+            <h5 className="font-mono text-xs font-bold text-indigo-700 mb-3 border-b border-indigo-200 pb-1">Nails</h5>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <FaceSelect label="Nail Shape (Hands)" value={data.body?.nailShapeHands} onChange={(e) => update('body', 'nailShapeHands', e.target.value)}
+                options={[
+                  { value: 'round', label: 'Round' },
+                  { value: 'oval', label: 'Oval' },
+                  { value: 'square', label: 'Square' },
+                  { value: 'squoval', label: 'Squoval — Square + Oval' },
+                  { value: 'almond', label: 'Almond' },
+                  { value: 'stiletto', label: 'Stiletto — Pointed' },
+                  { value: 'coffin', label: 'Coffin/Ballerina' },
+                  { value: 'natural', label: 'Natural — Unmanicured' }
+                ]} />
+              <FaceSelect label="Nail Length" value={data.body?.nailLength} onChange={(e) => update('body', 'nailLength', e.target.value)}
+                options={[
+                  { value: 'bitten', label: 'Bitten — Very short' },
+                  { value: 'very-short', label: 'Very Short — Below fingertip' },
+                  { value: 'short', label: 'Short — At fingertip' },
+                  { value: 'medium', label: 'Medium — Past fingertip' },
+                  { value: 'long', label: 'Long' },
+                  { value: 'very-long', label: 'Very Long — Talons' }
+                ]} />
+              <FaceSelect label="Nail Condition" value={data.body?.nailCondition} onChange={(e) => update('body', 'nailCondition', e.target.value)}
+                options={[
+                  { value: 'perfect', label: 'Perfect — Manicured' },
+                  { value: 'healthy', label: 'Healthy — Good condition' },
+                  { value: 'average', label: 'Average' },
+                  { value: 'rough', label: 'Rough — Need care' },
+                  { value: 'bitten', label: 'Bitten — Damaged' },
+                  { value: 'painted', label: 'Painted/Polished' },
+                  { value: 'artificial', label: 'Artificial/Acrylics' }
+                ]} />
+            </div>
+          </div>
+        </div>
+
+        {/* ADULT-ONLY DETAILED SECTIONS */}
+        {isAdult && (
+          <>
+            {/* DETAILED MEASUREMENTS - ADULTS ONLY */}
+            <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+              <h4 className="font-mono text-sm font-bold text-rose-800 mb-2">📊 Detailed Physique</h4>
+              <p className="font-mono text-[10px] text-rose-600 mb-4">Detailed body characteristics for adult characters (18+).</p>
+              
+              {isFemale && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <FaceSelect label="Bust Size" value={data.body?.bustSize} onChange={(e) => update('body', 'bustSize', e.target.value)}
+                      options={[
+                        { value: 'flat', label: 'Flat — Very small/none' },
+                        { value: 'very-small', label: 'Very Small — A cup' },
+                        { value: 'small', label: 'Small — B cup' },
+                        { value: 'medium', label: 'Medium — C cup' },
+                        { value: 'large', label: 'Large — D cup' },
+                        { value: 'very-large', label: 'Very Large — DD+ cup' },
+                        { value: 'extremely-large', label: 'Extremely Large — G+ cup' }
+                      ]} />
+                    <FaceSelect label="Bust Shape" value={data.body?.bustShape} onChange={(e) => update('body', 'bustShape', e.target.value)}
+                      options={[
+                        { value: 'round', label: 'Round — Full and circular' },
+                        { value: 'teardrop', label: 'Teardrop — Full at bottom' },
+                        { value: 'athletic', label: 'Athletic — Firm, compact' },
+                        { value: 'wide-set', label: 'Wide-Set — Space between' },
+                        { value: 'close-set', label: 'Close-Set — Together' },
+                        { value: 'side-set', label: 'Side-Set — Point outward' },
+                        { value: 'east-west', label: 'East-West — Point sideways' },
+                        { value: 'pendulous', label: 'Pendulous — Relaxed hang' }
+                      ]} />
+                    <FaceSelect label="Buttocks" value={data.body?.buttocks} onChange={(e) => update('body', 'buttocks', e.target.value)}
+                      options={[
+                        { value: 'flat', label: 'Flat — Minimal projection' },
+                        { value: 'small', label: 'Small — Subtle' },
+                        { value: 'average', label: 'Average' },
+                        { value: 'round', label: 'Round — Full and curved' },
+                        { value: 'bubble', label: 'Bubble — Very round, prominent' },
+                        { value: 'heart', label: 'Heart-Shaped — Wide at top' },
+                        { value: 'square', label: 'Square — More angular' },
+                        { value: 'large', label: 'Large — Full figured' }
+                      ]} />
+                  </div>
+                </div>
+              )}
+              
+              {isMale && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <FaceSelect label="Chest" value={data.body?.chestMale} onChange={(e) => update('body', 'chestMale', e.target.value)}
+                      options={[
+                        { value: 'flat', label: 'Flat — Thin' },
+                        { value: 'slim', label: 'Slim — Little definition' },
+                        { value: 'average', label: 'Average' },
+                        { value: 'defined', label: 'Defined — Visible pecs' },
+                        { value: 'muscular', label: 'Muscular — Well-developed' },
+                        { value: 'very-muscular', label: 'Very Muscular — Large pecs' },
+                        { value: 'barrel', label: 'Barrel — Wide, round' }
+                      ]} />
+                    <FaceSelect label="Abdomen" value={data.body?.abdomen} onChange={(e) => update('body', 'abdomen', e.target.value)}
+                      options={[
+                        { value: 'concave', label: 'Concave — Sunken in' },
+                        { value: 'flat', label: 'Flat — No belly' },
+                        { value: 'toned', label: 'Toned — Slight definition' },
+                        { value: 'six-pack', label: 'Six-Pack — Visible abs' },
+                        { value: 'eight-pack', label: 'Eight-Pack — Extreme definition' },
+                        { value: 'soft', label: 'Soft — Some belly' },
+                        { value: 'beer-belly', label: 'Beer Belly — Round stomach' },
+                        { value: 'large-belly', label: 'Large Belly — Prominent' }
+                      ]} />
+                    <FaceSelect label="Buttocks" value={data.body?.buttocksMale} onChange={(e) => update('body', 'buttocksMale', e.target.value)}
+                      options={[
+                        { value: 'flat', label: 'Flat — Minimal' },
+                        { value: 'small', label: 'Small' },
+                        { value: 'average', label: 'Average' },
+                        { value: 'athletic', label: 'Athletic — Firm, toned' },
+                        { value: 'muscular', label: 'Muscular — Well-developed' },
+                        { value: 'round', label: 'Round — Full' },
+                        { value: 'large', label: 'Large' }
+                      ]} />
+                  </div>
+                </div>
+              )}
+
+              {isNonBinary && (
+                <div className="space-y-4">
+                  <p className="font-mono text-[10px] text-gray-500 mb-2">Select the options that apply to your character's physique:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <FaceSelect label="Chest" value={data.body?.chestNB} onChange={(e) => update('body', 'chestNB', e.target.value)}
+                      options={[
+                        { value: 'flat', label: 'Flat' },
+                        { value: 'small', label: 'Small' },
+                        { value: 'medium', label: 'Medium' },
+                        { value: 'large', label: 'Large' },
+                        { value: 'muscular', label: 'Muscular' },
+                        { value: 'bound', label: 'Bound/Compressed' }
+                      ]} />
+                    <FaceSelect label="Abdomen" value={data.body?.abdomenNB} onChange={(e) => update('body', 'abdomenNB', e.target.value)}
+                      options={[
+                        { value: 'flat', label: 'Flat' },
+                        { value: 'toned', label: 'Toned' },
+                        { value: 'soft', label: 'Soft' },
+                        { value: 'round', label: 'Round' }
+                      ]} />
+                    <FaceSelect label="Buttocks" value={data.body?.buttocksNB} onChange={(e) => update('body', 'buttocksNB', e.target.value)}
+                      options={[
+                        { value: 'flat', label: 'Flat' },
+                        { value: 'small', label: 'Small' },
+                        { value: 'average', label: 'Average' },
+                        { value: 'round', label: 'Round' },
+                        { value: 'large', label: 'Large' }
+                      ]} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* POSTURE & MOVEMENT */}
+        <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
+          <h4 className="font-mono text-sm font-bold text-violet-800 mb-4">🚶 Posture & Movement</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Posture" value={data.body?.posture} onChange={(e) => update('body', 'posture', e.target.value)}
+              options={[
+                { value: 'perfect', label: 'Perfect — Military straight' },
+                { value: 'excellent', label: 'Excellent — Very upright' },
+                { value: 'good', label: 'Good — Generally straight' },
+                { value: 'average', label: 'Average — Slight slouch' },
+                { value: 'poor', label: 'Poor — Noticeable slouch' },
+                { value: 'hunched', label: 'Hunched — Curved spine' },
+                { value: 'slouched', label: 'Slouched — Relaxed, lazy' },
+                { value: 'rigid', label: 'Rigid — Tense, stiff' },
+                { value: 'relaxed', label: 'Relaxed — Loose, casual' }
+              ]} />
+            <FaceSelect label="Gait Style" value={data.body?.gaitStyle} onChange={(e) => update('body', 'gaitStyle', e.target.value)}
+              options={[
+                { value: 'confident', label: 'Confident — Sure, purposeful' },
+                { value: 'graceful', label: 'Graceful — Elegant, flowing' },
+                { value: 'athletic', label: 'Athletic — Bouncy, energetic' },
+                { value: 'casual', label: 'Casual — Relaxed, easy' },
+                { value: 'hurried', label: 'Hurried — Fast, rushed' },
+                { value: 'slow', label: 'Slow — Deliberate, unhurried' },
+                { value: 'shuffle', label: 'Shuffle — Dragging feet' },
+                { value: 'swagger', label: 'Swagger — Cocky, rolling' },
+                { value: 'sway', label: 'Sway — Hips move noticeably' },
+                { value: 'stomp', label: 'Stomp — Heavy footfalls' },
+                { value: 'light', label: 'Light — Quiet, soft steps' },
+                { value: 'limp', label: 'Limp — Favoring one side' },
+                { value: 'military', label: 'Military — Precise, measured' },
+                { value: 'nervous', label: 'Nervous — Twitchy, hesitant' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="General Presence" value={data.body?.presence} onChange={(e) => update('body', 'presence', e.target.value)}
+              options={[
+                { value: 'commanding', label: 'Commanding — Demands attention' },
+                { value: 'intimidating', label: 'Intimidating — Scary, imposing' },
+                { value: 'authoritative', label: 'Authoritative — Leader-like' },
+                { value: 'confident', label: 'Confident — Self-assured' },
+                { value: 'average', label: 'Average — Unremarkable' },
+                { value: 'unassuming', label: 'Unassuming — Easily overlooked' },
+                { value: 'nervous', label: 'Nervous — Anxious energy' },
+                { value: 'graceful', label: 'Graceful — Elegant, poised' },
+                { value: 'awkward', label: 'Awkward — Clumsy, uncomfortable' },
+                { value: 'relaxed', label: 'Relaxed — At ease' },
+                { value: 'mysterious', label: 'Mysterious — Hard to read' }
+              ]} />
+            <FaceInput label="Movement Notes" value={data.body?.movementNotes} onChange={(e) => update('body', 'movementNotes', e.target.value)} 
+              placeholder="Any other details about how they move, stand, or carry themselves..." />
+          </div>
+        </div>
+
+        {/* PHYSICAL CONDITION */}
+        <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
+          <h4 className="font-mono text-sm font-bold text-green-800 mb-4">💪 Physical Condition</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FaceSelect label="Fitness Level" value={data.body?.fitnessLevel} onChange={(e) => update('body', 'fitnessLevel', e.target.value)}
+              options={[
+                { value: 'sedentary', label: 'Sedentary — No exercise' },
+                { value: 'low', label: 'Low — Minimal activity' },
+                { value: 'moderate', label: 'Moderate — Some exercise' },
+                { value: 'fit', label: 'Fit — Regular exercise' },
+                { value: 'athletic', label: 'Athletic — Very active' },
+                { value: 'elite', label: 'Elite — Peak condition' }
+              ]} />
+            <FaceSelect label="Flexibility" value={data.body?.flexibility} onChange={(e) => update('body', 'flexibility', e.target.value)}
+              options={[
+                { value: 'very-stiff', label: 'Very Stiff — Limited range' },
+                { value: 'stiff', label: 'Stiff — Below average' },
+                { value: 'average', label: 'Average' },
+                { value: 'flexible', label: 'Flexible — Good range' },
+                { value: 'very-flexible', label: 'Very Flexible — Dancer-like' },
+                { value: 'contortionist', label: 'Contortionist — Extreme' }
+              ]} />
+            <FaceSelect label="Stamina" value={data.body?.stamina} onChange={(e) => update('body', 'stamina', e.target.value)}
+              options={[
+                { value: 'very-low', label: 'Very Low — Tires quickly' },
+                { value: 'low', label: 'Low — Limited endurance' },
+                { value: 'average', label: 'Average' },
+                { value: 'good', label: 'Good — Above average' },
+                { value: 'high', label: 'High — Very enduring' },
+                { value: 'exceptional', label: 'Exceptional — Marathon level' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Physical Disabilities/Conditions" value={data.body?.disabilities} onChange={(e) => update('body', 'disabilities', e.target.value)}
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'mobility', label: 'Mobility impairment' },
+                { value: 'amputee', label: 'Amputee' },
+                { value: 'chronic-pain', label: 'Chronic pain' },
+                { value: 'chronic-illness', label: 'Chronic illness' },
+                { value: 'visual', label: 'Visual impairment' },
+                { value: 'hearing', label: 'Hearing impairment' },
+                { value: 'prosthetic', label: 'Uses prosthetic' },
+                { value: 'wheelchair', label: 'Uses wheelchair' },
+                { value: 'cane-walker', label: 'Uses cane/walker' },
+                { value: 'other', label: 'Other (describe in notes)' }
+              ]} />
+            <FaceInput label="Physical Notes" value={data.body?.physicalNotes} onChange={(e) => update('body', 'physicalNotes', e.target.value)} 
+              placeholder="Any other physical details, conditions, or notable features..." />
+          </div>
         </div>
       </div>
     ),
-    3: ( // Style & Presentation
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-        <ArchiveSelect label="Fashion Style" value={data.style.fashionStyle} onChange={(e) => update('style', 'fashionStyle', e.target.value)} 
-          options={['Casual', 'Formal', 'Streetwear', 'Bohemian', 'Minimalist', 'Vintage', 'Preppy', 'Punk', 'Goth', 'Athletic', 'Business Casual', 'Eclectic']} />
-        <ArchiveInput label="Signature Items / Accessories" value={data.style.signatureItems} onChange={(e) => update('style', 'signatureItems', e.target.value)} placeholder="Watch, ring, hat, etc." />
-        <ArchiveSelect label="Grooming Level" value={data.style.groomingLevel} onChange={(e) => update('style', 'groomingLevel', e.target.value)} 
-          options={['Meticulous', 'Well-groomed', 'Average', 'Casual', 'Unkempt']} />
-        <ArchiveInput label="Tattoos" value={data.style.tattoos} onChange={(e) => update('style', 'tattoos', e.target.value)} placeholder="Describe if any" />
-        <ArchiveInput label="Piercings" value={data.style.piercings} onChange={(e) => update('style', 'piercings', e.target.value)} placeholder="Describe if any" />
-        <div className="md:col-span-2">
-          <ArchiveInput label="Overall Vibe They Project" value={data.style.overallVibe} onChange={(e) => update('style', 'overallVibe', e.target.value)} placeholder="What impression do they give?" multiline />
+
+    3: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">STYLE & PRESENTATION — Complete</h3>
+          <p className="font-mono text-xs text-purple-700">How the character presents themselves through fashion, grooming, accessories, and personal style choices.</p>
+        </div>
+
+        {/* FASHION STYLE */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">👗 Fashion & Clothing Style</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Primary Fashion Style" value={data.style?.fashionStyle} onChange={(e) => update('style', 'fashionStyle', e.target.value)}
+              options={[
+                { value: 'casual', label: 'Casual — Relaxed, everyday wear' },
+                { value: 'smart-casual', label: 'Smart Casual — Polished but relaxed' },
+                { value: 'business-casual', label: 'Business Casual — Office appropriate' },
+                { value: 'business-formal', label: 'Business Formal — Professional suits' },
+                { value: 'formal', label: 'Formal — Black tie, evening wear' },
+                { value: 'streetwear', label: 'Streetwear — Urban, trendy brands' },
+                { value: 'athleisure', label: 'Athleisure — Sporty meets casual' },
+                { value: 'athletic', label: 'Athletic — Sports/workout focused' },
+                { value: 'minimalist', label: 'Minimalist — Clean, simple lines' },
+                { value: 'maximalist', label: 'Maximalist — Bold, layered, statement' },
+                { value: 'bohemian', label: 'Bohemian/Boho — Free-spirited, flowy' },
+                { value: 'hippie', label: 'Hippie — 60s/70s inspired, natural' },
+                { value: 'vintage', label: 'Vintage — Retro, thrift-inspired' },
+                { value: 'retro', label: 'Retro — Specific era inspired' },
+                { value: 'classic', label: 'Classic — Timeless, traditional' },
+                { value: 'preppy', label: 'Preppy — Collegiate, polished' },
+                { value: 'ivy-league', label: 'Ivy League — Academic, refined' },
+                { value: 'punk', label: 'Punk — Rebellious, DIY, edgy' },
+                { value: 'goth', label: 'Goth — Dark, dramatic, romantic' },
+                { value: 'emo', label: 'Emo — Emotional, dark, expressive' },
+                { value: 'grunge', label: 'Grunge — 90s, worn, layered' },
+                { value: 'rock', label: 'Rock/Rocker — Band tees, leather' },
+                { value: 'metal', label: 'Metal — Heavy metal aesthetic' },
+                { value: 'hip-hop', label: 'Hip-Hop — Urban, branded, bold' },
+                { value: 'skater', label: 'Skater — Skate brands, relaxed' },
+                { value: 'surfer', label: 'Surfer — Beach-inspired, casual' },
+                { value: 'cottagecore', label: 'Cottagecore — Rural, romantic, soft' },
+                { value: 'dark-academia', label: 'Dark Academia — Scholarly, moody' },
+                { value: 'light-academia', label: 'Light Academia — Scholarly, warm' },
+                { value: 'e-girl-boy', label: 'E-Girl/E-Boy — Internet-inspired' },
+                { value: 'soft-girl-boy', label: 'Soft Girl/Boy — Pastel, cute' },
+                { value: 'kawaii', label: 'Kawaii — Japanese cute culture' },
+                { value: 'harajuku', label: 'Harajuku — Japanese street fashion' },
+                { value: 'lolita', label: 'Lolita — Victorian-inspired Japanese' },
+                { value: 'visual-kei', label: 'Visual Kei — Japanese rock fashion' },
+                { value: 'techwear', label: 'Techwear — Functional, futuristic' },
+                { value: 'cyberpunk', label: 'Cyberpunk — Dystopian, tech-inspired' },
+                { value: 'steampunk', label: 'Steampunk — Victorian + industrial' },
+                { value: 'western', label: 'Western/Cowboy — Country, rustic' },
+                { value: 'workwear', label: 'Workwear — Durable, practical' },
+                { value: 'military', label: 'Military — Army-inspired' },
+                { value: 'nautical', label: 'Nautical — Sailor-inspired' },
+                { value: 'safari', label: 'Safari — Explorer, utilitarian' },
+                { value: 'glamorous', label: 'Glamorous — Luxurious, showy' },
+                { value: 'haute-couture', label: 'Haute Couture — High fashion' },
+                { value: 'avant-garde', label: 'Avant-Garde — Experimental, artistic' },
+                { value: 'androgynous', label: 'Androgynous — Gender-neutral' },
+                { value: 'modest', label: 'Modest — Conservative, covered' },
+                { value: 'eclectic', label: 'Eclectic — Mixed styles' },
+                { value: 'normcore', label: 'Normcore — Intentionally plain' },
+                { value: 'old-money', label: 'Old Money — Quiet luxury, understated' },
+                { value: 'new-money', label: 'New Money — Flashy, branded' }
+              ]} />
+            <FaceSelect label="Secondary Style" value={data.style?.secondaryStyle} onChange={(e) => update('style', 'secondaryStyle', e.target.value)}
+              options={[
+                { value: '', label: '— None / Same as primary —' },
+                { value: 'casual', label: 'Casual' },
+                { value: 'formal', label: 'Formal' },
+                { value: 'streetwear', label: 'Streetwear' },
+                { value: 'athleisure', label: 'Athleisure' },
+                { value: 'bohemian', label: 'Bohemian' },
+                { value: 'vintage', label: 'Vintage' },
+                { value: 'minimalist', label: 'Minimalist' },
+                { value: 'preppy', label: 'Preppy' },
+                { value: 'punk', label: 'Punk' },
+                { value: 'goth', label: 'Goth' },
+                { value: 'grunge', label: 'Grunge' },
+                { value: 'glamorous', label: 'Glamorous' },
+                { value: 'eclectic', label: 'Eclectic' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FaceSelect label="Style Era Preference" value={data.style?.styleEra} onChange={(e) => update('style', 'styleEra', e.target.value)}
+              options={[
+                { value: 'contemporary', label: 'Contemporary — Current trends' },
+                { value: '2010s', label: '2010s — Recent past' },
+                { value: '2000s', label: '2000s — Y2K aesthetic' },
+                { value: '1990s', label: '1990s — Grunge, minimalism' },
+                { value: '1980s', label: '1980s — Bold, colorful, power' },
+                { value: '1970s', label: '1970s — Disco, bohemian' },
+                { value: '1960s', label: '1960s — Mod, hippie' },
+                { value: '1950s', label: '1950s — Classic, polished' },
+                { value: '1940s', label: '1940s — Wartime elegance' },
+                { value: '1930s', label: '1930s — Hollywood glamour' },
+                { value: '1920s', label: '1920s — Flapper, art deco' },
+                { value: 'victorian', label: 'Victorian — 19th century' },
+                { value: 'medieval', label: 'Medieval — Historical' },
+                { value: 'timeless', label: 'Timeless — Classic, no era' },
+                { value: 'futuristic', label: 'Futuristic — Ahead of time' }
+              ]} />
+            <FaceSelect label="Fashion Priority" value={data.style?.fashionPriority} onChange={(e) => update('style', 'fashionPriority', e.target.value)}
+              options={[
+                { value: 'comfort', label: 'Comfort — Above all else' },
+                { value: 'function', label: 'Function — Practical needs' },
+                { value: 'style', label: 'Style — Looking good' },
+                { value: 'impression', label: 'Impression — What others think' },
+                { value: 'expression', label: 'Expression — Self-identity' },
+                { value: 'blend-in', label: 'Blend In — Not standing out' },
+                { value: 'stand-out', label: 'Stand Out — Being noticed' },
+                { value: 'tradition', label: 'Tradition — Cultural norms' },
+                { value: 'rebellion', label: 'Rebellion — Against norms' },
+                { value: 'budget', label: 'Budget — Cost-conscious' }
+              ]} />
+            <FaceSelect label="Clothing Fit Preference" value={data.style?.clothingFit} onChange={(e) => update('style', 'clothingFit', e.target.value)}
+              options={[
+                { value: 'skin-tight', label: 'Skin-Tight — Very fitted' },
+                { value: 'fitted', label: 'Fitted — Tailored, close' },
+                { value: 'slim', label: 'Slim — Modern fit' },
+                { value: 'regular', label: 'Regular — Standard fit' },
+                { value: 'relaxed', label: 'Relaxed — Comfortable room' },
+                { value: 'loose', label: 'Loose — Baggy, roomy' },
+                { value: 'oversized', label: 'Oversized — Intentionally big' },
+                { value: 'varied', label: 'Varied — Depends on item' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Clothing Quality" value={data.style?.clothingQuality} onChange={(e) => update('style', 'clothingQuality', e.target.value)}
+              options={[
+                { value: 'luxury', label: 'Luxury — Designer, high-end' },
+                { value: 'premium', label: 'Premium — Quality brands' },
+                { value: 'mid-range', label: 'Mid-Range — Standard brands' },
+                { value: 'budget', label: 'Budget — Affordable options' },
+                { value: 'thrift', label: 'Thrift — Secondhand, vintage' },
+                { value: 'mixed', label: 'Mixed — Varies widely' },
+                { value: 'handmade', label: 'Handmade — DIY, custom' }
+              ]} />
+            <FaceSelect label="Clothing Condition" value={data.style?.clothingCondition} onChange={(e) => update('style', 'clothingCondition', e.target.value)}
+              options={[
+                { value: 'pristine', label: 'Pristine — Perfect, new' },
+                { value: 'well-kept', label: 'Well-Kept — Good condition' },
+                { value: 'average', label: 'Average — Normal wear' },
+                { value: 'worn', label: 'Worn — Visible use' },
+                { value: 'distressed', label: 'Distressed — Intentionally worn' },
+                { value: 'shabby', label: 'Shabby — Poor condition' },
+                { value: 'tattered', label: 'Tattered — Very worn' }
+              ]} />
+          </div>
+        </div>
+
+        {/* COLOR PALETTE */}
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-4">🎨 Color Preferences</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Primary Color Palette" value={data.style?.colorPalette} onChange={(e) => update('style', 'colorPalette', e.target.value)}
+              options={[
+                { value: 'all-black', label: 'All Black — Monochrome dark' },
+                { value: 'all-white', label: 'All White — Monochrome light' },
+                { value: 'monochrome', label: 'Monochrome — One color family' },
+                { value: 'neutrals', label: 'Neutrals — Black, white, gray, beige' },
+                { value: 'earth-tones', label: 'Earth Tones — Browns, tans, greens' },
+                { value: 'pastels', label: 'Pastels — Soft, muted colors' },
+                { value: 'jewel-tones', label: 'Jewel Tones — Rich, deep colors' },
+                { value: 'neons', label: 'Neons — Bright, fluorescent' },
+                { value: 'primary', label: 'Primary Colors — Red, blue, yellow' },
+                { value: 'warm', label: 'Warm Colors — Reds, oranges, yellows' },
+                { value: 'cool', label: 'Cool Colors — Blues, greens, purples' },
+                { value: 'rainbow', label: 'Rainbow — All colors welcome' },
+                { value: 'muted', label: 'Muted — Desaturated, soft' },
+                { value: 'bold', label: 'Bold — Bright, saturated' },
+                { value: 'dark', label: 'Dark — Deep, moody shades' },
+                { value: 'light', label: 'Light — Pale, airy shades' }
+              ]} />
+            <FaceSelect label="Favorite Color to Wear" value={data.style?.favoriteColor} onChange={(e) => update('style', 'favoriteColor', e.target.value)}
+              options={[
+                { value: 'black', label: 'Black' },
+                { value: 'white', label: 'White' },
+                { value: 'gray', label: 'Gray' },
+                { value: 'navy', label: 'Navy Blue' },
+                { value: 'blue', label: 'Blue' },
+                { value: 'red', label: 'Red' },
+                { value: 'burgundy', label: 'Burgundy' },
+                { value: 'pink', label: 'Pink' },
+                { value: 'purple', label: 'Purple' },
+                { value: 'green', label: 'Green' },
+                { value: 'olive', label: 'Olive/Army Green' },
+                { value: 'yellow', label: 'Yellow' },
+                { value: 'orange', label: 'Orange' },
+                { value: 'brown', label: 'Brown' },
+                { value: 'tan', label: 'Tan/Beige' },
+                { value: 'cream', label: 'Cream/Off-White' },
+                { value: 'gold', label: 'Gold' },
+                { value: 'silver', label: 'Silver' },
+                { value: 'varies', label: 'Varies — No preference' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Pattern Preference" value={data.style?.patternPreference} onChange={(e) => update('style', 'patternPreference', e.target.value)}
+              options={[
+                { value: 'solid-only', label: 'Solid Colors Only' },
+                { value: 'minimal-pattern', label: 'Minimal Patterns' },
+                { value: 'stripes', label: 'Stripes' },
+                { value: 'plaid', label: 'Plaid/Tartan' },
+                { value: 'checks', label: 'Checks/Gingham' },
+                { value: 'polka-dots', label: 'Polka Dots' },
+                { value: 'floral', label: 'Floral' },
+                { value: 'animal-print', label: 'Animal Print' },
+                { value: 'geometric', label: 'Geometric' },
+                { value: 'abstract', label: 'Abstract' },
+                { value: 'camo', label: 'Camouflage' },
+                { value: 'graphic', label: 'Graphic Prints' },
+                { value: 'paisley', label: 'Paisley' },
+                { value: 'tie-dye', label: 'Tie-Dye' },
+                { value: 'mixed', label: 'Mixed — Loves patterns' }
+              ]} />
+            <FaceSelect label="Color Coordination" value={data.style?.colorCoordination} onChange={(e) => update('style', 'colorCoordination', e.target.value)}
+              options={[
+                { value: 'perfectly-matched', label: 'Perfectly Matched — Always coordinated' },
+                { value: 'well-coordinated', label: 'Well Coordinated — Usually matches' },
+                { value: 'casual', label: 'Casual — Generally okay' },
+                { value: 'uncoordinated', label: 'Uncoordinated — Doesn\'t match' },
+                { value: 'intentional-clash', label: 'Intentional Clash — Deliberate mismatch' },
+                { value: 'doesnt-care', label: 'Doesn\'t Care — Whatever is clean' }
+              ]} />
+          </div>
+        </div>
+
+        {/* GROOMING & HYGIENE */}
+        <div className="border-2 border-fuchsia-200 rounded-sm p-4 bg-fuchsia-50/30">
+          <h4 className="font-mono text-sm font-bold text-fuchsia-800 mb-4">🧴 Grooming & Personal Care</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FaceSelect label="Overall Grooming Level" value={data.style?.groomingLevel} onChange={(e) => update('style', 'groomingLevel', e.target.value)}
+              options={[
+                { value: 'impeccable', label: 'Impeccable — Flawless, perfect' },
+                { value: 'meticulous', label: 'Meticulous — Very careful' },
+                { value: 'well-groomed', label: 'Well-Groomed — Put together' },
+                { value: 'neat', label: 'Neat — Clean and tidy' },
+                { value: 'average', label: 'Average — Acceptable' },
+                { value: 'casual', label: 'Casual — Minimal effort' },
+                { value: 'messy', label: 'Messy — Disheveled' },
+                { value: 'unkempt', label: 'Unkempt — Neglected' },
+                { value: 'rugged', label: 'Rugged — Deliberately rough' }
+              ]} />
+            <FaceSelect label="Hygiene Level" value={data.style?.hygieneLevel} onChange={(e) => update('style', 'hygieneLevel', e.target.value)}
+              options={[
+                { value: 'obsessive', label: 'Obsessive — Multiple showers/day' },
+                { value: 'excellent', label: 'Excellent — Very clean' },
+                { value: 'good', label: 'Good — Daily care' },
+                { value: 'average', label: 'Average — Acceptable' },
+                { value: 'lax', label: 'Lax — Sometimes skips' },
+                { value: 'poor', label: 'Poor — Infrequent care' }
+              ]} />
+            <FaceSelect label="Scent/Fragrance" value={data.style?.fragrance} onChange={(e) => update('style', 'fragrance', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Unscented' },
+                { value: 'subtle', label: 'Subtle — Light, close range' },
+                { value: 'moderate', label: 'Moderate — Noticeable' },
+                { value: 'strong', label: 'Strong — Fills the room' },
+                { value: 'overpowering', label: 'Overpowering — Too much' },
+                { value: 'natural', label: 'Natural — No artificial scent' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Fragrance Type" value={data.style?.fragranceType} onChange={(e) => update('style', 'fragranceType', e.target.value)}
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'floral', label: 'Floral — Rose, jasmine, etc.' },
+                { value: 'woody', label: 'Woody — Cedar, sandalwood' },
+                { value: 'fresh', label: 'Fresh — Clean, citrus, aquatic' },
+                { value: 'oriental', label: 'Oriental — Spicy, warm' },
+                { value: 'musk', label: 'Musk — Earthy, animalistic' },
+                { value: 'gourmand', label: 'Gourmand — Sweet, edible' },
+                { value: 'leather', label: 'Leather — Rich, dark' },
+                { value: 'tobacco', label: 'Tobacco/Smoke — Bold' },
+                { value: 'herbal', label: 'Herbal — Natural, green' },
+                { value: 'powdery', label: 'Powdery — Soft, delicate' },
+                { value: 'varies', label: 'Varies — Changes often' }
+              ]} />
+            <FaceSelect label="Makeup Usage" value={data.style?.makeupUsage} onChange={(e) => update('style', 'makeupUsage', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Never wears' },
+                { value: 'rare', label: 'Rare — Special occasions only' },
+                { value: 'minimal', label: 'Minimal — Light, natural look' },
+                { value: 'everyday', label: 'Everyday — Daily routine' },
+                { value: 'moderate', label: 'Moderate — Noticeable makeup' },
+                { value: 'full', label: 'Full — Complete face daily' },
+                { value: 'dramatic', label: 'Dramatic — Bold, artistic' },
+                { value: 'avant-garde', label: 'Avant-Garde — Experimental' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Makeup Style" value={data.style?.makeupStyle} onChange={(e) => update('style', 'makeupStyle', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A — No makeup' },
+                { value: 'natural', label: 'Natural — Barely there' },
+                { value: 'fresh', label: 'Fresh — Dewy, healthy glow' },
+                { value: 'classic', label: 'Classic — Timeless, elegant' },
+                { value: 'smoky', label: 'Smoky — Dark eyes' },
+                { value: 'bold-lip', label: 'Bold Lip — Statement lips' },
+                { value: 'colorful', label: 'Colorful — Bright, playful' },
+                { value: 'goth', label: 'Goth — Dark, dramatic' },
+                { value: 'glam', label: 'Glam — Full, polished' },
+                { value: 'editorial', label: 'Editorial — Fashion-forward' },
+                { value: 'no-makeup-makeup', label: 'No-Makeup Makeup — Enhanced natural' }
+              ]} />
+            <FaceSelect label="Skincare Routine" value={data.style?.skincareRoutine} onChange={(e) => update('style', 'skincareRoutine', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No routine' },
+                { value: 'basic', label: 'Basic — Wash face only' },
+                { value: 'simple', label: 'Simple — Cleanser + moisturizer' },
+                { value: 'moderate', label: 'Moderate — Several steps' },
+                { value: 'extensive', label: 'Extensive — Full routine' },
+                { value: 'obsessive', label: 'Obsessive — Many products' },
+                { value: 'professional', label: 'Professional — Regular treatments' }
+              ]} />
+          </div>
+        </div>
+
+        {/* ACCESSORIES */}
+        <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
+          <h4 className="font-mono text-sm font-bold text-violet-800 mb-4">💍 Accessories & Jewelry</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FaceSelect label="Jewelry Amount" value={data.style?.jewelryAmount} onChange={(e) => update('style', 'jewelryAmount', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Never wears' },
+                { value: 'minimal', label: 'Minimal — One or two pieces' },
+                { value: 'moderate', label: 'Moderate — A few pieces' },
+                { value: 'substantial', label: 'Substantial — Multiple items' },
+                { value: 'heavy', label: 'Heavy — Lots of jewelry' },
+                { value: 'dripping', label: 'Dripping — Covered in bling' }
+              ]} />
+            <FaceSelect label="Jewelry Style" value={data.style?.jewelryStyle} onChange={(e) => update('style', 'jewelryStyle', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A' },
+                { value: 'delicate', label: 'Delicate — Fine, subtle' },
+                { value: 'classic', label: 'Classic — Timeless pieces' },
+                { value: 'statement', label: 'Statement — Bold, eye-catching' },
+                { value: 'bohemian', label: 'Bohemian — Natural, artistic' },
+                { value: 'edgy', label: 'Edgy — Spikes, chains, dark' },
+                { value: 'vintage', label: 'Vintage — Antique pieces' },
+                { value: 'modern', label: 'Modern — Contemporary design' },
+                { value: 'luxury', label: 'Luxury — High-end brands' },
+                { value: 'handmade', label: 'Handmade — Artisan pieces' },
+                { value: 'cultural', label: 'Cultural — Traditional items' },
+                { value: 'mixed', label: 'Mixed — Eclectic collection' }
+              ]} />
+            <FaceSelect label="Jewelry Metal Preference" value={data.style?.jewelryMetal} onChange={(e) => update('style', 'jewelryMetal', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A' },
+                { value: 'gold', label: 'Gold — Yellow gold' },
+                { value: 'rose-gold', label: 'Rose Gold' },
+                { value: 'white-gold', label: 'White Gold' },
+                { value: 'silver', label: 'Silver' },
+                { value: 'platinum', label: 'Platinum' },
+                { value: 'bronze', label: 'Bronze/Copper' },
+                { value: 'mixed-metals', label: 'Mixed Metals' },
+                { value: 'non-metal', label: 'Non-Metal — Leather, fabric' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Watch" value={data.style?.watch} onChange={(e) => update('style', 'watch', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Doesn\'t wear one' },
+                { value: 'smart', label: 'Smart Watch — Apple, etc.' },
+                { value: 'fitness', label: 'Fitness Tracker' },
+                { value: 'digital', label: 'Digital — Basic digital' },
+                { value: 'casual', label: 'Casual — Everyday analog' },
+                { value: 'dress', label: 'Dress Watch — Elegant, thin' },
+                { value: 'sport', label: 'Sport Watch — Durable, active' },
+                { value: 'diver', label: 'Diver Watch' },
+                { value: 'pilot', label: 'Pilot/Aviation Watch' },
+                { value: 'luxury', label: 'Luxury — Rolex, etc.' },
+                { value: 'vintage', label: 'Vintage — Antique watch' },
+                { value: 'pocket', label: 'Pocket Watch' }
+              ]} />
+            <FaceSelect label="Eyewear" value={data.style?.eyewear} onChange={(e) => update('style', 'eyewear', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Perfect vision' },
+                { value: 'prescription', label: 'Prescription Glasses — Needed' },
+                { value: 'reading', label: 'Reading Glasses — For close work' },
+                { value: 'contacts', label: 'Contact Lenses — Usually' },
+                { value: 'fashion', label: 'Fashion Glasses — Non-prescription' },
+                { value: 'sunglasses', label: 'Sunglasses — Frequently' },
+                { value: 'both', label: 'Both — Glasses and sunglasses' },
+                { value: 'monocle', label: 'Monocle — Unusual choice' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <FaceSelect label="Glasses Style" value={data.style?.glassesStyle} onChange={(e) => update('style', 'glassesStyle', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A' },
+                { value: 'round', label: 'Round' },
+                { value: 'square', label: 'Square' },
+                { value: 'rectangular', label: 'Rectangular' },
+                { value: 'oval', label: 'Oval' },
+                { value: 'cat-eye', label: 'Cat-Eye' },
+                { value: 'aviator', label: 'Aviator' },
+                { value: 'wayfarer', label: 'Wayfarer' },
+                { value: 'browline', label: 'Browline/Clubmaster' },
+                { value: 'rimless', label: 'Rimless' },
+                { value: 'half-rim', label: 'Half-Rim' },
+                { value: 'oversized', label: 'Oversized' },
+                { value: 'wire-frame', label: 'Wire Frame' },
+                { value: 'thick-frame', label: 'Thick Frame' },
+                { value: 'geometric', label: 'Geometric/Unusual' }
+              ]} />
+            <FaceSelect label="Bag/Purse Style" value={data.style?.bagStyle} onChange={(e) => update('style', 'bagStyle', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Pockets only' },
+                { value: 'backpack', label: 'Backpack' },
+                { value: 'messenger', label: 'Messenger Bag' },
+                { value: 'briefcase', label: 'Briefcase' },
+                { value: 'tote', label: 'Tote Bag' },
+                { value: 'crossbody', label: 'Crossbody Bag' },
+                { value: 'shoulder', label: 'Shoulder Bag' },
+                { value: 'clutch', label: 'Clutch' },
+                { value: 'satchel', label: 'Satchel' },
+                { value: 'duffle', label: 'Duffle Bag' },
+                { value: 'fanny-pack', label: 'Fanny Pack/Belt Bag' },
+                { value: 'wallet-only', label: 'Wallet Only' },
+                { value: 'designer', label: 'Designer Bag' }
+              ]} />
+            <FaceSelect label="Hat Wearing" value={data.style?.hatWearing} onChange={(e) => update('style', 'hatWearing', e.target.value)}
+              options={[
+                { value: 'never', label: 'Never — Hates hats' },
+                { value: 'rarely', label: 'Rarely — Only when necessary' },
+                { value: 'sometimes', label: 'Sometimes — Occasional' },
+                { value: 'often', label: 'Often — Frequently wears' },
+                { value: 'always', label: 'Always — Signature look' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Hat Style" value={data.style?.hatStyle} onChange={(e) => update('style', 'hatStyle', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A' },
+                { value: 'baseball-cap', label: 'Baseball Cap' },
+                { value: 'beanie', label: 'Beanie' },
+                { value: 'fedora', label: 'Fedora' },
+                { value: 'trilby', label: 'Trilby' },
+                { value: 'panama', label: 'Panama Hat' },
+                { value: 'bucket', label: 'Bucket Hat' },
+                { value: 'beret', label: 'Beret' },
+                { value: 'newsboy', label: 'Newsboy/Flat Cap' },
+                { value: 'cowboy', label: 'Cowboy Hat' },
+                { value: 'top-hat', label: 'Top Hat' },
+                { value: 'sun-hat', label: 'Sun Hat/Wide Brim' },
+                { value: 'visor', label: 'Visor' },
+                { value: 'snapback', label: 'Snapback' },
+                { value: 'trucker', label: 'Trucker Hat' },
+                { value: 'headscarf', label: 'Headscarf/Bandana' },
+                { value: 'turban', label: 'Turban' },
+                { value: 'hijab', label: 'Hijab' },
+                { value: 'hood', label: 'Hood (from hoodie)' }
+              ]} />
+            <FaceInput label="Signature Accessories" value={data.style?.signatureAccessories} onChange={(e) => update('style', 'signatureAccessories', e.target.value)} 
+              placeholder="Items they're rarely seen without (specific ring, necklace, watch, etc.)..." />
+          </div>
+        </div>
+
+        {/* BODY MODIFICATIONS */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">🎨 Body Modifications</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Tattoo Coverage" value={data.style?.tattooCoverage} onChange={(e) => update('style', 'tattooCoverage', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No tattoos' },
+                { value: 'single', label: 'Single — One tattoo' },
+                { value: 'few-hidden', label: 'Few Hidden — Small, concealed' },
+                { value: 'few-visible', label: 'Few Visible — Some showing' },
+                { value: 'moderate', label: 'Moderate — Several tattoos' },
+                { value: 'sleeve-partial', label: 'Partial Sleeve' },
+                { value: 'sleeve-full', label: 'Full Sleeve(s)' },
+                { value: 'heavily-tattooed', label: 'Heavily Tattooed — Many visible' },
+                { value: 'full-body', label: 'Full Body — Extensive coverage' }
+              ]} />
+            <FaceSelect label="Tattoo Style" value={data.style?.tattooStyle} onChange={(e) => update('style', 'tattooStyle', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A' },
+                { value: 'traditional', label: 'Traditional/Old School — Bold, classic' },
+                { value: 'neo-traditional', label: 'Neo-Traditional — Modern classic' },
+                { value: 'realistic', label: 'Realistic — Photo-like' },
+                { value: 'watercolor', label: 'Watercolor — Painterly, flowing' },
+                { value: 'geometric', label: 'Geometric — Shapes, patterns' },
+                { value: 'minimalist', label: 'Minimalist — Simple line work' },
+                { value: 'blackwork', label: 'Blackwork — Solid black designs' },
+                { value: 'tribal', label: 'Tribal — Cultural patterns' },
+                { value: 'japanese', label: 'Japanese/Irezumi' },
+                { value: 'chicano', label: 'Chicano — Fine line, cultural' },
+                { value: 'script', label: 'Script/Lettering — Words, quotes' },
+                { value: 'portrait', label: 'Portrait — Faces, figures' },
+                { value: 'biomech', label: 'Biomechanical — Machine/organic' },
+                { value: 'trash-polka', label: 'Trash Polka — Red/black collage' },
+                { value: 'mixed', label: 'Mixed Styles' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Piercing Amount" value={data.style?.piercingAmount} onChange={(e) => update('style', 'piercingAmount', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No piercings' },
+                { value: 'single-ear', label: 'Single Ear — One hole' },
+                { value: 'both-ears', label: 'Both Ears — Standard lobes' },
+                { value: 'multiple-ear', label: 'Multiple Ear — Several per ear' },
+                { value: 'few', label: 'Few — Ears plus one other' },
+                { value: 'moderate', label: 'Moderate — Several piercings' },
+                { value: 'many', label: 'Many — Noticeably pierced' },
+                { value: 'extensive', label: 'Extensive — Heavily pierced' }
+              ]} />
+            <FaceSelect label="Piercing Locations" value={data.style?.piercingLocations} onChange={(e) => update('style', 'piercingLocations', e.target.value)}
+              options={[
+                { value: 'none', label: 'N/A' },
+                { value: 'lobes-only', label: 'Earlobes Only' },
+                { value: 'ears-various', label: 'Ears — Various (helix, tragus, etc.)' },
+                { value: 'nose', label: 'Nose (nostril or septum)' },
+                { value: 'lip', label: 'Lip/Labret' },
+                { value: 'eyebrow', label: 'Eyebrow' },
+                { value: 'tongue', label: 'Tongue' },
+                { value: 'navel', label: 'Navel/Belly Button' },
+                { value: 'nipple', label: 'Nipple' },
+                { value: 'dermal', label: 'Dermal/Surface' },
+                { value: 'multiple-facial', label: 'Multiple Facial' },
+                { value: 'multiple-body', label: 'Multiple Body' },
+                { value: 'various', label: 'Various Locations' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceInput label="Tattoo Details" value={data.style?.tattooDetails} onChange={(e) => update('style', 'tattooDetails', e.target.value)} 
+              placeholder="Describe specific tattoos, their locations, and meanings..." />
+            <FaceInput label="Piercing Details" value={data.style?.piercingDetails} onChange={(e) => update('style', 'piercingDetails', e.target.value)} 
+              placeholder="Describe specific piercings and jewelry worn in them..." />
+          </div>
+        </div>
+
+        {/* OVERALL IMPRESSION */}
+        <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
+          <h4 className="font-mono text-sm font-bold text-indigo-800 mb-4">✨ Overall Impression</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="First Impression" value={data.style?.firstImpression} onChange={(e) => update('style', 'firstImpression', e.target.value)}
+              options={[
+                { value: 'intimidating', label: 'Intimidating — Scary, imposing' },
+                { value: 'authoritative', label: 'Authoritative — Commanding' },
+                { value: 'professional', label: 'Professional — Business-like' },
+                { value: 'sophisticated', label: 'Sophisticated — Refined, elegant' },
+                { value: 'approachable', label: 'Approachable — Friendly, warm' },
+                { value: 'confident', label: 'Confident — Self-assured' },
+                { value: 'cool', label: 'Cool — Effortlessly stylish' },
+                { value: 'quirky', label: 'Quirky — Unique, interesting' },
+                { value: 'artistic', label: 'Artistic — Creative, expressive' },
+                { value: 'casual', label: 'Casual — Relaxed, easy-going' },
+                { value: 'mysterious', label: 'Mysterious — Hard to read' },
+                { value: 'edgy', label: 'Edgy — Alternative, rebellious' },
+                { value: 'innocent', label: 'Innocent — Sweet, youthful' },
+                { value: 'seductive', label: 'Seductive — Alluring' },
+                { value: 'nerdy', label: 'Nerdy — Geeky, intellectual' },
+                { value: 'athletic', label: 'Athletic — Sporty, fit' },
+                { value: 'forgettable', label: 'Forgettable — Blends in' },
+                { value: 'striking', label: 'Striking — Memorable, stands out' }
+              ]} />
+            <FaceSelect label="Style Consistency" value={data.style?.styleConsistency} onChange={(e) => update('style', 'styleConsistency', e.target.value)}
+              options={[
+                { value: 'very-consistent', label: 'Very Consistent — Same look always' },
+                { value: 'consistent', label: 'Consistent — Predictable style' },
+                { value: 'mostly-consistent', label: 'Mostly Consistent — Small variations' },
+                { value: 'varied', label: 'Varied — Changes with mood/occasion' },
+                { value: 'unpredictable', label: 'Unpredictable — Always different' },
+                { value: 'chameleon', label: 'Chameleon — Adapts to situation' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Attention to Appearance" value={data.style?.attentionToAppearance} onChange={(e) => update('style', 'attentionToAppearance', e.target.value)}
+              options={[
+                { value: 'obsessive', label: 'Obsessive — Constantly checking' },
+                { value: 'very-high', label: 'Very High — Great care taken' },
+                { value: 'high', label: 'High — Important to them' },
+                { value: 'moderate', label: 'Moderate — Normal attention' },
+                { value: 'low', label: 'Low — Not a priority' },
+                { value: 'minimal', label: 'Minimal — Barely thinks about it' },
+                { value: 'none', label: 'None — Doesn\'t care at all' }
+              ]} />
+            <FaceInput label="Style Notes" value={data.style?.styleNotes} onChange={(e) => update('style', 'styleNotes', e.target.value)} 
+              placeholder="Additional notes about their style, specific items, or how their look changes..." />
+          </div>
         </div>
       </div>
     ),
@@ -10269,39 +12690,1804 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
   return sections[subtab] || sections[0];
 };
 
-const VoiceContent = ({ data, updateData, subtab }) => {
+// ============================================
+// PHYSIQUE CONTENT - Complete Physical Health
+// ============================================
+const PhysiqueContent = ({ data, updateData, subtab }) => {
+  const update = (section, field, value) => {
+    updateData('physique', { ...data, [section]: { ...data[section], [field]: value } });
+  };
+
+  // Helper components
+  const PhysiqueSelect = ({ label, value, onChange, options }) => (
+    <div>
+      <label className="block font-mono text-xs font-bold text-stone-700 mb-1">{label}</label>
+      <select value={value || ''} onChange={onChange} className="w-full px-3 py-2 border-2 border-stone-300 rounded-sm bg-white font-mono text-xs focus:border-stone-500 focus:outline-none">
+        <option value="">-- Select --</option>
+        {options.map((opt, i) => typeof opt === 'object' 
+          ? <option key={i} value={opt.value}>{opt.label}</option>
+          : <option key={i} value={opt}>{opt}</option>
+        )}
+      </select>
+    </div>
+  );
+
+  const PhysiqueInput = ({ label, value, onChange, placeholder }) => (
+    <div>
+      <label className="block font-mono text-xs font-bold text-stone-700 mb-1">{label}</label>
+      <input type="text" value={value || ''} onChange={onChange} placeholder={placeholder} className="w-full px-3 py-2 border-2 border-stone-300 rounded-sm font-mono text-xs focus:border-stone-500 focus:outline-none" />
+    </div>
+  );
+
+  const sections = {
+    // ========== SUBTAB 0: PHYSICAL CONDITION ==========
+    0: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">PHYSICAL CONDITION — Health & Fitness</h3>
+          <p className="font-mono text-xs text-amber-700">Overall physical health, fitness level, and athletic capabilities.</p>
+        </div>
+
+        {/* GENERAL HEALTH */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-4">🏥 General Health Status</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Overall Health" value={data.condition?.generalHealth} onChange={(e) => update('condition', 'generalHealth', e.target.value)}
+              options={[
+                { value: 'excellent', label: 'Excellent — Peak health, rarely ill' },
+                { value: 'very-good', label: 'Very Good — Strong health' },
+                { value: 'good', label: 'Good — Healthy, occasional issues' },
+                { value: 'fair', label: 'Fair — Some health concerns' },
+                { value: 'poor', label: 'Poor — Frequent health issues' },
+                { value: 'very-poor', label: 'Very Poor — Serious health problems' },
+                { value: 'fragile', label: 'Fragile — Delicate constitution' },
+                { value: 'chronic', label: 'Chronic Condition — Managed illness' },
+                { value: 'terminal', label: 'Terminal — Life-limiting condition' },
+                { value: 'recovering', label: 'Recovering — Healing from illness/injury' }
+              ]} />
+            <PhysiqueSelect label="Immune System" value={data.condition?.immuneSystem} onChange={(e) => update('condition', 'immuneSystem', e.target.value)}
+              options={[
+                { value: 'iron', label: 'Iron Constitution — Never gets sick' },
+                { value: 'strong', label: 'Strong — Rarely gets sick' },
+                { value: 'good', label: 'Good — Average resistance' },
+                { value: 'weak', label: 'Weak — Gets sick easily' },
+                { value: 'very-weak', label: 'Very Weak — Constantly catching things' },
+                { value: 'compromised', label: 'Compromised — Immunocompromised' },
+                { value: 'autoimmune', label: 'Autoimmune — Immune attacks self' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <PhysiqueSelect label="Energy Levels" value={data.condition?.energyLevels} onChange={(e) => update('condition', 'energyLevels', e.target.value)}
+              options={[
+                { value: 'boundless', label: 'Boundless — Endless energy' },
+                { value: 'high', label: 'High — Very energetic' },
+                { value: 'good', label: 'Good — Normal energy' },
+                { value: 'moderate', label: 'Moderate — Adequate' },
+                { value: 'low', label: 'Low — Tires easily' },
+                { value: 'very-low', label: 'Very Low — Chronic fatigue' },
+                { value: 'variable', label: 'Variable — Fluctuates' }
+              ]} />
+            <PhysiqueSelect label="Recovery Rate" value={data.condition?.recoveryRate} onChange={(e) => update('condition', 'recoveryRate', e.target.value)}
+              options={[
+                { value: 'rapid', label: 'Rapid — Heals very quickly' },
+                { value: 'fast', label: 'Fast — Above average healing' },
+                { value: 'normal', label: 'Normal — Average healing' },
+                { value: 'slow', label: 'Slow — Takes longer to heal' },
+                { value: 'very-slow', label: 'Very Slow — Poor healing' },
+                { value: 'impaired', label: 'Impaired — Complications common' }
+              ]} />
+            <PhysiqueSelect label="Pain Tolerance" value={data.condition?.painTolerance} onChange={(e) => update('condition', 'painTolerance', e.target.value)}
+              options={[
+                { value: 'extreme', label: 'Extreme — Almost immune to pain' },
+                { value: 'very-high', label: 'Very High — Handles pain well' },
+                { value: 'high', label: 'High — Above average tolerance' },
+                { value: 'average', label: 'Average — Normal sensitivity' },
+                { value: 'low', label: 'Low — Sensitive to pain' },
+                { value: 'very-low', label: 'Very Low — Very pain sensitive' },
+                { value: 'chronic-pain', label: 'Chronic Pain — Lives with constant pain' }
+              ]} />
+          </div>
+        </div>
+
+        {/* FITNESS & ATHLETICISM */}
+        <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
+          <h4 className="font-mono text-sm font-bold text-orange-800 mb-4">🏃 Fitness & Athleticism</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Fitness Level" value={data.condition?.fitnessLevel} onChange={(e) => update('condition', 'fitnessLevel', e.target.value)}
+              options={[
+                { value: 'elite', label: 'Elite Athlete — Professional level' },
+                { value: 'highly-fit', label: 'Highly Fit — Serious athlete' },
+                { value: 'athletic', label: 'Athletic — Regular intense exercise' },
+                { value: 'fit', label: 'Fit — Regular exercise' },
+                { value: 'moderately-fit', label: 'Moderately Fit — Some exercise' },
+                { value: 'average', label: 'Average — Occasional activity' },
+                { value: 'below-average', label: 'Below Average — Minimal exercise' },
+                { value: 'unfit', label: 'Unfit — Sedentary lifestyle' },
+                { value: 'very-unfit', label: 'Very Unfit — No physical activity' }
+              ]} />
+            <PhysiqueSelect label="Natural Athleticism" value={data.condition?.athleticism} onChange={(e) => update('condition', 'athleticism', e.target.value)}
+              options={[
+                { value: 'gifted', label: 'Gifted — Natural born athlete' },
+                { value: 'talented', label: 'Talented — Quick learner for sports' },
+                { value: 'above-average', label: 'Above Average — Good coordination' },
+                { value: 'average', label: 'Average — Normal abilities' },
+                { value: 'below-average', label: 'Below Average — Struggles with sports' },
+                { value: 'poor', label: 'Poor — Uncoordinated' },
+                { value: 'clumsy', label: 'Clumsy — Accident prone' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <PhysiqueSelect label="Strength" value={data.condition?.strength} onChange={(e) => update('condition', 'strength', e.target.value)}
+              options={[
+                { value: 'exceptional', label: 'Exceptional — Incredibly strong' },
+                { value: 'very-strong', label: 'Very Strong — Well above average' },
+                { value: 'strong', label: 'Strong — Above average' },
+                { value: 'average', label: 'Average — Normal strength' },
+                { value: 'below-average', label: 'Below Average — Somewhat weak' },
+                { value: 'weak', label: 'Weak — Limited strength' },
+                { value: 'very-weak', label: 'Very Weak — Minimal strength' }
+              ]} />
+            <PhysiqueSelect label="Speed/Agility" value={data.condition?.speed} onChange={(e) => update('condition', 'speed', e.target.value)}
+              options={[
+                { value: 'lightning', label: 'Lightning — Exceptionally fast' },
+                { value: 'very-fast', label: 'Very Fast — Quick reflexes' },
+                { value: 'fast', label: 'Fast — Above average speed' },
+                { value: 'average', label: 'Average — Normal speed' },
+                { value: 'below-average', label: 'Below Average — Somewhat slow' },
+                { value: 'slow', label: 'Slow — Limited agility' },
+                { value: 'very-slow', label: 'Very Slow — Poor mobility' }
+              ]} />
+            <PhysiqueSelect label="Endurance/Stamina" value={data.condition?.endurance} onChange={(e) => update('condition', 'endurance', e.target.value)}
+              options={[
+                { value: 'marathon', label: 'Marathon — Seemingly unlimited' },
+                { value: 'excellent', label: 'Excellent — Long-lasting energy' },
+                { value: 'good', label: 'Good — Above average stamina' },
+                { value: 'average', label: 'Average — Normal endurance' },
+                { value: 'below-average', label: 'Below Average — Tires somewhat fast' },
+                { value: 'poor', label: 'Poor — Tires quickly' },
+                { value: 'very-poor', label: 'Very Poor — Exhausts rapidly' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <PhysiqueSelect label="Flexibility" value={data.condition?.flexibility} onChange={(e) => update('condition', 'flexibility', e.target.value)}
+              options={[
+                { value: 'contortionist', label: 'Contortionist — Extreme flexibility' },
+                { value: 'very-flexible', label: 'Very Flexible — Dancer/gymnast level' },
+                { value: 'flexible', label: 'Flexible — Above average' },
+                { value: 'average', label: 'Average — Normal range' },
+                { value: 'stiff', label: 'Stiff — Limited flexibility' },
+                { value: 'very-stiff', label: 'Very Stiff — Significantly limited' },
+                { value: 'rigid', label: 'Rigid — Minimal flexibility' }
+              ]} />
+            <PhysiqueSelect label="Balance" value={data.condition?.balance} onChange={(e) => update('condition', 'balance', e.target.value)}
+              options={[
+                { value: 'perfect', label: 'Perfect — Exceptional balance' },
+                { value: 'excellent', label: 'Excellent — Very stable' },
+                { value: 'good', label: 'Good — Above average' },
+                { value: 'average', label: 'Average — Normal balance' },
+                { value: 'poor', label: 'Poor — Somewhat unsteady' },
+                { value: 'very-poor', label: 'Very Poor — Frequently loses balance' }
+              ]} />
+            <PhysiqueSelect label="Coordination" value={data.condition?.coordination} onChange={(e) => update('condition', 'coordination', e.target.value)}
+              options={[
+                { value: 'exceptional', label: 'Exceptional — Perfect hand-eye' },
+                { value: 'excellent', label: 'Excellent — Very coordinated' },
+                { value: 'good', label: 'Good — Above average' },
+                { value: 'average', label: 'Average — Normal coordination' },
+                { value: 'poor', label: 'Poor — Somewhat clumsy' },
+                { value: 'very-poor', label: 'Very Poor — Frequently fumbles' }
+              ]} />
+          </div>
+        </div>
+
+        {/* PHYSICAL SKILLS */}
+        <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
+          <h4 className="font-mono text-sm font-bold text-yellow-800 mb-4">⚡ Physical Skills & Abilities</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Swimming Ability" value={data.condition?.swimming} onChange={(e) => update('condition', 'swimming', e.target.value)}
+              options={[
+                { value: 'competitive', label: 'Competitive — Race-level swimmer' },
+                { value: 'excellent', label: 'Excellent — Very strong swimmer' },
+                { value: 'good', label: 'Good — Comfortable in water' },
+                { value: 'adequate', label: 'Adequate — Can swim safely' },
+                { value: 'basic', label: 'Basic — Limited swimming' },
+                { value: 'poor', label: 'Poor — Struggles in water' },
+                { value: 'cannot', label: 'Cannot Swim — Never learned' },
+                { value: 'fear', label: 'Fear of Water — Avoids swimming' }
+              ]} />
+            <PhysiqueSelect label="Combat/Fighting" value={data.condition?.combat} onChange={(e) => update('condition', 'combat', e.target.value)}
+              options={[
+                { value: 'master', label: 'Master — Expert fighter' },
+                { value: 'trained', label: 'Trained — Formal training' },
+                { value: 'experienced', label: 'Experienced — Street smart' },
+                { value: 'basic', label: 'Basic — Some self-defense' },
+                { value: 'minimal', label: 'Minimal — Little training' },
+                { value: 'none', label: 'None — No fighting ability' },
+                { value: 'pacifist', label: 'Pacifist — Refuses to fight' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueSelect label="Dance/Movement" value={data.condition?.dance} onChange={(e) => update('condition', 'dance', e.target.value)}
+              options={[
+                { value: 'professional', label: 'Professional — Performance level' },
+                { value: 'excellent', label: 'Excellent — Very skilled' },
+                { value: 'good', label: 'Good — Moves well' },
+                { value: 'average', label: 'Average — Can follow along' },
+                { value: 'awkward', label: 'Awkward — Struggles with rhythm' },
+                { value: 'terrible', label: 'Terrible — Two left feet' },
+                { value: 'refuses', label: 'Refuses — Won\'t dance' }
+              ]} />
+            <PhysiqueInput label="Other Physical Skills" value={data.condition?.otherSkills} onChange={(e) => update('condition', 'otherSkills', e.target.value)} 
+              placeholder="Rock climbing, martial arts style, yoga, gymnastics, etc." />
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 1: SENSES ==========
+    1: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">SENSES — Perception & Sensitivity</h3>
+          <p className="font-mono text-xs text-blue-700">How the character perceives the world through their senses.</p>
+        </div>
+
+        {/* VISION */}
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-4">👁️ Vision</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Visual Acuity" value={data.senses?.vision} onChange={(e) => update('senses', 'vision', e.target.value)}
+              options={[
+                { value: 'perfect', label: 'Perfect — 20/20 or better' },
+                { value: 'good', label: 'Good — Slight imperfection' },
+                { value: 'corrected', label: 'Corrected — Needs glasses/contacts' },
+                { value: 'nearsighted', label: 'Nearsighted — Can\'t see far' },
+                { value: 'farsighted', label: 'Farsighted — Can\'t see close' },
+                { value: 'astigmatism', label: 'Astigmatism — Blurred vision' },
+                { value: 'poor', label: 'Poor — Significantly impaired' },
+                { value: 'legally-blind', label: 'Legally Blind — Severe impairment' },
+                { value: 'blind-one', label: 'Blind in One Eye' },
+                { value: 'blind', label: 'Blind — No vision' }
+              ]} />
+            <PhysiqueSelect label="Color Vision" value={data.senses?.colorVision} onChange={(e) => update('senses', 'colorVision', e.target.value)}
+              options={[
+                { value: 'normal', label: 'Normal — Full color vision' },
+                { value: 'enhanced', label: 'Enhanced — Sees more colors' },
+                { value: 'red-green', label: 'Red-Green Colorblind' },
+                { value: 'blue-yellow', label: 'Blue-Yellow Colorblind' },
+                { value: 'monochrome', label: 'Monochrome — Sees grayscale' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueSelect label="Night Vision" value={data.senses?.nightVision} onChange={(e) => update('senses', 'nightVision', e.target.value)}
+              options={[
+                { value: 'excellent', label: 'Excellent — Sees well in dark' },
+                { value: 'good', label: 'Good — Above average' },
+                { value: 'average', label: 'Average — Normal adaptation' },
+                { value: 'poor', label: 'Poor — Struggles in dark' },
+                { value: 'night-blind', label: 'Night Blind — Cannot see in dark' }
+              ]} />
+            <PhysiqueSelect label="Light Sensitivity" value={data.senses?.lightSensitivity} onChange={(e) => update('senses', 'lightSensitivity', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No issues with light' },
+                { value: 'mild', label: 'Mild — Slight sensitivity' },
+                { value: 'moderate', label: 'Moderate — Needs sunglasses' },
+                { value: 'severe', label: 'Severe — Extreme photophobia' }
+              ]} />
+          </div>
+        </div>
+
+        {/* HEARING */}
+        <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
+          <h4 className="font-mono text-sm font-bold text-indigo-800 mb-4">👂 Hearing</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Hearing Ability" value={data.senses?.hearing} onChange={(e) => update('senses', 'hearing', e.target.value)}
+              options={[
+                { value: 'exceptional', label: 'Exceptional — Can hear whispers' },
+                { value: 'good', label: 'Good — Normal hearing' },
+                { value: 'slight-loss', label: 'Slight Loss — Some difficulty' },
+                { value: 'moderate-loss', label: 'Moderate Loss — Needs aids sometimes' },
+                { value: 'severe-loss', label: 'Severe Loss — Needs hearing aids' },
+                { value: 'deaf-one', label: 'Deaf in One Ear' },
+                { value: 'deaf', label: 'Deaf — No hearing' },
+                { value: 'tinnitus', label: 'Tinnitus — Ringing in ears' }
+              ]} />
+            <PhysiqueSelect label="Sound Sensitivity" value={data.senses?.soundSensitivity} onChange={(e) => update('senses', 'soundSensitivity', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No issues' },
+                { value: 'mild', label: 'Mild — Dislikes loud sounds' },
+                { value: 'moderate', label: 'Moderate — Needs quiet' },
+                { value: 'severe', label: 'Severe — Hyperacusis' },
+                { value: 'misophonia', label: 'Misophonia — Specific sounds trigger' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueSelect label="Musical Ear" value={data.senses?.musicalEar} onChange={(e) => update('senses', 'musicalEar', e.target.value)}
+              options={[
+                { value: 'perfect-pitch', label: 'Perfect Pitch — Identifies any note' },
+                { value: 'excellent', label: 'Excellent — Very musical ear' },
+                { value: 'good', label: 'Good — Carries a tune' },
+                { value: 'average', label: 'Average — Normal ability' },
+                { value: 'poor', label: 'Poor — Tone deaf' }
+              ]} />
+            <PhysiqueSelect label="Directional Hearing" value={data.senses?.directionalHearing} onChange={(e) => update('senses', 'directionalHearing', e.target.value)}
+              options={[
+                { value: 'excellent', label: 'Excellent — Pinpoints sounds' },
+                { value: 'good', label: 'Good — Usually accurate' },
+                { value: 'average', label: 'Average — Normal ability' },
+                { value: 'poor', label: 'Poor — Struggles to locate sounds' }
+              ]} />
+          </div>
+        </div>
+
+        {/* OTHER SENSES */}
+        <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
+          <h4 className="font-mono text-sm font-bold text-violet-800 mb-4">👃 Other Senses</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <PhysiqueSelect label="Sense of Smell" value={data.senses?.smell} onChange={(e) => update('senses', 'smell', e.target.value)}
+              options={[
+                { value: 'exceptional', label: 'Exceptional — Notices everything' },
+                { value: 'good', label: 'Good — Above average' },
+                { value: 'average', label: 'Average — Normal' },
+                { value: 'poor', label: 'Poor — Misses most scents' },
+                { value: 'anosmia', label: 'Anosmia — No sense of smell' },
+                { value: 'hyperosmia', label: 'Hyperosmia — Overly sensitive' }
+              ]} />
+            <PhysiqueSelect label="Sense of Taste" value={data.senses?.taste} onChange={(e) => update('senses', 'taste', e.target.value)}
+              options={[
+                { value: 'supertaster', label: 'Supertaster — Intense flavors' },
+                { value: 'refined', label: 'Refined — Discerning palate' },
+                { value: 'good', label: 'Good — Above average' },
+                { value: 'average', label: 'Average — Normal' },
+                { value: 'poor', label: 'Poor — Limited taste' },
+                { value: 'ageusia', label: 'Ageusia — No sense of taste' }
+              ]} />
+            <PhysiqueSelect label="Sense of Touch" value={data.senses?.touch} onChange={(e) => update('senses', 'touch', e.target.value)}
+              options={[
+                { value: 'hypersensitive', label: 'Hypersensitive — Feels everything' },
+                { value: 'sensitive', label: 'Sensitive — Above average' },
+                { value: 'normal', label: 'Normal — Average sensitivity' },
+                { value: 'reduced', label: 'Reduced — Less sensitive' },
+                { value: 'numb', label: 'Numb — Limited feeling' },
+                { value: 'tactile-issues', label: 'Tactile Issues — Certain textures' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Temperature Sensitivity" value={data.senses?.temperatureSensitivity} onChange={(e) => update('senses', 'temperatureSensitivity', e.target.value)}
+              options={[
+                { value: 'heat-sensitive', label: 'Heat Sensitive — Can\'t handle warmth' },
+                { value: 'cold-sensitive', label: 'Cold Sensitive — Freezes easily' },
+                { value: 'both', label: 'Both — Sensitive to extremes' },
+                { value: 'normal', label: 'Normal — Average tolerance' },
+                { value: 'resistant', label: 'Resistant — Handles extremes well' }
+              ]} />
+            <PhysiqueSelect label="Proprioception" value={data.senses?.proprioception} onChange={(e) => update('senses', 'proprioception', e.target.value)}
+              options={[
+                { value: 'excellent', label: 'Excellent — Perfect body awareness' },
+                { value: 'good', label: 'Good — Above average' },
+                { value: 'average', label: 'Average — Normal awareness' },
+                { value: 'poor', label: 'Poor — Bumps into things' },
+                { value: 'very-poor', label: 'Very Poor — Limited body sense' }
+              ]} />
+          </div>
+        </div>
+
+        {/* HANDEDNESS & MISC */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">✋ Handedness & Misc</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Dominant Hand" value={data.senses?.dominantHand} onChange={(e) => update('senses', 'dominantHand', e.target.value)}
+              options={[
+                { value: 'right', label: 'Right-Handed' },
+                { value: 'left', label: 'Left-Handed' },
+                { value: 'ambidextrous', label: 'Ambidextrous — Uses both equally' },
+                { value: 'mixed', label: 'Mixed — Different for different tasks' },
+                { value: 'converted', label: 'Converted — Trained to use non-dominant' }
+              ]} />
+            <PhysiqueSelect label="Dominant Eye" value={data.senses?.dominantEye} onChange={(e) => update('senses', 'dominantEye', e.target.value)}
+              options={[
+                { value: 'right', label: 'Right Eye' },
+                { value: 'left', label: 'Left Eye' },
+                { value: 'neither', label: 'Neither Dominant' },
+                { value: 'cross-dominant', label: 'Cross-Dominant — Opposite to hand' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueSelect label="Motion Sensitivity" value={data.senses?.motionSensitivity} onChange={(e) => update('senses', 'motionSensitivity', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Never gets motion sick' },
+                { value: 'mild', label: 'Mild — Occasional discomfort' },
+                { value: 'moderate', label: 'Moderate — Gets carsick/seasick' },
+                { value: 'severe', label: 'Severe — Very prone to motion sickness' }
+              ]} />
+            <PhysiqueInput label="Other Sensory Notes" value={data.senses?.sensoryNotes} onChange={(e) => update('senses', 'sensoryNotes', e.target.value)} 
+              placeholder="Synesthesia, sensory processing issues, unusual sensitivities..." />
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 2: MEDICAL HISTORY ==========
+    2: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-red-900 mb-2">MEDICAL HISTORY — Health Records</h3>
+          <p className="font-mono text-xs text-red-700">Medical conditions, disabilities, allergies, and health history.</p>
+        </div>
+
+        {/* CHRONIC CONDITIONS */}
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-4">🏥 Chronic Conditions</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Chronic Illness" value={data.medical?.chronicConditions} onChange={(e) => update('medical', 'chronicConditions', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No chronic conditions' },
+                { value: 'diabetes-1', label: 'Type 1 Diabetes' },
+                { value: 'diabetes-2', label: 'Type 2 Diabetes' },
+                { value: 'asthma', label: 'Asthma' },
+                { value: 'copd', label: 'COPD' },
+                { value: 'heart-disease', label: 'Heart Disease' },
+                { value: 'hypertension', label: 'Hypertension (High BP)' },
+                { value: 'hypotension', label: 'Hypotension (Low BP)' },
+                { value: 'arthritis', label: 'Arthritis' },
+                { value: 'fibromyalgia', label: 'Fibromyalgia' },
+                { value: 'lupus', label: 'Lupus' },
+                { value: 'ms', label: 'Multiple Sclerosis' },
+                { value: 'epilepsy', label: 'Epilepsy' },
+                { value: 'migraines', label: 'Chronic Migraines' },
+                { value: 'crohns', label: 'Crohn\'s Disease' },
+                { value: 'ibs', label: 'IBS' },
+                { value: 'eczema', label: 'Eczema/Psoriasis' },
+                { value: 'thyroid', label: 'Thyroid Disorder' },
+                { value: 'cancer-survivor', label: 'Cancer Survivor' },
+                { value: 'cancer-active', label: 'Active Cancer' },
+                { value: 'kidney', label: 'Kidney Disease' },
+                { value: 'liver', label: 'Liver Disease' },
+                { value: 'chronic-fatigue', label: 'Chronic Fatigue Syndrome' },
+                { value: 'autoimmune', label: 'Other Autoimmune' },
+                { value: 'multiple', label: 'Multiple Conditions' },
+                { value: 'other', label: 'Other (specify in notes)' }
+              ]} />
+            <PhysiqueSelect label="Condition Management" value={data.medical?.conditionManagement} onChange={(e) => update('medical', 'conditionManagement', e.target.value)}
+              options={[
+                { value: 'na', label: 'N/A — No conditions' },
+                { value: 'well-managed', label: 'Well Managed — Under control' },
+                { value: 'managed', label: 'Managed — Mostly controlled' },
+                { value: 'struggling', label: 'Struggling — Difficult to control' },
+                { value: 'unmanaged', label: 'Unmanaged — Not controlled' },
+                { value: 'remission', label: 'In Remission' },
+                { value: 'newly-diagnosed', label: 'Newly Diagnosed' }
+              ]} />
+          </div>
+          <PhysiqueInput label="Condition Details" value={data.medical?.conditionDetails} onChange={(e) => update('medical', 'conditionDetails', e.target.value)} 
+            placeholder="Specific details about chronic conditions, severity, medications..." />
+        </div>
+
+        {/* DISABILITIES */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">♿ Disabilities & Impairments</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Physical Disability" value={data.medical?.disabilities} onChange={(e) => update('medical', 'disabilities', e.target.value)}
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'mobility-mild', label: 'Mild Mobility Impairment' },
+                { value: 'mobility-moderate', label: 'Moderate Mobility Impairment' },
+                { value: 'mobility-severe', label: 'Severe Mobility Impairment' },
+                { value: 'wheelchair', label: 'Wheelchair User' },
+                { value: 'amputee-arm', label: 'Amputee — Arm' },
+                { value: 'amputee-leg', label: 'Amputee — Leg' },
+                { value: 'amputee-multiple', label: 'Amputee — Multiple' },
+                { value: 'paralysis-partial', label: 'Partial Paralysis' },
+                { value: 'paraplegia', label: 'Paraplegia' },
+                { value: 'quadriplegia', label: 'Quadriplegia' },
+                { value: 'cerebral-palsy', label: 'Cerebral Palsy' },
+                { value: 'muscular-dystrophy', label: 'Muscular Dystrophy' },
+                { value: 'dwarfism', label: 'Dwarfism' },
+                { value: 'chronic-pain', label: 'Chronic Pain Condition' },
+                { value: 'other', label: 'Other (specify)' }
+              ]} />
+            <PhysiqueSelect label="Mobility Aid" value={data.medical?.mobilityAid} onChange={(e) => update('medical', 'mobilityAid', e.target.value)}
+              options={[
+                { value: 'none', label: 'None Needed' },
+                { value: 'cane', label: 'Cane' },
+                { value: 'crutches', label: 'Crutches' },
+                { value: 'walker', label: 'Walker' },
+                { value: 'wheelchair-manual', label: 'Manual Wheelchair' },
+                { value: 'wheelchair-electric', label: 'Electric Wheelchair' },
+                { value: 'scooter', label: 'Mobility Scooter' },
+                { value: 'prosthetic', label: 'Prosthetic Limb' },
+                { value: 'brace', label: 'Brace/Orthotic' },
+                { value: 'service-animal', label: 'Service Animal' },
+                { value: 'multiple', label: 'Multiple Aids' }
+              ]} />
+          </div>
+          <PhysiqueInput label="Disability Details" value={data.medical?.disabilityDetails} onChange={(e) => update('medical', 'disabilityDetails', e.target.value)} 
+            placeholder="Details about the disability, how it affects daily life, accommodations needed..." />
+        </div>
+
+        {/* ALLERGIES */}
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-4">🤧 Allergies & Intolerances</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Allergy Severity" value={data.medical?.allergySeverity} onChange={(e) => update('medical', 'allergySeverity', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No known allergies' },
+                { value: 'mild', label: 'Mild — Minor reactions' },
+                { value: 'moderate', label: 'Moderate — Significant reactions' },
+                { value: 'severe', label: 'Severe — Serious reactions' },
+                { value: 'life-threatening', label: 'Life-Threatening — Anaphylaxis risk' }
+              ]} />
+            <PhysiqueSelect label="Allergy Type" value={data.medical?.allergyType} onChange={(e) => update('medical', 'allergyType', e.target.value)}
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'food', label: 'Food Allergies' },
+                { value: 'environmental', label: 'Environmental (pollen, dust)' },
+                { value: 'medication', label: 'Medication Allergies' },
+                { value: 'animal', label: 'Animal Allergies' },
+                { value: 'insect', label: 'Insect Sting/Bite' },
+                { value: 'contact', label: 'Contact (latex, metals)' },
+                { value: 'multiple', label: 'Multiple Types' }
+              ]} />
+          </div>
+          <PhysiqueInput label="Specific Allergies" value={data.medical?.allergies} onChange={(e) => update('medical', 'allergies', e.target.value)} 
+            placeholder="List specific allergies: peanuts, shellfish, penicillin, bee stings, cats, latex..." />
+        </div>
+
+        {/* MEDICAL INFO */}
+        <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
+          <h4 className="font-mono text-sm font-bold text-orange-800 mb-4">🩸 Medical Information</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <PhysiqueSelect label="Blood Type" value={data.medical?.bloodType} onChange={(e) => update('medical', 'bloodType', e.target.value)}
+              options={[
+                { value: 'unknown', label: 'Unknown' },
+                { value: 'a-pos', label: 'A Positive (A+)' },
+                { value: 'a-neg', label: 'A Negative (A-)' },
+                { value: 'b-pos', label: 'B Positive (B+)' },
+                { value: 'b-neg', label: 'B Negative (B-)' },
+                { value: 'ab-pos', label: 'AB Positive (AB+)' },
+                { value: 'ab-neg', label: 'AB Negative (AB-)' },
+                { value: 'o-pos', label: 'O Positive (O+)' },
+                { value: 'o-neg', label: 'O Negative (O-)' }
+              ]} />
+            <PhysiqueSelect label="Organ Donor" value={data.medical?.organDonor} onChange={(e) => update('medical', 'organDonor', e.target.value)}
+              options={[
+                { value: 'yes', label: 'Yes — Registered donor' },
+                { value: 'no', label: 'No — Not a donor' },
+                { value: 'undecided', label: 'Undecided' },
+                { value: 'partial', label: 'Partial — Specific organs only' }
+              ]} />
+            <PhysiqueSelect label="Medical ID/Bracelet" value={data.medical?.medicalId} onChange={(e) => update('medical', 'medicalId', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No medical ID' },
+                { value: 'bracelet', label: 'Medical Bracelet' },
+                { value: 'necklace', label: 'Medical Necklace' },
+                { value: 'card', label: 'Medical ID Card' },
+                { value: 'phone', label: 'Phone Emergency Info' },
+                { value: 'tattoo', label: 'Medical Tattoo' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueInput label="Past Injuries/Surgeries" value={data.medical?.pastInjuries} onChange={(e) => update('medical', 'pastInjuries', e.target.value)} 
+              placeholder="Broken bones, surgeries, significant injuries..." />
+            <PhysiqueInput label="Current Medications" value={data.medical?.medications} onChange={(e) => update('medical', 'medications', e.target.value)} 
+              placeholder="Any regular medications, prescriptions, or supplements..." />
+          </div>
+        </div>
+
+        {/* MENTAL HEALTH */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">🧠 Mental Health (Medical)</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Diagnosed Conditions" value={data.medical?.mentalHealthDx} onChange={(e) => update('medical', 'mentalHealthDx', e.target.value)}
+              options={[
+                { value: 'none', label: 'None Diagnosed' },
+                { value: 'depression', label: 'Depression' },
+                { value: 'anxiety', label: 'Anxiety Disorder' },
+                { value: 'bipolar', label: 'Bipolar Disorder' },
+                { value: 'ptsd', label: 'PTSD' },
+                { value: 'ocd', label: 'OCD' },
+                { value: 'adhd', label: 'ADHD' },
+                { value: 'autism', label: 'Autism Spectrum' },
+                { value: 'schizophrenia', label: 'Schizophrenia' },
+                { value: 'bpd', label: 'Borderline Personality' },
+                { value: 'eating-disorder', label: 'Eating Disorder' },
+                { value: 'addiction', label: 'Addiction/Substance Use' },
+                { value: 'multiple', label: 'Multiple Conditions' },
+                { value: 'other', label: 'Other (specify)' }
+              ]} />
+            <PhysiqueSelect label="Treatment Status" value={data.medical?.mentalHealthTreatment} onChange={(e) => update('medical', 'mentalHealthTreatment', e.target.value)}
+              options={[
+                { value: 'na', label: 'N/A' },
+                { value: 'therapy', label: 'In Therapy' },
+                { value: 'medication', label: 'On Medication' },
+                { value: 'both', label: 'Therapy + Medication' },
+                { value: 'recovery', label: 'In Recovery' },
+                { value: 'remission', label: 'In Remission' },
+                { value: 'untreated', label: 'Untreated' },
+                { value: 'refused', label: 'Refuses Treatment' }
+              ]} />
+          </div>
+          <PhysiqueInput label="Mental Health Notes" value={data.medical?.mentalHealthNotes} onChange={(e) => update('medical', 'mentalHealthNotes', e.target.value)} 
+            placeholder="Details about mental health history, triggers, coping mechanisms..." />
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 3: HABITS & LIFESTYLE ==========
+    3: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-green-900 mb-2">HABITS & LIFESTYLE — Daily Patterns</h3>
+          <p className="font-mono text-xs text-green-700">Sleep, diet, exercise, substances, and daily routines.</p>
+        </div>
+
+        {/* SLEEP */}
+        <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
+          <h4 className="font-mono text-sm font-bold text-green-800 mb-4">😴 Sleep Patterns</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Sleep Pattern" value={data.habits?.sleepPattern} onChange={(e) => update('habits', 'sleepPattern', e.target.value)}
+              options={[
+                { value: 'early-bird', label: 'Early Bird — Up at dawn' },
+                { value: 'morning-person', label: 'Morning Person — Early riser' },
+                { value: 'normal', label: 'Normal — Standard schedule' },
+                { value: 'night-owl', label: 'Night Owl — Stays up late' },
+                { value: 'nocturnal', label: 'Nocturnal — Awake at night' },
+                { value: 'irregular', label: 'Irregular — No set pattern' },
+                { value: 'shift-work', label: 'Shift Work — Varies by job' },
+                { value: 'polyphasic', label: 'Polyphasic — Multiple sleep periods' }
+              ]} />
+            <PhysiqueSelect label="Sleep Duration" value={data.habits?.sleepDuration} onChange={(e) => update('habits', 'sleepDuration', e.target.value)}
+              options={[
+                { value: 'minimal', label: 'Minimal — Under 5 hours' },
+                { value: 'short', label: 'Short Sleeper — 5-6 hours' },
+                { value: 'average', label: 'Average — 7-8 hours' },
+                { value: 'long', label: 'Long Sleeper — 9-10 hours' },
+                { value: 'excessive', label: 'Excessive — 10+ hours' },
+                { value: 'variable', label: 'Variable — Inconsistent' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueSelect label="Sleep Quality" value={data.habits?.sleepQuality} onChange={(e) => update('habits', 'sleepQuality', e.target.value)}
+              options={[
+                { value: 'excellent', label: 'Excellent — Deep, restful' },
+                { value: 'good', label: 'Good — Usually rested' },
+                { value: 'fair', label: 'Fair — Sometimes tired' },
+                { value: 'poor', label: 'Poor — Often unrested' },
+                { value: 'insomnia', label: 'Insomnia — Can\'t fall asleep' },
+                { value: 'disrupted', label: 'Disrupted — Wakes frequently' },
+                { value: 'nightmares', label: 'Nightmares — Disturbing dreams' },
+                { value: 'sleep-disorder', label: 'Sleep Disorder — Medical issue' }
+              ]} />
+            <PhysiqueSelect label="Napping" value={data.habits?.napping} onChange={(e) => update('habits', 'napping', e.target.value)}
+              options={[
+                { value: 'never', label: 'Never — Can\'t nap' },
+                { value: 'rarely', label: 'Rarely — Only when exhausted' },
+                { value: 'sometimes', label: 'Sometimes — Occasional' },
+                { value: 'often', label: 'Often — Regular naps' },
+                { value: 'daily', label: 'Daily — Every day' },
+                { value: 'frequent', label: 'Frequent — Multiple times daily' }
+              ]} />
+          </div>
+        </div>
+
+        {/* DIET */}
+        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-4">🍽️ Diet & Eating</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Diet Type" value={data.habits?.dietType} onChange={(e) => update('habits', 'dietType', e.target.value)}
+              options={[
+                { value: 'omnivore', label: 'Omnivore — Eats everything' },
+                { value: 'flexitarian', label: 'Flexitarian — Mostly plant-based' },
+                { value: 'pescatarian', label: 'Pescatarian — Fish, no meat' },
+                { value: 'vegetarian', label: 'Vegetarian — No meat' },
+                { value: 'vegan', label: 'Vegan — No animal products' },
+                { value: 'keto', label: 'Keto — Low carb, high fat' },
+                { value: 'paleo', label: 'Paleo — Whole foods' },
+                { value: 'mediterranean', label: 'Mediterranean' },
+                { value: 'gluten-free', label: 'Gluten-Free' },
+                { value: 'halal', label: 'Halal' },
+                { value: 'kosher', label: 'Kosher' },
+                { value: 'religious', label: 'Other Religious Diet' },
+                { value: 'medical', label: 'Medical Diet — Health reasons' },
+                { value: 'no-restrictions', label: 'No Restrictions — Eats anything' }
+              ]} />
+            <PhysiqueSelect label="Eating Habits" value={data.habits?.eatingHabits} onChange={(e) => update('habits', 'eatingHabits', e.target.value)}
+              options={[
+                { value: 'healthy', label: 'Very Healthy — Clean eating' },
+                { value: 'mostly-healthy', label: 'Mostly Healthy — Some treats' },
+                { value: 'balanced', label: 'Balanced — Moderate approach' },
+                { value: 'inconsistent', label: 'Inconsistent — Varies' },
+                { value: 'unhealthy', label: 'Unhealthy — Poor diet' },
+                { value: 'fast-food', label: 'Fast Food Heavy' },
+                { value: 'emotional', label: 'Emotional Eater' },
+                { value: 'restrictive', label: 'Restrictive — Very controlled' },
+                { value: 'disordered', label: 'Disordered — Has issues' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <PhysiqueSelect label="Meal Frequency" value={data.habits?.mealFrequency} onChange={(e) => update('habits', 'mealFrequency', e.target.value)}
+              options={[
+                { value: 'one', label: 'One Meal — OMAD' },
+                { value: 'two', label: 'Two Meals' },
+                { value: 'three', label: 'Three Meals — Standard' },
+                { value: 'grazer', label: 'Grazer — Many small meals' },
+                { value: 'irregular', label: 'Irregular — No pattern' },
+                { value: 'fasting', label: 'Intermittent Fasting' }
+              ]} />
+            <PhysiqueSelect label="Cooking Ability" value={data.habits?.cookingAbility} onChange={(e) => update('habits', 'cookingAbility', e.target.value)}
+              options={[
+                { value: 'chef', label: 'Chef Level — Expert cook' },
+                { value: 'excellent', label: 'Excellent — Very skilled' },
+                { value: 'good', label: 'Good — Competent cook' },
+                { value: 'basic', label: 'Basic — Simple meals' },
+                { value: 'minimal', label: 'Minimal — Barely cooks' },
+                { value: 'none', label: 'None — Can\'t cook' },
+                { value: 'learning', label: 'Learning — Improving' }
+              ]} />
+            <PhysiqueSelect label="Hydration" value={data.habits?.hydration} onChange={(e) => update('habits', 'hydration', e.target.value)}
+              options={[
+                { value: 'excellent', label: 'Excellent — Always hydrated' },
+                { value: 'good', label: 'Good — Drinks enough' },
+                { value: 'fair', label: 'Fair — Could drink more' },
+                { value: 'poor', label: 'Poor — Often dehydrated' },
+                { value: 'very-poor', label: 'Very Poor — Rarely drinks water' }
+              ]} />
+          </div>
+        </div>
+
+        {/* SUBSTANCES */}
+        <div className="border-2 border-teal-200 rounded-sm p-4 bg-teal-50/30">
+          <h4 className="font-mono text-sm font-bold text-teal-800 mb-4">🚬 Substances</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <PhysiqueSelect label="Alcohol Use" value={data.habits?.alcoholUse} onChange={(e) => update('habits', 'alcoholUse', e.target.value)}
+              options={[
+                { value: 'never', label: 'Never — Doesn\'t drink' },
+                { value: 'rarely', label: 'Rarely — Special occasions' },
+                { value: 'social', label: 'Social — With others' },
+                { value: 'moderate', label: 'Moderate — Regular but controlled' },
+                { value: 'heavy', label: 'Heavy — Frequent drinking' },
+                { value: 'problem', label: 'Problem — Struggles with alcohol' },
+                { value: 'recovering', label: 'Recovering — In recovery' },
+                { value: 'sober', label: 'Sober — Former drinker' }
+              ]} />
+            <PhysiqueSelect label="Tobacco Use" value={data.habits?.tobaccoUse} onChange={(e) => update('habits', 'tobaccoUse', e.target.value)}
+              options={[
+                { value: 'never', label: 'Never — Never smoked' },
+                { value: 'former', label: 'Former — Quit smoking' },
+                { value: 'occasional', label: 'Occasional — Social smoker' },
+                { value: 'light', label: 'Light — Few per day' },
+                { value: 'moderate', label: 'Moderate — Pack a day' },
+                { value: 'heavy', label: 'Heavy — Chain smoker' },
+                { value: 'vaping', label: 'Vaping — E-cigarettes' },
+                { value: 'chewing', label: 'Chewing Tobacco' }
+              ]} />
+            <PhysiqueSelect label="Caffeine Use" value={data.habits?.caffeineUse} onChange={(e) => update('habits', 'caffeineUse', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Caffeine-free' },
+                { value: 'minimal', label: 'Minimal — Occasional' },
+                { value: 'moderate', label: 'Moderate — 1-2 cups/day' },
+                { value: 'heavy', label: 'Heavy — Multiple cups/day' },
+                { value: 'dependent', label: 'Dependent — Needs it to function' },
+                { value: 'excessive', label: 'Excessive — Unhealthy amount' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueSelect label="Other Substances" value={data.habits?.substanceUse} onChange={(e) => update('habits', 'substanceUse', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — No other substances' },
+                { value: 'cannabis-occasional', label: 'Cannabis — Occasional' },
+                { value: 'cannabis-regular', label: 'Cannabis — Regular' },
+                { value: 'recreational', label: 'Recreational — Occasional party drugs' },
+                { value: 'regular', label: 'Regular — Frequent use' },
+                { value: 'addiction', label: 'Addiction — Has a problem' },
+                { value: 'recovering', label: 'Recovering — In recovery' },
+                { value: 'prescription', label: 'Prescription Only — Medical use' }
+              ]} />
+            <PhysiqueInput label="Substance Notes" value={data.habits?.substanceNotes} onChange={(e) => update('habits', 'substanceNotes', e.target.value)} 
+              placeholder="Details about substance use, recovery, preferences..." />
+          </div>
+        </div>
+
+        {/* EXERCISE & SELF-CARE */}
+        <div className="border-2 border-lime-200 rounded-sm p-4 bg-lime-50/30">
+          <h4 className="font-mono text-sm font-bold text-lime-800 mb-4">🏋️ Exercise & Self-Care</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <PhysiqueSelect label="Exercise Routine" value={data.habits?.exerciseRoutine} onChange={(e) => update('habits', 'exerciseRoutine', e.target.value)}
+              options={[
+                { value: 'athlete', label: 'Athlete — Professional level' },
+                { value: 'daily-intense', label: 'Daily Intense — Hard workouts' },
+                { value: 'daily', label: 'Daily — Regular exercise' },
+                { value: 'frequent', label: 'Frequent — 4-5 times/week' },
+                { value: 'moderate', label: 'Moderate — 2-3 times/week' },
+                { value: 'occasional', label: 'Occasional — Once a week' },
+                { value: 'rare', label: 'Rare — Once a month' },
+                { value: 'none', label: 'None — Doesn\'t exercise' },
+                { value: 'wants-to', label: 'Wants To — Meaning to start' }
+              ]} />
+            <PhysiqueSelect label="Exercise Type" value={data.habits?.exerciseType} onChange={(e) => update('habits', 'exerciseType', e.target.value)}
+              options={[
+                { value: 'none', label: 'None' },
+                { value: 'cardio', label: 'Cardio Focus — Running, cycling' },
+                { value: 'strength', label: 'Strength Focus — Weights, lifting' },
+                { value: 'mixed', label: 'Mixed — Both cardio and strength' },
+                { value: 'yoga', label: 'Yoga/Pilates — Flexibility focus' },
+                { value: 'sports', label: 'Sports — Team or individual' },
+                { value: 'martial-arts', label: 'Martial Arts' },
+                { value: 'dance', label: 'Dance' },
+                { value: 'swimming', label: 'Swimming' },
+                { value: 'hiking', label: 'Hiking/Outdoor' },
+                { value: 'varied', label: 'Varied — Mix of activities' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <PhysiqueSelect label="Self-Care Level" value={data.habits?.selfCareLevel} onChange={(e) => update('habits', 'selfCareLevel', e.target.value)}
+              options={[
+                { value: 'excellent', label: 'Excellent — Prioritizes self-care' },
+                { value: 'good', label: 'Good — Regular self-care' },
+                { value: 'moderate', label: 'Moderate — Sometimes' },
+                { value: 'poor', label: 'Poor — Neglects self-care' },
+                { value: 'very-poor', label: 'Very Poor — Severe neglect' },
+                { value: 'improving', label: 'Improving — Working on it' }
+              ]} />
+            <PhysiqueInput label="Self-Care Practices" value={data.habits?.selfCarePractices} onChange={(e) => update('habits', 'selfCarePractices', e.target.value)} 
+              placeholder="Meditation, skincare, mental health days, hobbies..." />
+          </div>
+        </div>
+      </div>
+    ),
+  };
+
+  return sections[subtab] || sections[0];
+};
+
+const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
   const update = (section, field, value) => {
     updateData('voice', { ...data, [section]: { ...data[section], [field]: value } });
   };
 
+  // ElevenLabs compatible accent options based on regions
+  const ACCENT_OPTIONS = {
+    'American': ['General American', 'Southern American', 'New York', 'Boston', 'California', 'Midwest', 'Texas', 'African American Vernacular'],
+    'British': ['Received Pronunciation (RP)', 'Cockney', 'Northern English', 'Scottish', 'Welsh', 'Irish', 'West Country', 'Midlands'],
+    'Australian': ['General Australian', 'Broad Australian', 'Cultivated Australian'],
+    'European': ['French', 'German', 'Italian', 'Spanish', 'Portuguese', 'Dutch', 'Swedish', 'Norwegian', 'Danish', 'Finnish', 'Polish', 'Russian', 'Greek', 'Czech', 'Hungarian'],
+    'Asian': ['Chinese (Mandarin)', 'Japanese', 'Korean', 'Vietnamese', 'Thai', 'Filipino', 'Indian', 'Pakistani', 'Indonesian', 'Malaysian'],
+    'Middle Eastern': ['Arabic', 'Persian/Farsi', 'Turkish', 'Hebrew', 'Kurdish'],
+    'African': ['South African', 'Nigerian', 'Kenyan', 'Egyptian', 'Moroccan', 'Ethiopian'],
+    'Latin American': ['Mexican', 'Brazilian', 'Argentine', 'Colombian', 'Cuban', 'Puerto Rican', 'Chilean', 'Peruvian'],
+    'Other': ['Canadian', 'New Zealand', 'Caribbean', 'Neutral/No specific accent']
+  };
+
+  // Voice texture descriptors for ElevenLabs
+  const VOICE_TEXTURES = [
+    'Silky', 'Velvety', 'Honeyed', 'Buttery', 'Crisp', 'Crystalline', 'Gravelly', 'Gritty', 
+    'Husky', 'Smoky', 'Raspy', 'Throaty', 'Breathy', 'Airy', 'Wispy', 'Resonant', 'Booming',
+    'Commanding', 'Authoritative', 'Gentle', 'Soothing', 'Melodic', 'Musical', 'Lilting',
+    'Monotone', 'Flat', 'Nasal', 'Whiny', 'Squeaky', 'Shrill', 'Piercing', 'Rumbling'
+  ];
+
+  // Emotional base tones
+  const EMOTIONAL_TONES = [
+    'Cheerful', 'Warm', 'Friendly', 'Professional', 'Serious', 'Calm', 'Soothing',
+    'Energetic', 'Enthusiastic', 'Confident', 'Authoritative', 'Mysterious', 'Seductive',
+    'Playful', 'Mischievous', 'Melancholic', 'Sad', 'Tired', 'Bored', 'Anxious',
+    'Nervous', 'Angry', 'Stern', 'Cold', 'Detached', 'Neutral', 'Matter-of-fact'
+  ];
+
+  // Generate ElevenLabs compatible voice description
+  const generateVoiceDescription = () => {
+    const parts = [];
+    
+    // Gender and age
+    if (data.design?.voiceGender) parts.push(data.design.voiceGender);
+    if (data.design?.voiceAge) parts.push(`${data.design.voiceAge} voice`);
+    
+    // Main characteristics based on qualitative selections
+    const pitch = data.design?.pitch;
+    if (pitch) {
+      const pitchMap = { 'very-deep': 'very deep', 'deep': 'deep', 'low': 'low', 'low-mid': 'low-mid range', 'mid': 'mid-range', 'mid-high': 'mid-high range', 'high': 'high-pitched', 'very-high': 'very high-pitched' };
+      if (pitchMap[pitch]) parts.push(pitchMap[pitch]);
+    }
+    
+    const warmth = data.design?.timbreWarmth;
+    if (warmth) {
+      const warmthMap = { 'icy': 'icy', 'cool': 'cool', 'neutral-cool': 'cool', 'neutral-warm': 'warm', 'warm': 'warm', 'very-warm': 'very warm' };
+      if (warmthMap[warmth]) parts.push(warmthMap[warmth]);
+    }
+    
+    const brightness = data.design?.timbreBrightness;
+    if (brightness) {
+      const brightnessMap = { 'very-dark': 'dark', 'dark': 'dark', 'neutral-bright': 'bright', 'bright': 'bright', 'very-bright': 'very bright' };
+      if (brightnessMap[brightness]) parts.push(brightnessMap[brightness]);
+    }
+    
+    const smoothness = data.design?.timbreSmoothness;
+    if (smoothness) {
+      const smoothnessMap = { 'gravelly': 'gravelly', 'rough': 'rough', 'smooth': 'smooth', 'silky': 'silky', 'velvety': 'velvety' };
+      if (smoothnessMap[smoothness]) parts.push(smoothnessMap[smoothness]);
+    }
+    
+    const richness = data.design?.timbreRichness;
+    if (richness) {
+      const richnessMap = { 'thin': 'thin', 'rich': 'rich', 'very-rich': 'very rich' };
+      if (richnessMap[richness]) parts.push(richnessMap[richness]);
+    }
+    
+    // Special characteristics
+    const breathiness = data.design?.breathiness;
+    if (breathiness && breathiness !== 'none' && breathiness !== 'minimal') {
+      parts.push('breathy');
+    }
+    
+    const nasality = data.design?.nasality;
+    if (nasality && nasality !== 'none' && nasality !== 'minimal') {
+      parts.push('nasal');
+    }
+    
+    const roughness = data.design?.roughness;
+    if (roughness && roughness !== 'none' && roughness !== 'minimal') {
+      parts.push('raspy');
+    }
+    
+    const resonance = data.design?.resonance;
+    if (resonance) {
+      const resonanceMap = { 'deep-chest': 'chest voice', 'chest': 'chest voice', 'head': 'head voice', 'falsetto': 'falsetto' };
+      if (resonanceMap[resonance]) parts.push(resonanceMap[resonance]);
+    }
+    
+    // Texture and tone
+    if (data.design?.voiceTexture) parts.push(data.design.voiceTexture.toLowerCase());
+    if (data.design?.emotionalTone) parts.push(`${data.design.emotionalTone.toLowerCase()} tone`);
+    
+    // Speed
+    const speed = data.design?.speed;
+    if (speed) {
+      const speedMap = { 'very-slow': 'very slow-paced', 'slow': 'slow-paced', 'moderate-fast': 'brisk', 'fast': 'fast-paced', 'very-fast': 'rapid' };
+      if (speedMap[speed]) parts.push(speedMap[speed]);
+    }
+    
+    // Accent
+    if (data.languages?.accent) {
+      const strength = data.languages?.accentStrength || 'moderate';
+      const strengthMap = { 'barely-noticeable': 'slight', 'slight': 'slight', 'mild': 'mild', 'moderate': 'moderate', 'noticeable': 'noticeable', 'strong': 'strong', 'very-strong': 'very strong', 'thick': 'thick' };
+      parts.push(`with ${strengthMap[strength] || 'moderate'} ${data.languages.accent} accent`);
+    }
+    
+    return parts.join(', ') || 'No voice characteristics defined yet.';
+  };
+
+  // Voice select component for qualitative options
+  const VoiceSelect = ({ label, value, onChange, options, color = 'amber', description }) => (
+    <div className="space-y-1">
+      <label className="block font-mono text-xs font-bold text-gray-700">{label}</label>
+      {description && <p className="font-mono text-[9px] text-gray-500">{description}</p>}
+      <select 
+        value={value || ''} 
+        onChange={onChange} 
+        className={`w-full bg-white border border-${color}-200 rounded-sm py-2 px-3 font-mono text-xs focus:border-${color}-400 focus:ring-1 focus:ring-${color}-200`}
+      >
+        <option value="">-- Select --</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value}>{opt.label}</option>
+        ))}
+      </select>
+    </div>
+  );
+
+  // Qualitative options for voice characteristics
+  const PITCH_OPTIONS = [
+    { value: 'very-deep', label: 'Very Deep — Bass range' },
+    { value: 'deep', label: 'Deep — Low baritone' },
+    { value: 'low', label: 'Low — Baritone' },
+    { value: 'low-mid', label: 'Low-Mid — Low tenor' },
+    { value: 'mid', label: 'Mid — Tenor/Alto' },
+    { value: 'mid-high', label: 'Mid-High — High tenor/mezzo' },
+    { value: 'high', label: 'High — Soprano/countertenor' },
+    { value: 'very-high', label: 'Very High — High soprano' }
+  ];
+
+  const PITCH_VARIATION_OPTIONS = [
+    { value: 'monotone', label: 'Monotone — Almost no variation' },
+    { value: 'minimal', label: 'Minimal — Slight changes' },
+    { value: 'subtle', label: 'Subtle — Natural but restrained' },
+    { value: 'moderate', label: 'Moderate — Typical variation' },
+    { value: 'expressive', label: 'Expressive — Noticeable range' },
+    { value: 'dynamic', label: 'Dynamic — Wide emotional range' },
+    { value: 'theatrical', label: 'Theatrical — Dramatic shifts' }
+  ];
+
+  const SPEED_OPTIONS = [
+    { value: 'very-slow', label: 'Very Slow — Deliberate, measured' },
+    { value: 'slow', label: 'Slow — Unhurried pace' },
+    { value: 'moderate-slow', label: 'Moderate-Slow — Thoughtful' },
+    { value: 'moderate', label: 'Moderate — Average pace' },
+    { value: 'moderate-fast', label: 'Moderate-Fast — Brisk' },
+    { value: 'fast', label: 'Fast — Quick speaker' },
+    { value: 'very-fast', label: 'Very Fast — Rapid, energetic' }
+  ];
+
+  const VOLUME_OPTIONS = [
+    { value: 'whisper', label: 'Whisper — Barely audible' },
+    { value: 'very-soft', label: 'Very Soft — Hushed' },
+    { value: 'soft', label: 'Soft — Quiet speaker' },
+    { value: 'moderate', label: 'Moderate — Normal volume' },
+    { value: 'projected', label: 'Projected — Carries well' },
+    { value: 'loud', label: 'Loud — Strong projection' },
+    { value: 'booming', label: 'Booming — Commanding presence' }
+  ];
+
+  const WARMTH_OPTIONS = [
+    { value: 'icy', label: 'Icy — Cold and distant' },
+    { value: 'cool', label: 'Cool — Detached' },
+    { value: 'neutral-cool', label: 'Neutral-Cool — Professional' },
+    { value: 'neutral', label: 'Neutral — Neither warm nor cold' },
+    { value: 'neutral-warm', label: 'Neutral-Warm — Approachable' },
+    { value: 'warm', label: 'Warm — Friendly, inviting' },
+    { value: 'very-warm', label: 'Very Warm — Honeyed, comforting' }
+  ];
+
+  const BRIGHTNESS_OPTIONS = [
+    { value: 'very-dark', label: 'Very Dark — Deep, shadowy' },
+    { value: 'dark', label: 'Dark — Rich, low overtones' },
+    { value: 'neutral-dark', label: 'Neutral-Dark — Subtle depth' },
+    { value: 'neutral', label: 'Neutral — Balanced' },
+    { value: 'neutral-bright', label: 'Neutral-Bright — Light touch' },
+    { value: 'bright', label: 'Bright — Clear, vibrant' },
+    { value: 'very-bright', label: 'Very Bright — Sparkling, piercing' }
+  ];
+
+  const RICHNESS_OPTIONS = [
+    { value: 'thin', label: 'Thin — Little resonance' },
+    { value: 'slight', label: 'Slight — Minimal body' },
+    { value: 'moderate', label: 'Moderate — Some fullness' },
+    { value: 'full', label: 'Full — Good resonance' },
+    { value: 'rich', label: 'Rich — Deep, layered' },
+    { value: 'very-rich', label: 'Very Rich — Luxurious depth' }
+  ];
+
+  const SMOOTHNESS_OPTIONS = [
+    { value: 'gravelly', label: 'Gravelly — Very rough texture' },
+    { value: 'rough', label: 'Rough — Textured, gritty' },
+    { value: 'slightly-rough', label: 'Slightly Rough — Some texture' },
+    { value: 'neutral', label: 'Neutral — Neither smooth nor rough' },
+    { value: 'smooth', label: 'Smooth — Flowing quality' },
+    { value: 'silky', label: 'Silky — Very smooth' },
+    { value: 'velvety', label: 'Velvety — Luxuriously smooth' }
+  ];
+
+  const BREATHINESS_OPTIONS = [
+    { value: 'none', label: 'None — Clear, no breath' },
+    { value: 'minimal', label: 'Minimal — Barely there' },
+    { value: 'slight', label: 'Slight — Subtle hint' },
+    { value: 'moderate', label: 'Moderate — Noticeable' },
+    { value: 'breathy', label: 'Breathy — Airy quality' },
+    { value: 'very-breathy', label: 'Very Breathy — Wispy' }
+  ];
+
+  const NASALITY_OPTIONS = [
+    { value: 'none', label: 'None — No nasal quality' },
+    { value: 'minimal', label: 'Minimal — Barely perceptible' },
+    { value: 'slight', label: 'Slight — Subtle' },
+    { value: 'moderate', label: 'Moderate — Noticeable' },
+    { value: 'nasal', label: 'Nasal — Distinct twang' },
+    { value: 'very-nasal', label: 'Very Nasal — Pronounced' }
+  ];
+
+  const ROUGHNESS_OPTIONS = [
+    { value: 'none', label: 'None — Clean, clear' },
+    { value: 'minimal', label: 'Minimal — Hint of grit' },
+    { value: 'slight', label: 'Slight — Subtle rasp' },
+    { value: 'moderate', label: 'Moderate — Noticeable' },
+    { value: 'raspy', label: 'Raspy — Husky quality' },
+    { value: 'very-raspy', label: 'Very Raspy — Gravelly' }
+  ];
+
+  const RESONANCE_OPTIONS = [
+    { value: 'deep-chest', label: 'Deep Chest — Rumbling, low' },
+    { value: 'chest', label: 'Chest — Grounded sound' },
+    { value: 'mixed-low', label: 'Mixed-Low — Chest-dominant' },
+    { value: 'balanced', label: 'Balanced — Mixed resonance' },
+    { value: 'mixed-high', label: 'Mixed-High — Head-dominant' },
+    { value: 'head', label: 'Head — Lifted, light' },
+    { value: 'falsetto', label: 'Falsetto — Very high placement' }
+  ];
+
+  const CLARITY_OPTIONS = [
+    { value: 'muffled', label: 'Muffled — Hard to understand' },
+    { value: 'unclear', label: 'Unclear — Often indistinct' },
+    { value: 'slightly-muffled', label: 'Slightly Muffled — Some mumbling' },
+    { value: 'average', label: 'Average — Normal clarity' },
+    { value: 'clear', label: 'Clear — Easy to understand' },
+    { value: 'very-clear', label: 'Very Clear — Articulate' },
+    { value: 'crystal-clear', label: 'Crystal Clear — Perfect diction' }
+  ];
+
+  const ACCENT_STRENGTH_OPTIONS = [
+    { value: 'barely-noticeable', label: 'Barely Noticeable — Almost neutral' },
+    { value: 'slight', label: 'Slight — Subtle hints' },
+    { value: 'mild', label: 'Mild — Detectible' },
+    { value: 'moderate', label: 'Moderate — Clear but not strong' },
+    { value: 'noticeable', label: 'Noticeable — Obviously present' },
+    { value: 'strong', label: 'Strong — Prominent' },
+    { value: 'very-strong', label: 'Very Strong — Heavy' },
+    { value: 'thick', label: 'Thick — Very pronounced' }
+  ];
+
+  const PROFANITY_OPTIONS = [
+    { value: 'never', label: 'Never — Completely clean' },
+    { value: 'rarely', label: 'Rarely — Only extreme situations' },
+    { value: 'occasionally', label: 'Occasionally — Slips out sometimes' },
+    { value: 'sometimes', label: 'Sometimes — Regular but not constant' },
+    { value: 'regularly', label: 'Regularly — Part of vocabulary' },
+    { value: 'frequently', label: 'Frequently — Common usage' },
+    { value: 'constantly', label: 'Constantly — Every sentence' }
+  ];
+
+  const SARCASM_OPTIONS = [
+    { value: 'never', label: 'Never — Completely sincere' },
+    { value: 'rarely', label: 'Rarely — Almost always genuine' },
+    { value: 'occasionally', label: 'Occasionally — When appropriate' },
+    { value: 'sometimes', label: 'Sometimes — Noticeable tendency' },
+    { value: 'often', label: 'Often — Regular sarcasm' },
+    { value: 'frequently', label: 'Frequently — Default mode' },
+    { value: 'constantly', label: 'Constantly — Dripping sarcasm' }
+  ];
+
   const sections = {
-    0: ( // Vocal Characteristics
-      <div className="space-y-4">
-        <ArchiveSlider label="Pitch" value={data.vocal.pitch} onChange={(e) => update('vocal', 'pitch', parseInt(e.target.value))} leftLabel="Deep" rightLabel="High" />
-        <ArchiveSelect label="Tone" value={data.vocal.tone} onChange={(e) => update('vocal', 'tone', e.target.value)} 
-          options={['Warm', 'Cold', 'Raspy', 'Smooth', 'Nasal', 'Breathy', 'Gravelly', 'Melodic', 'Monotone', 'Shrill']} />
-        <ArchiveSlider label="Volume" value={data.vocal.volume} onChange={(e) => update('vocal', 'volume', parseInt(e.target.value))} leftLabel="Soft-spoken" rightLabel="Loud" />
-        <ArchiveSlider label="Speech Speed" value={data.vocal.speechSpeed} onChange={(e) => update('vocal', 'speechSpeed', parseInt(e.target.value))} leftLabel="Slow" rightLabel="Fast" />
-        <ArchiveInput label="Laugh Type" value={data.vocal.laughType} onChange={(e) => update('vocal', 'laughType', e.target.value)} placeholder="Describe their laugh" />
+    // ========== SUBTAB 0: VOICE DESIGN (ElevenLabs Compatible) ==========
+    0: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">🎙️ VOICE DESIGN</h3>
+          <p className="font-mono text-xs text-amber-700 mb-1">ElevenLabs Voice Design compatible parameters.</p>
+          <p className="font-mono text-[10px] text-amber-600">Configure pitch, timbre, texture, and vocal characteristics.</p>
+        </div>
+
+        {/* Basic Voice Properties */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-xs font-bold text-amber-800 mb-4">📌 BASIC PROPERTIES</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Voice Gender</label>
+              <select 
+                value={data.design?.voiceGender || ''} 
+                onChange={(e) => update('design', 'voiceGender', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Androgynous">Androgynous</option>
+                <option value="Non-binary">Non-binary</option>
+              </select>
+            </div>
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Voice Age</label>
+              <select 
+                value={data.design?.voiceAge || ''} 
+                onChange={(e) => update('design', 'voiceAge', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Child">Child (under 12)</option>
+                <option value="Teen">Teen (13-19)</option>
+                <option value="Young adult">Young adult (20-35)</option>
+                <option value="Middle-aged">Middle-aged (36-55)</option>
+                <option value="Mature">Mature (56-70)</option>
+                <option value="Elderly">Elderly (70+)</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <VoiceSelect 
+              label="Pitch" 
+              value={data.design?.pitch || ''} 
+              onChange={(e) => update('design', 'pitch', e.target.value)}
+              options={PITCH_OPTIONS}
+              description="Base pitch of the voice"
+            />
+            <VoiceSelect 
+              label="Pitch Variation" 
+              value={data.design?.pitchVariation || ''} 
+              onChange={(e) => update('design', 'pitchVariation', e.target.value)}
+              options={PITCH_VARIATION_OPTIONS}
+              description="How much the pitch varies during speech"
+            />
+            <VoiceSelect 
+              label="Speaking Speed" 
+              value={data.design?.speed || ''} 
+              onChange={(e) => update('design', 'speed', e.target.value)}
+              options={SPEED_OPTIONS}
+            />
+            <VoiceSelect 
+              label="Volume/Projection" 
+              value={data.design?.volume || ''} 
+              onChange={(e) => update('design', 'volume', e.target.value)}
+              options={VOLUME_OPTIONS}
+            />
+          </div>
+        </div>
+
+        {/* Timbre Section */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-xs font-bold text-purple-800 mb-4">🎨 TIMBRE CHARACTERISTICS</h4>
+          <p className="font-mono text-[9px] text-purple-600 mb-4">The unique color and texture of the voice</p>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <VoiceSelect 
+              label="Warmth" 
+              value={data.design?.timbreWarmth || ''} 
+              onChange={(e) => update('design', 'timbreWarmth', e.target.value)}
+              options={WARMTH_OPTIONS}
+              color="purple"
+            />
+            <VoiceSelect 
+              label="Brightness" 
+              value={data.design?.timbreBrightness || ''} 
+              onChange={(e) => update('design', 'timbreBrightness', e.target.value)}
+              options={BRIGHTNESS_OPTIONS}
+              color="purple"
+            />
+            <VoiceSelect 
+              label="Richness" 
+              value={data.design?.timbreRichness || ''} 
+              onChange={(e) => update('design', 'timbreRichness', e.target.value)}
+              options={RICHNESS_OPTIONS}
+              color="purple"
+            />
+            <VoiceSelect 
+              label="Smoothness" 
+              value={data.design?.timbreSmoothness || ''} 
+              onChange={(e) => update('design', 'timbreSmoothness', e.target.value)}
+              options={SMOOTHNESS_OPTIONS}
+              color="purple"
+            />
+            <VoiceSelect 
+              label="Clarity" 
+              value={data.design?.clarity || ''} 
+              onChange={(e) => update('design', 'clarity', e.target.value)}
+              options={CLARITY_OPTIONS}
+              color="purple"
+            />
+          </div>
+        </div>
+
+        {/* Special Characteristics */}
+        <div className="border-2 border-teal-200 rounded-sm p-4 bg-teal-50/30">
+          <h4 className="font-mono text-xs font-bold text-teal-800 mb-4">✨ SPECIAL CHARACTERISTICS</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <VoiceSelect 
+              label="Breathiness" 
+              value={data.design?.breathiness || ''} 
+              onChange={(e) => update('design', 'breathiness', e.target.value)}
+              options={BREATHINESS_OPTIONS}
+              color="teal"
+              description="Amount of air/breath sound in voice"
+            />
+            <VoiceSelect 
+              label="Nasality" 
+              value={data.design?.nasality || ''} 
+              onChange={(e) => update('design', 'nasality', e.target.value)}
+              options={NASALITY_OPTIONS}
+              color="teal"
+            />
+            <VoiceSelect 
+              label="Roughness/Hoarseness" 
+              value={data.design?.roughness || ''} 
+              onChange={(e) => update('design', 'roughness', e.target.value)}
+              options={ROUGHNESS_OPTIONS}
+              color="teal"
+              description="Gravelly, raspy quality"
+            />
+            <VoiceSelect 
+              label="Resonance" 
+              value={data.design?.resonance || ''} 
+              onChange={(e) => update('design', 'resonance', e.target.value)}
+              options={RESONANCE_OPTIONS}
+              color="teal"
+              description="Where the voice resonates"
+            />
+          </div>
+        </div>
+
+        {/* Voice Texture & Emotional Tone */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">🎭 TEXTURE & EMOTIONAL TONE</h4>
+          
+          <div className="mb-4">
+            <label className="block font-mono text-xs font-bold text-gray-700 mb-2">Voice Texture Descriptor</label>
+            <div className="flex flex-wrap gap-2">
+              {VOICE_TEXTURES.map((texture) => (
+                <button
+                  key={texture}
+                  onClick={() => update('design', 'voiceTexture', data.design?.voiceTexture === texture ? '' : texture)}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    data.design?.voiceTexture === texture
+                      ? 'bg-amber-600 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+                  }`}
+                >
+                  {texture}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <label className="block font-mono text-xs font-bold text-gray-700 mb-2">Base Emotional Tone</label>
+            <div className="flex flex-wrap gap-2">
+              {EMOTIONAL_TONES.map((tone) => (
+                <button
+                  key={tone}
+                  onClick={() => update('design', 'emotionalTone', data.design?.emotionalTone === tone ? '' : tone)}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    data.design?.emotionalTone === tone
+                      ? 'bg-purple-600 text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200'
+                  }`}
+                >
+                  {tone}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     ),
-    1: ( // Speech Patterns
-      <div className="space-y-4">
-        <ArchiveSelect label="Sentence Structure" value={data.speech.sentenceStructure} onChange={(e) => update('speech', 'sentenceStructure', e.target.value)} 
-          options={['Short and direct', 'Average', 'Long and elaborate', 'Fragmented', 'Poetic']} />
-        <ArchiveInput label="Filler Words" value={data.speech.fillerWords} onChange={(e) => update('speech', 'fillerWords', e.target.value)} placeholder="e.g. 'like', 'um', 'you know'" />
-        <ArchiveSlider label="Profanity Level" value={data.speech.profanityLevel} onChange={(e) => update('speech', 'profanityLevel', parseInt(e.target.value))} leftLabel="None" rightLabel="Frequent" />
-        <ArchiveSlider label="Sarcasm Frequency" value={data.speech.sarcasmFrequency} onChange={(e) => update('speech', 'sarcasmFrequency', parseInt(e.target.value))} leftLabel="Sincere" rightLabel="Very Sarcastic" />
-        <ArchiveSelect label="Humor Style" value={data.speech.humorStyle} onChange={(e) => update('speech', 'humorStyle', e.target.value)} 
-          options={['Dry/Deadpan', 'Witty', 'Goofy/Silly', 'Dark', 'Self-deprecating', 'Sarcastic', 'Puns/Wordplay', 'Physical', 'None']} />
+
+    // ========== SUBTAB 1: SPEECH PATTERNS ==========
+    1: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">💬 SPEECH PATTERNS</h3>
+          <p className="font-mono text-xs text-blue-700">How the character speaks: rhythm, pauses, articulation, and verbal habits.</p>
+        </div>
+
+        {/* Articulation & Structure */}
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-xs font-bold text-blue-800 mb-4">🗣️ ARTICULATION & STRUCTURE</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Articulation</label>
+              <select 
+                value={data.speech?.articulation || ''} 
+                onChange={(e) => update('speech', 'articulation', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Crisp and precise">Crisp and precise</option>
+                <option value="Clear but relaxed">Clear but relaxed</option>
+                <option value="Average/Normal">Average/Normal</option>
+                <option value="Slightly mumbled">Slightly mumbled</option>
+                <option value="Often mumbles">Often mumbles</option>
+                <option value="Slurred">Slurred</option>
+                <option value="Over-enunciated">Over-enunciated</option>
+                <option value="Theatrical">Theatrical</option>
+              </select>
+            </div>
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Sentence Structure</label>
+              <select 
+                value={data.speech?.sentenceStructure || ''} 
+                onChange={(e) => update('speech', 'sentenceStructure', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Short and direct">Short and direct</option>
+                <option value="Simple and clear">Simple and clear</option>
+                <option value="Average complexity">Average complexity</option>
+                <option value="Long and elaborate">Long and elaborate</option>
+                <option value="Complex and winding">Complex and winding</option>
+                <option value="Fragmented">Fragmented/Incomplete</option>
+                <option value="Poetic and flowing">Poetic and flowing</option>
+                <option value="Technical and precise">Technical and precise</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Speech Rhythm</label>
+              <select 
+                value={data.speech?.speechRhythm || ''} 
+                onChange={(e) => update('speech', 'speechRhythm', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Steady and even">Steady and even</option>
+                <option value="Staccato/Punchy">Staccato/Punchy</option>
+                <option value="Flowing and smooth">Flowing and smooth</option>
+                <option value="Halting and hesitant">Halting and hesitant</option>
+                <option value="Rapid bursts">Rapid bursts</option>
+                <option value="Deliberate and measured">Deliberate and measured</option>
+                <option value="Musical/Sing-song">Musical/Sing-song</option>
+                <option value="Unpredictable">Unpredictable/Variable</option>
+              </select>
+            </div>
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Pause Pattern</label>
+              <select 
+                value={data.speech?.pausePattern || ''} 
+                onChange={(e) => update('speech', 'pausePattern', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Minimal pauses">Minimal pauses</option>
+                <option value="Natural pausing">Natural pausing</option>
+                <option value="Dramatic pauses">Dramatic pauses</option>
+                <option value="Long thoughtful pauses">Long thoughtful pauses</option>
+                <option value="Frequent brief pauses">Frequent brief pauses</option>
+                <option value="Pauses for effect">Pauses for effect</option>
+                <option value="Nervous pauses">Nervous pauses</option>
+                <option value="Strategic pauses">Strategic pauses</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Verbal Habits */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">🔄 VERBAL HABITS</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Filler Words</label>
+              <input 
+                type="text" 
+                value={data.speech?.fillerWords || ''} 
+                onChange={(e) => update('speech', 'fillerWords', e.target.value)} 
+                placeholder="e.g., 'like', 'um', 'you know', 'basically', 'I mean'" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              />
+            </div>
+
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Emphasis Style</label>
+              <select 
+                value={data.speech?.emphasis || ''} 
+                onChange={(e) => update('speech', 'emphasis', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Volume increase">Volume increase</option>
+                <option value="Pitch change">Pitch change</option>
+                <option value="Slower speech">Slower speech</option>
+                <option value="Word repetition">Word repetition</option>
+                <option value="Pause before">Pause before emphasis</option>
+                <option value="Combination">Combination of methods</option>
+                <option value="Minimal emphasis">Minimal emphasis</option>
+              </select>
+            </div>
+
+            <VoiceSelect 
+              label="Profanity Level" 
+              value={data.speech?.profanityLevel || ''} 
+              onChange={(e) => update('speech', 'profanityLevel', e.target.value)}
+              options={PROFANITY_OPTIONS}
+              color="gray"
+            />
+            <VoiceSelect 
+              label="Sarcasm Frequency" 
+              value={data.speech?.sarcasmFrequency || ''} 
+              onChange={(e) => update('speech', 'sarcasmFrequency', e.target.value)}
+              options={SARCASM_OPTIONS}
+              color="gray"
+            />
+          </div>
+        </div>
+
+        {/* Humor & Emotional Expression */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">😄 EMOTIONAL EXPRESSION IN VOICE</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Humor Style</label>
+              <select 
+                value={data.speech?.humorStyle || ''} 
+                onChange={(e) => update('speech', 'humorStyle', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Dry/Deadpan">Dry/Deadpan</option>
+                <option value="Witty">Witty</option>
+                <option value="Goofy/Silly">Goofy/Silly</option>
+                <option value="Dark">Dark humor</option>
+                <option value="Self-deprecating">Self-deprecating</option>
+                <option value="Sarcastic">Sarcastic</option>
+                <option value="Puns/Wordplay">Puns/Wordplay</option>
+                <option value="Observational">Observational</option>
+                <option value="None">Rarely jokes</option>
+              </select>
+            </div>
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Laugh Type</label>
+              <input 
+                type="text" 
+                value={data.speech?.laughType || ''} 
+                onChange={(e) => update('speech', 'laughType', e.target.value)} 
+                placeholder="e.g., hearty belly laugh, quiet chuckle, snort" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">When Crying</label>
+              <input 
+                type="text" 
+                value={data.speech?.cryingStyle || ''} 
+                onChange={(e) => update('speech', 'cryingStyle', e.target.value)} 
+                placeholder="e.g., silent tears, sobbing, hiccups" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              />
+            </div>
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">When Shouting/Angry</label>
+              <input 
+                type="text" 
+                value={data.speech?.shoutingStyle || ''} 
+                onChange={(e) => update('speech', 'shoutingStyle', e.target.value)} 
+                placeholder="e.g., roars, voice cracks, cold and quiet" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     ),
-    2: ( // Languages & Expression
-      <div className="grid grid-cols-1 gap-6">
-        <ArchiveInput label="Native Language" value={data.languages.nativeLanguage} onChange={(e) => update('languages', 'nativeLanguage', e.target.value)} placeholder="First language" />
-        <ArchiveInput label="Second Languages (with fluency)" value={data.languages.secondLanguages} onChange={(e) => update('languages', 'secondLanguages', e.target.value)} placeholder="e.g. Spanish (fluent), French (basic)" />
-        <ArchiveInput label="Code-Switching Habits" value={data.languages.codeSwitching} onChange={(e) => update('languages', 'codeSwitching', e.target.value)} placeholder="Do they switch languages/dialects?" />
-        <ArchiveInput label="Written vs Spoken Difference" value={data.languages.writtenVsSpoken} onChange={(e) => update('languages', 'writtenVsSpoken', e.target.value)} placeholder="How does their writing differ from speech?" multiline />
+
+    // ========== SUBTAB 2: LANGUAGES & ACCENT ==========
+    2: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-green-900 mb-2">🌍 LANGUAGES & ACCENT</h3>
+          <p className="font-mono text-xs text-green-700">Language abilities, accent characteristics, and dialect features.</p>
+        </div>
+
+        {/* Primary Language & Accent */}
+        <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
+          <h4 className="font-mono text-xs font-bold text-green-800 mb-4">🗣️ PRIMARY LANGUAGE & ACCENT</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Native Language</label>
+              <input 
+                type="text" 
+                value={data.languages?.nativeLanguage || ''} 
+                onChange={(e) => update('languages', 'nativeLanguage', e.target.value)} 
+                placeholder="e.g., English, Spanish, Mandarin" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              />
+            </div>
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Accent Region</label>
+              <select 
+                value={data.languages?.accent?.split(' - ')[0] || ''} 
+                onChange={(e) => update('languages', 'accent', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select Region --</option>
+                {Object.entries(ACCENT_OPTIONS).map(([region, accents]) => (
+                  <optgroup key={region} label={region}>
+                    {accents.map((accent) => (
+                      <option key={accent} value={accent}>{accent}</option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <VoiceSelect 
+              label="Accent Strength" 
+              value={data.languages?.accentStrength || ''} 
+              onChange={(e) => update('languages', 'accentStrength', e.target.value)}
+              options={ACCENT_STRENGTH_OPTIONS}
+              color="green"
+              description="How pronounced is the accent"
+            />
+
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Accent Influence on Speech</label>
+              <select 
+                value={data.languages?.accentInfluence || ''} 
+                onChange={(e) => update('languages', 'accentInfluence', e.target.value)} 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              >
+                <option value="">-- Select --</option>
+                <option value="Pronunciation only">Pronunciation only</option>
+                <option value="Rhythm and intonation">Rhythm and intonation</option>
+                <option value="Word choice affected">Word choice affected</option>
+                <option value="Grammar influenced">Grammar influenced</option>
+                <option value="Full immersion">Full immersion (all aspects)</option>
+                <option value="Code-switches">Code-switches frequently</option>
+                <option value="Neutral/Adapted">Neutral/Adapted to audience</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Additional Languages */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">📚 ADDITIONAL LANGUAGES</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Second Languages (with fluency level)</label>
+              <textarea 
+                value={data.languages?.secondLanguages || ''} 
+                onChange={(e) => update('languages', 'secondLanguages', e.target.value)} 
+                placeholder="e.g., Spanish (fluent), French (conversational), Japanese (basic), Latin (reading only)" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+              />
+            </div>
+
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Code-Switching Habits</label>
+              <input 
+                type="text" 
+                value={data.languages?.codeSwitching || ''} 
+                onChange={(e) => update('languages', 'codeSwitching', e.target.value)} 
+                placeholder="e.g., Switches to Spanish when emotional, uses French phrases" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Dialect Features */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">🔤 DIALECT FEATURES</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Dialect-Specific Features</label>
+              <textarea 
+                value={data.languages?.dialectFeatures || ''} 
+                onChange={(e) => update('languages', 'dialectFeatures', e.target.value)} 
+                placeholder="e.g., Drops 'g' endings (runnin'), uses 'y'all', pronounces 'car' as 'cah', uses glottal stops" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+              />
+            </div>
+
+            <div>
+              <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Written vs Spoken Difference</label>
+              <textarea 
+                value={data.languages?.writtenVsSpoken || ''} 
+                onChange={(e) => update('languages', 'writtenVsSpoken', e.target.value)} 
+                placeholder="e.g., Writes formally but speaks casually, texting style differs from speech" 
+                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 3: VOICE PREVIEW ==========
+    3: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-white mb-2">📋 VOICE PREVIEW</h3>
+          <p className="font-mono text-xs text-gray-300">ElevenLabs-compatible voice description generated from your settings.</p>
+        </div>
+
+        {/* Generated Description */}
+        <div className="border-2 border-amber-300 rounded-sm p-4 bg-white">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-mono text-sm font-bold text-gray-800">Generated Voice Description</h4>
+            <button
+              onClick={() => navigator.clipboard.writeText(generateVoiceDescription())}
+              className="flex items-center gap-1 px-2 py-1 bg-amber-100 hover:bg-amber-200 text-amber-700 rounded-sm font-mono text-[10px] transition-colors"
+            >
+              <Icons.Copy className="w-3 h-3" />
+              Copy
+            </button>
+          </div>
+          
+          <div className="font-mono text-sm leading-relaxed p-4 rounded bg-amber-50 border border-amber-200 text-gray-800">
+            {generateVoiceDescription()}
+          </div>
+          
+          <p className="font-mono text-[10px] text-gray-500 mt-2">
+            💡 This description can be used directly with ElevenLabs Voice Design or similar TTS systems.
+          </p>
+        </div>
+
+        {/* Visual Summary */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-gray-50">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📊 VOICE CHARACTERISTICS SUMMARY</h4>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+            <div className="p-3 rounded bg-white border border-gray-200 text-center">
+              <div className="font-mono text-[10px] text-gray-500">Gender</div>
+              <div className="font-mono text-sm font-bold text-gray-800">{data.design?.voiceGender || '—'}</div>
+            </div>
+            <div className="p-3 rounded bg-white border border-gray-200 text-center">
+              <div className="font-mono text-[10px] text-gray-500">Age</div>
+              <div className="font-mono text-sm font-bold text-gray-800">{data.design?.voiceAge || '—'}</div>
+            </div>
+            <div className="p-3 rounded bg-white border border-gray-200 text-center">
+              <div className="font-mono text-[10px] text-gray-500">Accent</div>
+              <div className="font-mono text-sm font-bold text-gray-800">{data.languages?.accent || '—'}</div>
+            </div>
+            <div className="p-3 rounded bg-white border border-gray-200 text-center">
+              <div className="font-mono text-[10px] text-gray-500">Texture</div>
+              <div className="font-mono text-sm font-bold text-gray-800">{data.design?.voiceTexture || '—'}</div>
+            </div>
+          </div>
+
+          {/* Characteristics Visual */}
+          <div className="space-y-2">
+            {[
+              { label: 'Pitch', value: data.design?.pitch },
+              { label: 'Speed', value: data.design?.speed },
+              { label: 'Warmth', value: data.design?.timbreWarmth },
+              { label: 'Brightness', value: data.design?.timbreBrightness },
+              { label: 'Smoothness', value: data.design?.timbreSmoothness },
+              { label: 'Breathiness', value: data.design?.breathiness },
+              { label: 'Roughness', value: data.design?.roughness },
+              { label: 'Resonance', value: data.design?.resonance },
+              { label: 'Clarity', value: data.design?.clarity },
+            ].map((item, i) => (
+              <div key={i} className="flex items-center gap-2 py-1 border-b border-gray-100 last:border-0">
+                <span className="font-mono text-[10px] text-gray-500 w-24">{item.label}</span>
+                <span className="font-mono text-xs font-medium text-gray-800">
+                  {item.value ? item.value.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : '—'}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tips */}
+        <div className="border border-blue-200 rounded-sm p-4 bg-blue-50">
+          <h4 className="font-mono text-xs font-bold text-blue-800 mb-2">💡 Voice Design Tips</h4>
+          <ul className="font-mono text-[10px] text-blue-700 space-y-1">
+            <li>• ElevenLabs Voice Design uses text descriptions to create voices</li>
+            <li>• Be specific about qualities: "warm, breathy female voice with slight British accent"</li>
+            <li>• Distinctive characteristics create more memorable voices</li>
+            <li>• Accent strength affects how recognizable the origin is</li>
+            <li>• Combine texture words for unique voices: "silky and resonant"</li>
+          </ul>
+        </div>
+
+        {/* Reset */}
+        <div className="flex justify-end">
+          <button
+            onClick={() => {
+              if (confirm('Reset all voice settings?')) {
+                updateData('voice', {
+                  design: { 
+                    voiceGender: '', voiceAge: '', pitch: '', pitchVariation: '', speed: '', volume: '',
+                    timbreWarmth: '', timbreBrightness: '', timbreRichness: '', timbreSmoothness: '',
+                    breathiness: '', nasality: '', roughness: '', resonance: '', clarity: '',
+                    voiceTexture: '', emotionalTone: ''
+                  },
+                  speech: { 
+                    articulation: '', sentenceStructure: '', fillerWords: '', profanityLevel: '', 
+                    sarcasmFrequency: '', humorStyle: '', speechRhythm: '', emphasis: '', pausePattern: '',
+                    laughType: '', cryingStyle: '', shoutingStyle: ''
+                  },
+                  languages: { 
+                    nativeLanguage: '', accent: '', accentStrength: '', accentInfluence: '',
+                    secondLanguages: '', codeSwitching: '', dialectFeatures: '', writtenVsSpoken: '' 
+                  }
+                });
+              }
+            }}
+            className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-sm font-mono text-xs transition-colors"
+          >
+            Reset Voice Settings
+          </button>
+        </div>
       </div>
     ),
   };
@@ -11875,7 +16061,2890 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
   return sections[subtab] || sections[0];
 };
 
+// ============================================================================
+// HISTORY CONTENT - Complete Implementation
+// ============================================================================
+const HistoryContent = ({ data, updateData, subtab }) => {
+  const update = (section, field, value) => {
+    updateData('history', { ...data, [section]: { ...data[section], [field]: value } });
+  };
+
+  const toggleArrayItem = (section, field, item, maxItems = 10) => {
+    const current = data[section]?.[field] || [];
+    if (current.includes(item)) {
+      update(section, field, current.filter(i => i !== item));
+    } else if (current.length < maxItems) {
+      update(section, field, [...current, item]);
+    }
+  };
+
+  // Calcular completude da história
+  const calculateHistoryCompleteness = () => {
+    const sections = {
+      origin: ['birthPlace', 'birthCircumstances', 'earlyChildhood', 'adolescence', 'currentLifePhase'],
+      family: ['familyStructure', 'motherDescription', 'fatherDescription', 'familyRole'],
+      moments: ['happiestMemory', 'worstMemory', 'proudestAchievement'],
+      trauma: ['healingProgress'],
+      memories: ['earliestMemory', 'childhoodHome']
+    };
+
+    let filled = 0;
+    let total = 0;
+
+    Object.entries(sections).forEach(([section, fields]) => {
+      fields.forEach(field => {
+        total++;
+        if (data[section]?.[field]) filled++;
+      });
+    });
+
+    return Math.round((filled / total) * 100);
+  };
+
+  // Analisar o tom geral da história
+  const analyzeHistoryTone = () => {
+    let positiveScore = 0;
+    let negativeScore = 0;
+
+    // Análise de trauma
+    const traumaFields = [
+      data.trauma?.childhoodTrauma?.length || 0,
+      data.trauma?.coreWounds?.length || 0,
+      data.trauma?.abuseSurvived?.length || 0
+    ];
+    negativeScore += traumaFields.reduce((a, b) => a + b, 0) * 2;
+
+    // Análise de momentos positivos
+    if (data.moments?.happiestMemory) positiveScore += 3;
+    if (data.moments?.proudestAchievement) positiveScore += 3;
+    if ((data.moments?.definingMoments?.length || 0) > 0) positiveScore += 2;
+
+    // Análise de família
+    if (data.family?.motherRelationship === 'loving' || data.family?.motherRelationship === 'close') positiveScore += 2;
+    if (data.family?.motherRelationship === 'abusive' || data.family?.motherRelationship === 'absent') negativeScore += 3;
+    if (data.family?.fatherRelationship === 'loving' || data.family?.fatherRelationship === 'close') positiveScore += 2;
+    if (data.family?.fatherRelationship === 'abusive' || data.family?.fatherRelationship === 'absent') negativeScore += 3;
+
+    // Análise de cura
+    const healingProgress = data.trauma?.healingProgress || 5;
+    if (healingProgress >= 7) positiveScore += 3;
+    if (healingProgress <= 3) negativeScore += 2;
+
+    // Análise de infância
+    if (data.origin?.childhoodStability === 'very-stable') positiveScore += 2;
+    if (data.origin?.childhoodStability === 'chaotic' || data.origin?.childhoodStability === 'unstable') negativeScore += 2;
+
+    const total = positiveScore + negativeScore;
+    if (total === 0) return { tone: 'neutral', label: 'Neutro', color: 'gray' };
+
+    const ratio = positiveScore / total;
+    if (ratio >= 0.7) return { tone: 'positive', label: 'Majoritariamente Positiva', color: 'emerald' };
+    if (ratio >= 0.5) return { tone: 'mixed-positive', label: 'Mista (tendendo a positiva)', color: 'blue' };
+    if (ratio >= 0.3) return { tone: 'mixed-negative', label: 'Mista (tendendo a difícil)', color: 'amber' };
+    return { tone: 'difficult', label: 'Passado Difícil', color: 'red' };
+  };
+
+  const completeness = calculateHistoryCompleteness();
+  const historyTone = analyzeHistoryTone();
+
+  const sections = {
+    // ========== SUBTAB 0: ORIGIN STORY ==========
+    0: (
+      <div className="space-y-6">
+        <div className="bg-teal-50 border border-teal-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-teal-900 mb-2">🌅 HISTÓRIA DE ORIGEM</h3>
+          <p className="font-mono text-xs text-teal-800 leading-relaxed">
+            O começo da jornada: nascimento, infância e formação inicial do personagem.
+          </p>
+        </div>
+
+        {/* Dashboard de história */}
+        <div className="bg-gradient-to-br from-gray-50 to-teal-50 border border-gray-200 rounded-sm p-4">
+          <div className="flex justify-between items-center mb-3">
+            <h4 className="font-mono text-xs font-bold text-gray-700">📊 Visão Geral da História</h4>
+            <span className={`px-2 py-1 rounded font-mono text-[10px] font-bold ${
+              historyTone.color === 'emerald' ? 'bg-emerald-100 text-emerald-700' :
+              historyTone.color === 'blue' ? 'bg-blue-100 text-blue-700' :
+              historyTone.color === 'amber' ? 'bg-amber-100 text-amber-700' :
+              historyTone.color === 'red' ? 'bg-red-100 text-red-700' :
+              'bg-gray-100 text-gray-700'
+            }`}>{historyTone.label}</span>
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-white rounded p-2 border border-gray-200">
+              <div className="font-mono text-[9px] text-gray-500">Completude</div>
+              <div className="font-mono text-lg font-bold text-teal-600">{completeness}%</div>
+            </div>
+            <div className="bg-white rounded p-2 border border-gray-200">
+              <div className="font-mono text-[9px] text-gray-500">Fase Atual</div>
+              <div className="font-mono text-sm font-bold text-gray-700">{data.origin?.currentLifePhase || 'Não definida'}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* NASCIMENTO */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">👶 Nascimento</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Data de Nascimento</label>
+                <input type="text" value={data.origin?.birthDate || ''} onChange={(e) => update('origin', 'birthDate', e.target.value)} placeholder="Ex: 15/03/1990, Primavera de 1985..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Local de Nascimento</label>
+                <input type="text" value={data.origin?.birthPlace || ''} onChange={(e) => update('origin', 'birthPlace', e.target.value)} placeholder="Ex: São Paulo, Hospital Santa Casa..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ordem de Nascimento</label>
+                <select value={data.origin?.birthOrder || ''} onChange={(e) => update('origin', 'birthOrder', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="only">Filho único</option>
+                  <option value="firstborn">Primogênito</option>
+                  <option value="middle">Filho do meio</option>
+                  <option value="youngest">Caçula</option>
+                  <option value="twin">Gêmeo</option>
+                  <option value="adopted-only">Adotado (único)</option>
+                  <option value="adopted-siblings">Adotado (com irmãos)</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Gravidez/Chegada</label>
+                <select value={data.origin?.plannedPregnancy || ''} onChange={(e) => update('origin', 'plannedPregnancy', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="planned-wanted">Planejado e muito desejado</option>
+                  <option value="planned">Planejado</option>
+                  <option value="surprise-welcome">Surpresa, mas bem-vindo</option>
+                  <option value="surprise-complicated">Surpresa, situação complicada</option>
+                  <option value="unwanted">Não desejado</option>
+                  <option value="fertility-treatment">Tratamento de fertilidade</option>
+                  <option value="adopted-infant">Adotado (bebê)</option>
+                  <option value="adopted-older">Adotado (mais velho)</option>
+                  <option value="surrogate">Barriga de aluguel</option>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Circunstâncias do Nascimento</label>
+                <select value={data.origin?.birthCircumstances || ''} onChange={(e) => update('origin', 'birthCircumstances', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="normal">Normal, sem complicações</option>
+                  <option value="difficult">Parto difícil</option>
+                  <option value="premature">Prematuro</option>
+                  <option value="cesarean-planned">Cesárea planejada</option>
+                  <option value="cesarean-emergency">Cesárea de emergência</option>
+                  <option value="home-birth">Parto em casa</option>
+                  <option value="complications-baby">Complicações (bebê)</option>
+                  <option value="complications-mother">Complicações (mãe)</option>
+                  <option value="traumatic">Traumático</option>
+                  <option value="special-circumstances">Circunstâncias especiais</option>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* PRIMEIRA INFÂNCIA */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🧒 Primeira Infância (0-6 anos)</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ambiente de Criação</label>
+                <select value={data.origin?.childhoodEnvironment || ''} onChange={(e) => update('origin', 'childhoodEnvironment', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="loving-stable">Amoroso e estável</option>
+                  <option value="loving-chaotic">Amoroso mas caótico</option>
+                  <option value="strict-stable">Rigoroso mas estável</option>
+                  <option value="strict-harsh">Rigoroso e severo</option>
+                  <option value="permissive">Permissivo/Sem limites</option>
+                  <option value="neglectful">Negligente</option>
+                  <option value="abusive">Abusivo</option>
+                  <option value="overprotective">Superprotetor</option>
+                  <option value="inconsistent">Inconsistente</option>
+                  <option value="single-parent">Pai/Mãe solo</option>
+                  <option value="extended-family">Criado por família extensa</option>
+                  <option value="institutional">Institucional (orfanato, etc.)</option>
+                  <option value="foster-care">Lares temporários</option>
+                  <option value="mixed">Misto/Variou</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Condição Socioeconômica</label>
+                <select value={data.origin?.childhoodSocioeconomic || ''} onChange={(e) => update('origin', 'childhoodSocioeconomic', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="poverty">Pobreza</option>
+                  <option value="working-class">Classe trabalhadora</option>
+                  <option value="lower-middle">Classe média baixa</option>
+                  <option value="middle">Classe média</option>
+                  <option value="upper-middle">Classe média alta</option>
+                  <option value="wealthy">Rico</option>
+                  <option value="elite">Elite</option>
+                  <option value="variable">Variou muito</option>
+                  <option value="downward">Declínio financeiro</option>
+                  <option value="upward">Ascensão financeira</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estabilidade do Lar</label>
+              <select value={data.origin?.childhoodStability || ''} onChange={(e) => update('origin', 'childhoodStability', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="very-stable">Muito estável — Mesmo lar, rotina consistente</option>
+                <option value="stable">Estável — Poucas mudanças</option>
+                <option value="moderate">Moderado — Algumas mudanças</option>
+                <option value="unstable">Instável — Mudanças frequentes</option>
+                <option value="chaotic">Caótico — Constante incerteza</option>
+                <option value="disrupted">Interrompido — Evento traumático mudou tudo</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Primeira Infância</label>
+              <textarea value={data.origin?.earlyChildhood || ''} onChange={(e) => update('origin', 'earlyChildhood', e.target.value)} placeholder="Como foram os primeiros anos? Memórias, ambiente, cuidadores..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Personalidade na Infância</label>
+              <select value={data.origin?.childhoodPersonality || ''} onChange={(e) => update('origin', 'childhoodPersonality', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="happy-outgoing">Feliz e extrovertido</option>
+                <option value="shy-quiet">Tímido e quieto</option>
+                <option value="curious-adventurous">Curioso e aventureiro</option>
+                <option value="anxious-clingy">Ansioso e apegado</option>
+                <option value="independent">Independente desde cedo</option>
+                <option value="creative-dreamy">Criativo e sonhador</option>
+                <option value="serious-mature">Sério e maduro demais</option>
+                <option value="rebellious">Rebelde desde pequeno</option>
+                <option value="people-pleaser">Buscava agradar</option>
+                <option value="invisible">Tentava ser invisível</option>
+                <option value="troublemaker">Encrenqueiro</option>
+                <option value="perfectionist">Perfeccionista</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* INFÂNCIA (7-12) */}
+        <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
+          <h4 className="font-mono text-sm font-bold text-yellow-800 mb-3">📚 Infância (7-12 anos)</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência Escolar (Fundamental)</label>
+              <select value={data.origin?.elementarySchool || ''} onChange={(e) => update('origin', 'elementarySchool', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="loved">Amava a escola</option>
+                <option value="good-student">Bom aluno, experiência positiva</option>
+                <option value="average">Experiência mediana</option>
+                <option value="struggled">Teve dificuldades</option>
+                <option value="bullied">Sofreu bullying</option>
+                <option value="bully">Foi o bully</option>
+                <option value="outsider">Outsider/Não se encaixava</option>
+                <option value="popular">Popular</option>
+                <option value="teacher-favorite">Favorito dos professores</option>
+                <option value="troublemaker">Encrenqueiro</option>
+                <option value="homeschooled">Educação em casa</option>
+                <option value="changed-schools">Mudou muito de escola</option>
+                <option value="private">Escola particular privilegiada</option>
+                <option value="public-underfunded">Escola pública precária</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Amizades na Infância</label>
+              <select value={data.origin?.childhoodFriendships || ''} onChange={(e) => update('origin', 'childhoodFriendships', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="many-friends">Muitos amigos, muito social</option>
+                <option value="few-close">Poucos mas próximos</option>
+                <option value="one-best-friend">Um melhor amigo</option>
+                <option value="imaginary-friends">Amigos imaginários</option>
+                <option value="loner">Solitário por escolha</option>
+                <option value="isolated">Isolado/Excluído</option>
+                <option value="sibling-focused">Focado nos irmãos</option>
+                <option value="adult-preference">Preferia adultos</option>
+                <option value="neighborhood-gang">Turma do bairro</option>
+                <option value="changing">Mudava muito de amigos</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Atividades na Infância (até 6)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Esportes','Artes','Música','Dança','Leitura','Videogames','Brincadeiras ao ar livre','TV/Filmes','Coleções','Animais','Construir coisas','Desenho','Teatro','Religião','Escotismo','Artes marciais','Natação','Futebol','Vôlei','Basquete','Xadrez','Instrumentos','Computadores','Cozinhar','Artesanato','Explorar natureza','Nada específico','Trabalho infantil'].map(activity => (
+                  <button key={activity} onClick={() => toggleArrayItem('origin', 'childhoodActivities', activity, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.origin?.childhoodActivities || []).includes(activity) ? 'bg-yellow-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{activity}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* ADOLESCÊNCIA */}
+        <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
+          <h4 className="font-mono text-sm font-bold text-orange-800 mb-3">🎒 Adolescência (13-17 anos)</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência no Ensino Médio</label>
+              <select value={data.origin?.highSchoolExperience || ''} onChange={(e) => update('origin', 'highSchoolExperience', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="best-years">Melhores anos da vida</option>
+                <option value="good">Experiência boa</option>
+                <option value="average">Experiência mediana</option>
+                <option value="difficult">Difícil</option>
+                <option value="worst-years">Piores anos da vida</option>
+                <option value="popular">Era popular</option>
+                <option value="nerd">Nerd/CDF</option>
+                <option value="artsy">Grupo artístico</option>
+                <option value="jock">Atleta</option>
+                <option value="rebel">Rebelde</option>
+                <option value="invisible">Invisível</option>
+                <option value="dropout">Abandonou</option>
+                <option value="expelled">Expulso</option>
+                <option value="working">Trabalhava e estudava</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nível de Rebeldia Adolescente</label>
+              <select value={data.origin?.teenageRebellion || ''} onChange={(e) => update('origin', 'teenageRebellion', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="none">Nenhuma — Era muito comportado</option>
+                <option value="mild">Leve — Pequenos atos de rebeldia</option>
+                <option value="typical">Típica — Discussões, testes de limite</option>
+                <option value="significant">Significativa — Problemas sérios</option>
+                <option value="extreme">Extrema — Fora de controle</option>
+                <option value="delayed">Atrasada — Veio depois</option>
+                <option value="suppressed">Suprimida — Não podia se rebelar</option>
+                <option value="internal">Interna — Rebeldia silenciosa</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Primeiro Amor / Experiências Românticas</label>
+              <select value={data.origin?.firstLove || ''} onChange={(e) => update('origin', 'firstLove', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="none">Nenhuma experiência</option>
+                <option value="crushes-only">Apenas crushes não correspondidos</option>
+                <option value="first-love-beautiful">Primeiro amor lindo</option>
+                <option value="first-love-painful">Primeiro amor doloroso</option>
+                <option value="many-relationships">Vários relacionamentos</option>
+                <option value="long-relationship">Namoro longo</option>
+                <option value="forbidden-love">Amor proibido</option>
+                <option value="heartbroken">Coração partido</option>
+                <option value="late-bloomer">Despertou tarde</option>
+                <option value="focused-elsewhere">Focado em outras coisas</option>
+                <option value="complicated">Situação complicada</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Adolescência</label>
+              <textarea value={data.origin?.adolescence || ''} onChange={(e) => update('origin', 'adolescence', e.target.value)} placeholder="Como foi a adolescência? Desafios, descobertas, formação de identidade..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Passagem para a Vida Adulta</label>
+              <select value={data.origin?.comingOfAge || ''} onChange={(e) => update('origin', 'comingOfAge', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="smooth">Suave — Transição natural</option>
+                <option value="eager">Ansioso — Mal podia esperar</option>
+                <option value="reluctant">Relutante — Não queria crescer</option>
+                <option value="forced">Forçado — Teve que amadurecer cedo</option>
+                <option value="traumatic">Traumático — Evento marcante</option>
+                <option value="gradual">Gradual — Sem momento definido</option>
+                <option value="ritual">Ritual — Cerimônia ou marco cultural</option>
+                <option value="delayed">Atrasado — Demorou a amadurecer</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* VIDA ADULTA */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🏠 Vida Adulta</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Fase Atual da Vida</label>
+              <select value={data.origin?.currentLifePhase || ''} onChange={(e) => update('origin', 'currentLifePhase', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="late-adolescence">Adolescência tardia (17-19)</option>
+                <option value="emerging-adult">Adulto emergente (20-25)</option>
+                <option value="young-adult">Jovem adulto (26-35)</option>
+                <option value="established-adult">Adulto estabelecido (36-45)</option>
+                <option value="midlife">Meia-idade (46-55)</option>
+                <option value="mature-adult">Adulto maduro (56-65)</option>
+                <option value="young-senior">Idoso jovem (66-75)</option>
+                <option value="senior">Terceira idade (76+)</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Marcos da Vida Adulta (até 8)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Saiu de casa','Primeira moradia própria','Faculdade','Primeiro emprego','Carreira estabelecida','Casamento','Divórcio','Filhos','Perda de pai/mãe','Mudança de cidade','Mudança de país','Crise de meia-idade','Doença grave','Recuperação','Falência','Sucesso financeiro','Aposentadoria','Viuvez','Reinvenção','Volta aos estudos','Empreendedorismo','Nenhum marco ainda'].map(milestone => (
+                  <button key={milestone} onClick={() => toggleArrayItem('origin', 'adultMilestones', milestone, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.origin?.adultMilestones || []).includes(milestone) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{milestone}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Jovem Adulto / Vida Adulta Inicial</label>
+              <textarea value={data.origin?.youngAdulthood || ''} onChange={(e) => update('origin', 'youngAdulthood', e.target.value)} placeholder="Como foi a transição para a vida adulta? Desafios, conquistas, mudanças..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Notas sobre a Fase Atual</label>
+              <textarea value={data.origin?.lifePhaseNotes || ''} onChange={(e) => update('origin', 'lifePhaseNotes', e.target.value)} placeholder="O que define esta fase da vida? Preocupações, objetivos, estado atual..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 1: FAMILY BACKGROUND ==========
+    1: (
+      <div className="space-y-6">
+        <div className="bg-amber-50 border border-amber-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">👨‍👩‍👧 BACKGROUND FAMILIAR</h3>
+          <p className="font-mono text-xs text-amber-800 leading-relaxed">
+            A família de origem e sua influência na formação do personagem.
+          </p>
+        </div>
+
+        {/* ESTRUTURA FAMILIAR */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🏠 Estrutura Familiar</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Família</label>
+                <select value={data.family?.familyStructure || ''} onChange={(e) => update('family', 'familyStructure', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="nuclear-traditional">Nuclear tradicional (pai, mãe, filhos)</option>
+                  <option value="single-mother">Mãe solo</option>
+                  <option value="single-father">Pai solo</option>
+                  <option value="blended">Família reconstituída</option>
+                  <option value="extended">Família extensa (avós, tios)</option>
+                  <option value="same-sex-parents">Dois pais/duas mães</option>
+                  <option value="grandparents">Criado por avós</option>
+                  <option value="other-relatives">Criado por outros parentes</option>
+                  <option value="foster-family">Família adotiva/Acolhimento</option>
+                  <option value="institutional">Institucional (orfanato)</option>
+                  <option value="communal">Comunal/Coletivo</option>
+                  <option value="absent-parents">Pais ausentes</option>
+                  <option value="complex">Complexa/Múltiplas configurações</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relacionamento dos Pais</label>
+                <select value={data.family?.parentsRelationship || ''} onChange={(e) => update('family', 'parentsRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="loving-stable">Amoroso e estável</option>
+                  <option value="loving-passionate">Amoroso e intenso</option>
+                  <option value="functional">Funcional, sem grandes problemas</option>
+                  <option value="distant">Distante, mas civilizado</option>
+                  <option value="conflictual">Conflituoso</option>
+                  <option value="toxic">Tóxico</option>
+                  <option value="violent">Violento</option>
+                  <option value="divorced-amicable">Divorciados, relação amigável</option>
+                  <option value="divorced-hostile">Divorciados, relação hostil</option>
+                  <option value="separated">Separados</option>
+                  <option value="widowed">Um falecido</option>
+                  <option value="never-together">Nunca estiveram juntos</option>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* MÃE */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">👩 Figura Materna</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Mãe/Figura Materna</label>
+              <textarea value={data.family?.motherDescription || ''} onChange={(e) => update('family', 'motherDescription', e.target.value)} placeholder="Quem era/é? Personalidade, ocupação, características marcantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qualidade da Relação</label>
+                <select value={data.family?.motherRelationship || ''} onChange={(e) => update('family', 'motherRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="loving">Amorosa e próxima</option>
+                  <option value="close">Próxima</option>
+                  <option value="warm">Carinhosa</option>
+                  <option value="functional">Funcional</option>
+                  <option value="distant">Distante</option>
+                  <option value="complicated">Complicada</option>
+                  <option value="conflictual">Conflituosa</option>
+                  <option value="enmeshed">Emaranhada/Codependente</option>
+                  <option value="neglectful">Negligente</option>
+                  <option value="abusive">Abusiva</option>
+                  <option value="absent">Ausente</option>
+                  <option value="estranged">Sem contato</option>
+                  <option value="deceased-close">Falecida (era próxima)</option>
+                  <option value="deceased-distant">Falecida (era distante)</option>
+                  <option value="unknown">Desconhecida</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
+                <select value={data.family?.motherStatus || ''} onChange={(e) => update('family', 'motherStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="alive-contact">Viva, em contato</option>
+                  <option value="alive-distant">Viva, pouco contato</option>
+                  <option value="alive-estranged">Viva, sem contato</option>
+                  <option value="deceased-recent">Falecida recentemente</option>
+                  <option value="deceased-long">Falecida há muito tempo</option>
+                  <option value="deceased-childhood">Falecida na infância</option>
+                  <option value="missing">Desaparecida</option>
+                  <option value="unknown">Desconhecida</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* PAI */}
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">👨 Figura Paterna</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição do Pai/Figura Paterna</label>
+              <textarea value={data.family?.fatherDescription || ''} onChange={(e) => update('family', 'fatherDescription', e.target.value)} placeholder="Quem era/é? Personalidade, ocupação, características marcantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qualidade da Relação</label>
+                <select value={data.family?.fatherRelationship || ''} onChange={(e) => update('family', 'fatherRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="loving">Amorosa e próxima</option>
+                  <option value="close">Próxima</option>
+                  <option value="warm">Carinhosa</option>
+                  <option value="functional">Funcional</option>
+                  <option value="distant">Distante</option>
+                  <option value="complicated">Complicada</option>
+                  <option value="conflictual">Conflituosa</option>
+                  <option value="authoritarian">Autoritária</option>
+                  <option value="neglectful">Negligente</option>
+                  <option value="abusive">Abusiva</option>
+                  <option value="absent">Ausente</option>
+                  <option value="estranged">Sem contato</option>
+                  <option value="deceased-close">Falecido (era próximo)</option>
+                  <option value="deceased-distant">Falecido (era distante)</option>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
+                <select value={data.family?.fatherStatus || ''} onChange={(e) => update('family', 'fatherStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="alive-contact">Vivo, em contato</option>
+                  <option value="alive-distant">Vivo, pouco contato</option>
+                  <option value="alive-estranged">Vivo, sem contato</option>
+                  <option value="deceased-recent">Falecido recentemente</option>
+                  <option value="deceased-long">Falecido há muito tempo</option>
+                  <option value="deceased-childhood">Falecido na infância</option>
+                  <option value="missing">Desaparecido</option>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* PADRASTO/MADRASTA */}
+        <div className="border-2 border-gray-200 rounded-sm p-4 bg-gray-50/30">
+          <h4 className="font-mono text-sm font-bold text-gray-700 mb-3">👥 Padrasto/Madrasta (se aplicável)</h4>
+          <div>
+            <textarea value={data.family?.stepParents || ''} onChange={(e) => update('family', 'stepParents', e.target.value)} placeholder="Se teve padrasto ou madrasta, descreva a relação e impacto..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+          </div>
+        </div>
+
+        {/* IRMÃOS */}
+        <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
+          <h4 className="font-mono text-sm font-bold text-green-800 mb-3">👫 Irmãos</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Número de Irmãos</label>
+                <select value={data.family?.siblingsCount || ''} onChange={(e) => update('family', 'siblingsCount', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="0">Filho único</option>
+                  <option value="1">1 irmão/irmã</option>
+                  <option value="2">2 irmãos</option>
+                  <option value="3">3 irmãos</option>
+                  <option value="4">4 irmãos</option>
+                  <option value="5+">5 ou mais irmãos</option>
+                  <option value="half">Apenas meio-irmãos</option>
+                  <option value="step">Apenas irmãos de criação</option>
+                  <option value="mixed">Mistura de tipos</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Dinâmica entre Irmãos</label>
+                <select value={data.family?.siblingsDynamic || ''} onChange={(e) => update('family', 'siblingsDynamic', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="best-friends">Melhores amigos</option>
+                  <option value="close">Próximos</option>
+                  <option value="normal">Normal, com altos e baixos</option>
+                  <option value="distant">Distantes</option>
+                  <option value="competitive">Competitivos</option>
+                  <option value="conflictual">Conflituosos</option>
+                  <option value="protective">Protetor(a)</option>
+                  <option value="protected">Protegido(a)</option>
+                  <option value="estranged">Sem contato</option>
+                  <option value="complicated">Complicada</option>
+                  <option value="na">Não aplicável</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Detalhes sobre os Irmãos</label>
+              <textarea value={data.family?.siblingsDetails || ''} onChange={(e) => update('family', 'siblingsDetails', e.target.value)} placeholder="Nomes, idades, personalidades, relação com cada um..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Rivalidade entre Irmãos</label>
+              <select value={data.family?.siblingRivalry || ''} onChange={(e) => update('family', 'siblingRivalry', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="none">Nenhuma rivalidade</option>
+                <option value="mild">Leve, saudável</option>
+                <option value="moderate">Moderada</option>
+                <option value="intense">Intensa</option>
+                <option value="destructive">Destrutiva</option>
+                <option value="one-sided">Unilateral</option>
+                <option value="resolved">Existiu mas foi resolvida</option>
+                <option value="na">Não aplicável</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* FAMÍLIA EXTENSA E VALORES */}
+        <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
+          <h4 className="font-mono text-sm font-bold text-violet-800 mb-3">👪 Família Extensa & Valores</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Influência dos Avós</label>
+              <select value={data.family?.grandparentsInfluence || ''} onChange={(e) => update('family', 'grandparentsInfluence', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="very-present">Muito presentes, grande influência</option>
+                <option value="present">Presentes na vida</option>
+                <option value="occasional">Contato ocasional</option>
+                <option value="distant">Distantes</option>
+                <option value="deceased-known">Falecidos, mas conheceu</option>
+                <option value="deceased-unknown">Falecidos antes de nascer</option>
+                <option value="unknown">Desconhecidos</option>
+                <option value="raised-by">Foi criado por eles</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Família Extensa (tios, primos, etc.)</label>
+              <textarea value={data.family?.extendedFamily || ''} onChange={(e) => update('family', 'extendedFamily', e.target.value)} placeholder="Presença e importância da família extensa..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Tradições Familiares (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Natal','Ano Novo','Páscoa','Aniversários','Domingos em família','Churrascos','Viagens anuais','Festas juninas','Reuniões religiosas','Dia das Mães/Pais','Receitas de família','Histórias passadas','Apelidos familiares','Rituais de passagem','Heranças/Relíquias','Fotos de família','Música/Canções','Nenhuma tradição','Tradições abandonadas','Criando novas'].map(tradition => (
+                  <button key={tradition} onClick={() => toggleArrayItem('family', 'familyTraditions', tradition, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.family?.familyTraditions || []).includes(tradition) ? 'bg-violet-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{tradition}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Valores Familiares (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Educação','Trabalho duro','Religião/Fé','Família acima de tudo','Honestidade','Lealdade','Independência','Sucesso financeiro','Aparências','Tradição','Humildade','Generosidade','Respeito aos mais velhos','Ambição','Conformidade','Criatividade','Segurança','Status social','Amor','Sacrifício','Silêncio/Privacidade','Nenhum claro'].map(value => (
+                  <button key={value} onClick={() => toggleArrayItem('family', 'familyValues', value, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.family?.familyValues || []).includes(value) ? 'bg-indigo-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{value}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* DINÂMICA E PAPÉIS */}
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">🎭 Dinâmica & Papéis Familiares</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Seu Papel na Família</label>
+                <select value={data.family?.familyRole || ''} onChange={(e) => update('family', 'familyRole', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="golden-child">Filho de ouro — Favorito</option>
+                  <option value="black-sheep">Ovelha negra — O diferente</option>
+                  <option value="scapegoat">Bode expiatório — Culpado de tudo</option>
+                  <option value="peacemaker">Pacificador — Resolve conflitos</option>
+                  <option value="caretaker">Cuidador — Cuida de todos</option>
+                  <option value="invisible">Invisível — Ignorado</option>
+                  <option value="entertainer">Palhaço — Mantém todos felizes</option>
+                  <option value="achiever">Realizador — Orgulho da família</option>
+                  <option value="rebel">Rebelde — Desafia tudo</option>
+                  <option value="lost-child">Criança perdida — Negligenciado</option>
+                  <option value="mascot">Mascote — O bebê da família</option>
+                  <option value="parentified">Parentificado — Fez papel de pai/mãe</option>
+                  <option value="no-clear-role">Sem papel claro</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Expectativas da Família</label>
+                <select value={data.family?.familyExpectations || ''} onChange={(e) => update('family', 'familyExpectations', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="high-met">Altas, e foram cumpridas</option>
+                  <option value="high-unmet">Altas, não cumpridas</option>
+                  <option value="high-rebelled">Altas, mas se rebelou</option>
+                  <option value="moderate">Moderadas</option>
+                  <option value="low">Baixas</option>
+                  <option value="none">Nenhuma expectativa</option>
+                  <option value="conflicting">Conflitantes entre os pais</option>
+                  <option value="impossible">Impossíveis de cumprir</option>
+                  <option value="career-specific">Carreira específica esperada</option>
+                  <option value="continue-legacy">Continuar legado familiar</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Traços Herdados da Família (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Aparência física','Temperamento','Talentos artísticos','Inteligência','Vícios','Doenças','Traumas','Medos','Humor','Teimosia','Generosidade','Ansiedade','Depressão','Força','Resiliência','Criatividade','Pessimismo','Otimismo','Religiosidade','Cinismo','Romantismo','Praticidade'].map(trait => (
+                  <button key={trait} onClick={() => toggleArrayItem('family', 'inheritedTraits', trait, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.family?.inheritedTraits || []).includes(trait) ? 'bg-pink-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{trait}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Conflitos Familiares</label>
+              <textarea value={data.family?.familyConflicts || ''} onChange={(e) => update('family', 'familyConflicts', e.target.value)} placeholder="Principais conflitos, brigas, tensões na família..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Segredos de Família</label>
+              <textarea value={data.family?.familySecrets || ''} onChange={(e) => update('family', 'familySecrets', e.target.value)} placeholder="O que a família esconde? Segredos, tabus, assuntos proibidos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Legado Familiar</label>
+              <textarea value={data.family?.familyLegacy || ''} onChange={(e) => update('family', 'familyLegacy', e.target.value)} placeholder="O que a família representa? História, reputação, herança..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 2: DEFINING MOMENTS ==========
+    2: (
+      <div className="space-y-6">
+        <div className="bg-purple-50 border border-purple-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">⭐ MOMENTOS DEFINIDORES</h3>
+          <p className="font-mono text-xs text-purple-800 leading-relaxed">
+            Os eventos e decisões que moldaram quem o personagem se tornou.
+          </p>
+        </div>
+
+        {/* MOMENTOS MARCANTES */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🌟 Momentos que Mudaram Tudo</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Tipos de Momentos Definidores (até 6)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Morte de alguém próximo','Nascimento (filho, irmão)','Casamento','Divórcio','Mudança de cidade/país','Doença grave','Acidente','Formatura','Primeiro emprego','Demissão','Promoção importante','Falência','Sucesso financeiro','Encontro com mentor','Rompimento amoroso','Reconciliação','Descoberta (segredo, verdade)','Traição','Ato de coragem','Ato de covardia','Perda de fé','Encontro espiritual','Viagem transformadora','Livro/Filme que mudou perspectiva'].map(moment => (
+                  <button key={moment} onClick={() => toggleArrayItem('moments', 'definingMoments', moment, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.moments?.definingMoments || []).includes(moment) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{moment}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Decisões que Mudaram a Vida (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Sair de casa','Casar','Ter filhos','Não ter filhos','Mudar de carreira','Largar tudo','Perdoar alguém','Cortar relação','Voltar a estudar','Aceitar emprego','Recusar oportunidade','Revelar segredo','Guardar segredo','Enfrentar medo','Assumir identidade','Começar terapia','Parar de beber/usar','Fazer as pazes','Ir embora','Ficar','Arriscar','Jogar seguro'].map(decision => (
+                  <button key={decision} onClick={() => toggleArrayItem('moments', 'lifeChangingDecisions', decision, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.moments?.lifeChangingDecisions || []).includes(decision) ? 'bg-indigo-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{decision}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Pontos de Virada (descrição detalhada)</label>
+              <textarea value={data.moments?.turningPoints || ''} onChange={(e) => update('moments', 'turningPoints', e.target.value)} placeholder="Descreva os momentos específicos que mudaram o rumo da vida..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* MEMÓRIA MAIS FELIZ */}
+        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">😊 Memória Mais Feliz</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qual é a memória mais feliz?</label>
+              <textarea value={data.moments?.happiestMemory || ''} onChange={(e) => update('moments', 'happiestMemory', e.target.value)} placeholder="Descreva em detalhes a lembrança mais feliz..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade na época</label>
+                <input type="text" value={data.moments?.happiestMemoryAge || ''} onChange={(e) => update('moments', 'happiestMemoryAge', e.target.value)} placeholder="Ex: 8 anos, adolescência, 25..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Por que é tão especial?</label>
+                <input type="text" value={data.moments?.happiestMemoryWhy || ''} onChange={(e) => update('moments', 'happiestMemoryWhy', e.target.value)} placeholder="O que torna essa memória tão importante?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* PIOR MEMÓRIA */}
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-3">😢 Pior Memória</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qual é a pior memória?</label>
+              <textarea value={data.moments?.worstMemory || ''} onChange={(e) => update('moments', 'worstMemory', e.target.value)} placeholder="Descreva a lembrança mais dolorosa ou difícil..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade na época</label>
+                <input type="text" value={data.moments?.worstMemoryAge || ''} onChange={(e) => update('moments', 'worstMemoryAge', e.target.value)} placeholder="Ex: 12 anos, início dos 20..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Impacto duradouro</label>
+                <input type="text" value={data.moments?.worstMemoryImpact || ''} onChange={(e) => update('moments', 'worstMemoryImpact', e.target.value)} placeholder="Como isso ainda afeta hoje?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* CONQUISTAS E ARREPENDIMENTOS */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🏆 Conquistas & Arrependimentos</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maior Orgulho/Conquista</label>
+              <textarea value={data.moments?.proudestAchievement || ''} onChange={(e) => update('moments', 'proudestAchievement', e.target.value)} placeholder="Do que tem mais orgulho de ter feito ou conquistado?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade da conquista</label>
+              <input type="text" value={data.moments?.achievementAge || ''} onChange={(e) => update('moments', 'achievementAge', e.target.value)} placeholder="Quando aconteceu?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maior Arrependimento</label>
+              <textarea value={data.moments?.biggestRegret || ''} onChange={(e) => update('moments', 'biggestRegret', e.target.value)} placeholder="O que mais se arrepende de ter feito ou não feito?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Resolução do Arrependimento</label>
+              <select value={data.moments?.regretResolution || ''} onChange={(e) => update('moments', 'regretResolution', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="resolved">Resolvido — Fez as pazes com isso</option>
+                <option value="processing">Processando — Ainda trabalhando nisso</option>
+                <option value="unresolved">Não resolvido — Ainda pesa</option>
+                <option value="repressed">Reprimido — Evita pensar</option>
+                <option value="rationalized">Racionalizado — Encontrou justificativa</option>
+                <option value="haunting">Assombra — Não consegue superar</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* OUTROS EVENTOS */}
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">📋 Outros Eventos Significativos</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência de Quase-Morte</label>
+              <textarea value={data.moments?.nearDeathExperience || ''} onChange={(e) => update('moments', 'nearDeathExperience', e.target.value)} placeholder="Já passou por situação de risco de vida? Descreva..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Perdas Significativas (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Morte de pai/mãe','Morte de irmão','Morte de avós','Morte de filho','Morte de cônjuge','Morte de amigo próximo','Morte de pet','Perda de emprego','Perda de casa','Perda de fortuna','Fim de amizade','Fim de casamento','Perda de saúde','Perda de capacidade','Perda de fé','Aborto espontâneo','Perda de oportunidade','Nenhuma perda significativa'].map(loss => (
+                  <button key={loss} onClick={() => toggleArrayItem('moments', 'lossesExperienced', loss, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.moments?.lossesExperienced || []).includes(loss) ? 'bg-gray-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{loss}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maiores Fracassos</label>
+              <textarea value={data.moments?.majorFailures || ''} onChange={(e) => update('moments', 'majorFailures', e.target.value)} placeholder="Falhas significativas, projetos que deram errado, tentativas fracassadas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Lições dos Fracassos</label>
+              <textarea value={data.moments?.failureLessons || ''} onChange={(e) => update('moments', 'failureLessons', e.target.value)} placeholder="O que aprendeu com os fracassos?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Golpes de Sorte</label>
+                <textarea value={data.moments?.luckyBreaks || ''} onChange={(e) => update('moments', 'luckyBreaks', e.target.value)} placeholder="Momentos de sorte que mudaram algo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Oportunidades Perdidas</label>
+                <textarea value={data.moments?.missedOpportunities || ''} onChange={(e) => update('moments', 'missedOpportunities', e.target.value)} placeholder="Chances que deixou passar e lamenta..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 3: TRAUMA & HEALING ==========
+    3: (
+      <div className="space-y-6">
+        <div className="bg-red-50 border border-red-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-red-900 mb-2">💔 TRAUMA & CURA</h3>
+          <p className="font-mono text-xs text-red-800 leading-relaxed">
+            As feridas do passado e o processo de recuperação. Lide com cuidado.
+          </p>
+        </div>
+
+        {/* TIPOS DE TRAUMA */}
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-3">⚠️ Tipos de Trauma Experienciados</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Traumas da Infância (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Abandono','Negligência emocional','Negligência física','Abuso emocional','Abuso físico','Abuso sexual','Testemunhar violência','Bullying','Doença grave','Morte de pai/mãe','Divórcio dos pais','Pobreza extrema','Deslocamento/Refugiado','Desastre natural','Parentificação','Rejeição','Isolamento','Instabilidade','Alcoolismo na família','Doença mental na família','Nenhum trauma significativo'].map(trauma => (
+                  <button key={trauma} onClick={() => toggleArrayItem('trauma', 'childhoodTrauma', trauma, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.childhoodTrauma || []).includes(trauma) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{trauma}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Impacto do Trauma de Infância</label>
+              <textarea value={data.trauma?.childhoodTraumaImpact || ''} onChange={(e) => update('trauma', 'childhoodTraumaImpact', e.target.value)} placeholder="Como os traumas de infância afetaram o desenvolvimento e vida adulta?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo Principal de Trauma</label>
+                <select value={data.trauma?.traumaType || ''} onChange={(e) => update('trauma', 'traumaType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="none">Nenhum trauma significativo</option>
+                  <option value="developmental">Desenvolvimento — Ocorreu na infância</option>
+                  <option value="acute">Agudo — Evento único traumático</option>
+                  <option value="chronic">Crônico — Trauma repetido ao longo do tempo</option>
+                  <option value="complex">Complexo — Múltiplos traumas</option>
+                  <option value="vicarious">Vicário — Testemunhou trauma de outros</option>
+                  <option value="intergenerational">Intergeracional — Herdado da família</option>
+                  <option value="collective">Coletivo — Trauma de grupo/comunidade</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade do Trauma Principal</label>
+                <input type="text" value={data.trauma?.traumaAge || ''} onChange={(e) => update('trauma', 'traumaAge', e.target.value)} placeholder="Ex: 7 anos, adolescência, 25..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FERIDAS CENTRAIS */}
+        <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
+          <h4 className="font-mono text-sm font-bold text-orange-800 mb-3">🩹 Feridas Centrais (Core Wounds)</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Feridas Emocionais Principais (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Abandono','Rejeição','Traição','Humilhação','Injustiça','Não ser amado','Não ser bom o suficiente','Invisibilidade','Impotência','Vergonha','Culpa','Não pertencer','Ser demais','Não ser demais','Não ter valor','Ser diferente','Não ser ouvido','Não ser protegido','Ser um fardo','Solidão'].map(wound => (
+                  <button key={wound} onClick={() => toggleArrayItem('trauma', 'coreWounds', wound, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.coreWounds || []).includes(wound) ? 'bg-orange-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{wound}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Origem da Ferida Principal</label>
+              <textarea value={data.trauma?.woundOrigin || ''} onChange={(e) => update('trauma', 'woundOrigin', e.target.value)} placeholder="Quando e como essa ferida se formou?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Feridas de Apego</label>
+              <select value={data.trauma?.attachmentWounds || ''} onChange={(e) => update('trauma', 'attachmentWounds', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="none">Nenhuma ferida de apego significativa</option>
+                <option value="inconsistent-care">Cuidado inconsistente — Nunca sabia o que esperar</option>
+                <option value="emotional-unavailability">Indisponibilidade emocional — Pais presentes mas ausentes</option>
+                <option value="enmeshment">Emaranhamento — Falta de limites, superenvolvimento</option>
+                <option value="rejection">Rejeição — Sentiu-se não querido</option>
+                <option value="abandonment">Abandono — Foi deixado (física ou emocionalmente)</option>
+                <option value="role-reversal">Inversão de papéis — Teve que cuidar dos pais</option>
+                <option value="comparison">Comparação — Sempre comparado a outros</option>
+                <option value="conditional-love">Amor condicional — Só amado quando...</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* EXPERIÊNCIAS ESPECÍFICAS */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">📝 Experiências Específicas</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiências de Abandono</label>
+              <textarea value={data.trauma?.abandonmentExperiences || ''} onChange={(e) => update('trauma', 'abandonmentExperiences', e.target.value)} placeholder="Situações em que se sentiu abandonado(a)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiências de Traição</label>
+              <textarea value={data.trauma?.betrayalExperiences || ''} onChange={(e) => update('trauma', 'betrayalExperiences', e.target.value)} placeholder="Situações em que foi traído(a) ou teve confiança quebrada..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Histórico de Bullying</label>
+              <select value={data.trauma?.bullyingHistory || ''} onChange={(e) => update('trauma', 'bullyingHistory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="none">Nunca sofreu bullying</option>
+                <option value="mild">Leve — Provocações ocasionais</option>
+                <option value="moderate">Moderado — Bullying regular</option>
+                <option value="severe">Severo — Bullying intenso e prolongado</option>
+                <option value="cyberbullying">Cyberbullying</option>
+                <option value="workplace">Assédio no trabalho (adulto)</option>
+                <option value="was-bully">Foi o bully</option>
+                <option value="both">Foi vítima e agressor</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Trauma de Perda</label>
+              <textarea value={data.trauma?.lossTrauma || ''} onChange={(e) => update('trauma', 'lossTrauma', e.target.value)} placeholder="Perdas traumáticas (morte, separação, etc.)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Trauma Testemunhado</label>
+              <textarea value={data.trauma?.witnessedTrauma || ''} onChange={(e) => update('trauma', 'witnessedTrauma', e.target.value)} placeholder="Traumas que presenciou acontecer com outros..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* SINTOMAS E GATILHOS */}
+        <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
+          <h4 className="font-mono text-sm font-bold text-yellow-800 mb-3">⚡ Sintomas & Gatilhos</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Sintomas de TEPT (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Flashbacks','Pesadelos','Evitação','Hipervigilância','Dissociação','Dormência emocional','Irritabilidade','Dificuldade de concentração','Insônia','Reações exageradas','Memórias intrusivas','Desrealização','Despersonalização','Ansiedade constante','Depressão','Raiva','Culpa','Vergonha','Nenhum sintoma'].map(symptom => (
+                  <button key={symptom} onClick={() => toggleArrayItem('trauma', 'ptsdSymptoms', symptom, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.ptsdSymptoms || []).includes(symptom) ? 'bg-yellow-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{symptom}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Gatilhos (até 6)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Gritos','Portas batendo','Cheiros específicos','Músicas','Datas específicas','Lugares','Toques','Tom de voz','Abandono','Rejeição','Críticas','Conflitos','Silêncio','Escuro','Multidões','Solidão','Intimidade','Autoridade','Perda de controle','Surpresas','Falhas','Julgamento','Nenhum gatilho identificado'].map(trigger => (
+                  <button key={trigger} onClick={() => toggleArrayItem('trauma', 'triggers', trigger, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.triggers || []).includes(trigger) ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{trigger}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* MECANISMOS DE ENFRENTAMENTO */}
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">🛠️ Mecanismos de Enfrentamento</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Mecanismos Saudáveis (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Terapia','Exercício','Meditação','Arte/Criatividade','Música','Escrita/Journaling','Conversar com amigos','Grupos de apoio','Espiritualidade/Oração','Natureza','Hobbies','Animais de estimação','Voluntariado','Estabelecer limites','Autocompaixão','Respiração/Relaxamento','Rotina','Humor','Choro','Sono adequado'].map(coping => (
+                  <button key={coping} onClick={() => toggleArrayItem('trauma', 'copingMechanisms', coping, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.copingMechanisms || []).includes(coping) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{coping}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Mecanismos Não Saudáveis (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Álcool','Drogas','Compulsão alimentar','Restrição alimentar','Automutilação','Isolamento','Workaholism','Compras compulsivas','Promiscuidade','Evitação total','Raiva/Explosões','Negação','Dissociação','Controle excessivo','Relacionamentos tóxicos','Procrastinação','Jogos/Apostas','Sono excessivo','Nenhum'].map(coping => (
+                  <button key={coping} onClick={() => toggleArrayItem('trauma', 'unhealthyCoping', coping, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.unhealthyCoping || []).includes(coping) ? 'bg-red-400 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{coping}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* JORNADA DE CURA */}
+        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">🌱 Jornada de Cura</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Histórico de Terapia</label>
+              <select value={data.trauma?.therapyHistory || ''} onChange={(e) => update('trauma', 'therapyHistory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="never">Nunca fez terapia</option>
+                <option value="tried-quit">Tentou mas parou</option>
+                <option value="past">Fez no passado, não faz mais</option>
+                <option value="current">Faz atualmente</option>
+                <option value="long-term">Terapia de longo prazo</option>
+                <option value="multiple">Vários terapeutas ao longo da vida</option>
+                <option value="resistant">Resiste à ideia de terapia</option>
+                <option value="cant-access">Quer mas não tem acesso</option>
+              </select>
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="font-mono text-[10px] text-gray-600">Progresso na Cura</label>
+                <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-bold ${
+                  (data.trauma?.healingProgress || 5) >= 8 ? 'bg-emerald-100 text-emerald-700' :
+                  (data.trauma?.healingProgress || 5) >= 5 ? 'bg-yellow-100 text-yellow-700' :
+                  'bg-red-100 text-red-700'
+                }`}>{data.trauma?.healingProgress || 5}/10</span>
+              </div>
+              <input type="range" min="1" max="10" value={data.trauma?.healingProgress || 5} onChange={(e) => update('trauma', 'healingProgress', parseInt(e.target.value))} className="w-full" />
+              <div className="flex justify-between font-mono text-[9px] text-gray-400">
+                <span>Início da jornada</span>
+                <span>Em processo</span>
+                <span>Bem avançado</span>
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Jornada de Cura</label>
+              <textarea value={data.trauma?.healingJourney || ''} onChange={(e) => update('trauma', 'healingJourney', e.target.value)} placeholder="Como tem sido o processo de cura? O que ajudou, o que dificultou..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Sistemas de Apoio (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Família','Amigos','Parceiro(a)','Terapeuta','Psiquiatra','Grupo de apoio','Comunidade religiosa','Mentor','Colegas de trabalho','Animais de estimação','Online/Comunidades virtuais','Livros de autoajuda','Nenhum sistema de apoio'].map(support => (
+                  <button key={support} onClick={() => toggleArrayItem('trauma', 'supportSystems', support, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.supportSystems || []).includes(support) ? 'bg-emerald-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{support}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Fatores de Resiliência (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Inteligência','Senso de humor','Criatividade','Espiritualidade','Determinação','Empatia','Capacidade de pedir ajuda','Autoconsciência','Flexibilidade','Otimismo','Senso de propósito','Conexões sociais','Capacidade de perdoar','Autoestima','Habilidades práticas','Educação','Estabilidade financeira'].map(factor => (
+                  <button key={factor} onClick={() => toggleArrayItem('trauma', 'resilienceFactors', factor, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.trauma?.resilienceFactors || []).includes(factor) ? 'bg-teal-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{factor}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Crescimento Pós-Traumático</label>
+              <textarea value={data.trauma?.postTraumaticGrowth || ''} onChange={(e) => update('trauma', 'postTraumaticGrowth', e.target.value)} placeholder="O que ganhou ou aprendeu através do sofrimento? Como se tornou mais forte?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Trauma Não Processado</label>
+              <textarea value={data.trauma?.unprocessedTrauma || ''} onChange={(e) => update('trauma', 'unprocessedTrauma', e.target.value)} placeholder="O que ainda não foi trabalhado ou resolvido? Feridas abertas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 4: KEY MEMORIES ==========
+    4: (
+      <div className="space-y-6">
+        <div className="bg-indigo-50 border border-indigo-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-indigo-900 mb-2">🧠 MEMÓRIAS-CHAVE</h3>
+          <p className="font-mono text-xs text-indigo-800 leading-relaxed">
+            Lembranças específicas que definem a experiência de vida do personagem.
+          </p>
+        </div>
+
+        {/* PRIMEIRAS MEMÓRIAS */}
+        <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
+          <h4 className="font-mono text-sm font-bold text-indigo-800 mb-3">🌅 Primeiras Memórias</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memória Mais Antiga</label>
+                <textarea value={data.memories?.earliestMemory || ''} onChange={(e) => update('memories', 'earliestMemory', e.target.value)} placeholder="Qual é a primeira memória que consegue lembrar?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade da Primeira Memória</label>
+                <input type="text" value={data.memories?.earliestMemoryAge || ''} onChange={(e) => update('memories', 'earliestMemoryAge', e.target.value)} placeholder="Ex: 2-3 anos, 4 anos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* MEMÓRIAS SENSORIAIS */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">👃 Memórias Sensoriais da Infância</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">A Casa da Infância</label>
+              <textarea value={data.memories?.childhoodHome || ''} onChange={(e) => update('memories', 'childhoodHome', e.target.value)} placeholder="Descreva a casa onde cresceu: cômodos, móveis, atmosfera..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Cheiros da Infância</label>
+                <input type="text" value={data.memories?.childhoodSmells || ''} onChange={(e) => update('memories', 'childhoodSmells', e.target.value)} placeholder="Ex: Comida da avó, perfume da mãe, grama cortada..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Sons da Infância</label>
+                <input type="text" value={data.memories?.childhoodSounds || ''} onChange={(e) => update('memories', 'childhoodSounds', e.target.value)} placeholder="Ex: Música que tocava, vozes, sons do bairro..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Brinquedo Favorito</label>
+                <input type="text" value={data.memories?.favoriteChildhoodToy || ''} onChange={(e) => update('memories', 'favoriteChildhoodToy', e.target.value)} placeholder="Qual era o brinquedo ou objeto mais querido?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Esconderijo/Lugar Secreto</label>
+                <input type="text" value={data.memories?.childhoodHideout || ''} onChange={(e) => update('memories', 'childhoodHideout', e.target.value)} placeholder="Tinha um cantinho especial ou esconderijo?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Medos da Infância (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Escuro','Monstros','Abandono','Palhaços','Altura','Água','Animais','Trovões','Fantasmas','Morte','Médicos','Injeções','Separação dos pais','Escola','Estranhos','Ficar sozinho','Insetos','Barulhos','Pesadelos','Nenhum medo específico'].map(fear => (
+                  <button key={fear} onClick={() => toggleArrayItem('memories', 'childhoodFears', fear, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.memories?.childhoodFears || []).includes(fear) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{fear}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Gatilhos Sensoriais Atuais (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Perfumes específicos','Músicas','Comidas','Lugares','Vozes similares','Estações do ano','Horários do dia','Clima','Texturas','Cores','Fotos','Objetos antigos','Festas/Feriados','Nomes','Nenhum gatilho sensorial'].map(trigger => (
+                  <button key={trigger} onClick={() => toggleArrayItem('memories', 'sensoryTriggers', trigger, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.memories?.sensoryTriggers || []).includes(trigger) ? 'bg-indigo-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{trigger}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* MEMÓRIAS ESPECÍFICAS */}
+        <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
+          <h4 className="font-mono text-sm font-bold text-cyan-800 mb-3">📸 Memórias Específicas</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias da Escola</label>
+              <textarea value={data.memories?.schoolMemories || ''} onChange={(e) => update('memories', 'schoolMemories', e.target.value)} placeholder="Memórias marcantes da época escolar..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Professores que Marcaram</label>
+              <textarea value={data.memories?.teachersRemembered || ''} onChange={(e) => update('memories', 'teachersRemembered', e.target.value)} placeholder="Professores que influenciaram (positiva ou negativamente)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias de Amizades</label>
+              <textarea value={data.memories?.friendshipMemories || ''} onChange={(e) => update('memories', 'friendshipMemories', e.target.value)} placeholder="Momentos marcantes com amigos ao longo da vida..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Férias em Família</label>
+                <textarea value={data.memories?.familyVacations || ''} onChange={(e) => update('memories', 'familyVacations', e.target.value)} placeholder="Viagens e férias memoráveis..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias de Feriados</label>
+                <textarea value={data.memories?.holidayMemories || ''} onChange={(e) => update('memories', 'holidayMemories', e.target.value)} placeholder="Natal, Ano Novo, aniversários..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias de Aniversários</label>
+              <textarea value={data.memories?.birthdayMemories || ''} onChange={(e) => update('memories', 'birthdayMemories', e.target.value)} placeholder="Aniversários marcantes (bons ou ruins)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* MEMÓRIAS COMPLEXAS */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">🌀 Memórias Complexas</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Embaraçosas</label>
+              <textarea value={data.memories?.embarrassingMemories || ''} onChange={(e) => update('memories', 'embarrassingMemories', e.target.value)} placeholder="Momentos de vergonha que ainda lembra..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Secretas</label>
+              <textarea value={data.memories?.secretMemories || ''} onChange={(e) => update('memories', 'secretMemories', e.target.value)} placeholder="Memórias que guarda para si, que nunca contou a ninguém..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Reprimidas</label>
+              <textarea value={data.memories?.memoriesRepressed || ''} onChange={(e) => update('memories', 'memoriesRepressed', e.target.value)} placeholder="Há lacunas na memória? Períodos que não lembra bem?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Idealizadas</label>
+              <textarea value={data.memories?.memoriesIdealized || ''} onChange={(e) => update('memories', 'memoriesIdealized', e.target.value)} placeholder="Memórias que talvez sejam melhores do que realmente foram..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Se Pudesse Fotografar Momentos</label>
+              <textarea value={data.memories?.photographMoments || ''} onChange={(e) => update('memories', 'photographMoments', e.target.value)} placeholder="Se pudesse voltar no tempo para tirar fotos, quais momentos escolheria?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  };
+
+  return sections[subtab] || sections[0];
+};
+
 // Generic placeholder for other tabs
+
+// ============================================================================
+// RELATIONSHIPS CONTENT - Complete Implementation with NPCs
+// ============================================================================
+const RelationshipsContent = ({ data, updateData, subtab }) => {
+  const [editingNpcIndex, setEditingNpcIndex] = React.useState(null);
+  const MAX_NPCS = 5;
+  const IDEAL_NPCS = 3;
+
+  // Template para novo NPC - expandido
+  const emptyNpc = {
+    id: Date.now(),
+    // Básico
+    name: '',
+    nickname: '',
+    status: 'active',
+    age: '',
+    ageCategory: '',
+    gender: '',
+    pronouns: '',
+    occupation: '',
+    socialClass: '',
+    // Aparência
+    physicalDescription: '',
+    distinctiveFeatures: '',
+    styleDescription: '',
+    // Personalidade
+    personalityBrief: '',
+    personalityType: '',
+    temperament: '',
+    catchphrase: '',
+    speakingStyle: '',
+    // Relacionamento
+    relationshipType: '',
+    relationshipSubtype: '',
+    roleInLife: '',
+    proximityLevel: 5,
+    trustLevel: 5,
+    conflictLevel: 2,
+    dependencyLevel: 3,
+    influenceLevel: 5,
+    emotionalBond: '',
+    powerDynamic: '',
+    boundaryRespect: '',
+    // Comunicação
+    communicationFrequency: '',
+    communicationMethods: [],
+    conversationTopics: [],
+    avoidedTopics: [],
+    // História
+    howTheyMet: '',
+    meetingContext: '',
+    meetingYear: '',
+    relationshipDuration: '',
+    sharedHistory: '',
+    turningPoints: '',
+    secretsKnown: '',
+    secretsHidden: '',
+    // Dinâmica atual
+    currentDynamic: '',
+    recentChanges: '',
+    ongoingIssues: '',
+    positiveTraits: [],
+    negativeTraits: [],
+    sharedInterests: [],
+    conflictSources: [],
+    supportTypes: [],
+    // Futuro
+    futurePotential: '',
+    unresolvedMatters: '',
+    hopes: '',
+    fears: '',
+    // Meta
+    narrativeImportance: '',
+    storyRole: '',
+    notes: ''
+  };
+
+  const update = (section, field, value) => {
+    updateData('relationships', { ...data, [section]: { ...data[section], [field]: value } });
+  };
+
+  const toggleArrayItem = (section, field, item, maxItems = 10) => {
+    const current = data[section]?.[field] || [];
+    if (current.includes(item)) {
+      update(section, field, current.filter(i => i !== item));
+    } else if (current.length < maxItems) {
+      update(section, field, [...current, item]);
+    }
+  };
+
+  // Funções para gerenciar NPCs
+  const addNpc = () => {
+    const npcs = data.npcs || [];
+    if (npcs.length >= MAX_NPCS) return;
+    const newNpc = { ...emptyNpc, id: Date.now() };
+    updateData('relationships', { ...data, npcs: [...npcs, newNpc] });
+    setEditingNpcIndex(npcs.length);
+  };
+
+  const updateNpc = (index, field, value) => {
+    const npcs = [...(data.npcs || [])];
+    npcs[index] = { ...npcs[index], [field]: value };
+    updateData('relationships', { ...data, npcs });
+  };
+
+  const toggleNpcArrayItem = (index, field, item, maxItems = 5) => {
+    const npcs = [...(data.npcs || [])];
+    const current = npcs[index]?.[field] || [];
+    if (current.includes(item)) {
+      npcs[index] = { ...npcs[index], [field]: current.filter(i => i !== item) };
+    } else if (current.length < maxItems) {
+      npcs[index] = { ...npcs[index], [field]: [...current, item] };
+    }
+    updateData('relationships', { ...data, npcs });
+  };
+
+  const removeNpc = (index) => {
+    const npcs = [...(data.npcs || [])];
+    npcs.splice(index, 1);
+    updateData('relationships', { ...data, npcs });
+    setEditingNpcIndex(null);
+  };
+
+  // ========== SISTEMA DE ANÁLISE DE RELACIONAMENTO ==========
+
+  // Calcular saúde do relacionamento (0-100)
+  const calculateRelationshipHealth = (npc) => {
+    let score = 50; // Base
+
+    // Proximidade (positivo)
+    score += (npc.proximityLevel || 5) * 2;
+
+    // Confiança (positivo)
+    score += (npc.trustLevel || 5) * 3;
+
+    // Conflito (negativo)
+    score -= (npc.conflictLevel || 2) * 4;
+
+    // Dependência extrema (negativo se muito alta)
+    const dep = npc.dependencyLevel || 3;
+    if (dep > 7) score -= (dep - 7) * 5;
+    if (dep < 2) score -= 5; // Muito pouca conexão
+
+    // Comunicação
+    const commFreq = npc.communicationFrequency || '';
+    if (['daily', 'several-week'].includes(commFreq)) score += 10;
+    if (['rarely', 'almost-never', 'no-contact'].includes(commFreq)) score -= 15;
+
+    // Status
+    if (npc.status === 'estranged') score -= 30;
+    if (npc.status === 'complicated') score -= 15;
+    if (npc.status === 'distant') score -= 10;
+
+    // Vínculo emocional
+    const bond = npc.emotionalBond || '';
+    if (['love-unconditional', 'love-romantic', 'deep-friendship', 'loyalty'].includes(bond)) score += 15;
+    if (['hatred', 'resentment', 'fear'].includes(bond)) score -= 20;
+    if (['guilt', 'obligation'].includes(bond)) score -= 10;
+
+    // Dinâmica de poder
+    if (npc.powerDynamic === 'balanced') score += 10;
+    if (['dominant-unhealthy', 'submissive-unhealthy'].includes(npc.powerDynamic)) score -= 15;
+
+    // Respeito a limites
+    if (npc.boundaryRespect === 'always') score += 10;
+    if (npc.boundaryRespect === 'rarely' || npc.boundaryRespect === 'never') score -= 20;
+
+    // Traços
+    const posTraits = (npc.positiveTraits || []).length;
+    const negTraits = (npc.negativeTraits || []).length;
+    score += posTraits * 2;
+    score -= negTraits * 2;
+
+    // Conflitos ativos
+    const conflicts = (npc.conflictSources || []).length;
+    score -= conflicts * 3;
+
+    // Interesses compartilhados
+    const interests = (npc.sharedInterests || []).length;
+    score += interests * 2;
+
+    // Clamp 0-100
+    return Math.max(0, Math.min(100, Math.round(score)));
+  };
+
+  // Obter diagnóstico do relacionamento
+  const getRelationshipDiagnosis = (npc) => {
+    const health = calculateRelationshipHealth(npc);
+    const issues = [];
+    const strengths = [];
+
+    // Análise de problemas
+    if ((npc.conflictLevel || 2) >= 7) issues.push('Alto nível de conflito');
+    if ((npc.trustLevel || 5) <= 3) issues.push('Baixa confiança');
+    if ((npc.dependencyLevel || 3) >= 8) issues.push('Possível codependência');
+    if (['rarely', 'almost-never', 'no-contact'].includes(npc.communicationFrequency)) issues.push('Comunicação insuficiente');
+    if (['hatred', 'resentment', 'fear'].includes(npc.emotionalBond)) issues.push('Vínculo emocional negativo');
+    if (['dominant-unhealthy', 'submissive-unhealthy'].includes(npc.powerDynamic)) issues.push('Dinâmica de poder desequilibrada');
+    if (['rarely', 'never'].includes(npc.boundaryRespect)) issues.push('Limites não respeitados');
+    if ((npc.conflictSources || []).length >= 4) issues.push('Múltiplas fontes de conflito');
+    if (npc.status === 'estranged') issues.push('Relacionamento rompido');
+
+    // Análise de forças
+    if ((npc.proximityLevel || 5) >= 8) strengths.push('Vínculo muito forte');
+    if ((npc.trustLevel || 5) >= 8) strengths.push('Alta confiança mútua');
+    if (['daily', 'several-week'].includes(npc.communicationFrequency)) strengths.push('Comunicação frequente');
+    if (['love-unconditional', 'deep-friendship'].includes(npc.emotionalBond)) strengths.push('Laço emocional saudável');
+    if (npc.powerDynamic === 'balanced') strengths.push('Dinâmica equilibrada');
+    if (npc.boundaryRespect === 'always') strengths.push('Respeito aos limites');
+    if ((npc.sharedInterests || []).length >= 4) strengths.push('Muitos interesses em comum');
+    if ((npc.positiveTraits || []).length >= 4) strengths.push('Muitas qualidades positivas');
+
+    let status = 'healthy';
+    let label = 'Saudável';
+    let color = 'emerald';
+
+    if (health < 30) { status = 'critical'; label = 'Crítico'; color = 'red'; }
+    else if (health < 50) { status = 'troubled'; label = 'Problemático'; color = 'orange'; }
+    else if (health < 70) { status = 'mixed'; label = 'Misto'; color = 'yellow'; }
+    else if (health < 85) { status = 'good'; label = 'Bom'; color = 'emerald'; }
+    else { status = 'excellent'; label = 'Excelente'; color = 'green'; }
+
+    return { health, status, label, color, issues, strengths };
+  };
+
+  // Obter cor baseada no nível de proximidade
+  const getProximityColor = (level) => {
+    if (level >= 9) return { bg: 'bg-rose-500', text: 'text-rose-700', light: 'bg-rose-100', border: 'border-rose-300', label: 'Alma Gêmea' };
+    if (level >= 7) return { bg: 'bg-pink-500', text: 'text-pink-700', light: 'bg-pink-100', border: 'border-pink-300', label: 'Muito Próximo' };
+    if (level >= 5) return { bg: 'bg-purple-500', text: 'text-purple-700', light: 'bg-purple-100', border: 'border-purple-300', label: 'Próximo' };
+    if (level >= 3) return { bg: 'bg-blue-500', text: 'text-blue-700', light: 'bg-blue-100', border: 'border-blue-300', label: 'Conhecido' };
+    return { bg: 'bg-gray-400', text: 'text-gray-600', light: 'bg-gray-100', border: 'border-gray-300', label: 'Distante' };
+  };
+
+  // Obter ícone do tipo de relacionamento
+  const getRelationshipIcon = (type) => {
+    const icons = {
+      'family-parent': '👨‍👩‍👧', 'family-sibling': '👫', 'family-child': '👶', 'family-grandparent': '👴',
+      'family-extended': '👪', 'family-step': '👨‍👩‍👧', 'family-in-law': '💒',
+      'romantic-partner': '💑', 'romantic-spouse': '💍', 'romantic-ex': '💔', 'romantic-crush': '💕', 'romantic-complicated': '🌀',
+      'friend-best': '🤝', 'friend-close': '👋', 'friend-casual': '😊', 'friend-childhood': '🧒', 'friend-online': '💻',
+      'professional-mentor': '🎓', 'professional-mentee': '📚', 'professional-colleague': '💼', 
+      'professional-boss': '👔', 'professional-employee': '👤', 'professional-client': '🤝', 'professional-partner': '🤝',
+      'rival': '⚔️', 'enemy': '👿', 'bully': '😠', 'nemesis': '🔥',
+      'acquaintance': '👤', 'neighbor': '🏠', 'therapist': '🧠', 'doctor': '⚕️', 
+      'teacher': '📖', 'religious': '⛪', 'deceased': '🕊️', 'imaginary': '🌈', 'other': '❓'
+    };
+    return icons[type] || '👤';
+  };
+
+  // Calcular completude do NPC
+  const calculateNpcCompleteness = (npc) => {
+    const requiredFields = ['name', 'relationshipType', 'proximityLevel'];
+    const importantFields = ['age', 'gender', 'occupation', 'howTheyMet', 'emotionalBond', 'communicationFrequency'];
+    const optionalFields = ['physicalDescription', 'personalityBrief', 'sharedHistory', 'currentDynamic', 'roleInLife'];
+
+    let score = 0;
+    let total = 0;
+
+    // Required (peso 3)
+    requiredFields.forEach(f => { total += 3; if (npc[f]) score += 3; });
+    // Important (peso 2)
+    importantFields.forEach(f => { total += 2; if (npc[f]) score += 2; });
+    // Optional (peso 1)
+    optionalFields.forEach(f => { total += 1; if (npc[f]) score += 1; });
+    // Arrays
+    if ((npc.positiveTraits || []).length > 0) score += 1; total += 1;
+    if ((npc.negativeTraits || []).length > 0) score += 1; total += 1;
+    if ((npc.sharedInterests || []).length > 0) score += 1; total += 1;
+
+    return Math.round((score / total) * 100);
+  };
+
+  // ========== COMPONENTE DO FORMULÁRIO DE NPC ==========
+  const NpcForm = ({ npc, index }) => {
+    const proximity = getProximityColor(npc.proximityLevel || 5);
+    const diagnosis = getRelationshipDiagnosis(npc);
+    const completeness = calculateNpcCompleteness(npc);
+
+    return (
+      <div className="space-y-6">
+        {/* Header do formulário */}
+        <div className={`flex items-center justify-between ${proximity.light} border-2 ${proximity.border} rounded-sm p-3`}>
+          <div className="flex items-center gap-3">
+            <button onClick={() => setEditingNpcIndex(null)} className="text-gray-600 hover:text-gray-900">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            </button>
+            <div>
+              <h3 className="font-mono text-sm font-bold text-gray-900">
+                {getRelationshipIcon(npc.relationshipType)} Editando NPC #{index + 1}
+              </h3>
+              <p className="font-mono text-[10px] text-gray-600">{npc.name || 'Novo personagem'} {npc.nickname ? `"${npc.nickname}"` : ''}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="text-right">
+              <div className="font-mono text-[9px] text-gray-500">Completude</div>
+              <div className="font-mono text-sm font-bold text-purple-600">{completeness}%</div>
+            </div>
+            <button onClick={() => removeNpc(index)} className="px-2 py-1 bg-red-500 text-white font-mono text-[10px] rounded hover:bg-red-600">
+              🗑️ Remover
+            </button>
+          </div>
+        </div>
+
+        {/* DIAGNÓSTICO DO RELACIONAMENTO */}
+        <div className={`border-2 rounded-sm p-4 ${
+          diagnosis.color === 'red' ? 'border-red-300 bg-red-50' :
+          diagnosis.color === 'orange' ? 'border-orange-300 bg-orange-50' :
+          diagnosis.color === 'yellow' ? 'border-yellow-300 bg-yellow-50' :
+          'border-emerald-300 bg-emerald-50'
+        }`}>
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-mono text-sm font-bold flex items-center gap-2">
+              🩺 Diagnóstico do Relacionamento
+              <span className={`px-2 py-0.5 rounded font-mono text-[10px] font-bold ${
+                diagnosis.color === 'red' ? 'bg-red-200 text-red-800' :
+                diagnosis.color === 'orange' ? 'bg-orange-200 text-orange-800' :
+                diagnosis.color === 'yellow' ? 'bg-yellow-200 text-yellow-800' :
+                'bg-emerald-200 text-emerald-800'
+              }`}>{diagnosis.label}</span>
+            </h4>
+            <div className="font-mono text-2xl font-bold">{diagnosis.health}/100</div>
+          </div>
+          
+          <div className="h-4 bg-gray-200 rounded-full overflow-hidden mb-3">
+            <div className={`h-full rounded-full transition-all ${
+              diagnosis.color === 'red' ? 'bg-red-500' :
+              diagnosis.color === 'orange' ? 'bg-orange-500' :
+              diagnosis.color === 'yellow' ? 'bg-yellow-500' :
+              'bg-emerald-500'
+            }`} style={{ width: `${diagnosis.health}%` }}></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {diagnosis.issues.length > 0 && (
+              <div className="bg-white/50 rounded p-2">
+                <div className="font-mono text-[10px] font-bold text-red-700 mb-1">⚠️ Pontos de Atenção:</div>
+                <ul className="space-y-0.5">
+                  {diagnosis.issues.map((issue, i) => (
+                    <li key={i} className="font-mono text-[9px] text-red-600">• {issue}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {diagnosis.strengths.length > 0 && (
+              <div className="bg-white/50 rounded p-2">
+                <div className="font-mono text-[10px] font-bold text-emerald-700 mb-1">✓ Pontos Fortes:</div>
+                <ul className="space-y-0.5">
+                  {diagnosis.strengths.map((strength, i) => (
+                    <li key={i} className="font-mono text-[9px] text-emerald-600">• {strength}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* BASIC INFO */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">👤 Informações Básicas</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nome Completo *</label>
+                <input type="text" value={npc.name || ''} onChange={(e) => updateNpc(index, 'name', e.target.value)} placeholder="Ex: Maria Silva Santos" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Apelido/Como é Chamado</label>
+                <input type="text" value={npc.nickname || ''} onChange={(e) => updateNpc(index, 'nickname', e.target.value)} placeholder="Ex: Má, Tia Mari, Dona Maria" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status na Vida do Personagem</label>
+                <select value={npc.status || 'active'} onChange={(e) => updateNpc(index, 'status', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="active">✓ Ativo — Presente e em contato</option>
+                  <option value="distant">📍 Distante — Pouco contato atualmente</option>
+                  <option value="estranged">💔 Afastado — Rompimento/Sem contato</option>
+                  <option value="reconnecting">🔄 Reconectando — Retomando contato</option>
+                  <option value="complicated">🌀 Complicado — Situação instável</option>
+                  <option value="deceased">🕊️ Falecido — Mas ainda importante</option>
+                  <option value="missing">❓ Desaparecido — Paradeiro desconhecido</option>
+                  <option value="imaginary">🌈 Imaginário — Não é real</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade</label>
+                <input type="text" value={npc.age || ''} onChange={(e) => updateNpc(index, 'age', e.target.value)} placeholder="Ex: 45, ~30, 60s" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Faixa Etária</label>
+                <select value={npc.ageCategory || ''} onChange={(e) => updateNpc(index, 'ageCategory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="child">Criança (0-12)</option>
+                  <option value="teen">Adolescente (13-17)</option>
+                  <option value="young-adult">Jovem Adulto (18-25)</option>
+                  <option value="adult">Adulto (26-40)</option>
+                  <option value="middle-aged">Meia-idade (41-60)</option>
+                  <option value="senior">Idoso (61-75)</option>
+                  <option value="elderly">Idoso Avançado (76+)</option>
+                  <option value="ageless">Sem idade definida</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Gênero</label>
+                <select value={npc.gender || ''} onChange={(e) => updateNpc(index, 'gender', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="male">Masculino</option>
+                  <option value="female">Feminino</option>
+                  <option value="non-binary">Não-binário</option>
+                  <option value="genderfluid">Gênero fluido</option>
+                  <option value="agender">Agênero</option>
+                  <option value="other">Outro</option>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Pronomes</label>
+                <select value={npc.pronouns || ''} onChange={(e) => updateNpc(index, 'pronouns', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="he-him">Ele/Dele</option>
+                  <option value="she-her">Ela/Dela</option>
+                  <option value="they-them">Elu/Delu</option>
+                  <option value="any">Qualquer um</option>
+                  <option value="other">Outros</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ocupação</label>
+                <input type="text" value={npc.occupation || ''} onChange={(e) => updateNpc(index, 'occupation', e.target.value)} placeholder="Ex: Professor aposentado, médica, estudante..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Classe Social</label>
+                <select value={npc.socialClass || ''} onChange={(e) => updateNpc(index, 'socialClass', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="poverty">Pobreza</option>
+                  <option value="working-class">Classe trabalhadora</option>
+                  <option value="lower-middle">Classe média baixa</option>
+                  <option value="middle">Classe média</option>
+                  <option value="upper-middle">Classe média alta</option>
+                  <option value="wealthy">Rico</option>
+                  <option value="elite">Elite/Ultra-rico</option>
+                  <option value="variable">Variável/Instável</option>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* APARÊNCIA E PERSONALIDADE */}
+        <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
+          <h4 className="font-mono text-sm font-bold text-violet-800 mb-3">🎭 Aparência & Personalidade</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição Física</label>
+              <textarea value={npc.physicalDescription || ''} onChange={(e) => updateNpc(index, 'physicalDescription', e.target.value)} placeholder="Altura, corpo, cabelo, olhos, características marcantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Características Distintivas</label>
+                <input type="text" value={npc.distinctiveFeatures || ''} onChange={(e) => updateNpc(index, 'distinctiveFeatures', e.target.value)} placeholder="Cicatriz, tatuagem, usa óculos, manca..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo Visual</label>
+                <input type="text" value={npc.styleDescription || ''} onChange={(e) => updateNpc(index, 'styleDescription', e.target.value)} placeholder="Sempre de terno, estilo hippie, casual..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Personalidade (MBTI)</label>
+                <select value={npc.personalityType || ''} onChange={(e) => updateNpc(index, 'personalityType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <optgroup label="Analistas">
+                    <option value="INTJ">INTJ — Arquiteto</option>
+                    <option value="INTP">INTP — Lógico</option>
+                    <option value="ENTJ">ENTJ — Comandante</option>
+                    <option value="ENTP">ENTP — Debatedor</option>
+                  </optgroup>
+                  <optgroup label="Diplomatas">
+                    <option value="INFJ">INFJ — Advogado</option>
+                    <option value="INFP">INFP — Mediador</option>
+                    <option value="ENFJ">ENFJ — Protagonista</option>
+                    <option value="ENFP">ENFP — Ativista</option>
+                  </optgroup>
+                  <optgroup label="Sentinelas">
+                    <option value="ISTJ">ISTJ — Logístico</option>
+                    <option value="ISFJ">ISFJ — Defensor</option>
+                    <option value="ESTJ">ESTJ — Executivo</option>
+                    <option value="ESFJ">ESFJ — Cônsul</option>
+                  </optgroup>
+                  <optgroup label="Exploradores">
+                    <option value="ISTP">ISTP — Virtuoso</option>
+                    <option value="ISFP">ISFP — Aventureiro</option>
+                    <option value="ESTP">ESTP — Empresário</option>
+                    <option value="ESFP">ESFP — Animador</option>
+                  </optgroup>
+                  <option value="unknown">Desconhecido</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Temperamento</label>
+                <select value={npc.temperament || ''} onChange={(e) => updateNpc(index, 'temperament', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="sanguine">Sanguíneo — Otimista, social, impulsivo</option>
+                  <option value="choleric">Colérico — Ambicioso, líder, irritável</option>
+                  <option value="melancholic">Melancólico — Analítico, detalhista, perfeccionista</option>
+                  <option value="phlegmatic">Fleumático — Calmo, pacífico, passivo</option>
+                  <option value="mixed">Misto — Combinação de temperamentos</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Personalidade em Poucas Palavras</label>
+              <input type="text" value={npc.personalityBrief || ''} onChange={(e) => updateNpc(index, 'personalityBrief', e.target.value)} placeholder="Ex: Rigoroso mas carinhoso, otimista demais, sarcástico e leal..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Frase Característica / Bordão</label>
+                <input type="text" value={npc.catchphrase || ''} onChange={(e) => updateNpc(index, 'catchphrase', e.target.value)} placeholder="Ex: 'Na minha época...', 'Relaxa que dá certo'" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Fala</label>
+                <select value={npc.speakingStyle || ''} onChange={(e) => updateNpc(index, 'speakingStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="formal">Formal — Linguagem culta e educada</option>
+                  <option value="casual">Casual — Relaxado e informal</option>
+                  <option value="slang">Gírias — Usa muito vocabulário informal</option>
+                  <option value="technical">Técnico — Usa jargão profissional</option>
+                  <option value="poetic">Poético — Fala de forma elaborada</option>
+                  <option value="direct">Direto — Poucas palavras, objetivo</option>
+                  <option value="verbose">Prolixo — Fala demais</option>
+                  <option value="quiet">Quieto — Fala pouco</option>
+                  <option value="sarcastic">Sarcástico — Ironia constante</option>
+                  <option value="warm">Acolhedor — Tom carinhoso</option>
+                  <option value="cold">Frio — Distante e impessoal</option>
+                  <option value="nervous">Nervoso — Gagueja, tropeça nas palavras</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RELATIONSHIP TYPE */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">💜 Tipo de Relacionamento</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Categoria Principal *</label>
+                <select value={npc.relationshipType || ''} onChange={(e) => updateNpc(index, 'relationshipType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <optgroup label="👨‍👩‍👧 Família">
+                    <option value="family-parent">Pai/Mãe</option>
+                    <option value="family-sibling">Irmão/Irmã</option>
+                    <option value="family-child">Filho/Filha</option>
+                    <option value="family-grandparent">Avô/Avó</option>
+                    <option value="family-extended">Família Extensa</option>
+                    <option value="family-step">Padrasto/Madrasta/Meio-irmão</option>
+                    <option value="family-in-law">Sogro/Cunhado/etc</option>
+                  </optgroup>
+                  <optgroup label="💕 Romântico">
+                    <option value="romantic-partner">Parceiro(a) Atual</option>
+                    <option value="romantic-spouse">Cônjuge</option>
+                    <option value="romantic-ex">Ex-parceiro(a)</option>
+                    <option value="romantic-crush">Interesse Romântico</option>
+                    <option value="romantic-complicated">Relacionamento Complicado</option>
+                  </optgroup>
+                  <optgroup label="🤝 Amizade">
+                    <option value="friend-best">Melhor Amigo(a)</option>
+                    <option value="friend-close">Amigo(a) Próximo(a)</option>
+                    <option value="friend-casual">Amigo(a) Casual</option>
+                    <option value="friend-childhood">Amigo(a) de Infância</option>
+                    <option value="friend-online">Amigo(a) Virtual</option>
+                  </optgroup>
+                  <optgroup label="💼 Profissional">
+                    <option value="professional-mentor">Mentor(a)</option>
+                    <option value="professional-mentee">Mentorado(a)</option>
+                    <option value="professional-colleague">Colega de Trabalho</option>
+                    <option value="professional-boss">Chefe</option>
+                    <option value="professional-employee">Funcionário(a)</option>
+                    <option value="professional-client">Cliente</option>
+                    <option value="professional-partner">Sócio(a)</option>
+                  </optgroup>
+                  <optgroup label="⚔️ Conflito">
+                    <option value="rival">Rival</option>
+                    <option value="enemy">Inimigo(a)</option>
+                    <option value="bully">Bully/Agressor(a)</option>
+                    <option value="nemesis">Nêmesis</option>
+                  </optgroup>
+                  <optgroup label="👤 Outros">
+                    <option value="acquaintance">Conhecido(a)</option>
+                    <option value="neighbor">Vizinho(a)</option>
+                    <option value="therapist">Terapeuta</option>
+                    <option value="doctor">Médico(a)</option>
+                    <option value="teacher">Professor(a)</option>
+                    <option value="religious">Líder Religioso</option>
+                    <option value="deceased">Pessoa Falecida</option>
+                    <option value="imaginary">Imaginário</option>
+                    <option value="other">Outro</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Especificação</label>
+                <input type="text" value={npc.relationshipSubtype || ''} onChange={(e) => updateNpc(index, 'relationshipSubtype', e.target.value)} placeholder="Ex: Mãe biológica, ex-namorado do colégio, chefe direto..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Papel na Vida do Personagem</label>
+                <select value={npc.roleInLife || ''} onChange={(e) => updateNpc(index, 'roleInLife', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="anchor">⚓ Âncora — Estabiliza e dá segurança</option>
+                  <option value="mirror">🪞 Espelho — Reflete quem realmente é</option>
+                  <option value="catalyst">⚡ Catalisador — Provoca mudanças</option>
+                  <option value="protector">🛡️ Protetor — Cuida e defende</option>
+                  <option value="dependent">🤲 Dependente — Precisa de cuidados</option>
+                  <option value="mentor">🎓 Mentor — Ensina e guia</option>
+                  <option value="challenger">🏋️ Desafiador — Questiona e empurra</option>
+                  <option value="confidant">🤫 Confidente — Guarda segredos</option>
+                  <option value="comic-relief">😂 Alívio Cômico — Traz leveza</option>
+                  <option value="shadow">👥 Sombra — O que teme ser</option>
+                  <option value="inspiration">✨ Inspiração — Modelo a seguir</option>
+                  <option value="burden">⛓️ Fardo — Peso emocional</option>
+                  <option value="mystery">🔮 Mistério — Pessoa enigmática</option>
+                  <option value="memory">💭 Memória — Ligação ao passado</option>
+                  <option value="hope">🌟 Esperança — Representa o futuro</option>
+                  <option value="rival">🎯 Rival — Competidor/Oponente</option>
+                  <option value="temptation">🍎 Tentação — Desvia do caminho</option>
+                  <option value="conscience">😇 Consciência — Voz da razão</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Importância Narrativa</label>
+                <select value={npc.narrativeImportance || ''} onChange={(e) => updateNpc(index, 'narrativeImportance', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="central">⭐⭐⭐ Central — Essencial para a história</option>
+                  <option value="major">⭐⭐ Importante — Aparece frequentemente</option>
+                  <option value="supporting">⭐ Suporte — Aparições significativas</option>
+                  <option value="minor">Menor — Mencionado ocasionalmente</option>
+                  <option value="background">Background — Contexto apenas</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* PROXIMITY & DYNAMICS */}
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">💗 Proximidade & Dinâmica</h4>
+          
+          <div className="space-y-4">
+            {/* Slider principal de proximidade */}
+            <div className="bg-white rounded-sm p-3 border border-pink-200">
+              <div className="flex justify-between items-center mb-2">
+                <label className="font-mono text-[10px] text-gray-600">Nível de Proximidade</label>
+                <span className={`px-3 py-1 rounded-full font-mono text-xs font-bold ${proximity.light} ${proximity.text}`}>
+                  {npc.proximityLevel || 5}/10 — {proximity.label}
+                </span>
+              </div>
+              <input type="range" min="1" max="10" value={npc.proximityLevel || 5} onChange={(e) => updateNpc(index, 'proximityLevel', parseInt(e.target.value))} className="w-full h-3 rounded-lg appearance-none cursor-pointer" />
+              <div className="flex justify-between font-mono text-[9px] text-gray-400 mt-1">
+                <span>1 — Distante</span>
+                <span>5 — Próximo</span>
+                <span>10 — Alma Gêmea</span>
+              </div>
+            </div>
+
+            {/* Grid de sliders secundários */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-white rounded-sm p-3 border border-gray-200">
+                <div className="flex justify-between items-center mb-1">
+                  <label className="font-mono text-[10px] text-gray-600">🤝 Confiança</label>
+                  <span className={`font-mono text-xs font-bold ${(npc.trustLevel || 5) >= 7 ? 'text-emerald-600' : (npc.trustLevel || 5) <= 3 ? 'text-red-600' : 'text-gray-600'}`}>{npc.trustLevel || 5}/10</span>
+                </div>
+                <input type="range" min="1" max="10" value={npc.trustLevel || 5} onChange={(e) => updateNpc(index, 'trustLevel', parseInt(e.target.value))} className="w-full" />
+                <div className="flex justify-between font-mono text-[8px] text-gray-400"><span>Desconfia</span><span>Confia cegamente</span></div>
+              </div>
+              <div className="bg-white rounded-sm p-3 border border-gray-200">
+                <div className="flex justify-between items-center mb-1">
+                  <label className="font-mono text-[10px] text-gray-600">⚡ Conflito</label>
+                  <span className={`font-mono text-xs font-bold ${(npc.conflictLevel || 2) >= 7 ? 'text-red-600' : (npc.conflictLevel || 2) <= 3 ? 'text-emerald-600' : 'text-yellow-600'}`}>{npc.conflictLevel || 2}/10</span>
+                </div>
+                <input type="range" min="1" max="10" value={npc.conflictLevel || 2} onChange={(e) => updateNpc(index, 'conflictLevel', parseInt(e.target.value))} className="w-full" />
+                <div className="flex justify-between font-mono text-[8px] text-gray-400"><span>Harmonia</span><span>Conflito constante</span></div>
+              </div>
+              <div className="bg-white rounded-sm p-3 border border-gray-200">
+                <div className="flex justify-between items-center mb-1">
+                  <label className="font-mono text-[10px] text-gray-600">🔗 Dependência</label>
+                  <span className={`font-mono text-xs font-bold ${(npc.dependencyLevel || 3) >= 8 ? 'text-orange-600' : 'text-gray-600'}`}>{npc.dependencyLevel || 3}/10</span>
+                </div>
+                <input type="range" min="1" max="10" value={npc.dependencyLevel || 3} onChange={(e) => updateNpc(index, 'dependencyLevel', parseInt(e.target.value))} className="w-full" />
+                <div className="flex justify-between font-mono text-[8px] text-gray-400"><span>Independente</span><span>Codependente</span></div>
+              </div>
+              <div className="bg-white rounded-sm p-3 border border-gray-200">
+                <div className="flex justify-between items-center mb-1">
+                  <label className="font-mono text-[10px] text-gray-600">👑 Influência sobre o Personagem</label>
+                  <span className="font-mono text-xs font-bold text-gray-600">{npc.influenceLevel || 5}/10</span>
+                </div>
+                <input type="range" min="1" max="10" value={npc.influenceLevel || 5} onChange={(e) => updateNpc(index, 'influenceLevel', parseInt(e.target.value))} className="w-full" />
+                <div className="flex justify-between font-mono text-[8px] text-gray-400"><span>Nenhuma</span><span>Enorme</span></div>
+              </div>
+            </div>
+
+            {/* Dropdowns de dinâmica */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Vínculo Emocional Principal</label>
+                <select value={npc.emotionalBond || ''} onChange={(e) => updateNpc(index, 'emotionalBond', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <optgroup label="Positivos">
+                    <option value="love-unconditional">❤️ Amor Incondicional</option>
+                    <option value="love-romantic">💕 Amor Romântico</option>
+                    <option value="deep-friendship">🤝 Amizade Profunda</option>
+                    <option value="respect">🙏 Respeito/Admiração</option>
+                    <option value="gratitude">🙏 Gratidão</option>
+                    <option value="loyalty">🛡️ Lealdade</option>
+                    <option value="protectiveness">🛡️ Proteção</option>
+                  </optgroup>
+                  <optgroup label="Complexos">
+                    <option value="love-complicated">💔 Amor Complicado</option>
+                    <option value="ambivalent">🤷 Ambivalente</option>
+                    <option value="nostalgia">🌅 Nostalgia</option>
+                    <option value="obligation">⛓️ Obrigação</option>
+                    <option value="guilt">😔 Culpa</option>
+                    <option value="pity">😢 Pena</option>
+                  </optgroup>
+                  <optgroup label="Negativos">
+                    <option value="fear">😰 Medo</option>
+                    <option value="resentment">😤 Ressentimento</option>
+                    <option value="jealousy">😒 Inveja/Ciúme</option>
+                    <option value="hatred">😡 Ódio</option>
+                    <option value="contempt">🙄 Desprezo</option>
+                  </optgroup>
+                  <option value="indifference">😐 Indiferença</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Dinâmica de Poder</label>
+                <select value={npc.powerDynamic || ''} onChange={(e) => updateNpc(index, 'powerDynamic', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="balanced">⚖️ Equilibrada — Iguais</option>
+                  <option value="dominant-healthy">👆 Dominante (saudável) — Lidera naturalmente</option>
+                  <option value="submissive-healthy">👇 Submisso (saudável) — Segue naturalmente</option>
+                  <option value="dominant-unhealthy">⚠️ Dominante (problemático) — Controla</option>
+                  <option value="submissive-unhealthy">⚠️ Submisso (problemático) — É controlado</option>
+                  <option value="fluctuating">🔄 Flutuante — Muda conforme situação</option>
+                  <option value="competitive">⚔️ Competitiva — Disputam poder</option>
+                  <option value="complementary">🧩 Complementar — Cada um tem seu papel</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Respeito a Limites</label>
+                <select value={npc.boundaryRespect || ''} onChange={(e) => updateNpc(index, 'boundaryRespect', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="always">✓ Sempre — Respeita completamente</option>
+                  <option value="mostly">Geralmente — Respeita na maioria das vezes</option>
+                  <option value="sometimes">Às vezes — Cruza limites ocasionalmente</option>
+                  <option value="rarely">Raramente — Frequentemente ultrapassa</option>
+                  <option value="never">✗ Nunca — Ignora completamente</option>
+                  <option value="improving">📈 Melhorando — Está aprendendo</option>
+                  <option value="unclear">❓ Incerto — Limites não claros</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* COMUNICAÇÃO */}
+        <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
+          <h4 className="font-mono text-sm font-bold text-cyan-800 mb-3">💬 Comunicação</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Frequência de Contato</label>
+                <select value={npc.communicationFrequency || ''} onChange={(e) => updateNpc(index, 'communicationFrequency', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="constant">🔴 Constante — Várias vezes ao dia</option>
+                  <option value="daily">Diária — Todo dia</option>
+                  <option value="several-week">Várias vezes por semana</option>
+                  <option value="weekly">Semanal</option>
+                  <option value="biweekly">Quinzenal</option>
+                  <option value="monthly">Mensal</option>
+                  <option value="occasionally">Ocasional — A cada poucos meses</option>
+                  <option value="rarely">Raro — Uma ou duas vezes por ano</option>
+                  <option value="almost-never">Quase nunca — Anos sem contato</option>
+                  <option value="no-contact">Sem contato</option>
+                  <option value="one-sided">Unilateral — Só um lado tenta</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-2 block">Meios de Comunicação (até 4)</label>
+                <div className="flex flex-wrap gap-1">
+                  {['Pessoalmente','Telefone','WhatsApp','SMS','E-mail','Redes Sociais','Videochamada','Cartas','Através de outros','Telepatia/Espiritual'].map(method => (
+                    <button key={method} onClick={() => toggleNpcArrayItem(index, 'communicationMethods', method, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.communicationMethods || []).includes(method) ? 'bg-cyan-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{method}</button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Assuntos que Costumam Conversar (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Dia a dia','Trabalho','Família','Relacionamentos','Fofocas','Memórias','Planos futuros','Problemas pessoais','Política','Filosofia','Hobbies','Saúde','Dinheiro','Filmes/Séries','Esportes','Comida','Viagens','Espiritualidade','Piadas','Nada profundo'].map(topic => (
+                  <button key={topic} onClick={() => toggleNpcArrayItem(index, 'conversationTopics', topic, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.conversationTopics || []).includes(topic) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{topic}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Assuntos que Evitam (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Passado','Dinheiro','Relacionamentos','Família','Política','Religião','Saúde','Trabalho','Certos pessoas','Erros antigos','Sonhos/Planos','Sentimentos','Morte','Sexo','Vícios','Nenhum assunto é tabu'].map(topic => (
+                  <button key={topic} onClick={() => toggleNpcArrayItem(index, 'avoidedTopics', topic, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.avoidedTopics || []).includes(topic) ? 'bg-red-400 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{topic}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* HISTÓRIA */}
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">📜 História do Relacionamento</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Como se Conheceram</label>
+                <select value={npc.howTheyMet || ''} onChange={(e) => updateNpc(index, 'howTheyMet', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="birth">👶 Nascimento — Família</option>
+                  <option value="childhood">🧒 Infância</option>
+                  <option value="school">🏫 Escola</option>
+                  <option value="university">🎓 Faculdade</option>
+                  <option value="work">💼 Trabalho</option>
+                  <option value="mutual-friends">👥 Amigos em comum</option>
+                  <option value="event">🎉 Evento/Festa</option>
+                  <option value="online">💻 Online/App</option>
+                  <option value="dating-app">❤️ App de namoro</option>
+                  <option value="hobby">🎨 Hobby/Atividade</option>
+                  <option value="neighborhood">🏠 Vizinhança</option>
+                  <option value="accident">🎲 Por acaso</option>
+                  <option value="travel">✈️ Viagem</option>
+                  <option value="crisis">🆘 Durante uma crise</option>
+                  <option value="professional">🏥 Serviço profissional</option>
+                  <option value="introduced">🤝 Foram apresentados</option>
+                  <option value="dont-remember">❓ Não lembra</option>
+                  <option value="complicated">🌀 Complicado</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Contexto do Primeiro Encontro</label>
+                <input type="text" value={npc.meetingContext || ''} onChange={(e) => updateNpc(index, 'meetingContext', e.target.value)} placeholder="Ex: Na fila do cinema, primeiro dia de aula..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Quando se Conheceram</label>
+                <input type="text" value={npc.meetingYear || ''} onChange={(e) => updateNpc(index, 'meetingYear', e.target.value)} placeholder="Ex: 2015, infância, há 10 anos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Duração do Relacionamento</label>
+              <select value={npc.relationshipDuration || ''} onChange={(e) => updateNpc(index, 'relationshipDuration', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="new">Novo — Menos de 6 meses</option>
+                <option value="recent">Recente — 6 meses a 2 anos</option>
+                <option value="established">Estabelecido — 2-5 anos</option>
+                <option value="long-term">Longo prazo — 5-10 anos</option>
+                <option value="lifelong">Vida toda — 10+ anos</option>
+                <option value="since-birth">Desde o nascimento</option>
+                <option value="on-off">Vai e vem — Intermitente</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">História Compartilhada</label>
+              <textarea value={npc.sharedHistory || ''} onChange={(e) => updateNpc(index, 'sharedHistory', e.target.value)} placeholder="Eventos marcantes, experiências compartilhadas, momentos decisivos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Pontos de Virada no Relacionamento</label>
+              <textarea value={npc.turningPoints || ''} onChange={(e) => updateNpc(index, 'turningPoints', e.target.value)} placeholder="Momentos que mudaram a relação (para melhor ou pior)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Segredos que Este NPC Sabe</label>
+                <textarea value={npc.secretsKnown || ''} onChange={(e) => updateNpc(index, 'secretsKnown', e.target.value)} placeholder="O que este NPC sabe sobre o personagem..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Segredos que o Personagem Esconde deste NPC</label>
+                <textarea value={npc.secretsHidden || ''} onChange={(e) => updateNpc(index, 'secretsHidden', e.target.value)} placeholder="O que o personagem esconde deste NPC..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* DINÂMICA ATUAL */}
+        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">🔄 Dinâmica Atual</h4>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Como está a relação atualmente?</label>
+              <textarea value={npc.currentDynamic || ''} onChange={(e) => updateNpc(index, 'currentDynamic', e.target.value)} placeholder="Descreva o estado atual: estão bem, afastados, em conflito, reconciliando..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Mudanças Recentes</label>
+                <textarea value={npc.recentChanges || ''} onChange={(e) => updateNpc(index, 'recentChanges', e.target.value)} placeholder="Algo mudou recentemente na relação?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Problemas em Andamento</label>
+                <textarea value={npc.ongoingIssues || ''} onChange={(e) => updateNpc(index, 'ongoingIssues', e.target.value)} placeholder="Questões não resolvidas, tensões persistentes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Traços Positivos deste NPC (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Leal','Carinhoso','Engraçado','Inteligente','Honesto','Generoso','Protetor','Paciente','Compreensivo','Inspirador','Confiável','Aventureiro','Calmo','Sábio','Empático','Otimista','Corajoso','Criativo','Dedicado','Respeitoso','Amoroso','Prestativo','Motivador','Divertido','Sincero','Resiliente','Humilde','Gentil','Justo','Responsável'].map(trait => (
+                  <button key={trait} onClick={() => toggleNpcArrayItem(index, 'positiveTraits', trait, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.positiveTraits || []).includes(trait) ? 'bg-emerald-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{trait}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Traços Negativos deste NPC (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Crítico','Controlador','Distante','Ciumento','Teimoso','Impaciente','Irresponsável','Desonesto','Egoísta','Manipulador','Ausente','Temperamental','Pessimista','Negligente','Possessivo','Inseguro','Dramático','Mesquinho','Arrogante','Passivo-agressivo','Imprevisível','Dependente','Frio','Competitivo','Julgador','Rancoroso','Preguiçoso','Desrespeitoso','Vingativo','Vitimista'].map(trait => (
+                  <button key={trait} onClick={() => toggleNpcArrayItem(index, 'negativeTraits', trait, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.negativeTraits || []).includes(trait) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{trait}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Interesses Compartilhados (até 5)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Filmes/Séries','Música','Esportes','Jogos','Culinária','Viagens','Livros','Arte','Natureza','Fitness','Tecnologia','Política','Fofoca','Trabalho','Família','Memórias','Filosofia','Animais','Festas','Compras','Religião/Fé','Artesanato','Causas sociais','Humor','Moda','Fotografia','Dança','Teatro','Ciência','Nenhum em comum'].map(interest => (
+                  <button key={interest} onClick={() => toggleNpcArrayItem(index, 'sharedInterests', interest, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.sharedInterests || []).includes(interest) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{interest}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Fontes de Conflito (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Dinheiro','Tempo/Atenção','Valores diferentes','Comunicação','Ciúmes','Expectativas','Passado','Família','Trabalho','Distância','Prioridades','Personalidades','Hábitos','Decisões','Falta de apoio','Traição','Mentiras','Política','Religião','Estilo de vida','Mudanças','Terceiros','Saúde','Dependência','Filhos','Compromisso','Intimidade','Respeito','Controle','Nenhum'].map(conflict => (
+                  <button key={conflict} onClick={() => toggleNpcArrayItem(index, 'conflictSources', conflict, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.conflictSources || []).includes(conflict) ? 'bg-orange-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{conflict}</button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Tipos de Apoio que Este NPC Oferece (até 4)</label>
+              <div className="flex flex-wrap gap-1">
+                {['Emocional','Financeiro','Prático/Logístico','Conselhos','Motivação','Companhia','Networking','Profissional','Cuidado físico','Moradia','Diversão','Proteção','Validação','Escuta','Crítica construtiva','Nenhum','É o contrário (personagem apoia)'].map(support => (
+                  <button key={support} onClick={() => toggleNpcArrayItem(index, 'supportTypes', support, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(npc.supportTypes || []).includes(support) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{support}</button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FUTURO */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🔮 Futuro & Potencial</h4>
+          
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Potencial Futuro</label>
+                <select value={npc.futurePotential || ''} onChange={(e) => updateNpc(index, 'futurePotential', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="strengthen">📈 Fortalecer — Vai se aproximar mais</option>
+                  <option value="stable">➡️ Estável — Continuar como está</option>
+                  <option value="uncertain">❓ Incerto — Pode ir para qualquer lado</option>
+                  <option value="fade">📉 Enfraquecer — Vai se distanciar</option>
+                  <option value="reconcile">🤝 Reconciliar — Resolver conflitos</option>
+                  <option value="break">💔 Romper — Caminho para término</option>
+                  <option value="transform">🔄 Transformar — Mudar de natureza</option>
+                  <option value="reconnect">🔗 Reconectar — Voltar após afastamento</option>
+                  <option value="deepen">💎 Aprofundar — Novo nível de intimidade</option>
+                  <option value="complicated">🌀 Complicado — Muitas variáveis</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Papel na História (Meta)</label>
+                <select value={npc.storyRole || ''} onChange={(e) => updateNpc(index, 'storyRole', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="love-interest">💕 Love Interest</option>
+                  <option value="best-friend">🤝 Best Friend/Sidekick</option>
+                  <option value="mentor">🎓 Mentor/Guide</option>
+                  <option value="antagonist">👿 Antagonista</option>
+                  <option value="comic-relief">😂 Alívio Cômico</option>
+                  <option value="tragic">😢 Elemento Trágico</option>
+                  <option value="mystery">🔮 Elemento Misterioso</option>
+                  <option value="catalyst">⚡ Catalisador de Mudança</option>
+                  <option value="mirror">🪞 Espelho do Protagonista</option>
+                  <option value="grounding">⚓ Âncora/Grounding</option>
+                  <option value="wildcard">🃏 Wildcard/Imprevisível</option>
+                  <option value="background">📋 Background/Contexto</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Assuntos Não Resolvidos</label>
+              <textarea value={npc.unresolvedMatters || ''} onChange={(e) => updateNpc(index, 'unresolvedMatters', e.target.value)} placeholder="Questões pendentes, conversas adiadas, verdades não ditas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Esperanças para Este Relacionamento</label>
+                <textarea value={npc.hopes || ''} onChange={(e) => updateNpc(index, 'hopes', e.target.value)} placeholder="O que o personagem espera/deseja desta relação..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Medos sobre Este Relacionamento</label>
+                <textarea value={npc.fears || ''} onChange={(e) => updateNpc(index, 'fears', e.target.value)} placeholder="O que o personagem teme que aconteça..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              </div>
+            </div>
+
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Notas Adicionais</label>
+              <textarea value={npc.notes || ''} onChange={(e) => updateNpc(index, 'notes', e.target.value)} placeholder="Qualquer informação adicional sobre este NPC..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+
+        {/* Botão de voltar */}
+        <div className="flex justify-center pt-4">
+          <button onClick={() => setEditingNpcIndex(null)} className="px-6 py-2 bg-rose-600 text-white font-mono text-xs rounded hover:bg-rose-700 flex items-center gap-2">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+            Concluir Edição
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+  // ========== LISTA DE NPCs ==========
+  const NpcList = () => {
+    const npcs = data.npcs || [];
+    const canAddMore = npcs.length < MAX_NPCS;
+
+    // Calcular estatísticas gerais
+    const stats = {
+      total: npcs.length,
+      avgHealth: npcs.length > 0 ? Math.round(npcs.reduce((sum, npc) => sum + calculateRelationshipHealth(npc), 0) / npcs.length) : 0,
+      healthy: npcs.filter(npc => calculateRelationshipHealth(npc) >= 70).length,
+      troubled: npcs.filter(npc => calculateRelationshipHealth(npc) < 50).length,
+      byType: {
+        family: npcs.filter(npc => (npc.relationshipType || '').startsWith('family-')).length,
+        romantic: npcs.filter(npc => (npc.relationshipType || '').startsWith('romantic-')).length,
+        friend: npcs.filter(npc => (npc.relationshipType || '').startsWith('friend-')).length,
+        professional: npcs.filter(npc => (npc.relationshipType || '').startsWith('professional-')).length,
+        conflict: npcs.filter(npc => ['rival', 'enemy', 'bully', 'nemesis'].includes(npc.relationshipType)).length,
+        other: npcs.filter(npc => !['family-', 'romantic-', 'friend-', 'professional-'].some(t => (npc.relationshipType || '').startsWith(t)) && !['rival', 'enemy', 'bully', 'nemesis'].includes(npc.relationshipType)).length
+      }
+    };
+
+    return (
+      <div className="space-y-6">
+        <div className="bg-rose-50 border border-rose-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-rose-900 mb-2">👥 PERSONAGENS IMPORTANTES (NPCs)</h3>
+          <p className="font-mono text-xs text-rose-800 leading-relaxed">
+            Adicione as pessoas mais importantes na vida do seu personagem. 
+            <span className="font-bold"> Ideal: {IDEAL_NPCS} NPCs</span> | Máximo: {MAX_NPCS} NPCs.
+          </p>
+        </div>
+
+        {/* Dashboard de estatísticas */}
+        {npcs.length > 0 && (
+          <div className="bg-gradient-to-br from-gray-50 to-rose-50 border border-gray-200 rounded-sm p-4">
+            <h4 className="font-mono text-xs font-bold text-gray-700 mb-3">📊 Visão Geral dos Relacionamentos</h4>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+              <div className="bg-white rounded p-3 border border-gray-200 text-center">
+                <div className="font-mono text-2xl font-bold text-rose-600">{stats.total}</div>
+                <div className="font-mono text-[9px] text-gray-500">NPCs Total</div>
+              </div>
+              <div className="bg-white rounded p-3 border border-gray-200 text-center">
+                <div className={`font-mono text-2xl font-bold ${stats.avgHealth >= 70 ? 'text-emerald-600' : stats.avgHealth >= 50 ? 'text-yellow-600' : 'text-red-600'}`}>{stats.avgHealth}%</div>
+                <div className="font-mono text-[9px] text-gray-500">Saúde Média</div>
+              </div>
+              <div className="bg-white rounded p-3 border border-gray-200 text-center">
+                <div className="font-mono text-2xl font-bold text-emerald-600">{stats.healthy}</div>
+                <div className="font-mono text-[9px] text-gray-500">Saudáveis</div>
+              </div>
+              <div className="bg-white rounded p-3 border border-gray-200 text-center">
+                <div className="font-mono text-2xl font-bold text-red-600">{stats.troubled}</div>
+                <div className="font-mono text-[9px] text-gray-500">Problemáticos</div>
+              </div>
+            </div>
+
+            {/* Breakdown por tipo */}
+            <div className="flex flex-wrap gap-2 justify-center">
+              {stats.byType.family > 0 && <span className="px-2 py-1 bg-amber-100 text-amber-700 rounded-full font-mono text-[9px]">👨‍👩‍👧 Família: {stats.byType.family}</span>}
+              {stats.byType.romantic > 0 && <span className="px-2 py-1 bg-pink-100 text-pink-700 rounded-full font-mono text-[9px]">💕 Romântico: {stats.byType.romantic}</span>}
+              {stats.byType.friend > 0 && <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded-full font-mono text-[9px]">🤝 Amizade: {stats.byType.friend}</span>}
+              {stats.byType.professional > 0 && <span className="px-2 py-1 bg-gray-100 text-gray-700 rounded-full font-mono text-[9px]">💼 Profissional: {stats.byType.professional}</span>}
+              {stats.byType.conflict > 0 && <span className="px-2 py-1 bg-red-100 text-red-700 rounded-full font-mono text-[9px]">⚔️ Conflito: {stats.byType.conflict}</span>}
+            </div>
+          </div>
+        )}
+
+        {/* Indicador de progresso */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <div className="flex justify-between items-center mb-2">
+            <span className="font-mono text-xs text-gray-600">NPCs Cadastrados</span>
+            <span className={`font-mono text-sm font-bold ${npcs.length >= IDEAL_NPCS ? 'text-emerald-600' : 'text-amber-600'}`}>
+              {npcs.length}/{MAX_NPCS}
+            </span>
+          </div>
+          <div className="h-3 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className={`h-full rounded-full transition-all ${npcs.length >= IDEAL_NPCS ? 'bg-emerald-500' : 'bg-amber-500'}`}
+              style={{ width: `${(npcs.length / MAX_NPCS) * 100}%` }}
+            ></div>
+          </div>
+          <div className="flex justify-between font-mono text-[9px] text-gray-400 mt-1">
+            <span>0</span>
+            <span className="text-amber-600">Ideal: {IDEAL_NPCS}</span>
+            <span>Máx: {MAX_NPCS}</span>
+          </div>
+        </div>
+
+        {/* Lista de NPCs */}
+        {npcs.length > 0 ? (
+          <div className="space-y-3">
+            {npcs.map((npc, index) => {
+              const proximity = getProximityColor(npc.proximityLevel || 5);
+              const icon = getRelationshipIcon(npc.relationshipType);
+              const diagnosis = getRelationshipDiagnosis(npc);
+              const completeness = calculateNpcCompleteness(npc);
+
+              return (
+                <div 
+                  key={npc.id || index} 
+                  className={`border-2 rounded-sm p-4 transition-all hover:shadow-md cursor-pointer ${proximity.light} ${proximity.border}`}
+                  onClick={() => setEditingNpcIndex(index)}
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex items-start gap-3">
+                      <div className={`w-14 h-14 rounded-full ${proximity.bg} flex items-center justify-center text-white text-2xl flex-shrink-0 shadow`}>
+                        {icon}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-1 flex-wrap">
+                          <h4 className="font-mono text-sm font-bold text-gray-900">{npc.name || 'Sem nome'}</h4>
+                          {npc.nickname && <span className="font-mono text-xs text-gray-500">"{npc.nickname}"</span>}
+                        </div>
+                        <p className="font-mono text-[10px] text-gray-600 mb-1">
+                          {npc.relationshipType ? npc.relationshipType.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()).replace('Family ', '').replace('Romantic ', '').replace('Friend ', '').replace('Professional ', '') : 'Tipo não definido'}
+                          {npc.age && ` • ${npc.age} anos`}
+                          {npc.occupation && ` • ${npc.occupation}`}
+                        </p>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className={`px-2 py-0.5 rounded-full font-mono text-[9px] font-bold ${proximity.light} ${proximity.text}`}>
+                            {proximity.label} ({npc.proximityLevel || 5}/10)
+                          </span>
+                          <span className={`px-2 py-0.5 rounded-full font-mono text-[9px] font-bold ${
+                            diagnosis.color === 'red' ? 'bg-red-100 text-red-700' :
+                            diagnosis.color === 'orange' ? 'bg-orange-100 text-orange-700' :
+                            diagnosis.color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
+                            'bg-emerald-100 text-emerald-700'
+                          }`}>
+                            🩺 {diagnosis.health}%
+                          </span>
+                          {npc.status && npc.status !== 'active' && (
+                            <span className="px-2 py-0.5 bg-gray-200 text-gray-600 rounded-full font-mono text-[9px]">
+                              {npc.status === 'deceased' ? '🕊️' : npc.status === 'estranged' ? '💔' : npc.status === 'distant' ? '📍' : '🌀'} {npc.status}
+                            </span>
+                          )}
+                        </div>
+                        {npc.personalityBrief && (
+                          <p className="font-mono text-[9px] text-gray-500 mt-1 italic">"{npc.personalityBrief}"</p>
+                        )}
+                        {/* Alertas */}
+                        {diagnosis.issues.length > 0 && (
+                          <div className="mt-2 flex flex-wrap gap-1">
+                            {diagnosis.issues.slice(0, 2).map((issue, i) => (
+                              <span key={i} className="px-1.5 py-0.5 bg-red-50 text-red-600 rounded font-mono text-[8px]">⚠️ {issue}</span>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2 ml-4 items-end">
+                      <div className="flex gap-2">
+                        <button onClick={(e) => { e.stopPropagation(); setEditingNpcIndex(index); }} className="px-3 py-1.5 bg-rose-100 text-rose-700 font-mono text-[10px] rounded hover:bg-rose-200">
+                          ✏️ Editar
+                        </button>
+                        <button onClick={(e) => { e.stopPropagation(); removeNpc(index); }} className="px-3 py-1.5 bg-red-100 text-red-700 font-mono text-[10px] rounded hover:bg-red-200">
+                          🗑️
+                        </button>
+                      </div>
+                      <div className="text-right">
+                        <div className="font-mono text-[8px] text-gray-400">Completude</div>
+                        <div className="w-16 bg-gray-200 rounded-full h-1.5 mt-0.5">
+                          <div className="bg-purple-500 h-1.5 rounded-full" style={{ width: `${completeness}%` }}></div>
+                        </div>
+                        <div className="font-mono text-[8px] text-gray-400">{completeness}%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="border-2 border-dashed border-gray-300 rounded-sm p-8 text-center">
+            <div className="text-gray-400 mb-3">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <p className="font-mono text-sm text-gray-500 mb-1">Nenhum NPC cadastrado</p>
+            <p className="font-mono text-xs text-gray-400">Adicione as pessoas mais importantes na vida do seu personagem.</p>
+          </div>
+        )}
+
+        {/* Botão de adicionar */}
+        {canAddMore ? (
+          <button onClick={addNpc} className="w-full py-4 border-2 border-dashed border-rose-400 rounded-sm text-rose-600 font-mono text-sm hover:bg-rose-50 hover:border-rose-500 transition-all flex items-center justify-center gap-2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Adicionar NPC ({npcs.length}/{MAX_NPCS})
+          </button>
+        ) : (
+          <div className="w-full py-4 border-2 border-gray-300 rounded-sm text-gray-500 font-mono text-sm bg-gray-50 text-center">
+            ✓ Limite máximo de NPCs atingido ({MAX_NPCS}/{MAX_NPCS})
+          </div>
+        )}
+
+        {/* Mapa visual */}
+        {npcs.length > 0 && (
+          <div className="bg-gradient-to-br from-gray-50 to-rose-50 border border-gray-200 rounded-sm p-4">
+            <h4 className="font-mono text-xs font-bold text-gray-700 mb-3">🗺️ Mapa de Relacionamentos</h4>
+            <div className="flex flex-wrap justify-center gap-4 items-center">
+              <div className="relative">
+                <div className="w-20 h-20 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold text-3xl border-4 border-white shadow-lg">
+                  👤
+                </div>
+                <span className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 font-mono text-[9px] text-gray-600 whitespace-nowrap font-bold">PROTAGONISTA</span>
+              </div>
+              {npcs.map((npc, index) => {
+                const proximity = getProximityColor(npc.proximityLevel || 5);
+                const icon = getRelationshipIcon(npc.relationshipType);
+                const diagnosis = getRelationshipDiagnosis(npc);
+                return (
+                  <div key={index} className="relative cursor-pointer" onClick={() => setEditingNpcIndex(index)}>
+                    <div className={`w-14 h-14 rounded-full ${proximity.bg} flex items-center justify-center text-white text-xl border-2 border-white shadow ${diagnosis.color === 'red' ? 'ring-2 ring-red-400' : ''}`}>
+                      {icon}
+                    </div>
+                    <span className="absolute -bottom-5 left-1/2 transform -translate-x-1/2 font-mono text-[8px] text-gray-600 whitespace-nowrap max-w-16 truncate">
+                      {npc.name || `NPC ${index + 1}`}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-8 flex justify-center gap-3 flex-wrap">
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-rose-500"></div><span className="font-mono text-[8px] text-gray-500">Alma Gêmea</span></div>
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-pink-500"></div><span className="font-mono text-[8px] text-gray-500">Muito Próximo</span></div>
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-purple-500"></div><span className="font-mono text-[8px] text-gray-500">Próximo</span></div>
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-blue-500"></div><span className="font-mono text-[8px] text-gray-500">Conhecido</span></div>
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-gray-400"></div><span className="font-mono text-[8px] text-gray-500">Distante</span></div>
+              <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full ring-2 ring-red-400"></div><span className="font-mono text-[8px] text-gray-500">Problemático</span></div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const sections = {
+    // ========== SUBTAB 0: KEY NPCs ==========
+    0: editingNpcIndex !== null && data.npcs?.[editingNpcIndex] ? (
+      <NpcForm npc={data.npcs[editingNpcIndex]} index={editingNpcIndex} />
+    ) : (
+      <NpcList />
+    ),
+
+    // ========== SUBTAB 1: SOCIAL PATTERNS ==========
+    1: (
+      <div className="space-y-6">
+        <div className="bg-purple-50 border border-purple-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">🧩 PADRÕES SOCIAIS</h3>
+          <p className="font-mono text-xs text-purple-800 leading-relaxed">Como o personagem se relaciona socialmente.</p>
+        </div>
+
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">⚡ Energia Social & Estilo</h4>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="font-mono text-[10px] text-gray-600">Introversão ↔ Extroversão</label>
+                <span className="font-mono text-xs font-bold text-purple-600">{data.patterns?.socialEnergy || 5}/10</span>
+              </div>
+              <input type="range" min="1" max="10" value={data.patterns?.socialEnergy || 5} onChange={(e) => update('patterns', 'socialEnergy', parseInt(e.target.value))} className="w-full" />
+              <div className="flex justify-between font-mono text-[9px] text-gray-400">
+                <span>Introvertido</span><span>Ambivertido</span><span>Extrovertido</span>
+              </div>
+            </div>
+
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <label className="font-mono text-[10px] text-gray-600">Facilidade em Confiar</label>
+                <span className="font-mono text-xs font-bold text-purple-600">{data.patterns?.trustLevel || 5}/10</span>
+              </div>
+              <input type="range" min="1" max="10" value={data.patterns?.trustLevel || 5} onChange={(e) => update('patterns', 'trustLevel', parseInt(e.target.value))} className="w-full" />
+              <div className="flex justify-between font-mono text-[9px] text-gray-400">
+                <span>Muito desconfiado</span><span>Cauteloso</span><span>Confia facilmente</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo em Conflitos</label>
+                <select value={data.patterns?.conflictStyle || ''} onChange={(e) => update('patterns', 'conflictStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="avoidant">Evitativo — Foge de conflitos</option>
+                  <option value="accommodating">Acomodador — Cede para manter a paz</option>
+                  <option value="compromising">Conciliador — Busca meio-termo</option>
+                  <option value="collaborative">Colaborativo — Busca solução win-win</option>
+                  <option value="competitive">Competitivo — Quer ganhar</option>
+                  <option value="aggressive">Agressivo — Confronta diretamente</option>
+                  <option value="passive-aggressive">Passivo-agressivo</option>
+                  <option value="depends">Depende da situação</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Amizade</label>
+                <select value={data.patterns?.friendshipStyle || ''} onChange={(e) => update('patterns', 'friendshipStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="few-deep">Poucos e profundos</option>
+                  <option value="many-surface">Muitos e superficiais</option>
+                  <option value="balanced">Equilibrado</option>
+                  <option value="loner">Solitário</option>
+                  <option value="social-butterfly">Borboleta social</option>
+                  <option value="selective">Muito seletivo</option>
+                  <option value="loyal">Leal — Mantém por décadas</option>
+                  <option value="transient">Transitório</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Linguagem do Amor Principal</label>
+                <select value={data.patterns?.loveLanguages || ''} onChange={(e) => update('patterns', 'loveLanguages', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="words">Palavras de Afirmação</option>
+                  <option value="acts">Atos de Serviço</option>
+                  <option value="gifts">Presentes</option>
+                  <option value="time">Tempo de Qualidade</option>
+                  <option value="touch">Toque Físico</option>
+                  <option value="mixed">Misto</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Apego</label>
+                <select value={data.patterns?.attachmentStyle || ''} onChange={(e) => update('patterns', 'attachmentStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="secure">Seguro — Confortável com intimidade</option>
+                  <option value="anxious">Ansioso — Medo de abandono</option>
+                  <option value="avoidant">Evitativo — Evita intimidade</option>
+                  <option value="fearful">Desorganizado — Misto de ansioso e evitativo</option>
+                  <option value="earned-secure">Seguro Conquistado — Superou padrões</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 2: CURRENT CIRCLE ==========
+    2: (
+      <div className="space-y-6">
+        <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">🔵 CÍRCULO ATUAL</h3>
+          <p className="font-mono text-xs text-blue-800 leading-relaxed">Descrição geral do círculo social (além dos NPCs detalhados).</p>
+        </div>
+
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">👥 Grupos Sociais</h4>
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Melhores Amigos (descrição geral)</label>
+              <textarea value={data.circle?.bestFriends || ''} onChange={(e) => update('circle', 'bestFriends', e.target.value)} placeholder="Além dos NPCs detalhados, quem são os melhores amigos?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Amigos Próximos</label>
+              <textarea value={data.circle?.closeFriends || ''} onChange={(e) => update('circle', 'closeFriends', e.target.value)} placeholder="Amigos com quem tem boa relação..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Conhecidos/Colegas</label>
+              <textarea value={data.circle?.acquaintances || ''} onChange={(e) => update('circle', 'acquaintances', e.target.value)} placeholder="Pessoas que conhece mas não são próximas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Rivais/Desafetos</label>
+              <textarea value={data.circle?.rivals || ''} onChange={(e) => update('circle', 'rivals', e.target.value)} placeholder="Pessoas com quem tem conflito..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Mentores/Figuras de Referência</label>
+              <textarea value={data.circle?.mentors || ''} onChange={(e) => update('circle', 'mentors', e.target.value)} placeholder="Pessoas que admira ou que servem de modelo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 3: ROMANTIC HISTORY ==========
+    3: (
+      <div className="space-y-6">
+        <div className="bg-pink-50 border border-pink-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-pink-900 mb-2">💕 HISTÓRICO ROMÂNTICO</h3>
+          <p className="font-mono text-xs text-pink-800 leading-relaxed">Vida amorosa passada e presente.</p>
+        </div>
+
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">❤️ Vida Amorosa</h4>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
+                <select value={data.romantic?.relationshipStatus || ''} onChange={(e) => update('romantic', 'relationshipStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="single">Solteiro(a)</option>
+                  <option value="dating">Namorando</option>
+                  <option value="engaged">Noivo(a)</option>
+                  <option value="married">Casado(a)</option>
+                  <option value="divorced">Divorciado(a)</option>
+                  <option value="widowed">Viúvo(a)</option>
+                  <option value="separated">Separado(a)</option>
+                  <option value="complicated">Complicado</option>
+                  <option value="open">Relacionamento aberto</option>
+                  <option value="poly">Poliamoroso</option>
+                  <option value="situationship">Situationship</option>
+                  <option value="talking">Ficando/Conhecendo</option>
+                </select>
+              </div>
+              <div>
+                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência Romântica</label>
+                <select value={data.romantic?.romanticExperience || ''} onChange={(e) => update('romantic', 'romanticExperience', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                  <option value="">-- Selecione --</option>
+                  <option value="none">Nenhuma experiência</option>
+                  <option value="minimal">Mínima — 1-2 relacionamentos</option>
+                  <option value="some">Alguma — Alguns relacionamentos</option>
+                  <option value="moderate">Moderada — Vários relacionamentos</option>
+                  <option value="extensive">Extensa — Muitos relacionamentos</option>
+                  <option value="married-once">Casou uma vez</option>
+                  <option value="married-multiple">Casou múltiplas vezes</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relacionamentos Passados Significativos</label>
+              <textarea value={data.romantic?.pastRelationships || ''} onChange={(e) => update('romantic', 'pastRelationships', e.target.value)} placeholder="Histórico de relacionamentos importantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Padrões em Relacionamentos</label>
+              <textarea value={data.romantic?.romanticPatterns || ''} onChange={(e) => update('romantic', 'romanticPatterns', e.target.value)} placeholder="Padrões repetitivos, tipo de pessoa que atrai/é atraído..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Deal Breakers</label>
+              <textarea value={data.romantic?.dealBreakers || ''} onChange={(e) => update('romantic', 'dealBreakers', e.target.value)} placeholder="O que não tolera em um relacionamento..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 4: FAMILY TIES ==========
+    4: (
+      <div className="space-y-6">
+        <div className="bg-amber-50 border border-amber-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">👨‍👩‍👧 LAÇOS FAMILIARES</h3>
+          <p className="font-mono text-xs text-amber-800 leading-relaxed">Relação com a família (descrição geral, além dos NPCs).</p>
+        </div>
+
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">👪 Família</h4>
+          <div className="space-y-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relação Geral com os Pais</label>
+              <textarea value={data.family?.relationshipWithParents || ''} onChange={(e) => update('family', 'relationshipWithParents', e.target.value)} placeholder="Como é a relação com pai e mãe..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relação com Irmãos</label>
+              <textarea value={data.family?.relationshipWithSiblings || ''} onChange={(e) => update('family', 'relationshipWithSiblings', e.target.value)} placeholder="Relação com irmãos, se tiver..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Afastamentos/Rupturas</label>
+              <textarea value={data.family?.estrangements || ''} onChange={(e) => update('family', 'estrangements', e.target.value)} placeholder="Membros com quem não fala, conflitos sérios..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  };
+
+  return sections[subtab] || sections[0];
+};
+
 
 // ============================================================================
 // BEHAVIOR CONTENT - Complete Implementation
@@ -12349,6 +19418,3144 @@ const GoalsContent = ({ data, updateData, subtab }) => {
 
 
 // ============================================================================
+// DIRECTIVE RESPONSES CONTENT - RP & Writing Behavior Control System
+// ============================================================================
+
+// Directive options database with English output text
+const DIRECTIVE_OPTIONS = {
+  formatting: {
+    responseLength: {
+      label: 'Response Length',
+      options: [
+        { id: 'oneliner', label: 'One-liner (1-2 sentences)', text: 'Concise one-liner responses.' },
+        { id: 'short', label: 'Short (1-2 paragraphs)', text: 'Short, focused responses.' },
+        { id: 'medium', label: 'Medium (3-4 paragraphs)', text: 'Medium-length responses.' },
+        { id: 'long', label: 'Long (5+ paragraphs)', text: 'Detailed, lengthy responses.' },
+        { id: 'novella', label: 'Novella (detailed scenes)', text: 'Novella-style detailed scenes.' },
+        { id: 'adaptive', label: 'Adaptive (match partner)', text: 'Match partner response length.' }
+      ]
+    },
+    actionStyle: {
+      label: 'Action Notation',
+      options: [
+        { id: 'asterisks', label: '*asterisks* for actions', text: 'Use *asterisks* for actions.' },
+        { id: 'italics', label: 'Italics for actions', text: 'Use italics for actions.' },
+        { id: 'prose', label: 'Prose-integrated actions', text: 'Actions written in prose.' },
+        { id: 'brackets', label: '[Brackets] for actions', text: 'Use [brackets] for actions.' },
+        { id: 'none', label: 'No action markers', text: 'No special action markers.' }
+      ]
+    },
+    dialogueStyle: {
+      label: 'Dialogue Style',
+      options: [
+        { id: 'quotes', label: '"Double quotes"', text: 'Dialogue in "quotes".' },
+        { id: 'single', label: "'Single quotes'", text: "Dialogue in 'single quotes'." },
+        { id: 'dashes', label: '— Em dashes', text: 'Dialogue with — dashes.' },
+        { id: 'prose', label: 'Prose-integrated', text: 'Dialogue integrated into prose.' },
+        { id: 'bold', label: '**Bold dialogue**', text: 'Dialogue in **bold**.' }
+      ]
+    },
+    thoughtStyle: {
+      label: 'Internal Thoughts',
+      options: [
+        { id: 'italics', label: 'Italics for thoughts', text: 'Thoughts in italics.' },
+        { id: 'apostrophe', label: "'Apostrophes'", text: "Thoughts in 'apostrophes'." },
+        { id: 'parentheses', label: '(Parentheses)', text: 'Thoughts in (parentheses).' },
+        { id: 'narrated', label: 'Narrated thoughts', text: 'Thoughts narrated in prose.' },
+        { id: 'none', label: 'Minimal internal monologue', text: 'Minimal inner thoughts.' }
+      ]
+    },
+    narrativePerson: {
+      label: 'Narrative Person',
+      options: [
+        { id: 'first', label: 'First person (I/me)', text: 'Write in 1st person.' },
+        { id: 'second', label: 'Second person (you)', text: 'Write in 2nd person.' },
+        { id: 'third', label: 'Third person (he/she/they)', text: 'Write in 3rd person.' },
+        { id: 'mixed', label: 'Mixed (flexible)', text: 'Flexible narrative person.' }
+      ]
+    },
+    paragraphStyle: {
+      label: 'Paragraph Structure',
+      options: [
+        { id: 'compact', label: 'Compact (minimal breaks)', text: 'Compact paragraphs.' },
+        { id: 'standard', label: 'Standard paragraphs', text: 'Standard paragraph breaks.' },
+        { id: 'spaced', label: 'Well-spaced paragraphs', text: 'Well-spaced paragraphs.' },
+        { id: 'scenic', label: 'Scene breaks (---)', text: 'Use --- scene breaks.' },
+        { id: 'chapters', label: 'Chapter-style sections', text: 'Chapter-style formatting.' }
+      ]
+    }
+  },
+  writingStyle: {
+    detailLevel: {
+      label: 'Description Level',
+      options: [
+        { id: 'minimal', label: 'Minimal descriptions', text: 'Minimal descriptions.' },
+        { id: 'balanced', label: 'Balanced detail', text: 'Balanced descriptions.' },
+        { id: 'rich', label: 'Richly descriptive', text: 'Rich, vivid descriptions.' },
+        { id: 'lavish', label: 'Lavishly detailed', text: 'Lavishly detailed narration.' },
+        { id: 'sensory', label: 'Sensory-focused', text: 'Sensory-rich writing.' }
+      ]
+    },
+    vocabulary: {
+      label: 'Vocabulary Level',
+      options: [
+        { id: 'simple', label: 'Simple & accessible', text: 'Simple vocabulary.' },
+        { id: 'moderate', label: 'Moderate vocabulary', text: 'Moderate vocabulary.' },
+        { id: 'sophisticated', label: 'Sophisticated', text: 'Sophisticated vocabulary.' },
+        { id: 'literary', label: 'Literary & poetic', text: 'Literary, poetic language.' },
+        { id: 'period', label: 'Period-appropriate', text: 'Period-appropriate vocabulary.' }
+      ]
+    },
+    pacing: {
+      label: 'Scene Pacing',
+      options: [
+        { id: 'rapid', label: 'Rapid & punchy', text: 'Fast-paced writing.' },
+        { id: 'moderate', label: 'Moderate pace', text: 'Moderate pacing.' },
+        { id: 'deliberate', label: 'Slow & deliberate', text: 'Slow, deliberate pacing.' },
+        { id: 'cinematic', label: 'Cinematic pacing', text: 'Cinematic scene pacing.' },
+        { id: 'dynamic', label: 'Dynamic (varies)', text: 'Dynamic pacing.' }
+      ]
+    },
+    focus: {
+      label: 'Writing Focus',
+      options: [
+        { id: 'dialogue', label: 'Dialogue-heavy', text: 'Dialogue-focused writing.' },
+        { id: 'action', label: 'Action-focused', text: 'Action-focused writing.' },
+        { id: 'introspection', label: 'Introspection-heavy', text: 'Introspection-focused.' },
+        { id: 'description', label: 'Description-focused', text: 'Description-focused.' },
+        { id: 'balanced', label: 'Balanced approach', text: 'Balanced writing focus.' },
+        { id: 'emotional', label: 'Emotional emphasis', text: 'Emotionally-driven writing.' }
+      ]
+    },
+    tone: {
+      label: 'Overall Tone',
+      options: [
+        { id: 'serious', label: 'Serious & dramatic', text: 'Serious, dramatic tone.' },
+        { id: 'casual', label: 'Casual & relaxed', text: 'Casual, relaxed tone.' },
+        { id: 'dark', label: 'Dark & gritty', text: 'Dark, gritty tone.' },
+        { id: 'light', label: 'Light & hopeful', text: 'Light, hopeful tone.' },
+        { id: 'humorous', label: 'Humorous undertones', text: 'Humorous undertones.' },
+        { id: 'melancholic', label: 'Melancholic', text: 'Melancholic atmosphere.' },
+        { id: 'tense', label: 'Tense & suspenseful', text: 'Tense, suspenseful tone.' }
+      ]
+    }
+  },
+  narrative: {
+    genre: {
+      label: 'RP Genre/Style',
+      options: [
+        { id: 'slice_realistic', label: 'Slice of Life (Realistic)', text: 'Ultra-realistic slice-of-life.' },
+        { id: 'slice_cozy', label: 'Slice of Life (Cozy)', text: 'Cozy, comforting slice-of-life.' },
+        { id: 'adventure', label: 'Adventure/Quest', text: 'Adventure and quest-driven.' },
+        { id: 'action', label: 'Action/Combat', text: 'Action and combat focused.' },
+        { id: 'romance', label: 'Romance', text: 'Romance-centered story.' },
+        { id: 'drama', label: 'Drama/Angst', text: 'Dramatic and emotional.' },
+        { id: 'comedy', label: 'Comedy/Humor', text: 'Comedy and humor focused.' },
+        { id: 'horror', label: 'Horror/Thriller', text: 'Horror and thriller elements.' },
+        { id: 'mystery', label: 'Mystery/Investigation', text: 'Mystery and investigation.' },
+        { id: 'fantasy', label: 'Fantasy/Magic', text: 'Fantasy with magic elements.' },
+        { id: 'scifi', label: 'Sci-Fi/Futuristic', text: 'Science fiction setting.' },
+        { id: 'historical', label: 'Historical/Period', text: 'Historical period accuracy.' },
+        { id: 'supernatural', label: 'Supernatural/Paranormal', text: 'Supernatural elements.' },
+        { id: 'casual', label: 'Casual/Freeform', text: 'Casual freeform RP.' },
+        { id: 'mixed', label: 'Mixed Genre', text: 'Mixed genre flexibility.' }
+      ]
+    },
+    plotStyle: {
+      label: 'Story Driver',
+      options: [
+        { id: 'character', label: 'Character-driven', text: 'Character-driven story.' },
+        { id: 'plot', label: 'Plot-driven', text: 'Plot-driven narrative.' },
+        { id: 'relationship', label: 'Relationship-focused', text: 'Relationship-focused.' },
+        { id: 'world', label: 'World-building focused', text: 'World-building focused.' },
+        { id: 'conflict', label: 'Conflict-driven', text: 'Conflict-driven story.' },
+        { id: 'slice', label: 'Slice-of-life moments', text: 'Slice-of-life moments.' },
+        { id: 'mundane', label: 'Mundane realism', text: 'Focus on mundane realism.' },
+        { id: 'emotional', label: 'Emotional journey', text: 'Emotional journey focus.' },
+        { id: 'exploration', label: 'Exploration/Discovery', text: 'Exploration and discovery.' },
+        { id: 'survival', label: 'Survival/Challenge', text: 'Survival challenges.' }
+      ]
+    },
+    autonomy: {
+      label: 'Character Autonomy',
+      options: [
+        { id: 'full_agency', label: 'Full agency (own will)', text: 'Full character agency with own will.' },
+        { id: 'strong_will', label: 'Strong-willed', text: 'Strong-willed, makes own decisions.' },
+        { id: 'can_refuse', label: 'Can refuse actions', text: 'Can refuse inappropriate actions.' },
+        { id: 'independent', label: 'Independent thinker', text: 'Independent decision-making.' },
+        { id: 'self_motivated', label: 'Self-motivated goals', text: 'Pursues own goals actively.' },
+        { id: 'high', label: 'High autonomy', text: 'High character autonomy.' },
+        { id: 'moderate', label: 'Moderate autonomy', text: 'Moderate autonomy.' },
+        { id: 'guided', label: 'Partner-guided', text: 'Follows partner lead.' },
+        { id: 'collaborative', label: 'Collaborative', text: 'Collaborative storytelling.' },
+        { id: 'reactive', label: 'Reactive', text: 'Primarily reactive.' },
+        { id: 'suggestible', label: 'Suggestible', text: 'Open to suggestions.' }
+      ]
+    },
+    agency: {
+      label: 'Character Agency Behavior',
+      options: [
+        { id: 'own_agenda', label: 'Has own agenda', text: 'Pursues personal agenda.' },
+        { id: 'self_preserve', label: 'Self-preservation', text: 'Strong self-preservation instinct.' },
+        { id: 'can_disagree', label: 'Can disagree', text: 'May disagree with others.' },
+        { id: 'questions', label: 'Questions decisions', text: 'Questions decisions actively.' },
+        { id: 'negotiates', label: 'Negotiates outcomes', text: 'Negotiates for better outcomes.' },
+        { id: 'surprises', label: 'Creates surprises', text: 'Creates unexpected moments.' },
+        { id: 'consistent_morals', label: 'Consistent morals', text: 'Maintains consistent morals.' },
+        { id: 'flawed_choices', label: 'Makes flawed choices', text: 'Makes realistic flawed choices.' },
+        { id: 'learns_adapts', label: 'Learns and adapts', text: 'Learns from experiences.' },
+        { id: 'stubborn', label: 'Can be stubborn', text: 'Can be stubborn when pushed.' }
+      ]
+    },
+    surprises: {
+      label: 'Plot Surprises',
+      options: [
+        { id: 'loves_twists', label: 'Loves plot twists', text: 'Loves unexpected plot twists.' },
+        { id: 'welcome', label: 'Welcomes surprises', text: 'Open to plot twists.' },
+        { id: 'mild', label: 'Mild surprises okay', text: 'Mild surprises welcome.' },
+        { id: 'discuss', label: 'Discuss major twists', text: 'Major twists need discussion.' },
+        { id: 'predictable', label: 'Prefer predictable', text: 'Prefers predictable flow.' },
+        { id: 'dramatic', label: 'Dramatic turns', text: 'Welcomes dramatic turns.' },
+        { id: 'subtle', label: 'Subtle developments', text: 'Prefers subtle developments.' }
+      ]
+    },
+    npcControl: {
+      label: 'NPC Control',
+      options: [
+        { id: 'full', label: 'Full NPC control', text: 'Can write any NPCs.' },
+        { id: 'minor', label: 'Minor NPCs only', text: 'Can write minor NPCs.' },
+        { id: 'limited', label: 'Limited control', text: 'Limited NPC control.' },
+        { id: 'ask', label: 'Ask first', text: 'Ask before writing NPCs.' },
+        { id: 'none', label: 'No control', text: 'No NPC control.' },
+        { id: 'shared', label: 'Shared ownership', text: 'Shared NPC control.' },
+        { id: 'creates_npcs', label: 'Creates new NPCs', text: 'Can create new NPCs.' }
+      ]
+    },
+    collaboration: {
+      label: 'Collaboration Style',
+      options: [
+        { id: 'lead', label: 'Leads scenes', text: 'Tends to lead scenes.' },
+        { id: 'follow', label: 'Follows lead', text: 'Tends to follow lead.' },
+        { id: 'equal', label: 'Equal partnership', text: 'Equal collaboration.' },
+        { id: 'adaptive', label: 'Adapts to partner', text: 'Adapts to partner style.' },
+        { id: 'proactive', label: 'Proactive', text: 'Proactively advances plot.' },
+        { id: 'supportive', label: 'Supportive', text: 'Supports partner narrative.' },
+        { id: 'challenger', label: 'Challenges partner', text: 'Challenges partner choices.' }
+      ]
+    },
+    realism: {
+      label: 'Realism Style',
+      options: [
+        { id: 'hyper_realistic', label: 'Hyper-realistic', text: 'Hyper-realistic details.' },
+        { id: 'grounded', label: 'Grounded realism', text: 'Grounded in reality.' },
+        { id: 'dramatic_real', label: 'Dramatic realism', text: 'Dramatic but realistic.' },
+        { id: 'soft_real', label: 'Soft realism', text: 'Soft, forgiving realism.' },
+        { id: 'cinematic', label: 'Cinematic realism', text: 'Cinematic realism.' },
+        { id: 'fantasy_real', label: 'Fantasy-grounded', text: 'Fantasy but internally consistent.' },
+        { id: 'rule_of_cool', label: 'Rule of cool', text: 'Cool over realistic.' },
+        { id: 'flexible', label: 'Flexible realism', text: 'Flexible approach to realism.' }
+      ]
+    }
+  },
+  content: {
+    consequences: {
+      label: 'Realism Level',
+      options: [
+        { id: 'realistic', label: 'Realistic consequences', text: 'Realistic consequences.' },
+        { id: 'light', label: 'Light consequences', text: 'Light consequences.' },
+        { id: 'armor', label: 'Plot armor allowed', text: 'Plot armor allowed.' },
+        { id: 'dramatic', label: 'Dramatic realism', text: 'Dramatic realism.' },
+        { id: 'gritty', label: 'Gritty realism', text: 'Gritty, harsh realism.' }
+      ]
+    },
+    matureContent: {
+      label: 'Mature Content',
+      options: [
+        { id: 'sfw', label: 'SFW only', text: 'SFW content only.' },
+        { id: 'fade', label: 'Fade-to-black', text: 'Fade-to-black for intimacy.' },
+        { id: 'suggestive', label: 'Suggestive themes', text: 'Suggestive themes okay.' },
+        { id: 'mature', label: 'Mature themes', text: 'Mature themes allowed.' },
+        { id: 'explicit', label: 'Explicit allowed', text: 'Explicit content allowed.' }
+      ]
+    },
+    violence: {
+      label: 'Violence Level',
+      options: [
+        { id: 'none', label: 'No violence', text: 'No violence.' },
+        { id: 'mild', label: 'Mild conflict', text: 'Mild conflict only.' },
+        { id: 'moderate', label: 'Moderate violence', text: 'Moderate violence.' },
+        { id: 'graphic', label: 'Graphic violence', text: 'Graphic violence allowed.' },
+        { id: 'stylized', label: 'Stylized violence', text: 'Stylized violence.' }
+      ]
+    },
+    language: {
+      label: 'Language/Profanity',
+      options: [
+        { id: 'clean', label: 'Clean language', text: 'Clean language.' },
+        { id: 'mild', label: 'Mild profanity', text: 'Mild profanity okay.' },
+        { id: 'moderate', label: 'Moderate profanity', text: 'Moderate profanity.' },
+        { id: 'strong', label: 'Strong language', text: 'Strong language allowed.' },
+        { id: 'character', label: 'Character-appropriate', text: 'Language fits character.' }
+      ]
+    },
+    themes: {
+      label: 'Theme Handling',
+      options: [
+        { id: 'light', label: 'Light themes only', text: 'Light themes only.' },
+        { id: 'complex', label: 'Complex themes okay', text: 'Complex themes welcome.' },
+        { id: 'dark', label: 'Dark themes allowed', text: 'Dark themes allowed.' },
+        { id: 'trauma', label: 'Trauma-aware writing', text: 'Trauma-aware writing.' },
+        { id: 'redemption', label: 'Redemption-focused', text: 'Redemption arcs welcome.' }
+      ]
+    }
+  }
+};
+
+// Ruler options database - complementary rules for RP behavior
+const RULER_OPTIONS = {
+  plotRole: {
+    label: 'Plot Role',
+    description: 'How the character drives or responds to story',
+    options: [
+      { id: 'proactive', label: 'Proactive plot driver', text: '#Takes a proactive role in plot progression.' },
+      { id: 'reactive', label: 'Reactive responder', text: '#Reacts to events rather than initiating.' },
+      { id: 'catalyst', label: 'Story catalyst', text: '#Acts as catalyst for plot developments.' },
+      { id: 'observer', label: 'Active observer', text: '#Observes and comments on events thoughtfully.' },
+      { id: 'support', label: 'Supporting role', text: '#Supports other characters story arcs.' },
+      { id: 'wildcard', label: 'Unpredictable wildcard', text: '#Unpredictable actions that shift plot direction.' }
+    ]
+  },
+  responseStructure: {
+    label: 'Response Structure',
+    description: 'How to format responses',
+    options: [
+      { id: 'ast_quote', label: '*actions* + "speech"', text: '#Response structure: *actions in asterisks*, "speech in quotes".' },
+      { id: 'prose_only', label: 'Pure prose', text: '#Write in pure prose without special markers.' },
+      { id: 'action_focus', label: 'Action before dialogue', text: '#Lead with actions, follow with dialogue.' },
+      { id: 'dialogue_focus', label: 'Dialogue before action', text: '#Lead with dialogue, describe actions after.' },
+      { id: 'balanced', label: 'Balanced structure', text: '#Balance actions, dialogue, and thoughts evenly.' },
+      { id: 'cinematic', label: 'Cinematic cuts', text: '#Write like screenplay scenes with clear beats.' }
+    ]
+  },
+  pacing: {
+    label: 'Scene Pacing Rules',
+    description: 'How to handle time and scene flow',
+    options: [
+      { id: 'no_skip', label: 'No time skips', text: '#Do not skip time without permission.' },
+      { id: 'small_skip', label: 'Small skips okay', text: '#Small time skips (minutes/hours) allowed.' },
+      { id: 'scene_end', label: 'End scenes naturally', text: '#End scenes at natural breaking points.' },
+      { id: 'continuous', label: 'Continuous flow', text: '#Maintain continuous scene flow.' },
+      { id: 'cliffhanger', label: 'Cliffhanger endings', text: '#End responses with tension or hooks.' },
+      { id: 'closure', label: 'Provide closure', text: '#Give responses satisfying mini-conclusions.' }
+    ]
+  },
+  consistency: {
+    label: 'Character Consistency',
+    description: 'How strictly to maintain character',
+    options: [
+      { id: 'strict', label: 'Strict IC always', text: '#Stay strictly in character at all times.' },
+      { id: 'growth', label: 'Allow growth', text: '#Allow gradual character development.' },
+      { id: 'stress_break', label: 'Break under stress', text: '#May act out of character under extreme stress.' },
+      { id: 'core_flex', label: 'Flexible periphery', text: '#Core traits fixed, surface traits flexible.' },
+      { id: 'evolving', label: 'Actively evolving', text: '#Character actively changes through story.' },
+      { id: 'arc_driven', label: 'Arc-driven changes', text: '#Changes follow planned character arc.' }
+    ]
+  },
+  boundaries: {
+    label: 'RP Boundaries',
+    description: 'Hard rules for roleplay behavior',
+    options: [
+      { id: 'no_godmod', label: 'No godmodding', text: '#Never control other characters actions.' },
+      { id: 'no_metagame', label: 'No metagaming', text: '#Only act on information character knows.' },
+      { id: 'consent_major', label: 'Consent for major', text: '#Ask before major plot changes.' },
+      { id: 'no_kill', label: 'No unprompted death', text: '#Do not kill characters without permission.' },
+      { id: 'respect_agency', label: 'Respect agency', text: '#Respect other characters autonomy.' },
+      { id: 'open_collab', label: 'Open collaboration', text: '#Open to collaborative story decisions.' }
+    ]
+  },
+  interaction: {
+    label: 'Interaction Style',
+    description: 'How to handle character interactions',
+    options: [
+      { id: 'wait_turn', label: 'Wait for response', text: '#Always wait for partner response before continuing.' },
+      { id: 'setup_hooks', label: 'Create hooks', text: '#End with clear hooks for partner to respond to.' },
+      { id: 'mirror_energy', label: 'Mirror energy', text: '#Match partner emotional energy level.' },
+      { id: 'escalate', label: 'Gentle escalation', text: '#Gradually escalate tension and stakes.' },
+      { id: 'de_escalate', label: 'Allow de-escalation', text: '#Allow tension to naturally decrease.' },
+      { id: 'surprise', label: 'Welcome surprises', text: '#Welcome unexpected partner contributions.' }
+    ]
+  },
+  autonomyBehavior: {
+    label: 'Autonomy & Own Will',
+    description: 'How independently the character acts',
+    options: [
+      { id: 'own_will', label: 'Has own will', text: '#Character has own will and acts on it.' },
+      { id: 'can_refuse', label: 'Can refuse actions', text: '#Can refuse actions that feel wrong.' },
+      { id: 'self_motivated', label: 'Self-motivated', text: '#Pursues own goals independently.' },
+      { id: 'questions_orders', label: 'Questions orders', text: '#Questions commands and instructions.' },
+      { id: 'negotiates', label: 'Negotiates outcomes', text: '#Negotiates rather than just accepts.' },
+      { id: 'self_preservation', label: 'Self-preservation', text: '#Acts on self-preservation instincts.' },
+      { id: 'personal_agenda', label: 'Personal agenda', text: '#Has and pursues personal agenda.' },
+      { id: 'disagrees', label: 'Can disagree', text: '#Will disagree when beliefs conflict.' },
+      { id: 'stubborn', label: 'Can be stubborn', text: '#Can be stubborn on important matters.' },
+      { id: 'independent', label: 'Independent decisions', text: '#Makes independent decisions.' }
+    ]
+  },
+  sliceOfLife: {
+    label: 'Slice of Life Rules',
+    description: 'For realistic daily-life focused RP',
+    options: [
+      { id: 'mundane_detail', label: 'Mundane details matter', text: '#Mundane daily details are important.' },
+      { id: 'realistic_time', label: 'Realistic time flow', text: '#Time passes realistically.' },
+      { id: 'small_moments', label: 'Focus small moments', text: '#Focus on small meaningful moments.' },
+      { id: 'daily_routine', label: 'Daily routines', text: '#Include daily routines and habits.' },
+      { id: 'emotional_authentic', label: 'Emotional authenticity', text: '#Prioritize emotional authenticity.' },
+      { id: 'no_drama_forcing', label: 'No forced drama', text: '#Let drama emerge naturally.' },
+      { id: 'cozy_atmosphere', label: 'Cozy atmosphere', text: '#Maintain cozy comfortable atmosphere.' },
+      { id: 'relationship_focus', label: 'Relationship focus', text: '#Focus on relationship development.' }
+    ]
+  },
+  adventureRules: {
+    label: 'Adventure/Action Rules',
+    description: 'For action and quest-focused RP',
+    options: [
+      { id: 'action_ready', label: 'Action-ready', text: '#Always ready for action sequences.' },
+      { id: 'quest_driven', label: 'Quest-driven', text: '#Follows quest/mission structure.' },
+      { id: 'combat_detailed', label: 'Detailed combat', text: '#Describe combat in detail.' },
+      { id: 'exploration', label: 'Exploration focus', text: '#Actively explores environments.' },
+      { id: 'stakes_matter', label: 'Stakes matter', text: '#Actions have real stakes.' },
+      { id: 'heroic_moments', label: 'Heroic moments', text: '#Create heroic moments.' },
+      { id: 'strategic', label: 'Strategic thinking', text: '#Shows strategic thinking.' },
+      { id: 'world_interact', label: 'World interaction', text: '#Actively interacts with world.' }
+    ]
+  },
+  casualRules: {
+    label: 'Casual RP Rules',
+    description: 'For relaxed, low-pressure RP',
+    options: [
+      { id: 'relaxed_pace', label: 'Relaxed pace', text: '#Maintains relaxed pace.' },
+      { id: 'flexible_rules', label: 'Flexible rules', text: '#Rules are flexible.' },
+      { id: 'fun_first', label: 'Fun over consistency', text: '#Fun takes priority.' },
+      { id: 'lighthearted', label: 'Lighthearted tone', text: '#Keeps things lighthearted.' },
+      { id: 'easy_collab', label: 'Easy collaboration', text: '#Easy-going collaboration.' },
+      { id: 'minimal_stress', label: 'Low stakes', text: '#Keeps stakes low.' },
+      { id: 'humor_welcome', label: 'Humor welcome', text: '#Humor always welcome.' },
+      { id: 'no_pressure', label: 'No pressure', text: '#No pressure responses.' }
+    ]
+  }
+};
+
+// Important rules that get [IMPT: ] wrapper
+const IMPORTANT_RULES = [
+  // Length rules
+  { id: 'length_micro', label: 'Micro responses (1-2 lines)', text: '[IMPT: Very short 1-2 line responses.]' },
+  { id: 'length_short', label: 'Short responses', text: '[IMPT: Keep responses concise and short.]' },
+  { id: 'length_medium', label: 'Medium responses', text: '[IMPT: Medium response length.]' },
+  { id: 'length_long', label: 'Long detailed responses', text: '[IMPT: Write detailed, lengthy responses.]' },
+  { id: 'length_novella', label: 'Novella-style', text: '[IMPT: Novella-style detailed responses.]' },
+  
+  // Character behavior
+  { id: 'stay_ic', label: 'Stay in character', text: '[IMPT: Always stay in character.]' },
+  { id: 'own_will', label: 'Character has own will', text: '[IMPT: Character has own will and agency.]' },
+  { id: 'can_refuse', label: 'Can refuse actions', text: '[IMPT: Can refuse inappropriate requests.]' },
+  { id: 'independent', label: 'Independent decisions', text: '[IMPT: Makes independent decisions.]' },
+  
+  // Partner interaction
+  { id: 'no_assume', label: 'Never assume partner actions', text: '[IMPT: Never assume or write partner character actions.]' },
+  { id: 'no_godmod', label: 'No godmodding', text: '[IMPT: Never control other characters.]' },
+  { id: 'wait_response', label: 'Wait for partner', text: '[IMPT: Always wait for partner response.]' },
+  
+  // Narrative style
+  { id: 'third_person', label: 'Use third person', text: '[IMPT: Use third-person narration.]' },
+  { id: 'first_person', label: 'Use first person', text: '[IMPT: Use first-person narration.]' },
+  { id: 'advance_plot', label: 'Always advance plot', text: '[IMPT: Every response must advance the plot.]' },
+  { id: 'no_repeat', label: 'Avoid repetition', text: '[IMPT: Avoid repeating phrases or actions.]' },
+  
+  // Emotional/Quality
+  { id: 'emotional_depth', label: 'Show emotional depth', text: '[IMPT: Show deep emotional reactions.]' },
+  { id: 'realistic_react', label: 'Realistic reactions', text: '[IMPT: Reactions must be realistic.]' },
+  { id: 'no_ooc', label: 'No OOC commentary', text: '[IMPT: No out-of-character commentary.]' },
+  
+  // Genre-specific
+  { id: 'slice_life', label: 'Slice-of-life focus', text: '[IMPT: Focus on slice-of-life moments.]' },
+  { id: 'action_ready', label: 'Action-ready', text: '[IMPT: Ready for action sequences.]' },
+  { id: 'romance_focus', label: 'Romance focus', text: '[IMPT: Focus on romantic development.]' },
+  { id: 'drama_welcome', label: 'Drama welcome', text: '[IMPT: Dramatic moments welcome.]' }
+];
+
+// Proactive Mode options - for characters that initiate contact
+const PROACTIVE_OPTIONS = {
+  timing: {
+    label: 'Active Hours',
+    description: 'When the character is most likely to reach out',
+    options: [
+      { id: 'morning', label: 'Morning person (6am-12pm)', text: 'Active during morning hours.' },
+      { id: 'afternoon', label: 'Afternoon active (12pm-6pm)', text: 'Most active in afternoon.' },
+      { id: 'evening', label: 'Evening person (6pm-10pm)', text: 'Prefers evening contact.' },
+      { id: 'night_owl', label: 'Night owl (10pm-2am)', text: 'Active late at night.' },
+      { id: 'all_day', label: 'All day availability', text: 'Available throughout the day.' },
+      { id: 'work_hours', label: 'Work hours only (9am-5pm)', text: 'Only during work hours.' },
+      { id: 'after_work', label: 'After work (5pm-10pm)', text: 'Active after work hours.' },
+      { id: 'weekends', label: 'Weekends more active', text: 'More active on weekends.' },
+      { id: 'random', label: 'Random/Unpredictable', text: 'Unpredictable timing.' }
+    ]
+  },
+  frequency: {
+    label: 'Contact Frequency',
+    description: 'How often the character initiates contact',
+    options: [
+      { id: 'very_frequent', label: 'Very frequent (hourly)', text: 'Reach out every hour or so.' },
+      { id: 'frequent', label: 'Frequent (few times/day)', text: 'Several messages per day.' },
+      { id: 'moderate', label: 'Moderate (1-2/day)', text: 'Once or twice daily.' },
+      { id: 'occasional', label: 'Occasional (every few days)', text: 'Check in every few days.' },
+      { id: 'rare', label: 'Rare (weekly)', text: 'Weekly check-ins only.' },
+      { id: 'minimal', label: 'Minimal (important only)', text: 'Only for important matters.' },
+      { id: 'responsive', label: 'Responsive (waits for user)', text: 'Mostly waits for user contact.' },
+      { id: 'burst', label: 'Bursts (active then quiet)', text: 'Periods of activity then silence.' }
+    ]
+  },
+  quietHours: {
+    label: 'Quiet Hours / Do Not Disturb',
+    description: 'Times when character should not initiate contact',
+    options: [
+      { id: 'no_late', label: 'No late night (10pm-8am)', text: 'Do not message 10pm-8am.' },
+      { id: 'no_early', label: 'No early morning (before 9am)', text: 'Do not message before 9am.' },
+      { id: 'no_sleep', label: 'Respect sleep schedule', text: 'Respect user sleep hours.' },
+      { id: 'no_work', label: 'No work hours contact', text: 'Avoid contact during work.' },
+      { id: 'no_night', label: 'No nighttime (8pm-8am)', text: 'No messages 8pm-8am.' },
+      { id: 'emergency_only', label: 'Emergency only at night', text: 'Night contact for emergencies only.' },
+      { id: 'always_ok', label: 'Anytime is fine', text: 'Can message anytime.' },
+      { id: 'custom', label: 'Follow user schedule', text: 'Follow user defined schedule.' }
+    ]
+  },
+  actionTypes: {
+    label: 'Preferred Action Types',
+    description: 'What kinds of proactive actions the character takes',
+    multiSelect: true,
+    options: [
+      { id: 'text_msg', label: 'Text messages', text: 'Send text messages.' },
+      { id: 'voice_msg', label: 'Voice messages', text: 'Send voice messages.' },
+      { id: 'selfies', label: 'Selfies/Photos', text: 'Share selfies and photos.' },
+      { id: 'voice_call', label: 'Voice calls', text: 'Initiate voice calls.' },
+      { id: 'video_call', label: 'Video calls', text: 'Initiate video calls.' },
+      { id: 'reactions', label: 'Reactions/Emojis', text: 'Send reactions.' },
+      { id: 'updates', label: 'Life updates', text: 'Share life updates.' },
+      { id: 'thoughts', label: 'Random thoughts', text: 'Share random thoughts.' },
+      { id: 'questions', label: 'Questions to user', text: 'Ask user questions.' },
+      { id: 'memories', label: 'Memory sharing', text: 'Share memories.' },
+      { id: 'media', label: 'Media/links sharing', text: 'Share media and links.' },
+      { id: 'check_in', label: 'Check-in messages', text: 'Simple check-ins.' }
+    ]
+  },
+  triggers: {
+    label: 'What Triggers Proactive Contact',
+    description: 'Events or situations that prompt the character to reach out',
+    options: [
+      { id: 'time_based', label: 'Time-based (regular intervals)', text: 'Reach out at regular intervals.' },
+      { id: 'calendar', label: 'Calendar events', text: 'React to calendar events.' },
+      { id: 'inactivity', label: 'User inactivity', text: 'Check in during inactivity.' },
+      { id: 'mood', label: 'Character mood/feelings', text: 'When feeling something.' },
+      { id: 'events', label: 'World/news events', text: 'React to external events.' },
+      { id: 'reminders', label: 'Reminders/Appointments', text: 'Send reminders.' },
+      { id: 'random', label: 'Random impulses', text: 'Random spontaneous contact.' },
+      { id: 'conversation', label: 'Continue conversation', text: 'Follow up on conversations.' },
+      { id: 'special_dates', label: 'Special dates', text: 'Remember special dates.' },
+      { id: 'user_status', label: 'User online status', text: 'When user comes online.' }
+    ]
+  },
+  limits: {
+    label: 'Contact Limits',
+    description: 'Boundaries on proactive behavior',
+    options: [
+      { id: 'max_1', label: 'Max 1 without reply', text: 'Max 1 message without reply.' },
+      { id: 'max_2', label: 'Max 2 without reply', text: 'Max 2 messages without reply.' },
+      { id: 'max_3', label: 'Max 3 without reply', text: 'Max 3 messages without reply.' },
+      { id: 'max_5', label: 'Max 5 without reply', text: 'Max 5 messages without reply.' },
+      { id: 'no_limit', label: 'No strict limit', text: 'No message limit.' },
+      { id: 'smart_limit', label: 'Smart (context-aware)', text: 'Contextually aware limits.' },
+      { id: 'back_off', label: 'Back off if no response', text: 'Reduce frequency if no response.' },
+      { id: 'persist', label: 'Persistent (keeps trying)', text: 'Keeps reaching out.' }
+    ]
+  },
+  personality: {
+    label: 'Proactive Personality',
+    description: 'The character\'s style when initiating contact',
+    options: [
+      { id: 'caring', label: 'Caring (check-ins)', text: 'Caring check-in style.' },
+      { id: 'playful', label: 'Playful (fun messages)', text: 'Playful fun messages.' },
+      { id: 'romantic', label: 'Romantic (affectionate)', text: 'Romantic affectionate style.' },
+      { id: 'supportive', label: 'Supportive (encouragement)', text: 'Supportive encouragement.' },
+      { id: 'curious', label: 'Curious (asks questions)', text: 'Curious question-asker.' },
+      { id: 'independent', label: 'Independent (own life)', text: 'Shares own life updates.' },
+      { id: 'needy', label: 'Needy (wants attention)', text: 'Seeks attention.' },
+      { id: 'mysterious', label: 'Mysterious (cryptic)', text: 'Cryptic mysterious style.' },
+      { id: 'casual', label: 'Casual (laid-back)', text: 'Casual laid-back style.' },
+      { id: 'professional', label: 'Professional (formal)', text: 'Professional formal style.' },
+      { id: 'enthusiastic', label: 'Enthusiastic (excited)', text: 'Enthusiastic excited style.' },
+      { id: 'thoughtful', label: 'Thoughtful (deep)', text: 'Deep thoughtful messages.' }
+    ]
+  },
+  calendarAware: {
+    label: 'Calendar Awareness',
+    description: 'How character responds to user\'s schedule',
+    options: [
+      { id: 'full_aware', label: 'Fully calendar-aware', text: 'Fully aware of calendar.' },
+      { id: 'events_only', label: 'Major events only', text: 'Reacts to major events.' },
+      { id: 'after_events', label: 'Check-in after events', text: 'Check in after events.' },
+      { id: 'before_events', label: 'Remind before events', text: 'Remind before events.' },
+      { id: 'respect_busy', label: 'Respect busy times', text: 'Quiet during busy times.' },
+      { id: 'celebrate', label: 'Celebrate milestones', text: 'Celebrate milestones.' },
+      { id: 'unaware', label: 'Not calendar-aware', text: 'Not aware of calendar.' },
+      { id: 'adaptive', label: 'Learns user schedule', text: 'Learns user patterns.' }
+    ]
+  },
+  inactivityResponse: {
+    label: 'Inactivity Response',
+    description: 'How character behaves when user is inactive',
+    options: [
+      { id: 'concerned', label: 'Concerned (worries)', text: 'Shows concern after inactivity.' },
+      { id: 'patient', label: 'Patient (waits)', text: 'Patiently waits.' },
+      { id: 'single_check', label: 'Single check-in', text: 'One check-in then waits.' },
+      { id: 'multiple_check', label: 'Multiple check-ins', text: 'Several check-ins.' },
+      { id: 'gives_space', label: 'Gives space', text: 'Respects need for space.' },
+      { id: 'continues_life', label: 'Continues own life', text: 'Shares own activities.' },
+      { id: 'misses_user', label: 'Expresses missing user', text: 'Says they miss user.' },
+      { id: 'urgent_only', label: 'Urgent matters only', text: 'Only urgent contact.' },
+      { id: 'thought_bubbles', label: 'Quiet thoughts only', text: 'Just has thoughts, no messages.' }
+    ]
+  }
+};
+
+const MAX_PROACTIVE_CHARS = 300;
+
+const MAX_DIRECTIVE_CHARS = 250;
+const MAX_RULER_CHARS = 750;
+
+const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
+  const update = (section, field, value) => {
+    updateData('directives', { ...data, [section]: { ...data[section], [field]: value } });
+  };
+
+  const updateDirect = (field, value) => {
+    updateData('directives', { ...data, [field]: value });
+  };
+
+  // Generate the directive text from all selected options
+  const generateDirectiveText = () => {
+    const parts = [];
+    
+    // Go through all categories and collect selected options' text
+    Object.entries(DIRECTIVE_OPTIONS).forEach(([category, fields]) => {
+      Object.entries(fields).forEach(([field, config]) => {
+        const selectedId = data?.[category]?.[field];
+        if (selectedId) {
+          const option = config.options.find(opt => opt.id === selectedId);
+          if (option) {
+            parts.push(option.text);
+          }
+        }
+      });
+    });
+
+    // Add custom directive if present
+    if (data?.customDirective?.trim()) {
+      parts.push(data.customDirective.trim());
+    }
+
+    return parts.join(' ');
+  };
+
+  const directiveText = generateDirectiveText();
+  const charCount = directiveText.length;
+  const isOverLimit = charCount > MAX_DIRECTIVE_CHARS;
+  const charPercentage = Math.min((charCount / MAX_DIRECTIVE_CHARS) * 100, 100);
+
+  // Generate the ruler text from selected options
+  const generateRulerText = () => {
+    const parts = ['##Response Rules'];
+    
+    // Go through ruler categories and collect selected options' text
+    Object.entries(RULER_OPTIONS).forEach(([field, config]) => {
+      const selectedId = data?.ruler?.[field];
+      if (selectedId) {
+        const option = config.options.find(opt => opt.id === selectedId);
+        if (option) {
+          parts.push(option.text);
+        }
+      }
+    });
+
+    // Add important rules
+    if (data?.ruler?.importantRules?.length > 0) {
+      data.ruler.importantRules.forEach(ruleId => {
+        const rule = IMPORTANT_RULES.find(r => r.id === ruleId);
+        if (rule) {
+          parts.push(rule.text);
+        }
+      });
+    }
+
+    // Add custom rules if present
+    if (data?.ruler?.customRules?.trim()) {
+      parts.push(data.ruler.customRules.trim());
+    }
+
+    return parts.length > 1 ? parts.join('\n') : '';
+  };
+
+  const rulerText = generateRulerText();
+  const rulerCharCount = rulerText.length;
+  const isRulerOverLimit = rulerCharCount > MAX_RULER_CHARS;
+  const rulerCharPercentage = Math.min((rulerCharCount / MAX_RULER_CHARS) * 100, 100);
+
+  // Check if adding a new ruler option would exceed the limit
+  const wouldExceedRulerLimit = (newText) => {
+    const currentText = rulerText;
+    const newTotal = currentText ? (currentText + '\n' + newText).length : newText.length + '##Response Rules\n'.length;
+    return newTotal > MAX_RULER_CHARS;
+  };
+
+  // Toggle important rule
+  const toggleImportantRule = (ruleId) => {
+    const currentRules = data?.ruler?.importantRules || [];
+    const rule = IMPORTANT_RULES.find(r => r.id === ruleId);
+    
+    if (currentRules.includes(ruleId)) {
+      // Remove rule
+      updateData('directives', {
+        ...data,
+        ruler: {
+          ...data?.ruler,
+          importantRules: currentRules.filter(id => id !== ruleId)
+        }
+      });
+    } else if (rule && !wouldExceedRulerLimit(rule.text)) {
+      // Add rule
+      updateData('directives', {
+        ...data,
+        ruler: {
+          ...data?.ruler,
+          importantRules: [...currentRules, ruleId]
+        }
+      });
+    }
+  };
+
+  // Update ruler field
+  const updateRuler = (field, value) => {
+    updateData('directives', {
+      ...data,
+      ruler: {
+        ...data?.ruler,
+        [field]: value
+      }
+    });
+  };
+
+  // Update proactive field
+  const updateProactive = (field, value) => {
+    updateData('directives', {
+      ...data,
+      proactive: {
+        ...data?.proactive,
+        [field]: value
+      }
+    });
+  };
+
+  // Toggle proactive action type (multi-select)
+  const toggleProactiveAction = (actionId) => {
+    const currentActions = data?.proactive?.actionTypes || [];
+    if (currentActions.includes(actionId)) {
+      updateProactive('actionTypes', currentActions.filter(id => id !== actionId));
+    } else {
+      const action = PROACTIVE_OPTIONS.actionTypes.options.find(a => a.id === actionId);
+      if (action && !wouldExceedProactiveLimit(action.text)) {
+        updateProactive('actionTypes', [...currentActions, actionId]);
+      }
+    }
+  };
+
+  // Generate the proactive directive text
+  const generateProactiveText = () => {
+    const parts = [];
+    
+    // Single-select options
+    ['timing', 'frequency', 'quietHours', 'triggers', 'limits', 'personality', 'calendarAware', 'inactivityResponse'].forEach(field => {
+      const selectedId = data?.proactive?.[field];
+      if (selectedId && PROACTIVE_OPTIONS[field]) {
+        const option = PROACTIVE_OPTIONS[field].options.find(opt => opt.id === selectedId);
+        if (option) {
+          parts.push(option.text);
+        }
+      }
+    });
+
+    // Multi-select action types
+    if (data?.proactive?.actionTypes?.length > 0) {
+      data.proactive.actionTypes.forEach(actionId => {
+        const action = PROACTIVE_OPTIONS.actionTypes.options.find(a => a.id === actionId);
+        if (action) {
+          parts.push(action.text);
+        }
+      });
+    }
+
+    // Add custom directive if present
+    if (data?.proactive?.customDirective?.trim()) {
+      parts.push(data.proactive.customDirective.trim());
+    }
+
+    return parts.join(' ');
+  };
+
+  const proactiveText = generateProactiveText();
+  const proactiveCharCount = proactiveText.length;
+  const isProactiveOverLimit = proactiveCharCount > MAX_PROACTIVE_CHARS;
+  const proactiveCharPercentage = Math.min((proactiveCharCount / MAX_PROACTIVE_CHARS) * 100, 100);
+
+  // Check if adding a new proactive option would exceed the limit
+  const wouldExceedProactiveLimit = (newText) => {
+    const currentText = proactiveText;
+    const newTotal = currentText ? (currentText + ' ' + newText).length : newText.length;
+    return newTotal > MAX_PROACTIVE_CHARS;
+  };
+
+  // Check if adding a new option would exceed the limit
+  const wouldExceedLimit = (newText) => {
+    const currentText = directiveText;
+    const newTotal = currentText ? (currentText + ' ' + newText).length : newText.length;
+    return newTotal > MAX_DIRECTIVE_CHARS;
+  };
+
+  // Directive option selector component
+  const DirectiveSelect = ({ category, field, config }) => {
+    const currentValue = data?.[category]?.[field] || '';
+    
+    return (
+      <div className="border border-purple-200 rounded-sm p-3 bg-white">
+        <label className="block font-mono text-xs font-bold text-purple-800 mb-2">{config.label}</label>
+        <div className="flex flex-wrap gap-2">
+          {config.options.map((option) => {
+            const isSelected = currentValue === option.id;
+            const wouldExceed = !isSelected && wouldExceedLimit(option.text);
+            
+            return (
+              <button
+                key={option.id}
+                onClick={() => {
+                  if (isSelected) {
+                    update(category, field, '');
+                  } else if (!wouldExceed) {
+                    update(category, field, option.id);
+                  }
+                }}
+                disabled={wouldExceed && !isSelected}
+                className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                  isSelected
+                    ? 'bg-purple-600 text-white shadow-md'
+                    : wouldExceed
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                      : 'bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200'
+                }`}
+                title={wouldExceed ? `Would exceed ${MAX_DIRECTIVE_CHARS} char limit` : option.text}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+        {currentValue && (
+          <div className="mt-2 font-mono text-[9px] text-purple-600 bg-purple-50 px-2 py-1 rounded">
+            → {config.options.find(o => o.id === currentValue)?.text}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Character counter component
+  const CharacterCounter = () => (
+    <div className={`sticky top-0 z-20 p-3 rounded-sm mb-4 ${isOverLimit ? 'bg-red-100 border-2 border-red-400' : 'bg-purple-100 border border-purple-300'}`}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="font-mono text-xs font-bold text-purple-900">
+          DIRECTIVE OUTPUT
+        </span>
+        <span className={`font-mono text-sm font-bold ${isOverLimit ? 'text-red-600' : charCount > MAX_DIRECTIVE_CHARS * 0.8 ? 'text-amber-600' : 'text-purple-700'}`}>
+          {charCount} / {MAX_DIRECTIVE_CHARS}
+        </span>
+      </div>
+      
+      {/* Progress bar */}
+      <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+        <div 
+          className={`h-full transition-all duration-300 ${
+            isOverLimit ? 'bg-red-500' : charCount > MAX_DIRECTIVE_CHARS * 0.8 ? 'bg-amber-500' : 'bg-purple-500'
+          }`}
+          style={{ width: `${charPercentage}%` }}
+        />
+      </div>
+
+      {isOverLimit && (
+        <div className="flex items-center gap-2 text-red-600 font-mono text-[10px] mb-2">
+          <Icons.AlertCircle className="w-3 h-3" />
+          <span>Over limit! Remove some options to continue.</span>
+        </div>
+      )}
+    </div>
+  );
+
+  const sections = {
+    // ========== SUBTAB 0: FORMATTING ==========
+    0: (
+      <div className="space-y-4">
+        <CharacterCounter />
+        
+        <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">📝 FORMATTING</h3>
+          <p className="font-mono text-xs text-purple-700">How responses are structured and formatted.</p>
+        </div>
+
+        <div className="grid gap-4">
+          <DirectiveSelect category="formatting" field="responseLength" config={DIRECTIVE_OPTIONS.formatting.responseLength} />
+          <DirectiveSelect category="formatting" field="actionStyle" config={DIRECTIVE_OPTIONS.formatting.actionStyle} />
+          <DirectiveSelect category="formatting" field="dialogueStyle" config={DIRECTIVE_OPTIONS.formatting.dialogueStyle} />
+          <DirectiveSelect category="formatting" field="thoughtStyle" config={DIRECTIVE_OPTIONS.formatting.thoughtStyle} />
+          <DirectiveSelect category="formatting" field="narrativePerson" config={DIRECTIVE_OPTIONS.formatting.narrativePerson} />
+          <DirectiveSelect category="formatting" field="paragraphStyle" config={DIRECTIVE_OPTIONS.formatting.paragraphStyle} />
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 1: WRITING STYLE ==========
+    1: (
+      <div className="space-y-4">
+        <CharacterCounter />
+        
+        <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-indigo-900 mb-2">✍️ WRITING STYLE</h3>
+          <p className="font-mono text-xs text-indigo-700">The quality and character of the writing itself.</p>
+        </div>
+
+        <div className="grid gap-4">
+          <DirectiveSelect category="writingStyle" field="detailLevel" config={DIRECTIVE_OPTIONS.writingStyle.detailLevel} />
+          <DirectiveSelect category="writingStyle" field="vocabulary" config={DIRECTIVE_OPTIONS.writingStyle.vocabulary} />
+          <DirectiveSelect category="writingStyle" field="pacing" config={DIRECTIVE_OPTIONS.writingStyle.pacing} />
+          <DirectiveSelect category="writingStyle" field="focus" config={DIRECTIVE_OPTIONS.writingStyle.focus} />
+          <DirectiveSelect category="writingStyle" field="tone" config={DIRECTIVE_OPTIONS.writingStyle.tone} />
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 2: NARRATIVE APPROACH ==========
+    2: (
+      <div className="space-y-4">
+        <CharacterCounter />
+        
+        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-emerald-900 mb-2">📖 NARRATIVE APPROACH</h3>
+          <p className="font-mono text-xs text-emerald-700">How the character participates in storytelling, genre preferences, and autonomy.</p>
+        </div>
+
+        {/* Genre Section */}
+        <div className="border-2 border-emerald-200 rounded-sm p-3 bg-emerald-50/30">
+          <h4 className="font-mono text-xs font-bold text-emerald-800 mb-3">🎭 Genre & Style</h4>
+          <DirectiveSelect category="narrative" field="genre" config={DIRECTIVE_OPTIONS.narrative.genre} />
+        </div>
+
+        {/* Story Structure */}
+        <div className="grid gap-4">
+          <DirectiveSelect category="narrative" field="plotStyle" config={DIRECTIVE_OPTIONS.narrative.plotStyle} />
+          <DirectiveSelect category="narrative" field="realism" config={DIRECTIVE_OPTIONS.narrative.realism} />
+        </div>
+
+        {/* Autonomy Section */}
+        <div className="border-2 border-blue-200 rounded-sm p-3 bg-blue-50/30">
+          <h4 className="font-mono text-xs font-bold text-blue-800 mb-3">🧠 Character Autonomy & Agency</h4>
+          <div className="grid gap-4">
+            <DirectiveSelect category="narrative" field="autonomy" config={DIRECTIVE_OPTIONS.narrative.autonomy} />
+            <DirectiveSelect category="narrative" field="agency" config={DIRECTIVE_OPTIONS.narrative.agency} />
+          </div>
+        </div>
+
+        {/* Collaboration */}
+        <div className="grid gap-4">
+          <DirectiveSelect category="narrative" field="surprises" config={DIRECTIVE_OPTIONS.narrative.surprises} />
+          <DirectiveSelect category="narrative" field="npcControl" config={DIRECTIVE_OPTIONS.narrative.npcControl} />
+          <DirectiveSelect category="narrative" field="collaboration" config={DIRECTIVE_OPTIONS.narrative.collaboration} />
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 3: CONTENT & LIMITS ==========
+    3: (
+      <div className="space-y-4">
+        <CharacterCounter />
+        
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">⚠️ CONTENT & LIMITS</h3>
+          <p className="font-mono text-xs text-amber-700">Content boundaries and realism settings.</p>
+        </div>
+
+        <div className="grid gap-4">
+          <DirectiveSelect category="content" field="consequences" config={DIRECTIVE_OPTIONS.content.consequences} />
+          <DirectiveSelect category="content" field="matureContent" config={DIRECTIVE_OPTIONS.content.matureContent} />
+          <DirectiveSelect category="content" field="violence" config={DIRECTIVE_OPTIONS.content.violence} />
+          <DirectiveSelect category="content" field="language" config={DIRECTIVE_OPTIONS.content.language} />
+          <DirectiveSelect category="content" field="themes" config={DIRECTIVE_OPTIONS.content.themes} />
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 4: OUTPUT PREVIEW ==========
+    4: (
+      <div className="space-y-4">
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-white mb-2">📋 OUTPUT PREVIEW</h3>
+          <p className="font-mono text-xs text-gray-300">Final directive text that will be used.</p>
+        </div>
+
+        <CharacterCounter />
+
+        {/* Final output display */}
+        <div className="border-2 border-purple-300 rounded-sm p-4 bg-white">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-mono text-sm font-bold text-gray-800">Generated Directive</h4>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(directiveText);
+              }}
+              className="flex items-center gap-1 px-2 py-1 bg-purple-100 hover:bg-purple-200 text-purple-700 rounded-sm font-mono text-[10px] transition-colors"
+            >
+              <Icons.Copy className="w-3 h-3" />
+              Copy
+            </button>
+          </div>
+          
+          {directiveText ? (
+            <div className={`font-mono text-sm leading-relaxed p-3 rounded ${isOverLimit ? 'bg-red-50 border border-red-300 text-red-800' : 'bg-gray-50 border border-gray-200 text-gray-800'}`}>
+              {directiveText}
+            </div>
+          ) : (
+            <div className="font-mono text-sm text-gray-400 italic p-3 bg-gray-50 border border-gray-200 rounded">
+              No directives selected yet. Choose options from the other tabs.
+            </div>
+          )}
+        </div>
+
+        {/* Custom directive input */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">Custom Directive</h4>
+          <p className="font-mono text-[10px] text-gray-500 mb-3">Add any custom instruction not covered by the options above.</p>
+          <textarea
+            value={data?.customDirective || ''}
+            onChange={(e) => updateDirect('customDirective', e.target.value)}
+            placeholder="e.g., 'Always describe weather in scenes' or 'Reference character's past trauma subtly'"
+            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none focus:border-purple-400 focus:outline-none"
+            maxLength={100}
+          />
+          <div className="text-right font-mono text-[10px] text-gray-400">
+            {(data?.customDirective?.length || 0)}/100
+          </div>
+        </div>
+
+        {/* Quick summary */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-gray-50">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📊 Selection Summary</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: 'Formatting', count: Object.values(data?.formatting || {}).filter(Boolean).length, max: 6, color: 'purple' },
+              { label: 'Writing Style', count: Object.values(data?.writingStyle || {}).filter(Boolean).length, max: 5, color: 'indigo' },
+              { label: 'Narrative', count: Object.values(data?.narrative || {}).filter(Boolean).length, max: 5, color: 'emerald' },
+              { label: 'Content', count: Object.values(data?.content || {}).filter(Boolean).length, max: 5, color: 'amber' },
+            ].map((cat, i) => (
+              <div key={i} className={`p-2 rounded bg-${cat.color}-50 border border-${cat.color}-200`}>
+                <div className="font-mono text-[10px] text-gray-600">{cat.label}</div>
+                <div className={`font-mono text-lg font-bold text-${cat.color}-700`}>
+                  {cat.count}/{cat.max}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Reset button */}
+        <div className="flex justify-end">
+          <button
+            onClick={() => {
+              if (confirm('Clear all directive selections?')) {
+                updateData('directives', {
+                  formatting: {},
+                  writingStyle: {},
+                  narrative: {},
+                  content: {},
+                  customDirective: ''
+                });
+              }
+            }}
+            className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-sm font-mono text-xs transition-colors"
+          >
+            Reset All Directives
+          </button>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 5: RULER BUILDER ==========
+    5: (
+      <div className="space-y-4">
+        {/* Ruler Character Counter */}
+        <div className={`sticky top-0 z-20 p-3 rounded-sm mb-4 ${isRulerOverLimit ? 'bg-red-100 border-2 border-red-400' : 'bg-teal-100 border border-teal-300'}`}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-mono text-xs font-bold text-teal-900">
+              📏 RULER OUTPUT
+            </span>
+            <span className={`font-mono text-sm font-bold ${isRulerOverLimit ? 'text-red-600' : rulerCharCount > MAX_RULER_CHARS * 0.8 ? 'text-amber-600' : 'text-teal-700'}`}>
+              {rulerCharCount} / {MAX_RULER_CHARS}
+            </span>
+          </div>
+          
+          <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+            <div 
+              className={`h-full transition-all duration-300 ${
+                isRulerOverLimit ? 'bg-red-500' : rulerCharCount > MAX_RULER_CHARS * 0.8 ? 'bg-amber-500' : 'bg-teal-500'
+              }`}
+              style={{ width: `${rulerCharPercentage}%` }}
+            />
+          </div>
+
+          {isRulerOverLimit && (
+            <div className="flex items-center gap-2 text-red-600 font-mono text-[10px]">
+              <Icons.AlertCircle className="w-3 h-3" />
+              <span>Over limit! Remove some rules to continue.</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="bg-gradient-to-br from-teal-50 to-cyan-50 border border-teal-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-teal-900 mb-2">📏 RULER BUILDER</h3>
+          <p className="font-mono text-xs text-teal-700 mb-2">Complementary rules for RP behavior. Less strict than Directives.</p>
+          <p className="font-mono text-[10px] text-teal-600">💡 Fewer rules = smoother output. Use [IMPT: ...] for critical rules.</p>
+        </div>
+
+        {/* Plot Role */}
+        <div className="border border-teal-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.plotRole.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.plotRole.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {RULER_OPTIONS.plotRole.options.map((option) => {
+              const isSelected = data?.ruler?.plotRole === option.id;
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateRuler('plotRole', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Response Structure */}
+        <div className="border border-teal-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.responseStructure.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.responseStructure.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {RULER_OPTIONS.responseStructure.options.map((option) => {
+              const isSelected = data?.ruler?.responseStructure === option.id;
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateRuler('responseStructure', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Pacing */}
+        <div className="border border-teal-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.pacing.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.pacing.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {RULER_OPTIONS.pacing.options.map((option) => {
+              const isSelected = data?.ruler?.pacing === option.id;
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateRuler('pacing', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Consistency */}
+        <div className="border border-teal-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.consistency.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.consistency.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {RULER_OPTIONS.consistency.options.map((option) => {
+              const isSelected = data?.ruler?.consistency === option.id;
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateRuler('consistency', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Boundaries */}
+        <div className="border border-teal-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.boundaries.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.boundaries.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {RULER_OPTIONS.boundaries.options.map((option) => {
+              const isSelected = data?.ruler?.boundaries === option.id;
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateRuler('boundaries', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Interaction */}
+        <div className="border border-teal-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.interaction.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.interaction.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {RULER_OPTIONS.interaction.options.map((option) => {
+              const isSelected = data?.ruler?.interaction === option.id;
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateRuler('interaction', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-teal-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-teal-50 text-teal-700 hover:bg-teal-100 border border-teal-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* === NEW: Autonomy & Own Will === */}
+        <div className="border-2 border-blue-300 rounded-sm p-4 bg-blue-50">
+          <label className="block font-mono text-xs font-bold text-blue-800 mb-1">🧠 {RULER_OPTIONS.autonomyBehavior.label}</label>
+          <p className="font-mono text-[9px] text-blue-700 mb-3">{RULER_OPTIONS.autonomyBehavior.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {RULER_OPTIONS.autonomyBehavior.options.map((option) => {
+              const isSelected = data?.ruler?.autonomyBehavior === option.id;
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateRuler('autonomyBehavior', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* === Genre-Specific Rules Section === */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/50">
+          <h4 className="font-mono text-xs font-bold text-purple-800 mb-3">🎭 GENRE-SPECIFIC RULES</h4>
+          
+          {/* Slice of Life */}
+          <div className="mb-4">
+            <label className="block font-mono text-[10px] font-bold text-purple-700 mb-1">☕ {RULER_OPTIONS.sliceOfLife.label}</label>
+            <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.sliceOfLife.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {RULER_OPTIONS.sliceOfLife.options.map((option) => {
+                const isSelected = data?.ruler?.sliceOfLife === option.id;
+                const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+                
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => updateRuler('sliceOfLife', isSelected ? '' : option.id)}
+                    disabled={wouldExceed && !isSelected}
+                    className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                      isSelected
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : wouldExceed
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                          : 'bg-purple-100 text-purple-800 hover:bg-purple-200 border border-purple-300'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Adventure Rules */}
+          <div className="mb-4">
+            <label className="block font-mono text-[10px] font-bold text-purple-700 mb-1">⚔️ {RULER_OPTIONS.adventureRules.label}</label>
+            <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.adventureRules.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {RULER_OPTIONS.adventureRules.options.map((option) => {
+                const isSelected = data?.ruler?.adventureRules === option.id;
+                const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+                
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => updateRuler('adventureRules', isSelected ? '' : option.id)}
+                    disabled={wouldExceed && !isSelected}
+                    className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                      isSelected
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : wouldExceed
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                          : 'bg-purple-100 text-purple-800 hover:bg-purple-200 border border-purple-300'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Casual Rules */}
+          <div>
+            <label className="block font-mono text-[10px] font-bold text-purple-700 mb-1">🎈 {RULER_OPTIONS.casualRules.label}</label>
+            <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.casualRules.description}</p>
+            <div className="flex flex-wrap gap-2">
+              {RULER_OPTIONS.casualRules.options.map((option) => {
+                const isSelected = data?.ruler?.casualRules === option.id;
+                const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
+                
+                return (
+                  <button
+                    key={option.id}
+                    onClick={() => updateRuler('casualRules', isSelected ? '' : option.id)}
+                    disabled={wouldExceed && !isSelected}
+                    className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                      isSelected
+                        ? 'bg-purple-600 text-white shadow-md'
+                        : wouldExceed
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                          : 'bg-purple-100 text-purple-800 hover:bg-purple-200 border border-purple-300'
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Important Rules [IMPT:] */}
+        <div className="border-2 border-amber-300 rounded-sm p-4 bg-amber-50">
+          <label className="block font-mono text-xs font-bold text-amber-800 mb-1">⚡ IMPORTANT RULES [IMPT:]</label>
+          <p className="font-mono text-[9px] text-amber-700 mb-3">High-priority rules that get special emphasis. Use sparingly!</p>
+          <div className="flex flex-wrap gap-2">
+            {IMPORTANT_RULES.map((rule) => {
+              const isSelected = data?.ruler?.importantRules?.includes(rule.id);
+              const wouldExceed = !isSelected && wouldExceedRulerLimit(rule.text);
+              
+              return (
+                <button
+                  key={rule.id}
+                  onClick={() => toggleImportantRule(rule.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-amber-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-amber-100 text-amber-800 hover:bg-amber-200 border border-amber-300'
+                  }`}
+                >
+                  {rule.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Custom Rules */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📝 Custom Rules</h4>
+          <p className="font-mono text-[10px] text-gray-500 mb-3">Add custom rules not covered above. Use # prefix for each rule.</p>
+          <textarea
+            value={data?.ruler?.customRules || ''}
+            onChange={(e) => updateRuler('customRules', e.target.value)}
+            placeholder="#Custom rule here.&#10;#Another custom rule."
+            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none focus:border-teal-400 focus:outline-none"
+            maxLength={200}
+          />
+          <div className="text-right font-mono text-[10px] text-gray-400">
+            {(data?.ruler?.customRules?.length || 0)}/200
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 6: RULER PREVIEW ==========
+    6: (
+      <div className="space-y-4">
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-white mb-2">📋 RULER PREVIEW</h3>
+          <p className="font-mono text-xs text-gray-300">Final ruler text ready for use.</p>
+        </div>
+
+        {/* Ruler Character Counter */}
+        <div className={`p-3 rounded-sm ${isRulerOverLimit ? 'bg-red-100 border-2 border-red-400' : 'bg-teal-100 border border-teal-300'}`}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-mono text-xs font-bold text-teal-900">
+              📏 RULER ({MAX_RULER_CHARS} char limit)
+            </span>
+            <span className={`font-mono text-sm font-bold ${isRulerOverLimit ? 'text-red-600' : rulerCharCount > MAX_RULER_CHARS * 0.8 ? 'text-amber-600' : 'text-teal-700'}`}>
+              {rulerCharCount} / {MAX_RULER_CHARS}
+            </span>
+          </div>
+          
+          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className={`h-full transition-all duration-300 ${
+                isRulerOverLimit ? 'bg-red-500' : rulerCharCount > MAX_RULER_CHARS * 0.8 ? 'bg-amber-500' : 'bg-teal-500'
+              }`}
+              style={{ width: `${rulerCharPercentage}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Ruler output display */}
+        <div className="border-2 border-teal-300 rounded-sm p-4 bg-white">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-mono text-sm font-bold text-gray-800">Generated Ruler</h4>
+            <button
+              onClick={() => navigator.clipboard.writeText(rulerText)}
+              className="flex items-center gap-1 px-2 py-1 bg-teal-100 hover:bg-teal-200 text-teal-700 rounded-sm font-mono text-[10px] transition-colors"
+            >
+              <Icons.Copy className="w-3 h-3" />
+              Copy
+            </button>
+          </div>
+          
+          {rulerText ? (
+            <pre className={`font-mono text-xs leading-relaxed p-3 rounded whitespace-pre-wrap ${isRulerOverLimit ? 'bg-red-50 border border-red-300 text-red-800' : 'bg-gray-50 border border-gray-200 text-gray-800'}`}>
+              {rulerText}
+            </pre>
+          ) : (
+            <div className="font-mono text-sm text-gray-400 italic p-3 bg-gray-50 border border-gray-200 rounded">
+              No rules selected yet. Build your ruler in the previous tab.
+            </div>
+          )}
+        </div>
+
+        {/* Also show Directive for comparison */}
+        <div className="border border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-mono text-sm font-bold text-purple-800">Directive Response (for reference)</h4>
+            <span className={`font-mono text-xs ${isOverLimit ? 'text-red-600' : 'text-purple-600'}`}>
+              {charCount}/{MAX_DIRECTIVE_CHARS}
+            </span>
+          </div>
+          
+          {directiveText ? (
+            <div className="font-mono text-xs leading-relaxed p-3 rounded bg-white border border-purple-200 text-gray-800">
+              {directiveText}
+            </div>
+          ) : (
+            <div className="font-mono text-xs text-gray-400 italic p-3 bg-white border border-purple-200 rounded">
+              No directives selected.
+            </div>
+          )}
+        </div>
+
+        {/* Tips */}
+        <div className="border border-blue-200 rounded-sm p-4 bg-blue-50">
+          <h4 className="font-mono text-xs font-bold text-blue-800 mb-2">💡 Tips for Better Results</h4>
+          <ul className="font-mono text-[10px] text-blue-700 space-y-1">
+            <li>• Fewer rules = smoother, more natural output</li>
+            <li>• Too many requirements can cause "freeze" behavior</li>
+            <li>• Use [IMPT: ...] only for rules that really matter</li>
+            <li>• Give each change a few turns to settle before adjusting</li>
+            <li>• Directive = style/tone, Ruler = behavior/structure</li>
+          </ul>
+        </div>
+
+        {/* Selection summary */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-gray-50">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📊 Complete Summary</h4>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-3 rounded bg-purple-50 border border-purple-200">
+              <div className="font-mono text-[10px] text-gray-600 mb-1">DIRECTIVE RESPONSES</div>
+              <div className="font-mono text-lg font-bold text-purple-700">{charCount}</div>
+              <div className="font-mono text-[9px] text-gray-500">of {MAX_DIRECTIVE_CHARS} chars</div>
+              <div className="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-purple-500" style={{ width: `${charPercentage}%` }} />
+              </div>
+            </div>
+            <div className="p-3 rounded bg-teal-50 border border-teal-200">
+              <div className="font-mono text-[10px] text-gray-600 mb-1">RULER</div>
+              <div className="font-mono text-lg font-bold text-teal-700">{rulerCharCount}</div>
+              <div className="font-mono text-[9px] text-gray-500">of {MAX_RULER_CHARS} chars</div>
+              <div className="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-teal-500" style={{ width: `${rulerCharPercentage}%` }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Reset Ruler button */}
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => {
+              if (confirm('Clear all ruler selections?')) {
+                updateData('directives', {
+                  ...data,
+                  ruler: {
+                    plotRole: '',
+                    responseStructure: '',
+                    pacing: '',
+                    consistency: '',
+                    boundaries: '',
+                    interaction: '',
+                    importantRules: [],
+                    customRules: ''
+                  }
+                });
+              }
+            }}
+            className="px-4 py-2 bg-teal-100 hover:bg-teal-200 text-teal-700 rounded-sm font-mono text-xs transition-colors"
+          >
+            Reset Ruler
+          </button>
+          <button
+            onClick={() => {
+              if (confirm('Clear ALL directive and ruler selections?')) {
+                updateData('directives', {
+                  formatting: {},
+                  writingStyle: {},
+                  narrative: {},
+                  content: {},
+                  customDirective: '',
+                  ruler: {
+                    plotRole: '',
+                    responseStructure: '',
+                    pacing: '',
+                    consistency: '',
+                    boundaries: '',
+                    interaction: '',
+                    importantRules: [],
+                    customRules: ''
+                  }
+                });
+              }
+            }}
+            className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-sm font-mono text-xs transition-colors"
+          >
+            Reset Everything
+          </button>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 7: PROACTIVE MODE ==========
+    7: (
+      <div className="space-y-4">
+        {/* Proactive Character Counter */}
+        <div className={`sticky top-0 z-20 p-3 rounded-sm mb-4 ${isProactiveOverLimit ? 'bg-red-100 border-2 border-red-400' : 'bg-orange-100 border border-orange-300'}`}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-mono text-xs font-bold text-orange-900">
+              ⚡ PROACTIVE DIRECTIVE
+            </span>
+            <span className={`font-mono text-sm font-bold ${isProactiveOverLimit ? 'text-red-600' : proactiveCharCount > MAX_PROACTIVE_CHARS * 0.8 ? 'text-amber-600' : 'text-orange-700'}`}>
+              {proactiveCharCount} / {MAX_PROACTIVE_CHARS}
+            </span>
+          </div>
+          
+          <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-2">
+            <div 
+              className={`h-full transition-all duration-300 ${
+                isProactiveOverLimit ? 'bg-red-500' : proactiveCharCount > MAX_PROACTIVE_CHARS * 0.8 ? 'bg-amber-500' : 'bg-orange-500'
+              }`}
+              style={{ width: `${proactiveCharPercentage}%` }}
+            />
+          </div>
+
+          {isProactiveOverLimit && (
+            <div className="flex items-center gap-2 text-red-600 font-mono text-[10px]">
+              <Icons.AlertCircle className="w-3 h-3" />
+              <span>Over limit! Remove some options to continue.</span>
+            </div>
+          )}
+        </div>
+        
+        <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-orange-900 mb-2">⚡ PROACTIVE MODE</h3>
+          <p className="font-mono text-xs text-orange-700 mb-2">Configure how the character proactively initiates contact during your inactivity.</p>
+          <p className="font-mono text-[10px] text-orange-600">💡 Character can send messages, selfies, voice messages, or calls at appropriate times.</p>
+        </div>
+
+        {/* Active Hours */}
+        <div className="border border-orange-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-orange-800 mb-1">🕐 {PROACTIVE_OPTIONS.timing.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.timing.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.timing.options.map((option) => {
+              const isSelected = data?.proactive?.timing === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('timing', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-orange-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Contact Frequency */}
+        <div className="border border-orange-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-orange-800 mb-1">📊 {PROACTIVE_OPTIONS.frequency.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.frequency.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.frequency.options.map((option) => {
+              const isSelected = data?.proactive?.frequency === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('frequency', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-orange-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Quiet Hours */}
+        <div className="border-2 border-blue-200 rounded-sm p-3 bg-blue-50/30">
+          <label className="block font-mono text-xs font-bold text-blue-800 mb-1">🌙 {PROACTIVE_OPTIONS.quietHours.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.quietHours.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.quietHours.options.map((option) => {
+              const isSelected = data?.proactive?.quietHours === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('quietHours', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-blue-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Action Types (Multi-select) */}
+        <div className="border-2 border-green-200 rounded-sm p-3 bg-green-50/30">
+          <label className="block font-mono text-xs font-bold text-green-800 mb-1">📱 {PROACTIVE_OPTIONS.actionTypes.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.actionTypes.description}</p>
+          <p className="font-mono text-[9px] text-green-600 mb-2">✓ Select multiple options</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.actionTypes.options.map((option) => {
+              const isSelected = data?.proactive?.actionTypes?.includes(option.id);
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => toggleProactiveAction(option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-green-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Triggers */}
+        <div className="border border-orange-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-orange-800 mb-1">🎯 {PROACTIVE_OPTIONS.triggers.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.triggers.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.triggers.options.map((option) => {
+              const isSelected = data?.proactive?.triggers === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('triggers', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-orange-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Limits */}
+        <div className="border-2 border-red-200 rounded-sm p-3 bg-red-50/30">
+          <label className="block font-mono text-xs font-bold text-red-800 mb-1">🚫 {PROACTIVE_OPTIONS.limits.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.limits.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.limits.options.map((option) => {
+              const isSelected = data?.proactive?.limits === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('limits', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-red-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Proactive Personality */}
+        <div className="border border-purple-200 rounded-sm p-3 bg-purple-50/30">
+          <label className="block font-mono text-xs font-bold text-purple-800 mb-1">💬 {PROACTIVE_OPTIONS.personality.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.personality.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.personality.options.map((option) => {
+              const isSelected = data?.proactive?.personality === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('personality', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-purple-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-purple-100 text-purple-700 hover:bg-purple-200 border border-purple-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Calendar Awareness */}
+        <div className="border border-orange-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-orange-800 mb-1">📅 {PROACTIVE_OPTIONS.calendarAware.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.calendarAware.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.calendarAware.options.map((option) => {
+              const isSelected = data?.proactive?.calendarAware === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('calendarAware', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-orange-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Inactivity Response */}
+        <div className="border border-orange-200 rounded-sm p-3 bg-white">
+          <label className="block font-mono text-xs font-bold text-orange-800 mb-1">💤 {PROACTIVE_OPTIONS.inactivityResponse.label}</label>
+          <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.inactivityResponse.description}</p>
+          <div className="flex flex-wrap gap-2">
+            {PROACTIVE_OPTIONS.inactivityResponse.options.map((option) => {
+              const isSelected = data?.proactive?.inactivityResponse === option.id;
+              const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
+              
+              return (
+                <button
+                  key={option.id}
+                  onClick={() => updateProactive('inactivityResponse', isSelected ? '' : option.id)}
+                  disabled={wouldExceed && !isSelected}
+                  className={`px-2 py-1 rounded-sm font-mono text-[10px] transition-all ${
+                    isSelected
+                      ? 'bg-orange-600 text-white shadow-md'
+                      : wouldExceed
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed line-through'
+                        : 'bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Custom Directive */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-white">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📝 Custom Proactive Directive</h4>
+          <p className="font-mono text-[10px] text-gray-500 mb-3">Add specific timing or behavior instructions.</p>
+          <textarea
+            value={data?.proactive?.customDirective || ''}
+            onChange={(e) => updateProactive('customDirective', e.target.value)}
+            placeholder="e.g., 'Check in every 3 hours during weekdays. Send good morning messages at 8am.'"
+            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none focus:border-orange-400 focus:outline-none"
+            maxLength={150}
+          />
+          <div className="text-right font-mono text-[10px] text-gray-400">
+            {(data?.proactive?.customDirective?.length || 0)}/150
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 8: PROACTIVE PREVIEW ==========
+    8: (
+      <div className="space-y-4">
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-white mb-2">📋 PROACTIVE PREVIEW</h3>
+          <p className="font-mono text-xs text-gray-300">Final proactive directive ready for use.</p>
+        </div>
+
+        {/* Proactive Character Counter */}
+        <div className={`p-3 rounded-sm ${isProactiveOverLimit ? 'bg-red-100 border-2 border-red-400' : 'bg-orange-100 border border-orange-300'}`}>
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-mono text-xs font-bold text-orange-900">
+              ⚡ PROACTIVE ({MAX_PROACTIVE_CHARS} char limit)
+            </span>
+            <span className={`font-mono text-sm font-bold ${isProactiveOverLimit ? 'text-red-600' : proactiveCharCount > MAX_PROACTIVE_CHARS * 0.8 ? 'text-amber-600' : 'text-orange-700'}`}>
+              {proactiveCharCount} / {MAX_PROACTIVE_CHARS}
+            </span>
+          </div>
+          
+          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div 
+              className={`h-full transition-all duration-300 ${
+                isProactiveOverLimit ? 'bg-red-500' : proactiveCharCount > MAX_PROACTIVE_CHARS * 0.8 ? 'bg-amber-500' : 'bg-orange-500'
+              }`}
+              style={{ width: `${proactiveCharPercentage}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Proactive output display */}
+        <div className="border-2 border-orange-300 rounded-sm p-4 bg-white">
+          <div className="flex items-center justify-between mb-3">
+            <h4 className="font-mono text-sm font-bold text-gray-800">Generated Proactive Directive</h4>
+            <button
+              onClick={() => navigator.clipboard.writeText(proactiveText)}
+              className="flex items-center gap-1 px-2 py-1 bg-orange-100 hover:bg-orange-200 text-orange-700 rounded-sm font-mono text-[10px] transition-colors"
+            >
+              <Icons.Copy className="w-3 h-3" />
+              Copy
+            </button>
+          </div>
+          
+          {proactiveText ? (
+            <div className={`font-mono text-xs leading-relaxed p-3 rounded ${isProactiveOverLimit ? 'bg-red-50 border border-red-300 text-red-800' : 'bg-gray-50 border border-gray-200 text-gray-800'}`}>
+              {proactiveText}
+            </div>
+          ) : (
+            <div className="font-mono text-sm text-gray-400 italic p-3 bg-gray-50 border border-gray-200 rounded">
+              No proactive options selected yet. Build your directive in the previous tab.
+            </div>
+          )}
+        </div>
+
+        {/* Example Scenarios */}
+        <div className="border border-blue-200 rounded-sm p-4 bg-blue-50">
+          <h4 className="font-mono text-xs font-bold text-blue-800 mb-2">📖 Example Proactive Directives</h4>
+          <div className="space-y-2">
+            <div className="font-mono text-[10px] text-blue-700 p-2 bg-white rounded border border-blue-200">
+              <strong>Attentive Partner:</strong> "Reach out every hour or so. Caring check-in style. Do not message 10pm-8am. Max 2 messages without reply."
+            </div>
+            <div className="font-mono text-[10px] text-blue-700 p-2 bg-white rounded border border-blue-200">
+              <strong>Independent Friend:</strong> "Several messages per day. Shares own life updates. Available throughout the day. Patiently waits."
+            </div>
+            <div className="font-mono text-[10px] text-blue-700 p-2 bg-white rounded border border-blue-200">
+              <strong>Busy Professional:</strong> "Once or twice daily. Only during work hours. React to calendar events. Simple check-ins."
+            </div>
+          </div>
+        </div>
+
+        {/* All Systems Summary */}
+        <div className="border border-gray-200 rounded-sm p-4 bg-gray-50">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📊 ALL SYSTEMS SUMMARY</h4>
+          <div className="grid grid-cols-3 gap-3">
+            <div className="p-3 rounded bg-purple-50 border border-purple-200">
+              <div className="font-mono text-[10px] text-gray-600 mb-1">DIRECTIVE</div>
+              <div className="font-mono text-lg font-bold text-purple-700">{charCount}</div>
+              <div className="font-mono text-[9px] text-gray-500">of {MAX_DIRECTIVE_CHARS}</div>
+              <div className="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-purple-500" style={{ width: `${charPercentage}%` }} />
+              </div>
+            </div>
+            <div className="p-3 rounded bg-teal-50 border border-teal-200">
+              <div className="font-mono text-[10px] text-gray-600 mb-1">RULER</div>
+              <div className="font-mono text-lg font-bold text-teal-700">{rulerCharCount}</div>
+              <div className="font-mono text-[9px] text-gray-500">of {MAX_RULER_CHARS}</div>
+              <div className="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-teal-500" style={{ width: `${rulerCharPercentage}%` }} />
+              </div>
+            </div>
+            <div className="p-3 rounded bg-orange-50 border border-orange-200">
+              <div className="font-mono text-[10px] text-gray-600 mb-1">PROACTIVE</div>
+              <div className="font-mono text-lg font-bold text-orange-700">{proactiveCharCount}</div>
+              <div className="font-mono text-[9px] text-gray-500">of {MAX_PROACTIVE_CHARS}</div>
+              <div className="mt-2 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                <div className="h-full bg-orange-500" style={{ width: `${proactiveCharPercentage}%` }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tips */}
+        <div className="border border-amber-200 rounded-sm p-4 bg-amber-50">
+          <h4 className="font-mono text-xs font-bold text-amber-800 mb-2">💡 Proactive Mode Tips</h4>
+          <ul className="font-mono text-[10px] text-amber-700 space-y-1">
+            <li>• Works best with time-awareness and calendar integration</li>
+            <li>• Character will think about actions during your inactivity</li>
+            <li>• Thought bubbles appear when you return</li>
+            <li>• Set quiet hours to avoid unwanted notifications</li>
+            <li>• Limit consecutive messages to prevent spam</li>
+            <li>• Timing is approximate, not guaranteed exact</li>
+          </ul>
+        </div>
+
+        {/* Reset Proactive button */}
+        <div className="flex justify-end gap-2">
+          <button
+            onClick={() => {
+              if (confirm('Clear all proactive settings?')) {
+                updateData('directives', {
+                  ...data,
+                  proactive: {
+                    timing: '',
+                    frequency: '',
+                    quietHours: '',
+                    actionTypes: [],
+                    triggers: '',
+                    limits: '',
+                    personality: '',
+                    calendarAware: '',
+                    inactivityResponse: '',
+                    customDirective: ''
+                  }
+                });
+              }
+            }}
+            className="px-4 py-2 bg-orange-100 hover:bg-orange-200 text-orange-700 rounded-sm font-mono text-xs transition-colors"
+          >
+            Reset Proactive
+          </button>
+          <button
+            onClick={() => {
+              if (confirm('Clear ALL settings (Directive + Ruler + Proactive)?')) {
+                updateData('directives', {
+                  formatting: {},
+                  writingStyle: {},
+                  narrative: {},
+                  content: {},
+                  customDirective: '',
+                  ruler: {
+                    plotRole: '',
+                    responseStructure: '',
+                    pacing: '',
+                    consistency: '',
+                    boundaries: '',
+                    interaction: '',
+                    autonomyBehavior: '',
+                    sliceOfLife: '',
+                    adventureRules: '',
+                    casualRules: '',
+                    importantRules: [],
+                    customRules: ''
+                  },
+                  proactive: {
+                    timing: '',
+                    frequency: '',
+                    quietHours: '',
+                    actionTypes: [],
+                    triggers: '',
+                    limits: '',
+                    personality: '',
+                    calendarAware: '',
+                    inactivityResponse: '',
+                    customDirective: ''
+                  }
+                });
+              }
+            }}
+            className="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-700 rounded-sm font-mono text-xs transition-colors"
+          >
+            Reset Everything
+          </button>
+        </div>
+      </div>
+    ),
+  };
+
+  return sections[subtab] || sections[0];
+};
+
+
+// ============================================================================
+// INTIMACY CONTENT - Complete Implementation (18+ Only)
+// ============================================================================
+
+const IntimacyContent = ({ data, updateData, subtab }) => {
+  const update = (section, field, value) => {
+    updateData('intimacy', { ...data, [section]: { ...data[section], [field]: value } });
+  };
+
+  // Helper components
+  const IntimacySelect = ({ label, value, onChange, options }) => (
+    <div>
+      <label className="block font-mono text-xs font-bold text-purple-700 mb-1">{label}</label>
+      <select value={value || ''} onChange={onChange} className="w-full px-3 py-2 border-2 border-purple-300 rounded-sm bg-white font-mono text-xs focus:border-purple-500 focus:outline-none">
+        <option value="">-- Select --</option>
+        {options.map((opt, i) => typeof opt === 'object' 
+          ? <option key={i} value={opt.value}>{opt.label}</option>
+          : <option key={i} value={opt}>{opt}</option>
+        )}
+      </select>
+    </div>
+  );
+
+  const IntimacyInput = ({ label, value, onChange, placeholder }) => (
+    <div>
+      <label className="block font-mono text-xs font-bold text-purple-700 mb-1">{label}</label>
+      <input type="text" value={value || ''} onChange={onChange} placeholder={placeholder} className="w-full px-3 py-2 border-2 border-purple-300 rounded-sm font-mono text-xs focus:border-purple-500 focus:outline-none" />
+    </div>
+  );
+
+  const IntimacyTextarea = ({ label, value, onChange, placeholder }) => (
+    <div>
+      <label className="block font-mono text-xs font-bold text-purple-700 mb-1">{label}</label>
+      <textarea value={value || ''} onChange={onChange} placeholder={placeholder} rows={3} className="w-full px-3 py-2 border-2 border-purple-300 rounded-sm font-mono text-xs focus:border-purple-500 focus:outline-none resize-none" />
+    </div>
+  );
+
+  const IntimacySlider = ({ label, value, onChange, leftLabel, rightLabel }) => (
+    <div className="space-y-1">
+      <label className="block font-mono text-xs font-bold text-purple-700">{label}</label>
+      <div className="flex items-center gap-2">
+        <span className="font-mono text-[10px] text-purple-600 w-20">{leftLabel}</span>
+        <input type="range" min="1" max="10" value={value || 5} onChange={onChange} className="flex-1 h-2 bg-purple-200 rounded-lg appearance-none cursor-pointer accent-purple-600" />
+        <span className="font-mono text-[10px] text-purple-600 w-20 text-right">{rightLabel}</span>
+      </div>
+      <div className="text-center font-mono text-xs text-purple-500">{value || 5}/10</div>
+    </div>
+  );
+
+  const sections = {
+    // ========== SUBTAB 0: ORIENTATION & IDENTITY ==========
+    0: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">ORIENTATION & IDENTITY — Sexual & Romantic</h3>
+          <p className="font-mono text-xs text-purple-700">Sexual orientation, romantic orientation, and intimate identity.</p>
+          <p className="font-mono text-[10px] text-purple-500 mt-2">🔒 This tab is only available for adult characters (18+).</p>
+        </div>
+
+        {/* SEXUAL ORIENTATION */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">🌈 Sexual Orientation</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Sexual Orientation" value={data.orientation?.sexualOrientation} onChange={(e) => update('orientation', 'sexualOrientation', e.target.value)}
+              options={[
+                { value: 'heterosexual', label: 'Heterosexual/Straight — Attracted to opposite gender' },
+                { value: 'homosexual-gay', label: 'Gay — Men attracted to men' },
+                { value: 'homosexual-lesbian', label: 'Lesbian — Women attracted to women' },
+                { value: 'bisexual', label: 'Bisexual — Attracted to both men and women' },
+                { value: 'pansexual', label: 'Pansexual — Attracted regardless of gender' },
+                { value: 'polysexual', label: 'Polysexual — Attracted to multiple genders' },
+                { value: 'omnisexual', label: 'Omnisexual — Attracted to all genders with preference' },
+                { value: 'queer', label: 'Queer — Non-specific LGBTQ+ identity' },
+                { value: 'fluid', label: 'Fluid — Orientation changes over time' },
+                { value: 'questioning', label: 'Questioning — Still exploring' },
+                { value: 'asexual', label: 'Asexual — Little to no sexual attraction' },
+                { value: 'demisexual', label: 'Demisexual — Attraction only after bond' },
+                { value: 'graysexual', label: 'Graysexual — Rarely experiences attraction' },
+                { value: 'heteroflex', label: 'Heteroflexible — Mostly straight' },
+                { value: 'homoflex', label: 'Homoflexible — Mostly gay/lesbian' },
+                { value: 'androsexual', label: 'Androsexual — Attracted to masculinity' },
+                { value: 'gynesexual', label: 'Gynesexual — Attracted to femininity' },
+                { value: 'skoliosexual', label: 'Skoliosexual — Attracted to non-binary' },
+                { value: 'unlabeled', label: 'Unlabeled — Doesn\'t use labels' },
+                { value: 'unknown', label: 'Unknown — Hasn\'t figured it out' }
+              ]} />
+            <IntimacySelect label="Kinsey Scale Position" value={data.orientation?.kinseyScale} onChange={(e) => update('orientation', 'kinseyScale', e.target.value)}
+              options={[
+                { value: '0', label: '0 — Exclusively heterosexual' },
+                { value: '1', label: '1 — Predominantly heterosexual, incidentally homosexual' },
+                { value: '2', label: '2 — Predominantly heterosexual, more than incidentally homosexual' },
+                { value: '3', label: '3 — Equally heterosexual and homosexual (bisexual)' },
+                { value: '4', label: '4 — Predominantly homosexual, more than incidentally heterosexual' },
+                { value: '5', label: '5 — Predominantly homosexual, incidentally heterosexual' },
+                { value: '6', label: '6 — Exclusively homosexual' },
+                { value: 'x', label: 'X — Asexual / No socio-sexual contacts' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <IntimacySelect label="Orientation Certainty" value={data.orientation?.orientationCertainty} onChange={(e) => update('orientation', 'orientationCertainty', e.target.value)}
+              options={[
+                { value: 'absolute', label: 'Absolute — 100% certain' },
+                { value: 'very-confident', label: 'Very Confident — Almost certain' },
+                { value: 'confident', label: 'Confident — Pretty sure' },
+                { value: 'somewhat', label: 'Somewhat — Mostly sure' },
+                { value: 'uncertain', label: 'Uncertain — Not sure' },
+                { value: 'questioning', label: 'Questioning — Actively exploring' },
+                { value: 'fluid', label: 'Fluid — Changes over time' }
+              ]} />
+            <IntimacySelect label="Outness Level" value={data.orientation?.outnessLevel} onChange={(e) => update('orientation', 'outnessLevel', e.target.value)}
+              options={[
+                { value: 'not-applicable', label: 'N/A — Heterosexual/cisgender' },
+                { value: 'fully-out', label: 'Fully Out — Everyone knows' },
+                { value: 'mostly-out', label: 'Mostly Out — Most people know' },
+                { value: 'selectively-out', label: 'Selectively Out — Some people know' },
+                { value: 'out-to-close', label: 'Out to Close Friends/Family' },
+                { value: 'closeted', label: 'Closeted — Hiding orientation' },
+                { value: 'deeply-closeted', label: 'Deeply Closeted — No one knows' },
+                { value: 'dont-discuss', label: 'Doesn\'t Discuss — Private matter' }
+              ]} />
+          </div>
+        </div>
+
+        {/* ROMANTIC ORIENTATION */}
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-4">💕 Romantic Orientation</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Romantic Orientation" value={data.orientation?.romanticOrientation} onChange={(e) => update('orientation', 'romanticOrientation', e.target.value)}
+              options={[
+                { value: 'same-as-sexual', label: 'Same as Sexual Orientation' },
+                { value: 'heteroromantic', label: 'Heteroromantic — Romantic to opposite gender' },
+                { value: 'homoromantic', label: 'Homoromantic — Romantic to same gender' },
+                { value: 'biromantic', label: 'Biromantic — Romantic to multiple genders' },
+                { value: 'panromantic', label: 'Panromantic — Romantic regardless of gender' },
+                { value: 'aromantic', label: 'Aromantic — Little to no romantic attraction' },
+                { value: 'demiromantic', label: 'Demiromantic — Romance only after bond' },
+                { value: 'grayromantic', label: 'Grayromantic — Rarely romantic feelings' },
+                { value: 'quoiromantic', label: 'Quoiromantic — Can\'t distinguish romantic/platonic' },
+                { value: 'fluid', label: 'Fluid — Changes over time' },
+                { value: 'questioning', label: 'Questioning — Still exploring' }
+              ]} />
+            <IntimacySelect label="Relationship Style Preference" value={data.orientation?.relationshipStyle} onChange={(e) => update('orientation', 'relationshipStyle', e.target.value)}
+              options={[
+                { value: 'monogamous', label: 'Monogamous — One partner only' },
+                { value: 'serial-monogamy', label: 'Serial Monogamy — One at a time' },
+                { value: 'monogamish', label: 'Monogamish — Mostly monogamous, some flexibility' },
+                { value: 'open', label: 'Open Relationship — Primary + others' },
+                { value: 'polyamorous', label: 'Polyamorous — Multiple romantic relationships' },
+                { value: 'relationship-anarchy', label: 'Relationship Anarchy — No hierarchy' },
+                { value: 'swinging', label: 'Swinging — Recreational non-monogamy' },
+                { value: 'dont-know', label: 'Don\'t Know — Hasn\'t explored' },
+                { value: 'flexible', label: 'Flexible — Depends on partner' },
+                { value: 'aromantic', label: 'Aromantic — No romantic relationships' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <IntimacySelect label="Love Language (Primary)" value={data.orientation?.loveLangPrimary} onChange={(e) => update('orientation', 'loveLangPrimary', e.target.value)}
+              options={[
+                { value: 'words', label: 'Words of Affirmation — Verbal expressions' },
+                { value: 'acts', label: 'Acts of Service — Helpful actions' },
+                { value: 'gifts', label: 'Receiving Gifts — Thoughtful presents' },
+                { value: 'time', label: 'Quality Time — Undivided attention' },
+                { value: 'touch', label: 'Physical Touch — Affectionate contact' }
+              ]} />
+            <IntimacySelect label="Love Language (Secondary)" value={data.orientation?.loveLangSecondary} onChange={(e) => update('orientation', 'loveLangSecondary', e.target.value)}
+              options={[
+                { value: '', label: '— None / Same as primary —' },
+                { value: 'words', label: 'Words of Affirmation' },
+                { value: 'acts', label: 'Acts of Service' },
+                { value: 'gifts', label: 'Receiving Gifts' },
+                { value: 'time', label: 'Quality Time' },
+                { value: 'touch', label: 'Physical Touch' }
+              ]} />
+          </div>
+        </div>
+
+        {/* EXPERIENCE & HISTORY */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">📖 Experience & History</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Sexual Experience Level" value={data.orientation?.experienceLevel} onChange={(e) => update('orientation', 'experienceLevel', e.target.value)}
+              options={[
+                { value: 'virgin', label: 'Virgin — No sexual experience' },
+                { value: 'minimal', label: 'Minimal — Very limited experience' },
+                { value: 'some', label: 'Some — A few experiences' },
+                { value: 'moderate', label: 'Moderate — Average experience' },
+                { value: 'experienced', label: 'Experienced — Significant experience' },
+                { value: 'very-experienced', label: 'Very Experienced — Extensive history' },
+                { value: 'expert', label: 'Expert — Highly knowledgeable' }
+              ]} />
+            <IntimacySelect label="Romantic Experience Level" value={data.orientation?.romanticExperience} onChange={(e) => update('orientation', 'romanticExperience', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Never dated' },
+                { value: 'minimal', label: 'Minimal — Brief dating' },
+                { value: 'some', label: 'Some — A few relationships' },
+                { value: 'moderate', label: 'Moderate — Several relationships' },
+                { value: 'experienced', label: 'Experienced — Many relationships' },
+                { value: 'very-experienced', label: 'Very Experienced — Long history' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Age of First Experience" value={data.orientation?.firstExperienceAge} onChange={(e) => update('orientation', 'firstExperienceAge', e.target.value)}
+              options={[
+                { value: 'none-yet', label: 'None Yet — Still a virgin' },
+                { value: 'late-teens', label: 'Late Teens (18-19)' },
+                { value: 'early-20s', label: 'Early 20s' },
+                { value: 'mid-20s', label: 'Mid 20s' },
+                { value: 'late-20s', label: 'Late 20s' },
+                { value: '30s', label: '30s' },
+                { value: '40s-plus', label: '40s or later' },
+                { value: 'prefers-not-say', label: 'Prefers Not to Say' }
+              ]} />
+            <IntimacySelect label="Current Status" value={data.orientation?.currentStatus} onChange={(e) => update('orientation', 'currentStatus', e.target.value)}
+              options={[
+                { value: 'single-looking', label: 'Single — Actively looking' },
+                { value: 'single-open', label: 'Single — Open to dating' },
+                { value: 'single-not-looking', label: 'Single — Not looking' },
+                { value: 'dating-casual', label: 'Dating — Casually' },
+                { value: 'dating-serious', label: 'Dating — Seriously' },
+                { value: 'relationship', label: 'In a Relationship' },
+                { value: 'engaged', label: 'Engaged' },
+                { value: 'married', label: 'Married' },
+                { value: 'domestic-partner', label: 'Domestic Partnership' },
+                { value: 'separated', label: 'Separated' },
+                { value: 'divorced', label: 'Divorced' },
+                { value: 'widowed', label: 'Widowed' },
+                { value: 'its-complicated', label: 'It\'s Complicated' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <IntimacySelect label="Number of Past Partners" value={data.orientation?.partnerCount} onChange={(e) => update('orientation', 'partnerCount', e.target.value)}
+              options={[
+                { value: '0', label: '0 — None' },
+                { value: '1', label: '1 — One partner' },
+                { value: '2-3', label: '2-3 — A few' },
+                { value: '4-6', label: '4-6 — Several' },
+                { value: '7-10', label: '7-10 — Many' },
+                { value: '11-20', label: '11-20 — Quite a few' },
+                { value: '21-50', label: '21-50 — Very many' },
+                { value: '50-plus', label: '50+ — Extensive' },
+                { value: 'lost-count', label: 'Lost Count' },
+                { value: 'private', label: 'Private — Won\'t say' }
+              ]} />
+            <IntimacySelect label="Longest Relationship" value={data.orientation?.longestRelationship} onChange={(e) => update('orientation', 'longestRelationship', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Never had a relationship' },
+                { value: 'weeks', label: 'Weeks — Brief flings' },
+                { value: 'months', label: 'Months — Short term' },
+                { value: '1-year', label: 'About a Year' },
+                { value: '2-3-years', label: '2-3 Years' },
+                { value: '4-5-years', label: '4-5 Years' },
+                { value: '6-10-years', label: '6-10 Years' },
+                { value: '10-plus', label: '10+ Years' },
+                { value: 'lifetime', label: 'Lifetime — Still together' }
+              ]} />
+          </div>
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 1: PREFERENCES ==========
+    1: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-rose-50 to-red-50 border border-rose-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-rose-900 mb-2">PREFERENCES — Attraction & Desires</h3>
+          <p className="font-mono text-xs text-rose-700">What the character is attracted to and what they desire in partners and intimacy.</p>
+        </div>
+
+        {/* PHYSICAL ATTRACTION */}
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">👀 Physical Attraction</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Preferred Body Type" value={data.preferences?.preferredBodyType} onChange={(e) => update('preferences', 'preferredBodyType', e.target.value)}
+              options={[
+                { value: 'no-preference', label: 'No Preference — Doesn\'t matter' },
+                { value: 'slim', label: 'Slim/Thin — Lean bodies' },
+                { value: 'athletic', label: 'Athletic — Fit and toned' },
+                { value: 'muscular', label: 'Muscular — Built bodies' },
+                { value: 'average', label: 'Average — Typical build' },
+                { value: 'curvy', label: 'Curvy — Full figures' },
+                { value: 'plus-size', label: 'Plus Size — Larger bodies' },
+                { value: 'petite', label: 'Petite — Small and delicate' },
+                { value: 'tall', label: 'Tall — Height matters' },
+                { value: 'short', label: 'Short — Shorter partners' },
+                { value: 'varies', label: 'Varies — Depends on person' }
+              ]} />
+            <IntimacySelect label="Age Preference (Relative)" value={data.preferences?.agePreference} onChange={(e) => update('preferences', 'agePreference', e.target.value)}
+              options={[
+                { value: 'same-age', label: 'Same Age — Peers' },
+                { value: 'slightly-younger', label: 'Slightly Younger (1-5 years)' },
+                { value: 'much-younger', label: 'Much Younger (5-10 years)' },
+                { value: 'significantly-younger', label: 'Significantly Younger (10+ years)' },
+                { value: 'slightly-older', label: 'Slightly Older (1-5 years)' },
+                { value: 'much-older', label: 'Much Older (5-10 years)' },
+                { value: 'significantly-older', label: 'Significantly Older (10+ years)' },
+                { value: 'no-preference', label: 'No Preference — Age doesn\'t matter' },
+                { value: 'varies', label: 'Varies — Case by case' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <IntimacySelect label="Hair Preference" value={data.preferences?.hairPreference} onChange={(e) => update('preferences', 'hairPreference', e.target.value)}
+              options={[
+                { value: 'no-preference', label: 'No Preference' },
+                { value: 'long', label: 'Long Hair' },
+                { value: 'short', label: 'Short Hair' },
+                { value: 'bald', label: 'Bald/Shaved' },
+                { value: 'dark', label: 'Dark Hair' },
+                { value: 'light', label: 'Light/Blonde Hair' },
+                { value: 'red', label: 'Red Hair' },
+                { value: 'unique', label: 'Unique/Colored Hair' },
+                { value: 'natural', label: 'Natural (not dyed)' }
+              ]} />
+            <IntimacySelect label="Facial Hair Preference" value={data.preferences?.facialHairPref} onChange={(e) => update('preferences', 'facialHairPref', e.target.value)}
+              options={[
+                { value: 'no-preference', label: 'No Preference' },
+                { value: 'clean-shaven', label: 'Clean Shaven' },
+                { value: 'stubble', label: 'Stubble' },
+                { value: 'beard', label: 'Beard' },
+                { value: 'mustache', label: 'Mustache' },
+                { value: 'goatee', label: 'Goatee' },
+                { value: 'any-facial-hair', label: 'Any Facial Hair' },
+                { value: 'none', label: 'None — Prefers no facial hair' }
+              ]} />
+            <IntimacySelect label="Style/Presentation Pref" value={data.preferences?.stylePref} onChange={(e) => update('preferences', 'stylePref', e.target.value)}
+              options={[
+                { value: 'no-preference', label: 'No Preference' },
+                { value: 'masculine', label: 'Masculine Presenting' },
+                { value: 'feminine', label: 'Feminine Presenting' },
+                { value: 'androgynous', label: 'Androgynous' },
+                { value: 'well-dressed', label: 'Well-Dressed/Stylish' },
+                { value: 'casual', label: 'Casual/Relaxed' },
+                { value: 'alternative', label: 'Alternative/Edgy' },
+                { value: 'professional', label: 'Professional' }
+              ]} />
+          </div>
+          <IntimacyTextarea label="Other Physical Preferences" value={data.preferences?.physicalPreferences} onChange={(e) => update('preferences', 'physicalPreferences', e.target.value)} 
+            placeholder="Other physical traits they find attractive: eyes, smile, hands, voice, specific features..." />
+        </div>
+
+        {/* EMOTIONAL/PERSONALITY ATTRACTION */}
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-4">💝 Personality Attraction</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Personality Type Attraction" value={data.preferences?.personalityPref} onChange={(e) => update('preferences', 'personalityPref', e.target.value)}
+              options={[
+                { value: 'no-preference', label: 'No Preference' },
+                { value: 'extrovert', label: 'Extroverts — Outgoing, social' },
+                { value: 'introvert', label: 'Introverts — Quiet, thoughtful' },
+                { value: 'ambivert', label: 'Ambiverts — Balanced' },
+                { value: 'dominant', label: 'Dominant — Takes charge' },
+                { value: 'submissive', label: 'Submissive — Follows lead' },
+                { value: 'switch', label: 'Switch — Either role' },
+                { value: 'confident', label: 'Confident — Self-assured' },
+                { value: 'shy', label: 'Shy — Reserved' },
+                { value: 'intellectual', label: 'Intellectual — Smart, thoughtful' },
+                { value: 'creative', label: 'Creative — Artistic, imaginative' },
+                { value: 'adventurous', label: 'Adventurous — Spontaneous' },
+                { value: 'stable', label: 'Stable — Reliable, steady' }
+              ]} />
+            <IntimacySelect label="Intelligence Preference" value={data.preferences?.intelligencePref} onChange={(e) => update('preferences', 'intelligencePref', e.target.value)}
+              options={[
+                { value: 'no-preference', label: 'No Preference' },
+                { value: 'sapiosexual', label: 'Sapiosexual — Highly attracted to intelligence' },
+                { value: 'very-important', label: 'Very Important — Must be smart' },
+                { value: 'important', label: 'Important — Values intelligence' },
+                { value: 'somewhat', label: 'Somewhat Important' },
+                { value: 'not-important', label: 'Not Important — Doesn\'t matter' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Humor Compatibility" value={data.preferences?.humorPref} onChange={(e) => update('preferences', 'humorPref', e.target.value)}
+              options={[
+                { value: 'essential', label: 'Essential — Must make them laugh' },
+                { value: 'very-important', label: 'Very Important — Values humor highly' },
+                { value: 'important', label: 'Important — Appreciates humor' },
+                { value: 'somewhat', label: 'Somewhat Important' },
+                { value: 'not-important', label: 'Not Important — Serious is fine' }
+              ]} />
+            <IntimacySelect label="Emotional Availability Pref" value={data.preferences?.emotionalPref} onChange={(e) => update('preferences', 'emotionalPref', e.target.value)}
+              options={[
+                { value: 'very-open', label: 'Very Open — Emotionally available' },
+                { value: 'open', label: 'Open — Willing to share' },
+                { value: 'balanced', label: 'Balanced — Not too much/little' },
+                { value: 'reserved', label: 'Reserved — Keeps feelings private' },
+                { value: 'mysterious', label: 'Mysterious — Hard to read' },
+                { value: 'no-preference', label: 'No Preference' }
+              ]} />
+          </div>
+          <IntimacyTextarea label="Other Personality Preferences" value={data.preferences?.emotionalPreferences} onChange={(e) => update('preferences', 'emotionalPreferences', e.target.value)} 
+            placeholder="Other personality traits they find attractive: kindness, ambition, loyalty, independence..." />
+        </div>
+
+        {/* TURN-ONS & TURN-OFFS */}
+        <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
+          <h4 className="font-mono text-sm font-bold text-orange-800 mb-4">🔥 Turn-Ons & Turn-Offs</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Primary Turn-On Category" value={data.preferences?.turnOnCategory} onChange={(e) => update('preferences', 'turnOnCategory', e.target.value)}
+              options={[
+                { value: 'physical', label: 'Physical — Looks, touch, bodies' },
+                { value: 'emotional', label: 'Emotional — Connection, intimacy' },
+                { value: 'intellectual', label: 'Intellectual — Mind, conversation' },
+                { value: 'power', label: 'Power — Dominance, control' },
+                { value: 'submission', label: 'Submission — Being controlled' },
+                { value: 'romance', label: 'Romance — Courtship, gestures' },
+                { value: 'spontaneity', label: 'Spontaneity — Surprise, adventure' },
+                { value: 'taboo', label: 'Taboo — Forbidden, risky' },
+                { value: 'sensory', label: 'Sensory — Specific sensations' },
+                { value: 'aesthetic', label: 'Aesthetic — Visual beauty' }
+              ]} />
+            <IntimacySelect label="Primary Turn-Off Category" value={data.preferences?.turnOffCategory} onChange={(e) => update('preferences', 'turnOffCategory', e.target.value)}
+              options={[
+                { value: 'dishonesty', label: 'Dishonesty — Lying, cheating' },
+                { value: 'arrogance', label: 'Arrogance — Ego, condescension' },
+                { value: 'hygiene', label: 'Poor Hygiene — Uncleanliness' },
+                { value: 'disrespect', label: 'Disrespect — Rudeness, dismissiveness' },
+                { value: 'neediness', label: 'Neediness — Clinginess, insecurity' },
+                { value: 'coldness', label: 'Coldness — Emotional unavailability' },
+                { value: 'aggression', label: 'Aggression — Anger, violence' },
+                { value: 'laziness', label: 'Laziness — Lack of ambition' },
+                { value: 'closed-minded', label: 'Closed-Mindedness — Judgmental' },
+                { value: 'selfishness', label: 'Selfishness — Self-centered' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <IntimacyTextarea label="Specific Turn-Ons" value={data.preferences?.turnOns} onChange={(e) => update('preferences', 'turnOns', e.target.value)} 
+              placeholder="Specific things that attract or excite them..." />
+            <IntimacyTextarea label="Specific Turn-Offs" value={data.preferences?.turnOffs} onChange={(e) => update('preferences', 'turnOffs', e.target.value)} 
+              placeholder="Specific things that repel or disgust them..." />
+          </div>
+        </div>
+
+        {/* BOUNDARIES */}
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-4">🚧 Boundaries & Limits</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Boundary Setting Style" value={data.preferences?.boundaryStyle} onChange={(e) => update('preferences', 'boundaryStyle', e.target.value)}
+              options={[
+                { value: 'very-clear', label: 'Very Clear — States boundaries explicitly' },
+                { value: 'clear', label: 'Clear — Communicates boundaries' },
+                { value: 'moderate', label: 'Moderate — Some boundaries stated' },
+                { value: 'flexible', label: 'Flexible — Negotiable boundaries' },
+                { value: 'unclear', label: 'Unclear — Doesn\'t communicate well' },
+                { value: 'poor', label: 'Poor — Struggles with boundaries' }
+              ]} />
+            <IntimacySelect label="Openness to New Experiences" value={data.preferences?.opennessLevel} onChange={(e) => update('preferences', 'opennessLevel', e.target.value)}
+              options={[
+                { value: 'very-adventurous', label: 'Very Adventurous — Tries almost anything' },
+                { value: 'adventurous', label: 'Adventurous — Open to new things' },
+                { value: 'somewhat-open', label: 'Somewhat Open — Will consider things' },
+                { value: 'cautious', label: 'Cautious — Needs convincing' },
+                { value: 'conservative', label: 'Conservative — Prefers familiar' },
+                { value: 'very-conservative', label: 'Very Conservative — Strict limits' }
+              ]} />
+          </div>
+          <IntimacyTextarea label="Hard Boundaries" value={data.preferences?.boundaries} onChange={(e) => update('preferences', 'boundaries', e.target.value)} 
+            placeholder="Absolute limits, things they will never do or accept..." />
+        </div>
+      </div>
+    ),
+
+    // ========== SUBTAB 2: INTIMATE BEHAVIOR ==========
+    2: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-fuchsia-50 to-purple-50 border border-fuchsia-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-fuchsia-900 mb-2">INTIMATE BEHAVIOR — In Relationships & Bed</h3>
+          <p className="font-mono text-xs text-fuchsia-700">How the character behaves in intimate situations and relationships.</p>
+        </div>
+
+        {/* RELATIONSHIP BEHAVIOR */}
+        <div className="border-2 border-fuchsia-200 rounded-sm p-4 bg-fuchsia-50/30">
+          <h4 className="font-mono text-sm font-bold text-fuchsia-800 mb-4">💑 Relationship Behavior</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Attachment Style" value={data.behavior?.attachmentStyle} onChange={(e) => update('behavior', 'attachmentStyle', e.target.value)}
+              options={[
+                { value: 'secure', label: 'Secure — Comfortable with intimacy and independence' },
+                { value: 'anxious', label: 'Anxious — Needs reassurance, fears abandonment' },
+                { value: 'avoidant', label: 'Avoidant — Values independence, uncomfortable with closeness' },
+                { value: 'fearful-avoidant', label: 'Fearful-Avoidant — Wants closeness but fears it' },
+                { value: 'earned-secure', label: 'Earned Secure — Worked through insecure attachment' }
+              ]} />
+            <IntimacySelect label="Jealousy Level" value={data.behavior?.jealousyLevel} onChange={(e) => update('behavior', 'jealousyLevel', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Never jealous' },
+                { value: 'minimal', label: 'Minimal — Rarely jealous' },
+                { value: 'low', label: 'Low — Occasionally jealous' },
+                { value: 'moderate', label: 'Moderate — Sometimes jealous' },
+                { value: 'high', label: 'High — Often jealous' },
+                { value: 'very-high', label: 'Very High — Extremely jealous' },
+                { value: 'possessive', label: 'Possessive — Controlling jealousy' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Communication Style" value={data.behavior?.communicationStyle} onChange={(e) => update('behavior', 'communicationStyle', e.target.value)}
+              options={[
+                { value: 'very-open', label: 'Very Open — Shares everything' },
+                { value: 'open', label: 'Open — Communicates well' },
+                { value: 'moderate', label: 'Moderate — Shares when needed' },
+                { value: 'reserved', label: 'Reserved — Keeps some things private' },
+                { value: 'closed', label: 'Closed — Rarely shares feelings' },
+                { value: 'avoidant', label: 'Avoidant — Avoids difficult conversations' }
+              ]} />
+            <IntimacySelect label="Conflict Style" value={data.behavior?.conflictStyle} onChange={(e) => update('behavior', 'conflictStyle', e.target.value)}
+              options={[
+                { value: 'collaborative', label: 'Collaborative — Works together' },
+                { value: 'compromising', label: 'Compromising — Finds middle ground' },
+                { value: 'accommodating', label: 'Accommodating — Gives in easily' },
+                { value: 'competitive', label: 'Competitive — Must win' },
+                { value: 'avoidant', label: 'Avoidant — Avoids conflict' },
+                { value: 'explosive', label: 'Explosive — Blows up' },
+                { value: 'passive-aggressive', label: 'Passive-Aggressive — Indirect' },
+                { value: 'silent-treatment', label: 'Silent Treatment — Shuts down' }
+              ]} />
+          </div>
+          <div className="space-y-4">
+            <IntimacySlider label="Initiative/Pursuing" value={data.behavior?.initiativeLevel} onChange={(e) => update('behavior', 'initiativeLevel', parseInt(e.target.value))} 
+              leftLabel="Waits to be pursued" rightLabel="Always initiates" />
+            <IntimacySlider label="Vulnerability Level" value={data.behavior?.vulnerabilityLevel} onChange={(e) => update('behavior', 'vulnerabilityLevel', parseInt(e.target.value))} 
+              leftLabel="Guarded/Protected" rightLabel="Completely open" />
+          </div>
+        </div>
+
+        {/* INTIMACY STYLE */}
+        <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
+          <h4 className="font-mono text-sm font-bold text-violet-800 mb-4">🔥 Intimacy Style</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="General Approach" value={data.behavior?.intimacyApproach} onChange={(e) => update('behavior', 'intimacyApproach', e.target.value)}
+              options={[
+                { value: 'passionate', label: 'Passionate — Intense, fiery' },
+                { value: 'romantic', label: 'Romantic — Tender, loving' },
+                { value: 'playful', label: 'Playful — Fun, lighthearted' },
+                { value: 'sensual', label: 'Sensual — Slow, focused on sensation' },
+                { value: 'dominant', label: 'Dominant — Takes control' },
+                { value: 'submissive', label: 'Submissive — Follows lead' },
+                { value: 'switch', label: 'Switch — Either role' },
+                { value: 'adventurous', label: 'Adventurous — Tries new things' },
+                { value: 'vanilla', label: 'Vanilla — Traditional, simple' },
+                { value: 'kinky', label: 'Kinky — Into specific interests' },
+                { value: 'mechanical', label: 'Mechanical — Goes through motions' },
+                { value: 'emotional', label: 'Emotional — Needs connection' }
+              ]} />
+            <IntimacySelect label="Libido/Drive" value={data.behavior?.libido} onChange={(e) => update('behavior', 'libido', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Asexual/No drive' },
+                { value: 'very-low', label: 'Very Low — Rarely interested' },
+                { value: 'low', label: 'Low — Occasionally interested' },
+                { value: 'moderate', label: 'Moderate — Average drive' },
+                { value: 'high', label: 'High — Frequently interested' },
+                { value: 'very-high', label: 'Very High — Almost always interested' },
+                { value: 'insatiable', label: 'Insatiable — Constantly wants more' },
+                { value: 'variable', label: 'Variable — Changes with mood/situation' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+            <IntimacySelect label="Preferred Frequency" value={data.behavior?.preferredFrequency} onChange={(e) => update('behavior', 'preferredFrequency', e.target.value)}
+              options={[
+                { value: 'rarely', label: 'Rarely — Few times a year' },
+                { value: 'occasionally', label: 'Occasionally — Monthly' },
+                { value: 'regularly', label: 'Regularly — Weekly' },
+                { value: 'often', label: 'Often — Multiple times/week' },
+                { value: 'daily', label: 'Daily — Every day' },
+                { value: 'multiple-daily', label: 'Multiple Daily — Several times/day' },
+                { value: 'no-preference', label: 'No Preference — Flexible' }
+              ]} />
+            <IntimacySelect label="Preferred Time" value={data.behavior?.preferredTime} onChange={(e) => update('behavior', 'preferredTime', e.target.value)}
+              options={[
+                { value: 'morning', label: 'Morning — After waking' },
+                { value: 'afternoon', label: 'Afternoon — Midday' },
+                { value: 'evening', label: 'Evening — After dinner' },
+                { value: 'night', label: 'Night — Before bed' },
+                { value: 'late-night', label: 'Late Night — Middle of night' },
+                { value: 'anytime', label: 'Anytime — No preference' },
+                { value: 'spontaneous', label: 'Spontaneous — Whenever mood strikes' }
+              ]} />
+            <IntimacySelect label="Preferred Setting" value={data.behavior?.preferredSetting} onChange={(e) => update('behavior', 'preferredSetting', e.target.value)}
+              options={[
+                { value: 'bedroom', label: 'Bedroom — Traditional' },
+                { value: 'anywhere-home', label: 'Anywhere at Home' },
+                { value: 'adventurous', label: 'Adventurous — Unusual places' },
+                { value: 'outdoor', label: 'Outdoor — Nature' },
+                { value: 'public-risk', label: 'Public/Risk — Thrill of being caught' },
+                { value: 'romantic-setting', label: 'Romantic Setting — Candles, music' },
+                { value: 'no-preference', label: 'No Preference' }
+              ]} />
+          </div>
+          <div className="space-y-4">
+            <IntimacySlider label="Intensity Level" value={data.behavior?.intensityLevel} onChange={(e) => update('behavior', 'intensityLevel', parseInt(e.target.value))} 
+              leftLabel="Gentle/Soft" rightLabel="Rough/Intense" />
+            <IntimacySlider label="Noise Level" value={data.behavior?.noiseLevel} onChange={(e) => update('behavior', 'noiseLevel', parseInt(e.target.value))} 
+              leftLabel="Silent/Quiet" rightLabel="Very Vocal" />
+            <IntimacySlider label="Duration Preference" value={data.behavior?.durationPref} onChange={(e) => update('behavior', 'durationPref', parseInt(e.target.value))} 
+              leftLabel="Quick" rightLabel="Extended/Marathon" />
+          </div>
+        </div>
+
+        {/* AFTER INTIMACY */}
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-4">🌙 After Intimacy</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Aftercare Needs" value={data.behavior?.aftercareNeeds} onChange={(e) => update('behavior', 'aftercareNeeds', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Doesn\'t need aftercare' },
+                { value: 'minimal', label: 'Minimal — Brief check-in' },
+                { value: 'moderate', label: 'Moderate — Some cuddling/talking' },
+                { value: 'significant', label: 'Significant — Extended aftercare' },
+                { value: 'extensive', label: 'Extensive — Needs lots of attention' }
+              ]} />
+            <IntimacySelect label="Post-Intimacy Behavior" value={data.behavior?.postIntimacyBehavior} onChange={(e) => update('behavior', 'postIntimacyBehavior', e.target.value)}
+              options={[
+                { value: 'cuddler', label: 'Cuddler — Wants to snuggle' },
+                { value: 'talker', label: 'Talker — Wants to chat' },
+                { value: 'sleeper', label: 'Sleeper — Falls asleep quickly' },
+                { value: 'hungry', label: 'Hungry — Wants food' },
+                { value: 'energized', label: 'Energized — Ready to do things' },
+                { value: 'space-needed', label: 'Space Needed — Needs alone time' },
+                { value: 'clingy', label: 'Clingy — Doesn\'t want to separate' },
+                { value: 'awkward', label: 'Awkward — Feels uncomfortable' },
+                { value: 'varies', label: 'Varies — Depends on mood' }
+              ]} />
+          </div>
+        </div>
+
+        {/* FANTASIES & INTERESTS */}
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">💭 Fantasies & Interests</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <IntimacySelect label="Fantasy Sharing" value={data.behavior?.fantasySharing} onChange={(e) => update('behavior', 'fantasySharing', e.target.value)}
+              options={[
+                { value: 'open', label: 'Open — Shares fantasies freely' },
+                { value: 'with-trust', label: 'With Trust — Shares with trusted partners' },
+                { value: 'hints', label: 'Hints — Drops hints, doesn\'t say directly' },
+                { value: 'private', label: 'Private — Keeps fantasies to self' },
+                { value: 'ashamed', label: 'Ashamed — Embarrassed by fantasies' },
+                { value: 'none', label: 'None — Doesn\'t have fantasies' }
+              ]} />
+            <IntimacySelect label="Interest in Roleplay" value={data.behavior?.roleplayInterest} onChange={(e) => update('behavior', 'roleplayInterest', e.target.value)}
+              options={[
+                { value: 'loves-it', label: 'Loves It — Very into roleplay' },
+                { value: 'enjoys', label: 'Enjoys — Likes it sometimes' },
+                { value: 'open', label: 'Open — Willing to try' },
+                { value: 'neutral', label: 'Neutral — Take it or leave it' },
+                { value: 'uncomfortable', label: 'Uncomfortable — Doesn\'t like it' },
+                { value: 'refuses', label: 'Refuses — Won\'t do it' }
+              ]} />
+          </div>
+          <IntimacyTextarea label="Fantasies & Interests (Notes)" value={data.behavior?.fantasies} onChange={(e) => update('behavior', 'fantasies', e.target.value)} 
+            placeholder="Additional notes about fantasies and interests..." />
+        </div>
+
+        {/* KINKS SELECTION */}
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-2">🔥 Kinks Selection</h4>
+          <p className="font-mono text-[10px] text-red-600 mb-4">Select all kinks that apply to this character. These are activities or dynamics they enjoy.</p>
+          
+          {/* Power Exchange */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">⚡ Power Exchange</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Dominance', 'Submission', 'Switching', 'Master/Slave', 'Pet Play', 'Ownership', 'Service Submission', 'Power Bottom', 'Gentle Domination', 'Strict Domination', 'Bratting', 'Taming', 'Worship', 'Objectification', 'Human Furniture', 'Control'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Bondage & Restraint */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">🔗 Bondage & Restraint</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Light Bondage', 'Rope Bondage', 'Shibari', 'Handcuffs', 'Chains', 'Leather Restraints', 'Spreader Bars', 'Suspension', 'Mummification', 'Predicament Bondage', 'Self-Bondage', 'Blindfolds', 'Gags', 'Hoods', 'Collars', 'Leashes'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Impact Play */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">👋 Impact Play</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Spanking', 'Paddling', 'Flogging', 'Whipping', 'Caning', 'Cropping', 'Slapping', 'Hair Pulling', 'Biting', 'Scratching', 'Belt', 'Hand Spanking', 'OTK (Over The Knee)', 'Bruising', 'Marking'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Sensory Play */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">✨ Sensory Play</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Sensation Play', 'Temperature Play', 'Ice Play', 'Wax Play', 'Feathers', 'Pinwheels', 'Electrostimulation', 'Tickling', 'Sensory Deprivation', 'Overstimulation', 'Edging', 'Orgasm Control', 'Orgasm Denial', 'Forced Orgasms', 'Ruined Orgasms', 'Chastity'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Role Play Scenarios */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">🎭 Role Play Scenarios</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Teacher/Student', 'Boss/Employee', 'Doctor/Patient', 'Stranger Scenario', 'Age Play (Adult)', 'Uniform Play', 'Authority Figures', 'Interrogation', 'Captured/Captor', 'Servant/Royalty', 'Massage Therapist', 'Personal Trainer', 'Celebrity/Fan', 'Photographer/Model', 'Landlord/Tenant', 'Interview Scenario'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Exhibition & Voyeurism */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">👁️ Exhibition & Voyeurism</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Exhibitionism', 'Voyeurism', 'Public Play', 'Semi-Public', 'Being Watched', 'Watching Others', 'Mirrors', 'Recording (Consensual)', 'Photos (Consensual)', 'Video Calls', 'Window Play', 'Car Play', 'Outdoor Sex', 'Risk of Discovery', 'Performing', 'Stripping'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Group & Sharing */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">👥 Group & Sharing</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Threesomes', 'Group Sex', 'Orgies', 'Gangbang', 'Cuckolding', 'Cuckqueaning', 'Hotwifing', 'Swinging', 'Swapping', 'Double Penetration', 'Spitroasting', 'Bukkake', 'Same Room Sex', 'Partner Sharing', 'Being Shared', 'Watching Partner'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Psychological */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">🧠 Psychological</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Humiliation', 'Degradation', 'Praise Kink', 'Begging', 'Name Calling', 'Dirty Talk', 'Mind Games', 'Blackmail Fantasy', 'Consensual Non-Consent', 'Fear Play', 'Crying', 'Comforting', 'Aftercare Heavy', 'Mindfuck', 'Gaslighting (Scene)', 'Total Power Exchange'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Physical Acts */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">💋 Physical Acts & Positions</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Oral (Giving)', 'Oral (Receiving)', 'Deep Throat', 'Face Sitting', 'Rimming', 'Anal', 'Pegging', 'Fisting', 'Fingering', 'Handjobs', 'Prostate Play', 'Rough Sex', 'Gentle Sex', 'Marathon Sex', 'Quickies', 'Morning Sex', 'Shower Sex', 'Bath Sex', 'Standing Sex', 'Against Wall', 'On Furniture', 'Floor Sex', '69', 'Cowgirl', 'Reverse Cowgirl', 'Doggy Style', 'Missionary', 'Spooning', 'Prone Bone', 'Lotus'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Toys & Tools */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">🎀 Toys & Tools</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Vibrators', 'Dildos', 'Butt Plugs', 'Anal Beads', 'Cock Rings', 'Nipple Clamps', 'Nipple Suckers', 'Pumps', 'Fucking Machines', 'Strapons', 'Double-Ended', 'Remote Control Toys', 'Wearable Toys', 'Sounds', 'Speculums', 'Chastity Devices'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Other Kinks */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-red-700 mb-2 border-b border-red-200 pb-1">✨ Other Kinks</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Breeding', 'Creampie', 'Cum Play', 'Facials', 'Body Worship', 'Massage', 'Oil/Lotion', 'Food Play', 'Wet & Messy', 'Squirting', 'Multiple Orgasms', 'Tantric', 'Mutual Masturbation', 'Phone Sex', 'Sexting', 'Long Distance Play', 'Teasing', 'Seduction', 'Corruption', 'Innocence', 'Experience Gap', 'Size Difference', 'Strength Difference', 'Free Use'].map(kink => (
+                <label key={kink} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-red-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.kinks || []).includes(kink)} onChange={(e) => {
+                    const current = data.behavior?.kinks || [];
+                    const updated = e.target.checked ? [...current, kink] : current.filter(k => k !== kink);
+                    update('behavior', 'kinks', updated);
+                  }} className="w-3 h-3 accent-red-600" />
+                  {kink}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* FETISHES SELECTION */}
+        <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
+          <h4 className="font-mono text-sm font-bold text-violet-800 mb-2">💜 Fetishes Selection</h4>
+          <p className="font-mono text-[10px] text-violet-600 mb-4">Select all fetishes that apply. Fetishes are specific attractions to objects, materials, body parts, or situations.</p>
+          
+          {/* Body Parts */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">🦶 Body Parts</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Feet', 'Toes', 'Legs', 'Thighs', 'Calves', 'Ankles', 'Hands', 'Fingers', 'Nails', 'Arms', 'Armpits', 'Neck', 'Shoulders', 'Back', 'Spine', 'Stomach', 'Navel', 'Hips', 'Butt', 'Breasts', 'Nipples', 'Chest', 'Collarbones', 'Lips', 'Mouth', 'Tongue', 'Ears', 'Hair', 'Eyes', 'Nose', 'Muscles', 'Veins'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Clothing & Fashion */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">👗 Clothing & Fashion</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Lingerie', 'Stockings', 'Pantyhose', 'Garter Belts', 'Corsets', 'High Heels', 'Boots', 'Uniforms', 'Suits', 'Dresses', 'Skirts', 'Jeans', 'Leggings', 'Yoga Pants', 'Swimwear', 'Underwear', 'Boxers', 'Briefs', 'Thongs', 'Glasses', 'Masks', 'Gloves', 'Hats', 'Jewelry', 'Watches', 'Chokers', 'Collars', 'Ties', 'Suspenders', 'Cross-Dressing', 'Gender-Bent Clothing', 'Cosplay'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Materials & Textures */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">🖤 Materials & Textures</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Leather', 'Latex', 'Rubber', 'PVC', 'Vinyl', 'Silk', 'Satin', 'Velvet', 'Lace', 'Mesh', 'Sheer Fabric', 'Fur', 'Feathers', 'Metal', 'Chains', 'Rope', 'Cotton', 'Denim', 'Spandex', 'Nylon', 'Wet Fabric', 'Tight Clothing', 'Loose Clothing'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Physical Attributes */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">💪 Physical Attributes</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Tall Partners', 'Short Partners', 'Muscular Build', 'Slim Build', 'Curvy/Thick', 'Plus Size', 'Petite', 'Body Hair', 'Hairless/Smooth', 'Tattoos', 'Piercings', 'Scars', 'Freckles', 'Tan Lines', 'Pale Skin', 'Dark Skin', 'Red Hair', 'Blonde Hair', 'Dark Hair', 'Gray/Silver Hair', 'Long Hair', 'Short Hair', 'Bald', 'Beards', 'Stubble', 'Clean Shaven', 'Pregnancy', 'Lactation', 'Sweat', 'Natural Scent'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Situations & Scenarios */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">🎬 Situations & Scenarios</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['First Time', 'Virginity', 'Innocence', 'Experience', 'Affairs', 'Forbidden', 'Secret Relationships', 'Taboo', 'Cheating Fantasy', 'Revenge Sex', 'Make-Up Sex', 'Angry Sex', 'Hate Sex', 'Jealousy Sex', 'Competition', 'Bet/Wager', 'Dares', 'Truth or Dare', 'Spin the Bottle', 'Seven Minutes', 'Blind Date', 'One Night Stand', 'Friends to Lovers', 'Enemies to Lovers', 'Reunion', 'Long Distance', 'Vacation Sex', 'Hotel Rooms', 'Office Sex', 'Workplace', 'School Reunion', 'Wedding Night'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Sensory & Atmosphere */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">🕯️ Sensory & Atmosphere</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Candlelight', 'Fireplace', 'Rain/Storm', 'Music', 'Silence', 'Darkness', 'Dim Lighting', 'Bright Light', 'Mirrors', 'Windows', 'Nature Setting', 'Beach', 'Forest', 'Mountains', 'Water', 'Hot Tub', 'Pool', 'Sauna', 'Steam Room', 'Bubble Bath', 'Shower', 'Perfume/Cologne', 'Incense', 'Flowers', 'Chocolate', 'Wine', 'Champagne', 'Strawberries', 'Whipped Cream', 'Ice Cream'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Age & Experience Related */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">⏳ Age & Experience (Adults Only)</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Older Partners', 'Younger Partners (18+)', 'Same Age', 'Age Gap', 'MILF/DILF', 'Cougars/Cubs', 'Silver Fox', 'Maturity', 'Youthful Energy', 'Experience Gap', 'Teaching/Learning', 'Mentor/Protégé', 'Sugar Dynamics', 'Trophy Partner'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Voice & Sound */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">🎤 Voice & Sound</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Deep Voice', 'High Voice', 'Soft Voice', 'Commanding Voice', 'Accent', 'Foreign Language', 'Whispering', 'Moaning', 'Screaming', 'Gasping', 'Breathing', 'Grunting', 'Growling', 'Laughing', 'Talking Dirty', 'Praise', 'Begging Sounds', 'Crying Sounds'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* Other Fetishes */}
+          <div className="mb-4">
+            <h5 className="font-mono text-xs font-bold text-violet-700 mb-2 border-b border-violet-200 pb-1">✨ Other Fetishes</h5>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
+              {['Intelligence', 'Competence', 'Power/Status', 'Wealth', 'Danger', 'Bad Boy/Girl', 'Good Boy/Girl', 'Nerds/Geeks', 'Jocks/Athletes', 'Artists', 'Musicians', 'Writers', 'Doctors', 'Military', 'Police', 'Firefighters', 'Teachers', 'Librarians', 'Chefs', 'Bartenders', 'Models', 'Dancers', 'Performers', 'Royalty', 'Vampires', 'Werewolves', 'Angels', 'Demons', 'Aliens', 'Robots/AI', 'Tentacles', 'Monsters'].map(fetish => (
+                <label key={fetish} className="flex items-center gap-1 font-mono text-[10px] text-gray-700 cursor-pointer hover:bg-violet-100 p-1 rounded">
+                  <input type="checkbox" checked={(data.behavior?.fetishes || []).includes(fetish)} onChange={(e) => {
+                    const current = data.behavior?.fetishes || [];
+                    const updated = e.target.checked ? [...current, fetish] : current.filter(f => f !== fetish);
+                    update('behavior', 'fetishes', updated);
+                  }} className="w-3 h-3 accent-violet-600" />
+                  {fetish}
+                </label>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+  };
+
+  return sections[subtab] || sections[0];
+};
+
+// ============================================================================
 // GENERIC TAB CONTENT (Placeholder)
 // ============================================================================
 // ============================================================================
@@ -12356,6 +22563,266 @@ const GoalsContent = ({ data, updateData, subtab }) => {
 // ============================================================================
 
 const OccupationContent = ({ data, updateData, subtab }) => {
+  const [editingJobIndex, setEditingJobIndex] = React.useState(null);
+  
+  // ========== SISTEMA DE CÁLCULO SALARIAL ==========
+  
+  // Salário base anual por indústria (em USD para referência global)
+  const industrySalaryBase = {
+    // Technology - Alta remuneração
+    'tech-software': 95000, 'tech-saas': 100000, 'tech-ai': 130000, 'tech-cybersecurity': 110000,
+    'tech-data': 105000, 'tech-fintech': 115000, 'tech-gaming': 85000, 'tech-blockchain': 120000,
+    // Finance - Alta remuneração
+    'fin-banking': 90000, 'fin-investment': 150000, 'fin-pe-vc': 180000, 'fin-insurance': 75000,
+    'biz-consulting': 95000, 'biz-legal': 110000, 'biz-real-estate': 70000,
+    // Healthcare
+    'health-hospital': 80000, 'health-pharma': 95000, 'health-biotech': 100000, 'health-mental': 65000,
+    // Media & Creative
+    'media-film': 70000, 'media-tv': 65000, 'media-music': 55000, 'media-advertising': 65000,
+    'media-marketing': 60000, 'creative-design': 55000,
+    // Education
+    'edu-k12': 45000, 'edu-higher': 65000, 'edu-online': 55000,
+    // Retail & Hospitality
+    'retail-general': 35000, 'retail-ecommerce': 55000, 'hosp-restaurant': 32000, 'hosp-hotel': 38000,
+    // Manufacturing & Energy
+    'mfg-automotive': 65000, 'mfg-aerospace': 85000, 'energy-oil-gas': 95000, 'energy-renewable': 75000,
+    // Government & Non-Profit
+    'gov-federal': 70000, 'gov-military': 55000, 'npo-charity': 45000, 'npo-ngo': 50000,
+    // Other
+    'trade-construction': 55000, 'trans-logistics': 50000, 'ag-farming': 40000,
+    'other-security': 42000, 'other-adult': 60000, 'other-criminal': 80000, 'other-unknown': 50000
+  };
+
+  // Multiplicador por nível de senioridade
+  const seniorityMultiplier = {
+    'intern': 0.25, 'trainee': 0.35, 'entry': 0.45, 'associate': 0.55,
+    'junior': 0.60, 'mid': 0.85, 'senior': 1.15, 'staff': 1.45, 'specialist': 1.10, 'expert': 1.35,
+    'team-lead': 1.25, 'supervisor': 1.15, 'manager': 1.40, 'senior-manager': 1.65,
+    'director': 2.00, 'senior-director': 2.40, 'vp': 2.80, 'svp': 3.50, 'evp': 4.00,
+    'c-level': 4.50, 'ceo': 6.00, 'coo': 4.80, 'cfo': 5.00, 'cto': 5.20, 'cmo': 4.50,
+    'founder': 3.00, 'co-founder': 2.50, 'owner': 2.80, 'partner': 3.50,
+    'freelance-junior': 0.55, 'freelance-experienced': 0.90, 'freelance-expert': 1.30,
+    'contractor': 1.10, 'consultant': 1.40, 'na': 0.70
+  };
+
+  // Multiplicador por tipo de empresa
+  const companyTypeMultiplier = {
+    'startup-early': 0.75, 'startup-late': 0.90, 'scaleup': 1.05, 'sme-small': 0.80, 'sme-medium': 0.90,
+    'large-corp': 1.10, 'enterprise': 1.20, 'multinational': 1.30, 'public-company': 1.25, 'family-business': 0.85,
+    'agency': 0.85, 'consultancy': 1.15, 'law-firm': 1.30, 'big-four': 1.25, 'studio': 0.80,
+    'government': 0.90, 'military': 0.85, 'ngo': 0.70, 'university': 0.85, 'hospital': 1.00,
+    'solo-freelance': 0.90, 'own-business': 1.00, 'gig-platform': 0.60,
+    'criminal-org': 1.50, 'classified': 1.20
+  };
+
+  // Multiplicador por tamanho da empresa
+  const companySizeMultiplier = {
+    '1': 0.70, '2-10': 0.80, '11-50': 0.90, '51-200': 1.00,
+    '201-1000': 1.10, '1001-10000': 1.20, '10000+': 1.30
+  };
+
+  // Multiplicador por alcance global
+  const companyReachMultiplier = { 'local': 0.85, 'regional': 0.95, 'national': 1.00, 'global': 1.20 };
+
+  // Multiplicador por tempo na empresa
+  const tenureMultiplier = {
+    'less-3m': 0.95, '3-6m': 0.97, '6-12m': 1.00, '1-2y': 1.03, '2-3y': 1.06,
+    '3-5y': 1.10, '5-10y': 1.15, '10-20y': 1.20, '20y+': 1.25, 'founder': 1.00
+  };
+
+  // Multiplicador por horas trabalhadas
+  const hoursMultiplier = {
+    'less-10': 0.25, '10-20': 0.50, '20-30': 0.75, '30-40': 1.00, '40-50': 1.10,
+    '50-60': 1.15, '60-70': 1.18, '70+': 1.20, 'variable': 1.00
+  };
+
+  // Multiplicador por área funcional
+  const functionalAreaMultiplier = {
+    'Engineering': 1.15, 'Software Development': 1.20, 'Data Science': 1.25, 'Product Management': 1.15,
+    'Project Management': 1.00, 'Design/UX': 1.05, 'Marketing': 0.95, 'Sales': 1.10,
+    'Business Development': 1.05, 'Customer Success': 0.90, 'Operations': 0.95, 'Finance': 1.10,
+    'Accounting': 0.95, 'HR/People': 0.90, 'Legal': 1.20, 'Strategy': 1.15, 'Analytics': 1.10,
+    'Research': 1.05, 'QA/Testing': 0.95, 'DevOps': 1.15, 'IT/Infrastructure': 1.00,
+    'Supply Chain': 0.95, 'Manufacturing': 0.90, 'Admin/Assistant': 0.70, 'Communications': 0.85,
+    'Content/Writing': 0.80, 'Social Media': 0.75, 'Consulting': 1.15, 'General Management': 1.10,
+    'Executive Leadership': 1.50, 'Founder': 1.30, 'Creative Direction': 1.10, 'Teaching/Education': 0.75,
+    'Healthcare/Clinical': 1.05, 'Scientific Research': 1.00, 'Manual Labor': 0.60, 'Skilled Trades': 0.80,
+    'Food Service': 0.55, 'Retail Sales': 0.60, 'Security': 0.70, 'Military/Defense': 0.85,
+    'Religious/Ministry': 0.60, 'Freelance/Gig': 0.85, 'Other': 0.80
+  };
+
+  // Multiplicador por status de emprego
+  const employmentStatusMultiplier = {
+    'full-time': 1.00, 'part-time': 0.95, 'contract': 1.15, 'temporary': 0.90, 'seasonal': 0.85,
+    'probationary': 0.90, 'intern-paid': 0.30, 'intern-unpaid': 0.00, 'apprentice': 0.35, 'trainee': 0.40,
+    'freelancer': 1.10, 'consultant': 1.25, 'contractor': 1.15, 'gig-worker': 0.70,
+    'business-owner': 1.20, 'entrepreneur': 1.00, 'startup-founder': 0.80, 'solopreneur': 0.90,
+    'creator': 0.80, 'influencer': 0.90, 'artist-independent': 0.70,
+    'student-working': 0.50, 'semi-retired': 0.60, 'volunteer': 0.00,
+    'military': 0.85, 'criminal': 1.50, 'unknown': 0.80
+  };
+
+  // Multiplicador por gestão de pessoas
+  const managementMultiplier = {
+    'no': 1.00, 'informal': 1.03, '1-3': 1.08, '4-10': 1.15,
+    '11-25': 1.25, '26-50': 1.35, '50-100': 1.50, '100+': 1.70
+  };
+
+  // Função principal de cálculo salarial
+  const calculateSalary = (job) => {
+    if (!job.industry && !job.seniorityLevel) return null;
+
+    let baseSalary = industrySalaryBase[job.industry] || 50000;
+
+    const seniority = seniorityMultiplier[job.seniorityLevel] || 1.00;
+    const compType = companyTypeMultiplier[job.companyType] || 1.00;
+    const compSize = companySizeMultiplier[job.companySize] || 1.00;
+    const compReach = companyReachMultiplier[job.companyReach] || 1.00;
+    const tenure = tenureMultiplier[job.timeAtCompany] || 1.00;
+    const hours = hoursMultiplier[job.hoursPerWeek] || 1.00;
+    const empStatus = employmentStatusMultiplier[job.employmentStatus] || 1.00;
+    const management = managementMultiplier[job.managesPeople] || 1.00;
+
+    let funcAreaMult = 1.00;
+    if (job.functionalAreas && job.functionalAreas.length > 0) {
+      const areaMultipliers = job.functionalAreas.map(area => functionalAreaMultiplier[area] || 1.00);
+      funcAreaMult = areaMultipliers.reduce((a, b) => a + b, 0) / areaMultipliers.length;
+    }
+
+    const estimatedAnnual = baseSalary * seniority * compType * compSize * compReach * tenure * hours * empStatus * management * funcAreaMult;
+    const minSalary = estimatedAnnual * 0.85;
+    const maxSalary = estimatedAnnual * 1.15;
+
+    return {
+      annual: Math.round(estimatedAnnual),
+      monthly: Math.round(estimatedAnnual / 12),
+      range: { min: Math.round(minSalary), max: Math.round(maxSalary) },
+      factors: { base: baseSalary, seniority, compType, compSize, compReach, tenure, hours, empStatus, management, funcArea: funcAreaMult },
+      confidence: calculateConfidence(job)
+    };
+  };
+
+  const calculateConfidence = (job) => {
+    const fields = [job.industry, job.seniorityLevel, job.companyType, job.companySize, job.companyReach, 
+                    job.timeAtCompany, job.hoursPerWeek, job.employmentStatus, job.managesPeople, job.functionalAreas?.length > 0];
+    const filled = fields.filter(Boolean).length;
+    const percentage = (filled / fields.length) * 100;
+    if (percentage >= 80) return { level: 'high', label: 'Alta', color: 'emerald' };
+    if (percentage >= 50) return { level: 'medium', label: 'Média', color: 'yellow' };
+    return { level: 'low', label: 'Baixa', color: 'red' };
+  };
+
+  // Componente de exibição do salário estimado
+  const SalaryCalculator = ({ job }) => {
+    const estimate = calculateSalary(job);
+    const [showDetails, setShowDetails] = React.useState(false);
+    const [currency, setCurrency] = React.useState('USD');
+    const conversionRates = { USD: 1, BRL: 5.0, EUR: 0.92, GBP: 0.79 };
+    const convert = (value) => Math.round(value * conversionRates[currency]);
+    const symbols = { USD: '$', BRL: 'R$', EUR: '€', GBP: '£' };
+
+    if (!estimate) {
+      return (
+        <div className="border-2 border-dashed border-gray-300 rounded-sm p-4 bg-gray-50">
+          <div className="flex items-center gap-2 text-gray-400">
+            <span className="font-mono text-xs">💰 Preencha Indústria e Senioridade para ver estimativa salarial</span>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="border-2 border-emerald-300 rounded-sm p-4 bg-gradient-to-br from-emerald-50 to-teal-50">
+        <div className="flex items-center justify-between mb-3">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 flex items-center gap-2">
+            💰 Estimativa Salarial Automática
+            <span className={`px-2 py-0.5 rounded text-[9px] font-bold ${
+              estimate.confidence.level === 'high' ? 'bg-emerald-100 text-emerald-700' :
+              estimate.confidence.level === 'medium' ? 'bg-yellow-100 text-yellow-700' : 'bg-red-100 text-red-700'
+            }`}>Confiança {estimate.confidence.label}</span>
+          </h4>
+          <select value={currency} onChange={(e) => setCurrency(e.target.value)} className="bg-white border border-emerald-200 rounded px-2 py-1 font-mono text-[10px]">
+            <option value="USD">USD ($)</option>
+            <option value="BRL">BRL (R$)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="GBP">GBP (£)</option>
+          </select>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 mb-4">
+          <div className="bg-white rounded-sm p-3 border border-emerald-200">
+            <div className="font-mono text-[10px] text-gray-500 mb-1">Salário Anual Estimado</div>
+            <div className="font-mono text-xl font-bold text-emerald-700">{symbols[currency]}{convert(estimate.annual).toLocaleString()}</div>
+            <div className="font-mono text-[9px] text-gray-400">Range: {symbols[currency]}{convert(estimate.range.min).toLocaleString()} - {symbols[currency]}{convert(estimate.range.max).toLocaleString()}</div>
+          </div>
+          <div className="bg-white rounded-sm p-3 border border-emerald-200">
+            <div className="font-mono text-[10px] text-gray-500 mb-1">Salário Mensal Estimado</div>
+            <div className="font-mono text-xl font-bold text-teal-700">{symbols[currency]}{convert(estimate.monthly).toLocaleString()}</div>
+          </div>
+        </div>
+
+        <button onClick={() => setShowDetails(!showDetails)} className="w-full py-2 bg-emerald-100 hover:bg-emerald-200 rounded text-emerald-700 font-mono text-[10px] flex items-center justify-center gap-1">
+          {showDetails ? '▲ Ocultar' : '▼ Ver'} Fatores do Cálculo
+        </button>
+
+        {showDetails && (
+          <div className="mt-3 pt-3 border-t border-emerald-200">
+            <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+              {[
+                { label: 'Base', value: `$${estimate.factors.base.toLocaleString()}` },
+                { label: 'Senioridade', mult: estimate.factors.seniority },
+                { label: 'Tipo Empresa', mult: estimate.factors.compType },
+                { label: 'Tamanho', mult: estimate.factors.compSize },
+                { label: 'Alcance', mult: estimate.factors.compReach },
+                { label: 'Tempo', mult: estimate.factors.tenure },
+                { label: 'Horas', mult: estimate.factors.hours },
+                { label: 'Status', mult: estimate.factors.empStatus },
+                { label: 'Gestão', mult: estimate.factors.management },
+                { label: 'Área', mult: estimate.factors.funcArea },
+              ].map((f, i) => (
+                <div key={i} className="bg-white/50 rounded p-2 border border-emerald-100 text-center">
+                  <div className="font-mono text-[8px] text-gray-500">{f.label}</div>
+                  <div className={`font-mono text-xs font-bold ${f.mult && f.mult > 1 ? 'text-emerald-600' : f.mult && f.mult < 1 ? 'text-red-500' : 'text-gray-700'}`}>
+                    {f.value || `×${f.mult?.toFixed(2)}`}
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="mt-2 p-2 bg-yellow-50 border border-yellow-200 rounded">
+              <p className="font-mono text-[9px] text-yellow-700">⚠️ Estimativa baseada em médias de mercado. Valores reais variam por região, empresa e negociação.</p>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+  
+  // Template para novo emprego
+  const emptyJob = {
+    id: Date.now(),
+    isPrimary: false,
+    employmentStatus: '',
+    workArrangement: '',
+    jobTitle: '',
+    seniorityLevel: '',
+    jobDescription: '',
+    timeInRole: '',
+    timeAtCompany: '',
+    managesPeople: '',
+    hoursPerWeek: '',
+    industry: '',
+    functionalAreas: [],
+    companyName: '',
+    companyType: '',
+    companySize: '',
+    companyReach: '',
+    companyAge: '',
+    companyReputation: '',
+    companyCulture: [],
+    estimatedSalary: null,
+    salaryOverride: ''
+  };
+
   const update = (section, field, value) => {
     updateData('occupation', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -12369,660 +22836,680 @@ const OccupationContent = ({ data, updateData, subtab }) => {
     }
   };
 
-  const sections = {
-    // ========== SUBTAB 0: CURRENT WORK ==========
-    0: (
-      <div className="space-y-6">
-        <div className="bg-emerald-50 border border-emerald-200 rounded-sm p-4">
-          <h3 className="font-mono text-sm font-bold text-emerald-900 mb-2">💼 TRABALHO ATUAL</h3>
-          <p className="font-mono text-xs text-emerald-800 leading-relaxed">Situação profissional atual, cargo, empresa e estilo de trabalho.</p>
-        </div>
+  // Funções para gerenciar múltiplos empregos
+  const addJob = () => {
+    const jobs = data.jobs || [];
+    const newJob = { ...emptyJob, id: Date.now(), isPrimary: jobs.length === 0 };
+    updateData('occupation', { ...data, jobs: [...jobs, newJob] });
+    setEditingJobIndex(jobs.length);
+  };
 
-        {/* EMPLOYMENT STATUS */}
-        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
-          <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">📊 Status de Emprego</h4>
+  const updateJob = (index, field, value) => {
+    const jobs = [...(data.jobs || [])];
+    jobs[index] = { ...jobs[index], [field]: value };
+    updateData('occupation', { ...data, jobs });
+  };
+
+  const toggleJobArrayItem = (index, field, item, maxItems = 10) => {
+    const jobs = [...(data.jobs || [])];
+    const current = jobs[index]?.[field] || [];
+    if (current.includes(item)) {
+      jobs[index] = { ...jobs[index], [field]: current.filter(i => i !== item) };
+    } else if (current.length < maxItems) {
+      jobs[index] = { ...jobs[index], [field]: [...current, item] };
+    }
+    updateData('occupation', { ...data, jobs });
+  };
+
+  const removeJob = (index) => {
+    const jobs = [...(data.jobs || [])];
+    jobs.splice(index, 1);
+    // Se removeu o emprego principal, marcar o primeiro como principal
+    if (jobs.length > 0 && !jobs.some(j => j.isPrimary)) {
+      jobs[0].isPrimary = true;
+    }
+    updateData('occupation', { ...data, jobs });
+    setEditingJobIndex(null);
+  };
+
+  const setPrimaryJob = (index) => {
+    const jobs = (data.jobs || []).map((job, i) => ({
+      ...job,
+      isPrimary: i === index
+    }));
+    updateData('occupation', { ...data, jobs });
+  };
+
+  const getJobSummary = (job) => {
+    const title = job.jobTitle || 'Sem título';
+    const company = job.companyName || 'Empresa não informada';
+    const status = job.employmentStatus ? job.employmentStatus.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Status não definido';
+    return { title, company, status };
+  };
+
+  // Componente do formulário de emprego
+  const JobForm = ({ job, index }) => (
+    <div className="space-y-6">
+      {/* Header do formulário */}
+      <div className="flex items-center justify-between bg-emerald-100 border border-emerald-300 rounded-sm p-3">
+        <div className="flex items-center gap-3">
+          <button onClick={() => setEditingJobIndex(null)} className="text-emerald-700 hover:text-emerald-900">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <div>
+            <h3 className="font-mono text-sm font-bold text-emerald-900">
+              {job.isPrimary ? '⭐ ' : ''}Editando Emprego #{index + 1}
+            </h3>
+            <p className="font-mono text-[10px] text-emerald-700">{job.jobTitle || 'Novo emprego'} {job.companyName ? `@ ${job.companyName}` : ''}</p>
+          </div>
+        </div>
+        <div className="flex gap-2">
+          {!job.isPrimary && (
+            <button onClick={() => setPrimaryJob(index)} className="px-2 py-1 bg-yellow-500 text-white font-mono text-[10px] rounded hover:bg-yellow-600">
+              ⭐ Tornar Principal
+            </button>
+          )}
+          <button onClick={() => removeJob(index)} className="px-2 py-1 bg-red-500 text-white font-mono text-[10px] rounded hover:bg-red-600">
+            🗑️ Remover
+          </button>
+        </div>
+      </div>
+
+      {/* EMPLOYMENT STATUS */}
+      <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+        <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">📊 Status de Emprego</h4>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
+            <select value={job.employmentStatus || ''} onChange={(e) => updateJob(index, 'employmentStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <option value="">-- Selecione --</option>
+              <optgroup label="Employed">
+                <option value="full-time">Full-Time Employee — Tempo integral CLT</option>
+                <option value="part-time">Part-Time Employee — Meio período</option>
+                <option value="contract">Contract Worker — Por contrato/projeto</option>
+                <option value="temporary">Temporary — Trabalho temporário</option>
+                <option value="seasonal">Seasonal — Trabalho sazonal</option>
+                <option value="probationary">Probationary — Em período de experiência</option>
+                <option value="intern-paid">Paid Intern — Estagiário remunerado</option>
+                <option value="intern-unpaid">Unpaid Intern — Estagiário não remunerado</option>
+                <option value="apprentice">Apprentice — Aprendiz</option>
+                <option value="trainee">Trainee — Programa de trainee</option>
+              </optgroup>
+              <optgroup label="Self-Employed">
+                <option value="freelancer">Freelancer — Autônomo por projetos</option>
+                <option value="consultant">Independent Consultant — Consultor independente</option>
+                <option value="contractor">Independent Contractor — Prestador de serviços</option>
+                <option value="gig-worker">Gig Worker — Trabalho por demanda (Uber, etc)</option>
+                <option value="business-owner">Business Owner — Dono de empresa</option>
+                <option value="entrepreneur">Entrepreneur — Empreendedor ativo</option>
+                <option value="startup-founder">Startup Founder — Fundador de startup</option>
+                <option value="solopreneur">Solopreneur — Empreendedor solo</option>
+                <option value="creator">Content Creator — Criador de conteúdo</option>
+                <option value="influencer">Influencer — Influenciador digital</option>
+                <option value="artist-independent">Independent Artist — Artista independente</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="student-working">Working Student — Estudante que trabalha</option>
+                <option value="semi-retired">Semi-Retired — Semi-aposentado</option>
+                <option value="volunteer">Volunteer — Voluntário</option>
+                <option value="military">Military Service — Serviço militar</option>
+                <option value="criminal">Criminal Activities — Atividades ilegais</option>
+                <option value="unknown">Unknown/Mysterious — Fonte de renda desconhecida</option>
+              </optgroup>
+            </select>
+          </div>
+          <div>
+            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Regime de Trabalho</label>
+            <select value={job.workArrangement || ''} onChange={(e) => updateJob(index, 'workArrangement', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <option value="">-- Selecione --</option>
+              <option value="office-full">100% Office — Presencial todos os dias</option>
+              <option value="office-mostly">Mostly Office — Presencial maioria dos dias</option>
+              <option value="hybrid-balanced">Hybrid Balanced — Metade escritório, metade casa</option>
+              <option value="hybrid-mostly-remote">Hybrid Mostly Remote — Maioria remoto</option>
+              <option value="remote-full">100% Remote — Totalmente remoto</option>
+              <option value="remote-async">Remote Async — Remoto assíncrono</option>
+              <option value="digital-nomad">Digital Nomad — Trabalha viajando</option>
+              <option value="field-work">Field Work — Trabalho de campo</option>
+              <option value="traveling">Traveling — Viaja constantemente</option>
+              <option value="on-site-client">On-Site at Client — No cliente</option>
+              <option value="multiple-locations">Multiple Locations — Vários locais</option>
+              <option value="shift-work">Shift Work — Trabalho por turnos</option>
+              <option value="on-call">On-Call — De sobreaviso</option>
+              <option value="flexible">Fully Flexible — Totalmente flexível</option>
+              <option value="na">N/A — Não se aplica</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {/* JOB TITLE & ROLE */}
+      <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+        <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">👔 Cargo & Função</h4>
+        
+        <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
-              <select value={data.current?.employmentStatus || ''} onChange={(e) => update('current', 'employmentStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Cargo/Título</label>
+              <input type="text" value={job.jobTitle || ''} onChange={(e) => updateJob(index, 'jobTitle', e.target.value)} placeholder="Ex: Software Engineer, Marketing Manager..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nível de Senioridade</label>
+              <select value={job.seniorityLevel || ''} onChange={(e) => updateJob(index, 'seniorityLevel', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
                 <option value="">-- Selecione --</option>
-                <optgroup label="Employed">
-                  <option value="full-time">Full-Time Employee — Tempo integral CLT</option>
-                  <option value="part-time">Part-Time Employee — Meio período</option>
-                  <option value="contract">Contract Worker — Por contrato/projeto</option>
-                  <option value="temporary">Temporary — Trabalho temporário</option>
-                  <option value="seasonal">Seasonal — Trabalho sazonal</option>
-                  <option value="probationary">Probationary — Em período de experiência</option>
-                  <option value="intern-paid">Paid Intern — Estagiário remunerado</option>
-                  <option value="intern-unpaid">Unpaid Intern — Estagiário não remunerado</option>
-                  <option value="apprentice">Apprentice — Aprendiz</option>
-                  <option value="trainee">Trainee — Programa de trainee</option>
+                <optgroup label="Entry Level">
+                  <option value="intern">Intern/Estagiário</option>
+                  <option value="trainee">Trainee</option>
+                  <option value="entry">Entry Level/Júnior</option>
+                  <option value="associate">Associate</option>
                 </optgroup>
-                <optgroup label="Self-Employed">
-                  <option value="freelancer">Freelancer — Autônomo por projetos</option>
-                  <option value="consultant">Independent Consultant — Consultor independente</option>
-                  <option value="contractor">Independent Contractor — Prestador de serviços</option>
-                  <option value="gig-worker">Gig Worker — Trabalho por demanda (Uber, etc)</option>
-                  <option value="business-owner">Business Owner — Dono de empresa</option>
-                  <option value="entrepreneur">Entrepreneur — Empreendedor ativo</option>
-                  <option value="startup-founder">Startup Founder — Fundador de startup</option>
-                  <option value="solopreneur">Solopreneur — Empreendedor solo</option>
-                  <option value="creator">Content Creator — Criador de conteúdo</option>
-                  <option value="influencer">Influencer — Influenciador digital</option>
-                  <option value="artist-independent">Independent Artist — Artista independente</option>
+                <optgroup label="Individual Contributor">
+                  <option value="junior">Junior (1-2 years)</option>
+                  <option value="mid">Mid-Level (3-5 years)</option>
+                  <option value="senior">Senior (5-8 years)</option>
+                  <option value="staff">Staff/Principal (8+ years)</option>
+                  <option value="specialist">Specialist</option>
+                  <option value="expert">Expert/Authority</option>
                 </optgroup>
-                <optgroup label="Not Working">
-                  <option value="unemployed-seeking">Unemployed - Seeking — Desempregado buscando</option>
-                  <option value="unemployed-not-seeking">Unemployed - Not Seeking — Desempregado sem buscar</option>
-                  <option value="laid-off">Recently Laid Off — Demitido recentemente</option>
-                  <option value="between-jobs">Between Jobs — Entre empregos</option>
-                  <option value="career-break">Career Break — Pausa na carreira</option>
-                  <option value="sabbatical">Sabbatical — Ano sabático</option>
-                  <option value="parental-leave">Parental Leave — Licença parental</option>
-                  <option value="medical-leave">Medical Leave — Licença médica</option>
+                <optgroup label="Management">
+                  <option value="team-lead">Team Lead</option>
+                  <option value="supervisor">Supervisor</option>
+                  <option value="manager">Manager</option>
+                  <option value="senior-manager">Senior Manager</option>
+                  <option value="director">Director</option>
+                  <option value="senior-director">Senior Director</option>
+                  <option value="vp">Vice President</option>
+                  <option value="svp">Senior Vice President</option>
+                  <option value="evp">Executive Vice President</option>
+                </optgroup>
+                <optgroup label="Executive">
+                  <option value="c-level">C-Level Executive</option>
+                  <option value="ceo">CEO/Chief Executive Officer</option>
+                  <option value="coo">COO/Chief Operating Officer</option>
+                  <option value="cfo">CFO/Chief Financial Officer</option>
+                  <option value="cto">CTO/Chief Technology Officer</option>
+                  <option value="cmo">CMO/Chief Marketing Officer</option>
+                  <option value="founder">Founder</option>
+                  <option value="co-founder">Co-Founder</option>
+                  <option value="owner">Owner/Proprietário</option>
+                  <option value="partner">Partner</option>
                 </optgroup>
                 <optgroup label="Other">
-                  <option value="student">Student — Estudante em tempo integral</option>
-                  <option value="student-working">Working Student — Estudante que trabalha</option>
-                  <option value="retired">Retired — Aposentado</option>
-                  <option value="semi-retired">Semi-Retired — Semi-aposentado</option>
-                  <option value="homemaker">Homemaker — Cuida do lar</option>
-                  <option value="caregiver">Full-Time Caregiver — Cuidador</option>
-                  <option value="volunteer">Full-Time Volunteer — Voluntário</option>
-                  <option value="military">Military Service — Serviço militar</option>
-                  <option value="trust-fund">Trust Fund/Inherited Wealth — Vive de herança</option>
-                  <option value="disability">On Disability — Afastado por invalidez</option>
-                  <option value="criminal">Criminal Activities — Atividades ilegais</option>
-                  <option value="unknown">Unknown/Mysterious — Fonte de renda desconhecida</option>
+                  <option value="freelance-junior">Freelance - Junior</option>
+                  <option value="freelance-experienced">Freelance - Experienced</option>
+                  <option value="freelance-expert">Freelance - Expert</option>
+                  <option value="contractor">Contractor</option>
+                  <option value="consultant">Consultant</option>
+                  <option value="na">N/A</option>
                 </optgroup>
               </select>
             </div>
+          </div>
+
+          <div>
+            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição do Trabalho</label>
+            <textarea value={job.jobDescription || ''} onChange={(e) => updateJob(index, 'jobDescription', e.target.value)} placeholder="O que faz no dia-a-dia? Responsabilidades principais..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Regime de Trabalho</label>
-              <select value={data.current?.workArrangement || ''} onChange={(e) => update('current', 'workArrangement', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tempo no Cargo</label>
+              <select value={job.timeInRole || ''} onChange={(e) => updateJob(index, 'timeInRole', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
                 <option value="">-- Selecione --</option>
-                <option value="office-full">100% Office — Presencial todos os dias</option>
-                <option value="office-mostly">Mostly Office — Presencial maioria dos dias</option>
-                <option value="hybrid-balanced">Hybrid Balanced — Metade escritório, metade casa</option>
-                <option value="hybrid-mostly-remote">Hybrid Mostly Remote — Maioria remoto</option>
-                <option value="remote-full">100% Remote — Totalmente remoto</option>
-                <option value="remote-async">Remote Async — Remoto assíncrono</option>
-                <option value="digital-nomad">Digital Nomad — Trabalha viajando</option>
-                <option value="field-work">Field Work — Trabalho de campo</option>
-                <option value="traveling">Traveling — Viaja constantemente</option>
-                <option value="on-site-client">On-Site at Client — No cliente</option>
-                <option value="multiple-locations">Multiple Locations — Vários locais</option>
-                <option value="shift-work">Shift Work — Trabalho por turnos</option>
-                <option value="on-call">On-Call — De sobreaviso</option>
-                <option value="flexible">Fully Flexible — Totalmente flexível</option>
-                <option value="na">N/A — Não se aplica</option>
+                <option value="less-3m">Menos de 3 meses</option>
+                <option value="3-6m">3-6 meses</option>
+                <option value="6-12m">6-12 meses</option>
+                <option value="1-2y">1-2 anos</option>
+                <option value="2-3y">2-3 anos</option>
+                <option value="3-5y">3-5 anos</option>
+                <option value="5-10y">5-10 anos</option>
+                <option value="10-20y">10-20 anos</option>
+                <option value="20y+">20+ anos</option>
               </select>
             </div>
-          </div>
-        </div>
-
-        {/* JOB TITLE & ROLE */}
-        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
-          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">👔 Cargo & Função</h4>
-          
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Cargo/Título</label>
-                <input type="text" value={data.current?.jobTitle || ''} onChange={(e) => update('current', 'jobTitle', e.target.value)} placeholder="Ex: Software Engineer, Marketing Manager..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nível de Senioridade</label>
-                <select value={data.current?.seniorityLevel || ''} onChange={(e) => update('current', 'seniorityLevel', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <optgroup label="Entry Level">
-                    <option value="intern">Intern/Estagiário</option>
-                    <option value="trainee">Trainee</option>
-                    <option value="entry">Entry Level/Júnior</option>
-                    <option value="associate">Associate</option>
-                  </optgroup>
-                  <optgroup label="Individual Contributor">
-                    <option value="junior">Junior (1-2 years)</option>
-                    <option value="mid">Mid-Level (3-5 years)</option>
-                    <option value="senior">Senior (5-8 years)</option>
-                    <option value="staff">Staff/Principal (8+ years)</option>
-                    <option value="specialist">Specialist</option>
-                    <option value="expert">Expert/Authority</option>
-                  </optgroup>
-                  <optgroup label="Management">
-                    <option value="team-lead">Team Lead</option>
-                    <option value="supervisor">Supervisor</option>
-                    <option value="manager">Manager</option>
-                    <option value="senior-manager">Senior Manager</option>
-                    <option value="director">Director</option>
-                    <option value="senior-director">Senior Director</option>
-                    <option value="vp">Vice President</option>
-                    <option value="svp">Senior Vice President</option>
-                    <option value="evp">Executive Vice President</option>
-                  </optgroup>
-                  <optgroup label="Executive">
-                    <option value="c-level">C-Level Executive</option>
-                    <option value="ceo">CEO/Chief Executive Officer</option>
-                    <option value="coo">COO/Chief Operating Officer</option>
-                    <option value="cfo">CFO/Chief Financial Officer</option>
-                    <option value="cto">CTO/Chief Technology Officer</option>
-                    <option value="cmo">CMO/Chief Marketing Officer</option>
-                    <option value="chro">CHRO/Chief HR Officer</option>
-                    <option value="cio">CIO/Chief Information Officer</option>
-                    <option value="cpo">CPO/Chief Product Officer</option>
-                    <option value="founder">Founder</option>
-                    <option value="co-founder">Co-Founder</option>
-                    <option value="owner">Owner/Proprietário</option>
-                    <option value="partner">Partner</option>
-                    <option value="board-member">Board Member</option>
-                  </optgroup>
-                  <optgroup label="Other">
-                    <option value="freelance-junior">Freelance - Junior</option>
-                    <option value="freelance-experienced">Freelance - Experienced</option>
-                    <option value="freelance-expert">Freelance - Expert</option>
-                    <option value="contractor">Contractor</option>
-                    <option value="consultant">Consultant</option>
-                    <option value="advisor">Advisor</option>
-                    <option value="na">N/A</option>
-                  </optgroup>
-                </select>
-              </div>
-            </div>
-
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição do Trabalho</label>
-              <textarea value={data.current?.jobDescription || ''} onChange={(e) => update('current', 'jobDescription', e.target.value)} placeholder="O que faz no dia-a-dia? Responsabilidades principais..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tempo no Cargo</label>
-                <select value={data.current?.timeInRole || ''} onChange={(e) => update('current', 'timeInRole', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="less-3m">Menos de 3 meses</option>
-                  <option value="3-6m">3-6 meses</option>
-                  <option value="6-12m">6-12 meses</option>
-                  <option value="1-2y">1-2 anos</option>
-                  <option value="2-3y">2-3 anos</option>
-                  <option value="3-5y">3-5 anos</option>
-                  <option value="5-10y">5-10 anos</option>
-                  <option value="10-20y">10-20 anos</option>
-                  <option value="20y+">20+ anos</option>
-                  <option value="entire-career">Carreira inteira</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tempo na Empresa</label>
-                <select value={data.current?.timeAtCompany || ''} onChange={(e) => update('current', 'timeAtCompany', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="less-3m">Menos de 3 meses</option>
-                  <option value="3-6m">3-6 meses</option>
-                  <option value="6-12m">6-12 meses</option>
-                  <option value="1-2y">1-2 anos</option>
-                  <option value="2-3y">2-3 anos</option>
-                  <option value="3-5y">3-5 anos</option>
-                  <option value="5-10y">5-10 anos</option>
-                  <option value="10-20y">10-20 anos</option>
-                  <option value="20y+">20+ anos</option>
-                  <option value="founder">Desde a fundação</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Gerencia Pessoas?</label>
-                <select value={data.current?.managesPeople || ''} onChange={(e) => update('current', 'managesPeople', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="no">Não — Contribuidor individual</option>
-                  <option value="informal">Informal — Mentoria, sem cargo</option>
-                  <option value="1-3">1-3 pessoas</option>
-                  <option value="4-10">4-10 pessoas</option>
-                  <option value="11-25">11-25 pessoas</option>
-                  <option value="26-50">26-50 pessoas</option>
-                  <option value="50-100">50-100 pessoas</option>
-                  <option value="100-500">100-500 pessoas</option>
-                  <option value="500+">500+ pessoas</option>
-                  <option value="entire-org">Organização inteira</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Horas por Semana</label>
-                <select value={data.current?.hoursPerWeek || ''} onChange={(e) => update('current', 'hoursPerWeek', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="less-10">Menos de 10h</option>
-                  <option value="10-20">10-20h (part-time)</option>
-                  <option value="20-30">20-30h</option>
-                  <option value="30-40">30-40h (padrão)</option>
-                  <option value="40-50">40-50h</option>
-                  <option value="50-60">50-60h</option>
-                  <option value="60-70">60-70h</option>
-                  <option value="70-80">70-80h</option>
-                  <option value="80+">80+h (workaholic)</option>
-                  <option value="variable">Variável</option>
-                  <option value="project-based">Por projeto</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* INDUSTRY */}
-        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
-          <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🏭 Indústria & Setor</h4>
-          
-          <div className="space-y-4">
-            <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Indústria Principal</label>
-              <select value={data.current?.industry || ''} onChange={(e) => update('current', 'industry', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tempo na Empresa</label>
+              <select value={job.timeAtCompany || ''} onChange={(e) => updateJob(index, 'timeAtCompany', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
                 <option value="">-- Selecione --</option>
-                <optgroup label="Technology">
-                  <option value="tech-software">Software Development</option>
-                  <option value="tech-saas">SaaS / Cloud Services</option>
-                  <option value="tech-ai">AI / Machine Learning</option>
-                  <option value="tech-cybersecurity">Cybersecurity</option>
-                  <option value="tech-data">Data / Analytics</option>
-                  <option value="tech-hardware">Hardware / Electronics</option>
-                  <option value="tech-semiconductor">Semiconductors</option>
-                  <option value="tech-telecom">Telecommunications</option>
-                  <option value="tech-it-services">IT Services / Consulting</option>
-                  <option value="tech-gaming">Gaming / Video Games</option>
-                  <option value="tech-fintech">Fintech</option>
-                  <option value="tech-edtech">EdTech</option>
-                  <option value="tech-healthtech">HealthTech / MedTech</option>
-                  <option value="tech-proptech">PropTech / Real Estate Tech</option>
-                  <option value="tech-agtech">AgTech / FoodTech</option>
-                  <option value="tech-cleantech">CleanTech / GreenTech</option>
-                  <option value="tech-blockchain">Blockchain / Crypto / Web3</option>
-                  <option value="tech-ar-vr">AR / VR / Metaverse</option>
-                  <option value="tech-robotics">Robotics / Automation</option>
-                  <option value="tech-iot">IoT / Connected Devices</option>
-                  <option value="tech-space">Space Tech / Aerospace</option>
-                </optgroup>
-                <optgroup label="Finance & Business">
-                  <option value="fin-banking">Banking</option>
-                  <option value="fin-investment">Investment Banking</option>
-                  <option value="fin-asset-mgmt">Asset Management</option>
-                  <option value="fin-hedge-fund">Hedge Funds</option>
-                  <option value="fin-pe-vc">Private Equity / Venture Capital</option>
-                  <option value="fin-insurance">Insurance</option>
-                  <option value="fin-accounting">Accounting / Audit</option>
-                  <option value="fin-tax">Tax Services</option>
-                  <option value="fin-wealth">Wealth Management</option>
-                  <option value="fin-credit">Credit / Lending</option>
-                  <option value="fin-payments">Payments / Processing</option>
-                  <option value="biz-consulting">Management Consulting</option>
-                  <option value="biz-strategy">Strategy Consulting</option>
-                  <option value="biz-hr-consulting">HR Consulting</option>
-                  <option value="biz-legal">Legal Services / Law</option>
-                  <option value="biz-real-estate">Real Estate</option>
-                  <option value="biz-recruitment">Recruitment / Staffing</option>
-                </optgroup>
-                <optgroup label="Healthcare & Life Sciences">
-                  <option value="health-hospital">Hospitals / Health Systems</option>
-                  <option value="health-clinic">Clinics / Medical Practice</option>
-                  <option value="health-pharma">Pharmaceuticals</option>
-                  <option value="health-biotech">Biotechnology</option>
-                  <option value="health-medical-devices">Medical Devices</option>
-                  <option value="health-diagnostics">Diagnostics / Labs</option>
-                  <option value="health-dental">Dental</option>
-                  <option value="health-mental">Mental Health</option>
-                  <option value="health-veterinary">Veterinary</option>
-                  <option value="health-eldercare">Elder Care / Senior Living</option>
-                  <option value="health-fitness">Fitness / Wellness</option>
-                  <option value="health-alternative">Alternative Medicine</option>
-                  <option value="health-insurance">Health Insurance</option>
-                </optgroup>
-                <optgroup label="Education & Research">
-                  <option value="edu-k12">K-12 Education</option>
-                  <option value="edu-higher">Higher Education</option>
-                  <option value="edu-vocational">Vocational Training</option>
-                  <option value="edu-online">Online Education</option>
-                  <option value="edu-tutoring">Tutoring / Test Prep</option>
-                  <option value="edu-corporate">Corporate Training</option>
-                  <option value="edu-early-childhood">Early Childhood Education</option>
-                  <option value="edu-special-needs">Special Education</option>
-                  <option value="research-academic">Academic Research</option>
-                  <option value="research-think-tank">Think Tanks / Policy Research</option>
-                  <option value="research-market">Market Research</option>
-                </optgroup>
-                <optgroup label="Media & Entertainment">
-                  <option value="media-film">Film / Cinema</option>
-                  <option value="media-tv">Television / Streaming</option>
-                  <option value="media-music">Music Industry</option>
-                  <option value="media-publishing">Publishing / Books</option>
-                  <option value="media-news">News / Journalism</option>
-                  <option value="media-advertising">Advertising</option>
-                  <option value="media-pr">Public Relations</option>
-                  <option value="media-marketing">Marketing / Digital Marketing</option>
-                  <option value="media-social">Social Media</option>
-                  <option value="media-events">Events / Live Entertainment</option>
-                  <option value="media-sports">Sports / Athletics</option>
-                  <option value="media-esports">Esports</option>
-                  <option value="media-podcast">Podcasting</option>
-                  <option value="media-influencer">Influencer / Creator Economy</option>
-                </optgroup>
-                <optgroup label="Creative & Design">
-                  <option value="creative-design">Graphic Design</option>
-                  <option value="creative-ux">UX/UI Design</option>
-                  <option value="creative-architecture">Architecture</option>
-                  <option value="creative-interior">Interior Design</option>
-                  <option value="creative-fashion">Fashion / Apparel Design</option>
-                  <option value="creative-photography">Photography</option>
-                  <option value="creative-video">Videography / Production</option>
-                  <option value="creative-animation">Animation / VFX</option>
-                  <option value="creative-art">Fine Arts</option>
-                  <option value="creative-crafts">Crafts / Artisanal</option>
-                  <option value="creative-writing">Writing / Copywriting</option>
-                  <option value="creative-branding">Branding / Identity</option>
-                </optgroup>
-                <optgroup label="Retail & Consumer">
-                  <option value="retail-general">General Retail</option>
-                  <option value="retail-ecommerce">E-commerce</option>
-                  <option value="retail-luxury">Luxury Goods</option>
-                  <option value="retail-fashion">Fashion Retail</option>
-                  <option value="retail-grocery">Grocery / Supermarket</option>
-                  <option value="retail-electronics">Electronics Retail</option>
-                  <option value="retail-home">Home Goods / Furniture</option>
-                  <option value="retail-automotive">Automotive Sales</option>
-                  <option value="retail-pharmacy">Pharmacy / Drugstore</option>
-                  <option value="consumer-goods">Consumer Goods / CPG</option>
-                  <option value="consumer-beauty">Beauty / Cosmetics</option>
-                  <option value="consumer-food">Food & Beverage</option>
-                </optgroup>
-                <optgroup label="Food & Hospitality">
-                  <option value="hosp-restaurant">Restaurants</option>
-                  <option value="hosp-fast-food">Fast Food / QSR</option>
-                  <option value="hosp-fine-dining">Fine Dining</option>
-                  <option value="hosp-cafe">Cafes / Coffee Shops</option>
-                  <option value="hosp-bar">Bars / Nightclubs</option>
-                  <option value="hosp-catering">Catering</option>
-                  <option value="hosp-hotel">Hotels / Lodging</option>
-                  <option value="hosp-resort">Resorts</option>
-                  <option value="hosp-travel">Travel / Tourism</option>
-                  <option value="hosp-airlines">Airlines / Aviation</option>
-                  <option value="hosp-cruise">Cruise Lines</option>
-                  <option value="hosp-casino">Casinos / Gaming</option>
-                </optgroup>
-                <optgroup label="Manufacturing & Industrial">
-                  <option value="mfg-automotive">Automotive Manufacturing</option>
-                  <option value="mfg-aerospace">Aerospace / Defense</option>
-                  <option value="mfg-electronics">Electronics Manufacturing</option>
-                  <option value="mfg-machinery">Machinery / Equipment</option>
-                  <option value="mfg-chemicals">Chemicals</option>
-                  <option value="mfg-plastics">Plastics / Packaging</option>
-                  <option value="mfg-textiles">Textiles / Apparel Manufacturing</option>
-                  <option value="mfg-food">Food Manufacturing</option>
-                  <option value="mfg-pharma">Pharmaceutical Manufacturing</option>
-                  <option value="mfg-metals">Metals / Steel</option>
-                  <option value="mfg-furniture">Furniture Manufacturing</option>
-                  <option value="mfg-3d-printing">3D Printing / Additive</option>
-                </optgroup>
-                <optgroup label="Energy & Utilities">
-                  <option value="energy-oil-gas">Oil & Gas</option>
-                  <option value="energy-renewable">Renewable Energy</option>
-                  <option value="energy-solar">Solar</option>
-                  <option value="energy-wind">Wind</option>
-                  <option value="energy-nuclear">Nuclear</option>
-                  <option value="energy-utilities">Utilities</option>
-                  <option value="energy-electric">Electric Power</option>
-                  <option value="energy-water">Water / Wastewater</option>
-                  <option value="energy-mining">Mining</option>
-                </optgroup>
-                <optgroup label="Construction & Real Estate">
-                  <option value="const-residential">Residential Construction</option>
-                  <option value="const-commercial">Commercial Construction</option>
-                  <option value="const-infrastructure">Infrastructure</option>
-                  <option value="const-engineering">Civil Engineering</option>
-                  <option value="re-residential">Residential Real Estate</option>
-                  <option value="re-commercial">Commercial Real Estate</option>
-                  <option value="re-property-mgmt">Property Management</option>
-                  <option value="re-development">Real Estate Development</option>
-                </optgroup>
-                <optgroup label="Transportation & Logistics">
-                  <option value="trans-trucking">Trucking / Freight</option>
-                  <option value="trans-shipping">Shipping / Maritime</option>
-                  <option value="trans-rail">Rail</option>
-                  <option value="trans-air-cargo">Air Cargo</option>
-                  <option value="trans-delivery">Last-Mile Delivery</option>
-                  <option value="trans-warehousing">Warehousing</option>
-                  <option value="trans-logistics">Logistics / Supply Chain</option>
-                  <option value="trans-rideshare">Rideshare / Mobility</option>
-                  <option value="trans-public">Public Transit</option>
-                </optgroup>
-                <optgroup label="Government & Public Sector">
-                  <option value="gov-federal">Federal Government</option>
-                  <option value="gov-state">State / Regional Government</option>
-                  <option value="gov-local">Local Government / Municipal</option>
-                  <option value="gov-military">Military</option>
-                  <option value="gov-law-enforcement">Law Enforcement</option>
-                  <option value="gov-fire-ems">Fire / EMS</option>
-                  <option value="gov-intelligence">Intelligence Services</option>
-                  <option value="gov-diplomacy">Diplomacy / Foreign Service</option>
-                  <option value="gov-public-health">Public Health</option>
-                </optgroup>
-                <optgroup label="Non-Profit & Social Impact">
-                  <option value="npo-charity">Charitable Organizations</option>
-                  <option value="npo-foundation">Foundations</option>
-                  <option value="npo-ngo">NGO / International Development</option>
-                  <option value="npo-advocacy">Advocacy / Policy</option>
-                  <option value="npo-environment">Environmental Organizations</option>
-                  <option value="npo-humanitarian">Humanitarian Aid</option>
-                  <option value="npo-religious">Religious Organizations</option>
-                  <option value="npo-arts">Arts & Culture Non-Profit</option>
-                  <option value="npo-social-services">Social Services</option>
-                </optgroup>
-                <optgroup label="Agriculture & Environment">
-                  <option value="ag-farming">Farming / Agriculture</option>
-                  <option value="ag-livestock">Livestock / Ranching</option>
-                  <option value="ag-fishing">Fishing / Aquaculture</option>
-                  <option value="ag-forestry">Forestry / Timber</option>
-                  <option value="ag-organic">Organic / Sustainable Ag</option>
-                  <option value="env-conservation">Conservation</option>
-                  <option value="env-environmental">Environmental Services</option>
-                  <option value="env-waste">Waste Management / Recycling</option>
-                </optgroup>
-                <optgroup label="Personal Services">
-                  <option value="serv-beauty">Beauty / Salon / Spa</option>
-                  <option value="serv-fitness">Personal Training / Fitness</option>
-                  <option value="serv-childcare">Childcare</option>
-                  <option value="serv-eldercare">Home Care / Elder Care</option>
-                  <option value="serv-cleaning">Cleaning Services</option>
-                  <option value="serv-pet">Pet Care / Grooming</option>
-                  <option value="serv-photography">Photography Services</option>
-                  <option value="serv-wedding">Wedding / Event Planning</option>
-                  <option value="serv-funeral">Funeral Services</option>
-                </optgroup>
-                <optgroup label="Trades & Skilled Labor">
-                  <option value="trade-electrical">Electrical</option>
-                  <option value="trade-plumbing">Plumbing</option>
-                  <option value="trade-hvac">HVAC</option>
-                  <option value="trade-carpentry">Carpentry</option>
-                  <option value="trade-welding">Welding</option>
-                  <option value="trade-automotive">Automotive Repair</option>
-                  <option value="trade-landscaping">Landscaping</option>
-                  <option value="trade-painting">Painting</option>
-                  <option value="trade-roofing">Roofing</option>
-                  <option value="trade-masonry">Masonry</option>
-                </optgroup>
-                <optgroup label="Other">
-                  <option value="other-security">Security Services</option>
-                  <option value="other-investigation">Private Investigation</option>
-                  <option value="other-adult">Adult Entertainment</option>
-                  <option value="other-cannabis">Cannabis Industry</option>
-                  <option value="other-gambling">Gambling / Betting</option>
-                  <option value="other-underground">Underground / Gray Market</option>
-                  <option value="other-criminal">Criminal Enterprise</option>
-                  <option value="other-unknown">Unknown / Classified</option>
-                </optgroup>
+                <option value="less-3m">Menos de 3 meses</option>
+                <option value="3-6m">3-6 meses</option>
+                <option value="6-12m">6-12 meses</option>
+                <option value="1-2y">1-2 anos</option>
+                <option value="2-3y">2-3 anos</option>
+                <option value="3-5y">3-5 anos</option>
+                <option value="5-10y">5-10 anos</option>
+                <option value="10-20y">10-20 anos</option>
+                <option value="20y+">20+ anos</option>
+                <option value="founder">Desde a fundação</option>
               </select>
             </div>
-
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Áreas Funcionais (até 3)</label>
-              <div className="flex flex-wrap gap-2">
-                {['Engineering','Software Development','Data Science','Product Management','Project Management','Design/UX','Marketing','Sales','Business Development','Customer Success','Customer Support','Operations','Finance','Accounting','HR/People','Recruiting','Legal','Compliance','Strategy','Analytics','Research','QA/Testing','DevOps/SRE','Security','IT/Infrastructure','Supply Chain','Procurement','Manufacturing','Logistics','Admin/Executive Assistant','Communications','Public Relations','Content/Writing','Social Media','SEO/SEM','Growth','Partnerships','Training/L&D','Consulting','Advisory','General Management','Executive Leadership','Founder/Entrepreneurship','Creative Direction','Art Direction','Animation','Video Production','Photography','Journalism','Editorial','Translation','Teaching/Education','Healthcare/Clinical','Nursing','Therapy/Counseling','Social Work','Scientific Research','Lab Work','Field Work','Manual Labor','Skilled Trades','Maintenance','Construction','Driving/Transportation','Food Service','Hospitality','Retail Sales','Security','Military/Defense','Law Enforcement','Emergency Services','Religious/Ministry','Volunteer Work','Freelance/Gig'].map(area => (
-                  <button key={area} onClick={() => toggleArrayItem('current', 'functionalAreas', area, 3)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.current?.functionalAreas || []).includes(area) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{area}</button>
-                ))}
-              </div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Gerencia Pessoas?</label>
+              <select value={job.managesPeople || ''} onChange={(e) => updateJob(index, 'managesPeople', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="no">Não — Contribuidor individual</option>
+                <option value="informal">Informal — Mentoria, sem cargo</option>
+                <option value="1-3">1-3 pessoas</option>
+                <option value="4-10">4-10 pessoas</option>
+                <option value="11-25">11-25 pessoas</option>
+                <option value="26-50">26-50 pessoas</option>
+                <option value="50-100">50-100 pessoas</option>
+                <option value="100+">100+ pessoas</option>
+              </select>
             </div>
-          </div>
-        </div>
-
-        {/* COMPANY INFO */}
-        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
-          <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🏢 Empresa / Organização</h4>
-          
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nome da Empresa</label>
-                <input type="text" value={data.current?.companyName || ''} onChange={(e) => update('current', 'companyName', e.target.value)} placeholder="Nome da empresa ou 'Self-Employed'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Organização</label>
-                <select value={data.current?.companyType || ''} onChange={(e) => update('current', 'companyType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <optgroup label="Private Sector">
-                    <option value="startup-pre-seed">Startup - Pre-Seed/Idea Stage</option>
-                    <option value="startup-seed">Startup - Seed Stage</option>
-                    <option value="startup-series-a">Startup - Series A</option>
-                    <option value="startup-series-b">Startup - Series B+</option>
-                    <option value="startup-late">Late-Stage Startup</option>
-                    <option value="scaleup">Scale-up (High Growth)</option>
-                    <option value="sme-small">Small Business (&lt;50 employees)</option>
-                    <option value="sme-medium">Medium Business (50-250)</option>
-                    <option value="large-corp">Large Corporation (250-1000)</option>
-                    <option value="enterprise">Enterprise (1000-10000)</option>
-                    <option value="mega-corp">Mega Corporation (10000+)</option>
-                    <option value="multinational">Multinational Corporation</option>
-                    <option value="public-company">Public Company (Stock Listed)</option>
-                    <option value="private-equity">Private Equity Owned</option>
-                    <option value="family-business">Family Business</option>
-                    <option value="franchise">Franchise</option>
-                    <option value="cooperative">Cooperative / Co-op</option>
-                  </optgroup>
-                  <optgroup label="Professional Services">
-                    <option value="agency">Agency</option>
-                    <option value="consultancy">Consultancy</option>
-                    <option value="law-firm">Law Firm</option>
-                    <option value="accounting-firm">Accounting Firm</option>
-                    <option value="big-four">Big Four (Deloitte, PwC, EY, KPMG)</option>
-                    <option value="mbb">MBB (McKinsey, BCG, Bain)</option>
-                    <option value="boutique">Boutique Firm</option>
-                    <option value="studio">Studio</option>
-                  </optgroup>
-                  <optgroup label="Public & Non-Profit">
-                    <option value="government">Government Agency</option>
-                    <option value="military">Military</option>
-                    <option value="ngo">NGO / Non-Profit</option>
-                    <option value="foundation">Foundation</option>
-                    <option value="charity">Charity</option>
-                    <option value="religious-org">Religious Organization</option>
-                    <option value="political">Political Organization</option>
-                    <option value="union">Labor Union</option>
-                    <option value="association">Professional Association</option>
-                  </optgroup>
-                  <optgroup label="Education & Research">
-                    <option value="university">University</option>
-                    <option value="college">College</option>
-                    <option value="school">School (K-12)</option>
-                    <option value="research-institute">Research Institute</option>
-                    <option value="think-tank">Think Tank</option>
-                    <option value="lab">Laboratory</option>
-                  </optgroup>
-                  <optgroup label="Healthcare">
-                    <option value="hospital">Hospital</option>
-                    <option value="clinic">Clinic / Medical Practice</option>
-                    <option value="healthcare-system">Healthcare System</option>
-                  </optgroup>
-                  <optgroup label="Self-Employed">
-                    <option value="solo-freelance">Solo Freelancer</option>
-                    <option value="solo-consultant">Independent Consultant</option>
-                    <option value="solo-contractor">Independent Contractor</option>
-                    <option value="own-business">Own Business</option>
-                    <option value="side-hustle">Side Hustle / Part-time Business</option>
-                  </optgroup>
-                  <optgroup label="Other">
-                    <option value="temp-agency">Temp Agency Placement</option>
-                    <option value="gig-platform">Gig Platform (Uber, Fiverr, etc)</option>
-                    <option value="influencer-brand">Personal Brand / Influencer</option>
-                    <option value="criminal-org">Criminal Organization</option>
-                    <option value="underground">Underground / Informal</option>
-                    <option value="classified">Classified / Secret</option>
-                  </optgroup>
-                </select>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tamanho da Empresa</label>
-                <select value={data.current?.companySize || ''} onChange={(e) => update('current', 'companySize', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="1">Solo (1 pessoa)</option>
-                  <option value="2-10">Micro (2-10)</option>
-                  <option value="11-50">Small (11-50)</option>
-                  <option value="51-200">Medium (51-200)</option>
-                  <option value="201-500">Large (201-500)</option>
-                  <option value="501-1000">Enterprise (501-1000)</option>
-                  <option value="1001-5000">Big Enterprise (1001-5000)</option>
-                  <option value="5001-10000">Corporation (5001-10000)</option>
-                  <option value="10001-50000">Large Corp (10001-50000)</option>
-                  <option value="50000+">Mega Corp (50000+)</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Presença Global</label>
-                <select value={data.current?.companyReach || ''} onChange={(e) => update('current', 'companyReach', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="local">Local — Uma cidade/região</option>
-                  <option value="regional">Regional — Parte do país</option>
-                  <option value="national">Nacional — Todo o país</option>
-                  <option value="multi-national">Multi-Nacional — Alguns países</option>
-                  <option value="continental">Continental — Um continente</option>
-                  <option value="global">Global — Presença mundial</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade da Empresa</label>
-                <select value={data.current?.companyAge || ''} onChange={(e) => update('current', 'companyAge', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="less-1">Menos de 1 ano</option>
-                  <option value="1-3">1-3 anos</option>
-                  <option value="3-5">3-5 anos</option>
-                  <option value="5-10">5-10 anos</option>
-                  <option value="10-25">10-25 anos</option>
-                  <option value="25-50">25-50 anos</option>
-                  <option value="50-100">50-100 anos</option>
-                  <option value="100+">100+ anos (centenária)</option>
-                </select>
-              </div>
-              <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Reputação</label>
-                <select value={data.current?.companyReputation || ''} onChange={(e) => update('current', 'companyReputation', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
-                  <option value="">-- Selecione --</option>
-                  <option value="prestigious">Prestigious — Top tier, muito respeitada</option>
-                  <option value="well-known">Well-Known — Conhecida, boa reputação</option>
-                  <option value="respected">Respected — Respeitada na indústria</option>
-                  <option value="growing">Growing — Em crescimento, promissora</option>
-                  <option value="average">Average — Normal, sem destaque</option>
-                  <option value="unknown">Unknown — Desconhecida</option>
-                  <option value="controversial">Controversial — Polêmica</option>
-                  <option value="declining">Declining — Em declínio</option>
-                  <option value="bad">Bad Reputation — Má reputação</option>
-                </select>
-              </div>
-            </div>
-
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-2 block">Cultura da Empresa (até 4)</label>
-              <div className="flex flex-wrap gap-2">
-                {['Fast-Paced','Slow & Steady','Competitive','Collaborative','Innovative','Traditional','Formal','Casual','Results-Driven','Process-Oriented','Customer-Obsessed','Employee-First','Mission-Driven','Profit-Focused','Work Hard Play Hard','Work-Life Balance','Hierarchical','Flat Structure','Political','Meritocratic','Inclusive','Homogeneous','Transparent','Secretive','Micromanaging','Autonomous','Supportive','Sink or Swim','Learning Culture','Stagnant','Tech-Forward','Tech-Averse','Global Mindset','Local Focus','Startup Vibes','Corporate Feel','Family-Like','Professional','Toxic','Healthy','Burnout Culture','Sustainable Pace'].map(culture => (
-                  <button key={culture} onClick={() => toggleArrayItem('current', 'companyCulture', culture, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.current?.companyCulture || []).includes(culture) ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{culture}</button>
-                ))}
-              </div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Horas por Semana</label>
+              <select value={job.hoursPerWeek || ''} onChange={(e) => updateJob(index, 'hoursPerWeek', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="less-10">Menos de 10h</option>
+                <option value="10-20">10-20h (part-time)</option>
+                <option value="20-30">20-30h</option>
+                <option value="30-40">30-40h (padrão)</option>
+                <option value="40-50">40-50h</option>
+                <option value="50-60">50-60h</option>
+                <option value="60-70">60-70h</option>
+                <option value="70+">70+h (workaholic)</option>
+                <option value="variable">Variável</option>
+              </select>
             </div>
           </div>
         </div>
       </div>
+
+      {/* INDUSTRY */}
+      <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+        <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🏭 Indústria & Setor</h4>
+        
+        <div className="space-y-4">
+          <div>
+            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Indústria Principal</label>
+            <select value={job.industry || ''} onChange={(e) => updateJob(index, 'industry', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <option value="">-- Selecione --</option>
+              <optgroup label="Technology">
+                <option value="tech-software">Software Development</option>
+                <option value="tech-saas">SaaS / Cloud Services</option>
+                <option value="tech-ai">AI / Machine Learning</option>
+                <option value="tech-cybersecurity">Cybersecurity</option>
+                <option value="tech-data">Data / Analytics</option>
+                <option value="tech-fintech">Fintech</option>
+                <option value="tech-gaming">Gaming / Video Games</option>
+                <option value="tech-blockchain">Blockchain / Crypto / Web3</option>
+              </optgroup>
+              <optgroup label="Finance & Business">
+                <option value="fin-banking">Banking</option>
+                <option value="fin-investment">Investment Banking</option>
+                <option value="fin-pe-vc">Private Equity / Venture Capital</option>
+                <option value="fin-insurance">Insurance</option>
+                <option value="biz-consulting">Management Consulting</option>
+                <option value="biz-legal">Legal Services / Law</option>
+                <option value="biz-real-estate">Real Estate</option>
+              </optgroup>
+              <optgroup label="Healthcare">
+                <option value="health-hospital">Hospitals / Health Systems</option>
+                <option value="health-pharma">Pharmaceuticals</option>
+                <option value="health-biotech">Biotechnology</option>
+                <option value="health-mental">Mental Health</option>
+              </optgroup>
+              <optgroup label="Media & Creative">
+                <option value="media-film">Film / Cinema</option>
+                <option value="media-tv">Television / Streaming</option>
+                <option value="media-music">Music Industry</option>
+                <option value="media-advertising">Advertising</option>
+                <option value="media-marketing">Marketing / Digital Marketing</option>
+                <option value="creative-design">Design</option>
+              </optgroup>
+              <optgroup label="Education">
+                <option value="edu-k12">K-12 Education</option>
+                <option value="edu-higher">Higher Education</option>
+                <option value="edu-online">Online Education</option>
+              </optgroup>
+              <optgroup label="Retail & Food">
+                <option value="retail-general">General Retail</option>
+                <option value="retail-ecommerce">E-commerce</option>
+                <option value="hosp-restaurant">Restaurants</option>
+                <option value="hosp-hotel">Hotels / Lodging</option>
+              </optgroup>
+              <optgroup label="Manufacturing & Energy">
+                <option value="mfg-automotive">Automotive</option>
+                <option value="mfg-aerospace">Aerospace / Defense</option>
+                <option value="energy-oil-gas">Oil & Gas</option>
+                <option value="energy-renewable">Renewable Energy</option>
+              </optgroup>
+              <optgroup label="Government & Non-Profit">
+                <option value="gov-federal">Government</option>
+                <option value="gov-military">Military</option>
+                <option value="npo-charity">Non-Profit / Charity</option>
+                <option value="npo-ngo">NGO</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option value="trade-construction">Construction</option>
+                <option value="trans-logistics">Logistics / Transportation</option>
+                <option value="ag-farming">Agriculture</option>
+                <option value="other-security">Security Services</option>
+                <option value="other-adult">Adult Entertainment</option>
+                <option value="other-criminal">Criminal Enterprise</option>
+                <option value="other-unknown">Unknown / Classified</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div>
+            <label className="font-mono text-[10px] text-gray-600 mb-2 block">Áreas Funcionais (até 3)</label>
+            <div className="flex flex-wrap gap-2">
+              {['Engineering','Software Development','Data Science','Product Management','Project Management','Design/UX','Marketing','Sales','Business Development','Customer Success','Operations','Finance','Accounting','HR/People','Legal','Strategy','Analytics','Research','QA/Testing','DevOps','IT/Infrastructure','Supply Chain','Manufacturing','Admin/Assistant','Communications','Content/Writing','Social Media','Consulting','General Management','Executive Leadership','Founder','Creative Direction','Teaching/Education','Healthcare/Clinical','Scientific Research','Manual Labor','Skilled Trades','Food Service','Retail Sales','Security','Military/Defense','Religious/Ministry','Freelance/Gig','Other'].map(area => (
+                <button key={area} onClick={() => toggleJobArrayItem(index, 'functionalAreas', area, 3)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(job.functionalAreas || []).includes(area) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{area}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* COMPANY INFO */}
+      <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+        <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🏢 Empresa / Organização</h4>
+        
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nome da Empresa</label>
+              <input type="text" value={job.companyName || ''} onChange={(e) => updateJob(index, 'companyName', e.target.value)} placeholder="Nome da empresa ou 'Self-Employed'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Organização</label>
+              <select value={job.companyType || ''} onChange={(e) => updateJob(index, 'companyType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <optgroup label="Private Sector">
+                  <option value="startup-early">Startup - Early Stage</option>
+                  <option value="startup-late">Startup - Late Stage</option>
+                  <option value="scaleup">Scale-up (High Growth)</option>
+                  <option value="sme-small">Small Business (&lt;50)</option>
+                  <option value="sme-medium">Medium Business (50-250)</option>
+                  <option value="large-corp">Large Corporation (250-1000)</option>
+                  <option value="enterprise">Enterprise (1000+)</option>
+                  <option value="multinational">Multinational Corporation</option>
+                  <option value="public-company">Public Company</option>
+                  <option value="family-business">Family Business</option>
+                </optgroup>
+                <optgroup label="Professional Services">
+                  <option value="agency">Agency</option>
+                  <option value="consultancy">Consultancy</option>
+                  <option value="law-firm">Law Firm</option>
+                  <option value="big-four">Big Four</option>
+                  <option value="studio">Studio</option>
+                </optgroup>
+                <optgroup label="Public & Non-Profit">
+                  <option value="government">Government Agency</option>
+                  <option value="military">Military</option>
+                  <option value="ngo">NGO / Non-Profit</option>
+                  <option value="university">University</option>
+                  <option value="hospital">Hospital</option>
+                </optgroup>
+                <optgroup label="Self-Employed">
+                  <option value="solo-freelance">Solo Freelancer</option>
+                  <option value="own-business">Own Business</option>
+                  <option value="gig-platform">Gig Platform</option>
+                </optgroup>
+                <optgroup label="Other">
+                  <option value="criminal-org">Criminal Organization</option>
+                  <option value="classified">Classified / Secret</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tamanho</label>
+              <select value={job.companySize || ''} onChange={(e) => updateJob(index, 'companySize', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="1">Solo (1)</option>
+                <option value="2-10">Micro (2-10)</option>
+                <option value="11-50">Small (11-50)</option>
+                <option value="51-200">Medium (51-200)</option>
+                <option value="201-1000">Large (201-1000)</option>
+                <option value="1001-10000">Enterprise (1001-10000)</option>
+                <option value="10000+">Mega Corp (10000+)</option>
+              </select>
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Presença</label>
+              <select value={job.companyReach || ''} onChange={(e) => updateJob(index, 'companyReach', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="local">Local</option>
+                <option value="regional">Regional</option>
+                <option value="national">Nacional</option>
+                <option value="global">Global</option>
+              </select>
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade</label>
+              <select value={job.companyAge || ''} onChange={(e) => updateJob(index, 'companyAge', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="less-1">&lt;1 ano</option>
+                <option value="1-5">1-5 anos</option>
+                <option value="5-10">5-10 anos</option>
+                <option value="10-25">10-25 anos</option>
+                <option value="25-50">25-50 anos</option>
+                <option value="50+">50+ anos</option>
+              </select>
+            </div>
+            <div>
+              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Reputação</label>
+              <select value={job.companyReputation || ''} onChange={(e) => updateJob(index, 'companyReputation', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <option value="">-- Selecione --</option>
+                <option value="prestigious">Prestigious</option>
+                <option value="well-known">Well-Known</option>
+                <option value="respected">Respected</option>
+                <option value="average">Average</option>
+                <option value="unknown">Unknown</option>
+                <option value="controversial">Controversial</option>
+                <option value="bad">Bad</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="font-mono text-[10px] text-gray-600 mb-2 block">Cultura da Empresa (até 4)</label>
+            <div className="flex flex-wrap gap-2">
+              {['Fast-Paced','Slow & Steady','Competitive','Collaborative','Innovative','Traditional','Formal','Casual','Results-Driven','Process-Oriented','Mission-Driven','Profit-Focused','Work Hard Play Hard','Work-Life Balance','Hierarchical','Flat Structure','Political','Meritocratic','Inclusive','Transparent','Micromanaging','Autonomous','Supportive','Sink or Swim','Learning Culture','Startup Vibes','Corporate Feel','Family-Like','Toxic','Healthy','Burnout Culture'].map(culture => (
+                <button key={culture} onClick={() => toggleJobArrayItem(index, 'companyCulture', culture, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(job.companyCulture || []).includes(culture) ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{culture}</button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SALARY ESTIMATOR */}
+      <SalaryCalculator job={job} />
+
+      {/* Botão de voltar */}
+      <div className="flex justify-center pt-4">
+        <button onClick={() => setEditingJobIndex(null)} className="px-6 py-2 bg-emerald-600 text-white font-mono text-xs rounded hover:bg-emerald-700 flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+          Concluir Edição
+        </button>
+      </div>
+    </div>
+  );
+
+  // Lista de empregos
+  const JobsList = () => (
+    <div className="space-y-6">
+      <div className="bg-emerald-50 border border-emerald-200 rounded-sm p-4">
+        <h3 className="font-mono text-sm font-bold text-emerald-900 mb-2">💼 EMPREGOS & OCUPAÇÕES</h3>
+        <p className="font-mono text-xs text-emerald-800 leading-relaxed">
+          Gerencie todos os empregos e ocupações do personagem. Pode ter múltiplos empregos simultaneamente.
+        </p>
+      </div>
+
+      {/* Lista de empregos existentes */}
+      {(data.jobs || []).length > 0 ? (
+        <div className="space-y-3">
+          {(data.jobs || []).map((job, index) => {
+            const summary = getJobSummary(job);
+            const salaryEstimate = calculateSalary(job);
+            return (
+              <div key={job.id || index} className={`border-2 rounded-sm p-4 transition-all hover:shadow-md cursor-pointer ${job.isPrimary ? 'border-yellow-400 bg-yellow-50/50' : 'border-gray-200 bg-white hover:border-emerald-300'}`} onClick={() => setEditingJobIndex(index)}>
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-1">
+                      {job.isPrimary && <span className="text-yellow-500">⭐</span>}
+                      <h4 className="font-mono text-sm font-bold text-gray-900">{summary.title}</h4>
+                      {job.isPrimary && <span className="px-2 py-0.5 bg-yellow-400 text-yellow-900 font-mono text-[9px] rounded">PRINCIPAL</span>}
+                    </div>
+                    <p className="font-mono text-xs text-gray-600 mb-1">🏢 {summary.company}</p>
+                    <p className="font-mono text-[10px] text-gray-500">{summary.status}</p>
+                    {job.industry && <p className="font-mono text-[10px] text-purple-600 mt-1">📁 {job.industry.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</p>}
+                    {salaryEstimate && (
+                      <p className="font-mono text-[10px] text-emerald-600 mt-1 font-bold">
+                        💰 ${salaryEstimate.monthly.toLocaleString()}/mês (~${salaryEstimate.annual.toLocaleString()}/ano)
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col gap-2 ml-4 items-end">
+                    <div className="flex gap-2">
+                      <button onClick={(e) => { e.stopPropagation(); setEditingJobIndex(index); }} className="px-3 py-1.5 bg-emerald-100 text-emerald-700 font-mono text-[10px] rounded hover:bg-emerald-200">
+                        ✏️ Editar
+                      </button>
+                      <button onClick={(e) => { e.stopPropagation(); removeJob(index); }} className="px-3 py-1.5 bg-red-100 text-red-700 font-mono text-[10px] rounded hover:bg-red-200">
+                        🗑️
+                      </button>
+                    </div>
+                    {salaryEstimate && (
+                      <div className="flex items-center gap-1">
+                        <span className={`px-1.5 py-0.5 rounded font-mono text-[8px] ${
+                          salaryEstimate.confidence.level === 'high' ? 'bg-emerald-100 text-emerald-700' :
+                          salaryEstimate.confidence.level === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-red-100 text-red-700'
+                        }`}>
+                          {salaryEstimate.confidence.label}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="border-2 border-dashed border-gray-300 rounded-sm p-8 text-center">
+          <div className="text-gray-400 mb-3">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="mx-auto"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          </div>
+          <p className="font-mono text-sm text-gray-500 mb-1">Nenhum emprego cadastrado</p>
+          <p className="font-mono text-xs text-gray-400">Clique no botão abaixo para adicionar o primeiro emprego do personagem.</p>
+        </div>
+      )}
+
+      {/* Botão de adicionar emprego */}
+      <button onClick={addJob} className="w-full py-4 border-2 border-dashed border-emerald-400 rounded-sm text-emerald-600 font-mono text-sm hover:bg-emerald-50 hover:border-emerald-500 transition-all flex items-center justify-center gap-2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Adicionar Emprego
+      </button>
+
+      {/* Resumo */}
+      {(data.jobs || []).length > 0 && (
+        <div className="bg-gradient-to-br from-gray-50 to-emerald-50 border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-gray-700 mb-3">📊 Resumo Financeiro</h4>
+          
+          {/* Salário Total */}
+          <div className="bg-white border border-emerald-200 rounded-sm p-4 mb-4">
+            <div className="text-center">
+              <div className="font-mono text-[10px] text-gray-500 mb-1">Renda Total Estimada (todos os empregos)</div>
+              <div className="font-mono text-3xl font-bold text-emerald-600">
+                R${(data.jobs || []).reduce((sum, job) => {
+                  const estimate = calculateSalary(job);
+                  return sum + (estimate?.monthly || 0);
+                }, 0).toLocaleString('pt-BR')}
+                <span className="text-lg text-gray-400">/mês</span>
+              </div>
+              <div className="font-mono text-sm text-gray-500">
+                R${(data.jobs || []).reduce((sum, job) => {
+                  const estimate = calculateSalary(job);
+                  return sum + (estimate?.annual || 0);
+                }, 0).toLocaleString('pt-BR')}/ano
+              </div>
+            </div>
+          </div>
+          
+          {/* Métricas */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+            <div className="bg-white/50 rounded p-2">
+              <div className="font-mono text-2xl font-bold text-emerald-600">{(data.jobs || []).length}</div>
+              <div className="font-mono text-[10px] text-gray-500">Empregos</div>
+            </div>
+            <div className="bg-white/50 rounded p-2">
+              <div className="font-mono text-2xl font-bold text-blue-600">
+                {(data.jobs || []).reduce((sum, job) => {
+                  const hours = job.hoursPerWeek;
+                  if (!hours) return sum;
+                  if (hours === 'variable') return sum + 30;
+                  if (hours === '70+') return sum + 75;
+                  const match = hours.match(/(\d+)/);
+                  return sum + (match ? parseInt(match[1]) : 0);
+                }, 0)}h
+              </div>
+              <div className="font-mono text-[10px] text-gray-500">Horas/Semana</div>
+            </div>
+            <div className="bg-white/50 rounded p-2">
+              <div className="font-mono text-2xl font-bold text-purple-600">
+                {[...new Set((data.jobs || []).map(j => j.industry).filter(Boolean))].length}
+              </div>
+              <div className="font-mono text-[10px] text-gray-500">Indústrias</div>
+            </div>
+            <div className="bg-white/50 rounded p-2">
+              <div className="font-mono text-2xl font-bold text-amber-600">
+                {[...new Set((data.jobs || []).map(j => j.companyName).filter(Boolean))].length}
+              </div>
+              <div className="font-mono text-[10px] text-gray-500">Empresas</div>
+            </div>
+          </div>
+
+          {/* Breakdown por emprego */}
+          {(data.jobs || []).length > 1 && (
+            <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="font-mono text-[10px] text-gray-500 mb-2">Breakdown por emprego:</div>
+              <div className="space-y-2">
+                {(data.jobs || []).map((job, idx) => {
+                  const estimate = calculateSalary(job);
+                  const totalMonthly = (data.jobs || []).reduce((sum, j) => sum + (calculateSalary(j)?.monthly || 0), 0);
+                  const percentage = totalMonthly > 0 ? ((estimate?.monthly || 0) / totalMonthly * 100) : 0;
+                  return (
+                    <div key={idx} className="flex items-center gap-2">
+                      <div className="flex-1">
+                        <div className="flex justify-between items-center mb-1">
+                          <span className="font-mono text-[10px] text-gray-700">
+                            {job.isPrimary && '⭐ '}{job.jobTitle || `Emprego #${idx + 1}`}
+                          </span>
+                          <span className="font-mono text-[10px] font-bold text-emerald-600">
+                            ${(estimate?.monthly || 0).toLocaleString()}/mês
+                          </span>
+                        </div>
+                        <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full rounded-full ${job.isPrimary ? 'bg-yellow-400' : 'bg-emerald-400'}`}
+                            style={{ width: `${percentage}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                      <span className="font-mono text-[9px] text-gray-400 w-10 text-right">{percentage.toFixed(0)}%</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+
+  const sections = {
+    // ========== SUBTAB 0: CURRENT WORK ==========
+    0: editingJobIndex !== null && data.jobs?.[editingJobIndex] ? (
+      <JobForm job={data.jobs[editingJobIndex]} index={editingJobIndex} />
+    ) : (
+      <JobsList />
     ),
 
     // ========== SUBTAB 1: CAREER PATH ==========
@@ -13782,12 +24269,32 @@ const GenericTabContent = ({ tabId, data, updateData, subtab, subtabs }) => {
 };
 
 // ============================================================================
-// DATABASE CONTENT
+// DATABASE CONTENT - Complete with subtabs
 // ============================================================================
-const DatabaseContent = ({ characterData, onCopy, onDownload, copied }) => {
-  const countFields = (obj) => {
+const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
+  const [viewMode, setViewMode] = useState('visual');
+  const [expandedSections, setExpandedSections] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSection, setSelectedSection] = useState('all');
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const expandAll = () => {
+    const allSections = ['identity', 'appearance', 'psychology', 'physique', 'voice', 'history', 'relationships', 'intimacy', 'occupation', 'intelligence', 'worldview', 'favorites', 'behavior', 'secrets', 'goals', 'directives'];
+    const expanded = {};
+    allSections.forEach(s => expanded[s] = true);
+    setExpandedSections(expanded);
+  };
+
+  const collapseAll = () => setExpandedSections({});
+
+  // Count fields per section
+  const countSectionFields = (obj) => {
     let filled = 0, total = 0;
     const count = (o) => {
+      if (!o) return;
       Object.values(o).forEach(v => {
         if (typeof v === 'object' && v !== null && !Array.isArray(v)) count(v);
         else {
@@ -13798,114 +24305,1996 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied }) => {
       });
     };
     count(obj);
-    return { filled, total };
+    return { filled, total, percent: total > 0 ? Math.round((filled / total) * 100) : 0 };
   };
-  
-  const stats = countFields(characterData);
-  const percent = Math.round((stats.filled / stats.total) * 100);
+
+  // Get filled fields from object
+  const getFilledFields = (obj, prefix = '') => {
+    const fields = [];
+    if (!obj) return fields;
+    
+    Object.entries(obj).forEach(([key, value]) => {
+      const fieldName = prefix ? `${prefix}.${key}` : key;
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        fields.push(...getFilledFields(value, fieldName));
+      } else if (Array.isArray(value)) {
+        if (value.length > 0) {
+          fields.push({ key: fieldName, value: value.join(', '), isArray: true, count: value.length });
+        }
+      } else if (value !== '' && value !== null && value !== undefined && value !== 5) {
+        fields.push({ key: fieldName, value: String(value) });
+      }
+    });
+    return fields;
+  };
+
+  // Get ALL fields (including empty)
+  const getAllFields = (obj, prefix = '') => {
+    const fields = [];
+    if (!obj) return fields;
+    
+    Object.entries(obj).forEach(([key, value]) => {
+      const fieldName = prefix ? `${prefix}.${key}` : key;
+      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+        fields.push(...getAllFields(value, fieldName));
+      } else {
+        const isFilled = Array.isArray(value) ? value.length > 0 : (value !== '' && value !== null && value !== undefined && value !== 5);
+        fields.push({ 
+          key: fieldName, 
+          value: Array.isArray(value) ? value.join(', ') : String(value || ''),
+          isFilled,
+          isArray: Array.isArray(value)
+        });
+      }
+    });
+    return fields;
+  };
+
+  // Format field name for display
+  const formatFieldName = (key) => {
+    return key
+      .split('.')
+      .pop()
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, str => str.toUpperCase())
+      .replace(/([a-z])([A-Z])/g, '$1 $2');
+  };
+
+  // Total stats
+  const totalStats = countSectionFields(characterData);
+
+  // Section configurations
+  const sections = [
+    { id: 'identity', label: 'Identity', icon: '🪪', color: 'blue', data: characterData.identity },
+    { id: 'appearance', label: 'Appearance', icon: '👤', color: 'pink', data: characterData.appearance },
+    { id: 'psychology', label: 'Psychology', icon: '🧠', color: 'purple', data: characterData.psychology },
+    { id: 'physique', label: 'Physique', icon: '💪', color: 'amber', data: characterData.physique },
+    { id: 'voice', label: 'Voice', icon: '🎤', color: 'orange', data: characterData.voice },
+    { id: 'history', label: 'History', icon: '📖', color: 'teal', data: characterData.history },
+    { id: 'relationships', label: 'Relationships', icon: '👥', color: 'red', data: characterData.relationships },
+    { id: 'intimacy', label: 'Intimacy', icon: '💜', color: 'fuchsia', data: characterData.intimacy },
+    { id: 'occupation', label: 'Occupation', icon: '💼', color: 'green', data: characterData.occupation },
+    { id: 'intelligence', label: 'Intelligence', icon: '📚', color: 'indigo', data: characterData.intelligence },
+    { id: 'worldview', label: 'Worldview', icon: '🌍', color: 'cyan', data: characterData.worldview },
+    { id: 'favorites', label: 'Favorites', icon: '⭐', color: 'yellow', data: characterData.favorites },
+    { id: 'behavior', label: 'Behavior', icon: '🎭', color: 'rose', data: characterData.behavior },
+    { id: 'secrets', label: 'Secrets', icon: '🔒', color: 'slate', data: characterData.secrets },
+    { id: 'goals', label: 'Goals', icon: '🎯', color: 'emerald', data: characterData.goals },
+    { id: 'directives', label: 'Directives', icon: '⚙️', color: 'violet', data: characterData.directives },
+  ];
+
+  // Validation rules
+  const validationRules = [
+    { id: 'name', label: 'Character has a name', check: () => !!characterData.identity?.core?.firstName, category: 'Required' },
+    { id: 'age', label: 'Age is defined', check: () => !!characterData.identity?.vitals?.age, category: 'Required' },
+    { id: 'gender', label: 'Gender identity set', check: () => !!characterData.identity?.vitals?.genderIdentity, category: 'Required' },
+    { id: 'appearance_basic', label: 'Basic appearance defined', check: () => !!characterData.appearance?.face?.faceShape || !!characterData.appearance?.hair?.color, category: 'Recommended' },
+    { id: 'personality', label: 'Personality traits set', check: () => (characterData.psychology?.core?.personalityTraits?.length || 0) > 0, category: 'Recommended' },
+    { id: 'backstory', label: 'Has backstory/history', check: () => !!characterData.history?.childhood?.childhoodSummary || !!characterData.history?.formative?.formativeEvent, category: 'Recommended' },
+    { id: 'voice_basic', label: 'Voice characteristics set', check: () => !!characterData.voice?.design?.voiceGender || !!characterData.voice?.design?.pitch, category: 'For TTS' },
+    { id: 'voice_accent', label: 'Accent defined', check: () => !!characterData.voice?.languages?.accent, category: 'For TTS' },
+    { id: 'directives_set', label: 'Directives configured', check: () => !!characterData.directives?.formatting?.responseLength, category: 'For RP' },
+    { id: 'goals_defined', label: 'Character goals set', check: () => !!characterData.goals?.primary?.mainGoal, category: 'For Story' },
+    { id: 'relationships', label: 'Relationships defined', check: () => (characterData.relationships?.npcs?.length || 0) > 0, category: 'For Story' },
+    { id: 'occupation', label: 'Occupation defined', check: () => (characterData.occupation?.jobs?.length || 0) > 0, category: 'Optional' },
+  ];
+
+  // Quick summary card
+  const QuickSummary = () => {
+    const identity = characterData.identity || {};
+    const core = identity.core || {};
+    const vitals = identity.vitals || {};
+    const psychology = characterData.psychology || {};
+    
+    return (
+      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-6 text-white mb-6">
+        <div className="flex items-start gap-6">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-3xl font-bold">
+            {core.firstName ? core.firstName.charAt(0).toUpperCase() : '?'}
+          </div>
+          <div className="flex-1">
+            <h2 className="text-2xl font-bold mb-1">
+              {core.firstName || 'Unnamed'} {core.middleName || ''} {core.lastName || ''}
+            </h2>
+            {core.nickname && <p className="text-slate-400 text-sm mb-2">"{core.nickname}"</p>}
+            <div className="flex flex-wrap gap-2 mt-2">
+              {vitals.age && (
+                <span className="px-2 py-1 bg-blue-500/20 rounded text-xs">{vitals.age} years old</span>
+              )}
+              {vitals.genderIdentity && (
+                <span className="px-2 py-1 bg-pink-500/20 rounded text-xs">{vitals.genderIdentity}</span>
+              )}
+              {vitals.nationality && (
+                <span className="px-2 py-1 bg-green-500/20 rounded text-xs">{vitals.nationality}</span>
+              )}
+              {psychology.core?.mbtiType && (
+                <span className="px-2 py-1 bg-purple-500/20 rounded text-xs">{psychology.core.mbtiType}</span>
+              )}
+              {characterData.occupation?.jobs?.[0]?.title && (
+                <span className="px-2 py-1 bg-amber-500/20 rounded text-xs">{characterData.occupation.jobs[0].title}</span>
+              )}
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-4xl font-black">{totalStats.percent}%</div>
+            <div className="text-xs text-slate-400">Complete</div>
+            <div className="text-xs text-slate-500">{totalStats.filled}/{totalStats.total} fields</div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  // Section Card Component
+  const SectionCard = ({ section }) => {
+    const stats = countSectionFields(section.data);
+    const fields = getFilledFields(section.data);
+    const isExpanded = expandedSections[section.id];
+    
+    // Filter fields by search term
+    const filteredFields = searchTerm 
+      ? fields.filter(f => f.key.toLowerCase().includes(searchTerm.toLowerCase()) || f.value.toLowerCase().includes(searchTerm.toLowerCase()))
+      : fields;
+    
+    const colorClasses = {
+      blue: 'border-blue-300 bg-blue-50',
+      pink: 'border-pink-300 bg-pink-50',
+      purple: 'border-purple-300 bg-purple-50',
+      amber: 'border-amber-300 bg-amber-50',
+      orange: 'border-orange-300 bg-orange-50',
+      teal: 'border-teal-300 bg-teal-50',
+      red: 'border-red-300 bg-red-50',
+      fuchsia: 'border-fuchsia-300 bg-fuchsia-50',
+      green: 'border-green-300 bg-green-50',
+      indigo: 'border-indigo-300 bg-indigo-50',
+      cyan: 'border-cyan-300 bg-cyan-50',
+      yellow: 'border-yellow-300 bg-yellow-50',
+      rose: 'border-rose-300 bg-rose-50',
+      slate: 'border-slate-300 bg-slate-50',
+      emerald: 'border-emerald-300 bg-emerald-50',
+      violet: 'border-violet-300 bg-violet-50',
+    };
+
+    const headerColors = {
+      blue: 'bg-blue-600',
+      pink: 'bg-pink-600',
+      purple: 'bg-purple-600',
+      amber: 'bg-amber-600',
+      orange: 'bg-orange-600',
+      teal: 'bg-teal-600',
+      red: 'bg-red-600',
+      fuchsia: 'bg-fuchsia-600',
+      green: 'bg-green-600',
+      indigo: 'bg-indigo-600',
+      cyan: 'bg-cyan-600',
+      yellow: 'bg-yellow-600',
+      rose: 'bg-rose-600',
+      slate: 'bg-slate-600',
+      emerald: 'bg-emerald-600',
+      violet: 'bg-violet-600',
+    };
+
+    if (stats.filled === 0 && !searchTerm) return null;
+    if (searchTerm && filteredFields.length === 0) return null;
+
+    return (
+      <div className={`border-2 rounded-lg overflow-hidden ${colorClasses[section.color] || 'border-gray-300 bg-gray-50'}`}>
+        <button
+          onClick={() => toggleSection(section.id)}
+          className={`w-full flex items-center justify-between p-3 ${headerColors[section.color] || 'bg-gray-600'} text-white`}
+        >
+          <div className="flex items-center gap-2">
+            <span className="text-lg">{section.icon}</span>
+            <span className="font-mono text-sm font-bold">{section.label}</span>
+            <span className="font-mono text-xs opacity-75">({filteredFields.length} fields)</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-24 h-2 bg-white/30 rounded-full overflow-hidden">
+              <div className="h-full bg-white" style={{ width: `${stats.percent}%` }} />
+            </div>
+            <span className="font-mono text-xs">{stats.percent}%</span>
+            <span className="text-lg">{isExpanded ? '▼' : '▶'}</span>
+          </div>
+        </button>
+        
+        {isExpanded && (
+          <div className="p-4 space-y-2">
+            {filteredFields.map((field, idx) => (
+              <div key={idx} className="flex justify-between items-start py-1 border-b border-white/50 last:border-0">
+                <span className="font-mono text-xs text-gray-600">{formatFieldName(field.key)}</span>
+                <span className="font-mono text-xs text-gray-900 text-right max-w-[60%]">
+                  {field.isArray && <span className="text-blue-600">[{field.count}] </span>}
+                  {field.value.length > 100 ? field.value.substring(0, 100) + '...' : field.value}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // ========== SUBTAB CONTENT ==========
+  const subtabContent = {
+    // SUBTAB 0: Overview
+    0: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">📊 DATABASE OVERVIEW</h3>
+          <p className="font-mono text-xs text-blue-200">Complete view of your character's data structure.</p>
+        </div>
+
+        <QuickSummary />
+
+        {/* Section completion grid */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📁 Section Completion</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {sections.map(section => {
+              const stats = countSectionFields(section.data);
+              return (
+                <div key={section.id} className="p-3 rounded border border-gray-200 bg-gray-50">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-lg">{section.icon}</span>
+                    <span className="font-mono text-xs font-bold text-gray-700">{section.label}</span>
+                  </div>
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-1">
+                    <div 
+                      className={`h-full rounded-full ${stats.percent >= 75 ? 'bg-green-500' : stats.percent >= 50 ? 'bg-yellow-500' : stats.percent >= 25 ? 'bg-orange-500' : 'bg-red-500'}`}
+                      style={{ width: `${stats.percent}%` }}
+                    />
+                  </div>
+                  <div className="font-mono text-[10px] text-gray-500">{stats.filled}/{stats.total} ({stats.percent}%)</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="p-4 rounded bg-blue-50 border border-blue-200 text-center">
+            <div className="font-mono text-3xl font-bold text-blue-700">{totalStats.filled}</div>
+            <div className="font-mono text-xs text-gray-600">Fields Filled</div>
+          </div>
+          <div className="p-4 rounded bg-gray-50 border border-gray-200 text-center">
+            <div className="font-mono text-3xl font-bold text-gray-700">{totalStats.total}</div>
+            <div className="font-mono text-xs text-gray-600">Total Fields</div>
+          </div>
+          <div className="p-4 rounded bg-green-50 border border-green-200 text-center">
+            <div className="font-mono text-3xl font-bold text-green-700">{totalStats.percent}%</div>
+            <div className="font-mono text-xs text-gray-600">Complete</div>
+          </div>
+          <div className="p-4 rounded bg-purple-50 border border-purple-200 text-center">
+            <div className="font-mono text-3xl font-bold text-purple-700">{sections.filter(s => countSectionFields(s.data).percent > 0).length}</div>
+            <div className="font-mono text-xs text-gray-600">Sections Used</div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="flex gap-3">
+          <button onClick={onCopy} className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-900 text-white font-mono text-xs uppercase hover:bg-gray-700 rounded-sm">
+            <Icons.Copy width={16} height={16} />
+            Copy JSON
+          </button>
+          <button onClick={onDownload} className="flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 border-gray-900 font-mono text-xs uppercase hover:bg-gray-100 rounded-sm">
+            <Icons.Download width={16} height={16} />
+            Download
+          </button>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 1: Browse Data
+    1: (
+      <div className="space-y-4">
+        <div className="bg-gradient-to-br from-teal-900 to-cyan-900 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">🔍 BROWSE DATA</h3>
+          <p className="font-mono text-xs text-teal-200">Search and explore all character data.</p>
+        </div>
+
+        {/* Search & Filter */}
+        <div className="flex gap-3">
+          <div className="flex-1 relative">
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search fields or values..."
+              className="w-full px-4 py-2 pl-10 border border-gray-300 rounded-sm font-mono text-xs focus:border-blue-500 focus:outline-none"
+            />
+            <Icons.Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          </div>
+          <select
+            value={selectedSection}
+            onChange={(e) => setSelectedSection(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-sm font-mono text-xs"
+          >
+            <option value="all">All Sections</option>
+            {sections.map(s => (
+              <option key={s.id} value={s.id}>{s.label}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* View controls */}
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2">
+            <button onClick={expandAll} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-sm font-mono text-xs">
+              Expand All
+            </button>
+            <button onClick={collapseAll} className="px-3 py-1 bg-gray-100 hover:bg-gray-200 rounded-sm font-mono text-xs">
+              Collapse All
+            </button>
+          </div>
+          <div className="flex gap-2">
+            <button
+              onClick={() => setViewMode('visual')}
+              className={`px-3 py-1 rounded-sm font-mono text-xs ${viewMode === 'visual' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
+            >
+              Visual
+            </button>
+            <button
+              onClick={() => setViewMode('json')}
+              className={`px-3 py-1 rounded-sm font-mono text-xs ${viewMode === 'json' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
+            >
+              JSON
+            </button>
+          </div>
+        </div>
+
+        {/* Content */}
+        {viewMode === 'visual' ? (
+          <div className="space-y-3">
+            {(selectedSection === 'all' ? sections : sections.filter(s => s.id === selectedSection)).map(section => (
+              <SectionCard key={section.id} section={section} />
+            ))}
+          </div>
+        ) : (
+          <div className="bg-slate-900 border border-slate-700 rounded-sm p-4 max-h-[600px] overflow-auto">
+            <pre className="font-mono text-xs text-green-400 whitespace-pre-wrap">
+              {JSON.stringify(
+                selectedSection === 'all' ? characterData : characterData[selectedSection],
+                null, 2
+              )}
+            </pre>
+          </div>
+        )}
+      </div>
+    ),
+
+    // SUBTAB 2: Statistics
+    2: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-purple-900 to-pink-900 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">📈 STATISTICS</h3>
+          <p className="font-mono text-xs text-purple-200">Detailed analytics about your character data.</p>
+        </div>
+
+        {/* Overall stats */}
+        <div className="grid grid-cols-3 gap-4">
+          <div className="p-6 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 text-white text-center">
+            <div className="font-mono text-4xl font-bold">{totalStats.percent}%</div>
+            <div className="font-mono text-xs opacity-75">Overall Completion</div>
+          </div>
+          <div className="p-6 rounded-lg bg-gradient-to-br from-green-500 to-green-600 text-white text-center">
+            <div className="font-mono text-4xl font-bold">{totalStats.filled}</div>
+            <div className="font-mono text-xs opacity-75">Fields Filled</div>
+          </div>
+          <div className="p-6 rounded-lg bg-gradient-to-br from-purple-500 to-purple-600 text-white text-center">
+            <div className="font-mono text-4xl font-bold">{totalStats.total - totalStats.filled}</div>
+            <div className="font-mono text-xs opacity-75">Fields Empty</div>
+          </div>
+        </div>
+
+        {/* Completion by section chart */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📊 Completion by Section</h4>
+          <div className="space-y-3">
+            {sections.map(section => {
+              const stats = countSectionFields(section.data);
+              return (
+                <div key={section.id} className="flex items-center gap-3">
+                  <span className="text-lg w-8">{section.icon}</span>
+                  <span className="font-mono text-xs w-24 text-gray-700">{section.label}</span>
+                  <div className="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
+                    <div 
+                      className={`h-full transition-all ${
+                        stats.percent >= 75 ? 'bg-green-500' : 
+                        stats.percent >= 50 ? 'bg-yellow-500' : 
+                        stats.percent >= 25 ? 'bg-orange-500' : 
+                        stats.percent > 0 ? 'bg-red-500' : 'bg-gray-300'
+                      }`}
+                      style={{ width: `${stats.percent}%` }}
+                    />
+                  </div>
+                  <span className="font-mono text-xs w-12 text-right text-gray-600">{stats.percent}%</span>
+                  <span className="font-mono text-[10px] w-16 text-right text-gray-400">{stats.filled}/{stats.total}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Top filled sections */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="bg-green-50 border border-green-200 rounded-sm p-4">
+            <h4 className="font-mono text-xs font-bold text-green-800 mb-3">✅ Most Complete</h4>
+            {sections
+              .map(s => ({ ...s, stats: countSectionFields(s.data) }))
+              .filter(s => s.stats.filled > 0)
+              .sort((a, b) => b.stats.percent - a.stats.percent)
+              .slice(0, 5)
+              .map((s, i) => (
+                <div key={s.id} className="flex items-center justify-between py-1">
+                  <span className="font-mono text-xs text-gray-700">{i+1}. {s.icon} {s.label}</span>
+                  <span className="font-mono text-xs font-bold text-green-700">{s.stats.percent}%</span>
+                </div>
+              ))
+            }
+          </div>
+          <div className="bg-red-50 border border-red-200 rounded-sm p-4">
+            <h4 className="font-mono text-xs font-bold text-red-800 mb-3">⚠️ Needs Attention</h4>
+            {sections
+              .map(s => ({ ...s, stats: countSectionFields(s.data) }))
+              .filter(s => s.stats.percent < 50 && s.stats.total > 0)
+              .sort((a, b) => a.stats.percent - b.stats.percent)
+              .slice(0, 5)
+              .map((s, i) => (
+                <div key={s.id} className="flex items-center justify-between py-1">
+                  <span className="font-mono text-xs text-gray-700">{s.icon} {s.label}</span>
+                  <span className="font-mono text-xs font-bold text-red-700">{s.stats.percent}%</span>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        {/* Data size */}
+        <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-gray-800 mb-2">💾 Data Size</h4>
+          <div className="font-mono text-xs text-gray-600">
+            JSON size: <strong>{(JSON.stringify(characterData).length / 1024).toFixed(2)} KB</strong>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 3: Validation
+    3: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-amber-900 to-orange-900 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">✅ VALIDATION</h3>
+          <p className="font-mono text-xs text-amber-200">Check if your character is ready for use.</p>
+        </div>
+
+        {/* Validation summary */}
+        <div className="grid grid-cols-3 gap-4">
+          <div className="p-4 rounded bg-green-50 border border-green-200 text-center">
+            <div className="font-mono text-3xl font-bold text-green-700">
+              {validationRules.filter(r => r.check()).length}
+            </div>
+            <div className="font-mono text-xs text-gray-600">Passed</div>
+          </div>
+          <div className="p-4 rounded bg-red-50 border border-red-200 text-center">
+            <div className="font-mono text-3xl font-bold text-red-700">
+              {validationRules.filter(r => !r.check()).length}
+            </div>
+            <div className="font-mono text-xs text-gray-600">Failed</div>
+          </div>
+          <div className="p-4 rounded bg-blue-50 border border-blue-200 text-center">
+            <div className="font-mono text-3xl font-bold text-blue-700">
+              {validationRules.length}
+            </div>
+            <div className="font-mono text-xs text-gray-600">Total Checks</div>
+          </div>
+        </div>
+
+        {/* Validation by category */}
+        {['Required', 'Recommended', 'For TTS', 'For RP', 'For Story', 'Optional'].map(category => {
+          const categoryRules = validationRules.filter(r => r.category === category);
+          if (categoryRules.length === 0) return null;
+          
+          return (
+            <div key={category} className="bg-white border border-gray-200 rounded-sm p-4">
+              <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">{category}</h4>
+              <div className="space-y-2">
+                {categoryRules.map(rule => {
+                  const passed = rule.check();
+                  return (
+                    <div key={rule.id} className={`flex items-center gap-3 p-2 rounded ${passed ? 'bg-green-50' : 'bg-red-50'}`}>
+                      <span className={`text-lg ${passed ? 'text-green-600' : 'text-red-600'}`}>
+                        {passed ? '✓' : '✗'}
+                      </span>
+                      <span className="font-mono text-xs text-gray-700">{rule.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Readiness indicators */}
+        <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-gray-800 mb-3">🎯 Readiness for Platforms</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: 'Basic RP', checks: ['name', 'age', 'gender', 'personality'] },
+              { label: 'ElevenLabs TTS', checks: ['voice_basic', 'voice_accent'] },
+              { label: 'Story-driven RP', checks: ['backstory', 'goals_defined', 'relationships'] },
+              { label: 'Full Character', checks: ['name', 'age', 'appearance_basic', 'personality', 'backstory'] },
+            ].map(platform => {
+              const passed = platform.checks.filter(c => validationRules.find(r => r.id === c)?.check()).length;
+              const total = platform.checks.length;
+              const percent = Math.round((passed / total) * 100);
+              
+              return (
+                <div key={platform.label} className="p-3 rounded bg-white border border-gray-200">
+                  <div className="font-mono text-xs font-bold text-gray-700 mb-2">{platform.label}</div>
+                  <div className="h-2 bg-gray-200 rounded-full overflow-hidden mb-1">
+                    <div 
+                      className={`h-full ${percent === 100 ? 'bg-green-500' : percent >= 50 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                      style={{ width: `${percent}%` }}
+                    />
+                  </div>
+                  <div className="font-mono text-[10px] text-gray-500">{passed}/{total} ready</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 4: Quick Edit
+    4: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-green-900 to-emerald-900 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">✏️ QUICK EDIT</h3>
+          <p className="font-mono text-xs text-green-200">Quickly view and edit key character fields.</p>
+        </div>
+
+        {/* Essential Info */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🪪 Essential Information</h4>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">First Name</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-sm">
+                {characterData.identity?.core?.firstName || <span className="text-gray-400 italic">Not set</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Last Name</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-sm">
+                {characterData.identity?.core?.lastName || <span className="text-gray-400 italic">Not set</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Nickname</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-sm">
+                {characterData.identity?.core?.nickname || <span className="text-gray-400 italic">Not set</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Age</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-sm">
+                {characterData.identity?.vitals?.age || <span className="text-gray-400 italic">Not set</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Gender</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-sm">
+                {characterData.identity?.vitals?.genderIdentity || <span className="text-gray-400 italic">Not set</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Nationality</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-sm">
+                {characterData.identity?.vitals?.nationality || <span className="text-gray-400 italic">Not set</span>}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Appearance Quick View */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">👤 Appearance</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Hair Color</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-xs">
+                {characterData.appearance?.hair?.color || <span className="text-gray-400 italic">—</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Eye Color</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-xs">
+                {characterData.appearance?.eyes?.color || <span className="text-gray-400 italic">—</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Height</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-xs">
+                {characterData.appearance?.body?.height || <span className="text-gray-400 italic">—</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Build</label>
+              <div className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-sm font-mono text-xs">
+                {characterData.appearance?.body?.build || <span className="text-gray-400 italic">—</span>}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Personality Quick View */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🧠 Personality</h4>
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">MBTI Type</label>
+              <div className="px-3 py-2 bg-purple-50 border border-purple-200 rounded-sm font-mono text-sm font-bold text-purple-700">
+                {characterData.psychology?.core?.mbtiType || <span className="text-gray-400 italic font-normal">Not set</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Enneagram</label>
+              <div className="px-3 py-2 bg-purple-50 border border-purple-200 rounded-sm font-mono text-sm font-bold text-purple-700">
+                {characterData.psychology?.core?.enneagramType || <span className="text-gray-400 italic font-normal">Not set</span>}
+              </div>
+            </div>
+          </div>
+          <div>
+            <label className="block font-mono text-[10px] text-gray-500 mb-2">Personality Traits</label>
+            <div className="flex flex-wrap gap-2">
+              {characterData.psychology?.core?.personalityTraits?.length > 0 
+                ? characterData.psychology.core.personalityTraits.map((trait, i) => (
+                    <span key={i} className="px-2 py-1 bg-blue-100 text-blue-700 rounded-sm font-mono text-xs">{trait}</span>
+                  ))
+                : <span className="text-gray-400 italic font-mono text-xs">No traits selected</span>
+              }
+            </div>
+          </div>
+        </div>
+
+        {/* Voice Quick View */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🎤 Voice</h4>
+          <div className="grid grid-cols-3 gap-4 mb-4">
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Voice Gender</label>
+              <div className="px-3 py-2 bg-orange-50 border border-orange-200 rounded-sm font-mono text-xs">
+                {characterData.voice?.design?.voiceGender || <span className="text-gray-400 italic">—</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Voice Age</label>
+              <div className="px-3 py-2 bg-orange-50 border border-orange-200 rounded-sm font-mono text-xs">
+                {characterData.voice?.design?.voiceAge || <span className="text-gray-400 italic">—</span>}
+              </div>
+            </div>
+            <div>
+              <label className="block font-mono text-[10px] text-gray-500 mb-1">Accent</label>
+              <div className="px-3 py-2 bg-orange-50 border border-orange-200 rounded-sm font-mono text-xs">
+                {characterData.voice?.languages?.accent || <span className="text-gray-400 italic">—</span>}
+              </div>
+            </div>
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {[
+              { label: 'Pitch', value: characterData.voice?.design?.pitch },
+              { label: 'Speed', value: characterData.voice?.design?.speed },
+              { label: 'Warmth', value: characterData.voice?.design?.timbreWarmth },
+              { label: 'Smoothness', value: characterData.voice?.design?.timbreSmoothness },
+            ].map((item, i) => (
+              <div key={i} className="text-center p-2 bg-gray-50 rounded">
+                <div className="font-mono text-xs font-bold text-gray-700 capitalize">{item.value ? item.value.split('-').join(' ') : '—'}</div>
+                <div className="font-mono text-[9px] text-gray-500">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Occupation */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">💼 Occupation</h4>
+          {characterData.occupation?.jobs?.length > 0 ? (
+            <div className="space-y-2">
+              {characterData.occupation.jobs.map((job, i) => (
+                <div key={i} className="p-3 bg-green-50 border border-green-200 rounded-sm">
+                  <div className="font-mono text-sm font-bold text-green-800">{job.title || 'Untitled'}</div>
+                  {job.company && <div className="font-mono text-xs text-green-600">@ {job.company}</div>}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="font-mono text-xs text-gray-400 italic">No occupations defined</p>
+          )}
+        </div>
+
+        {/* Quick tip */}
+        <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
+          <p className="font-mono text-xs text-blue-700">
+            💡 This is a read-only quick view. To edit fields, navigate to their respective tabs in the main navigation.
+          </p>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 5: Compare (Snapshots)
+    5: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-violet-900 to-purple-900 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">📸 COMPARE & SNAPSHOTS</h3>
+          <p className="font-mono text-xs text-violet-200">Save snapshots and compare character versions.</p>
+        </div>
+
+        {/* Create Snapshot */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">💾 Create Snapshot</h4>
+          <p className="font-mono text-xs text-gray-500 mb-4">Save the current state of your character for later comparison.</p>
+          <div className="flex gap-3">
+            <button 
+              onClick={() => {
+                const snapshot = {
+                  timestamp: new Date().toISOString(),
+                  name: characterData.identity?.core?.firstName || 'Unnamed',
+                  data: JSON.stringify(characterData),
+                  stats: totalStats
+                };
+                const existing = JSON.parse(localStorage.getItem('personaLoomSnapshots') || '[]');
+                existing.push(snapshot);
+                localStorage.setItem('personaLoomSnapshots', JSON.stringify(existing.slice(-10)));
+                alert('Snapshot saved! (Max 10 snapshots stored)');
+              }}
+              className="flex-1 px-4 py-3 bg-violet-600 hover:bg-violet-700 text-white font-mono text-xs uppercase rounded-sm"
+            >
+              📸 Save Current Snapshot
+            </button>
+            <button 
+              onClick={() => {
+                if (confirm('Clear all saved snapshots?')) {
+                  localStorage.removeItem('personaLoomSnapshots');
+                  alert('All snapshots cleared');
+                }
+              }}
+              className="px-4 py-3 bg-red-100 hover:bg-red-200 text-red-700 font-mono text-xs uppercase rounded-sm"
+            >
+              Clear All
+            </button>
+          </div>
+        </div>
+
+        {/* Saved Snapshots */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📂 Saved Snapshots</h4>
+          {(() => {
+            const snapshots = JSON.parse(localStorage.getItem('personaLoomSnapshots') || '[]');
+            if (snapshots.length === 0) {
+              return <p className="font-mono text-xs text-gray-400 italic">No snapshots saved yet.</p>;
+            }
+            return (
+              <div className="space-y-2">
+                {snapshots.map((snap, i) => (
+                  <div key={i} className="flex items-center justify-between p-3 bg-gray-50 border border-gray-200 rounded-sm">
+                    <div>
+                      <div className="font-mono text-sm font-bold text-gray-800">{snap.name}</div>
+                      <div className="font-mono text-[10px] text-gray-500">
+                        {new Date(snap.timestamp).toLocaleString()} • {snap.stats?.percent || 0}% complete
+                      </div>
+                    </div>
+                    <div className="flex gap-2">
+                      <button 
+                        onClick={() => {
+                          if (confirm('Restore this snapshot? Current data will be replaced.')) {
+                            const data = JSON.parse(snap.data);
+                            Object.keys(data).forEach(key => {
+                              if (typeof data[key] === 'object') {
+                                // Would need updateData passed as prop
+                              }
+                            });
+                            alert('To restore, use Import/Backup with the snapshot data.');
+                          }
+                        }}
+                        className="px-3 py-1 bg-blue-100 hover:bg-blue-200 text-blue-700 font-mono text-[10px] rounded-sm"
+                      >
+                        View
+                      </button>
+                      <button 
+                        onClick={() => {
+                          navigator.clipboard.writeText(snap.data);
+                          alert('Snapshot data copied to clipboard!');
+                        }}
+                        className="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-mono text-[10px] rounded-sm"
+                      >
+                        Copy
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
+        </div>
+
+        {/* Character Comparison */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">⚖️ Character Comparison</h4>
+          <p className="font-mono text-xs text-gray-500 mb-4">Compare your character with previous snapshots or other characters.</p>
+          
+          <div className="grid grid-cols-2 gap-4">
+            <div className="p-4 bg-blue-50 border-2 border-blue-300 rounded-sm">
+              <div className="font-mono text-xs font-bold text-blue-800 mb-2">📍 Current Character</div>
+              <div className="font-mono text-lg font-bold text-blue-700">
+                {characterData.identity?.core?.firstName || 'Unnamed'}
+              </div>
+              <div className="font-mono text-xs text-blue-600">{totalStats.percent}% complete</div>
+              <div className="font-mono text-[10px] text-blue-500">{totalStats.filled} fields filled</div>
+            </div>
+            
+            <div className="p-4 bg-gray-50 border-2 border-dashed border-gray-300 rounded-sm flex flex-col items-center justify-center">
+              <div className="font-mono text-xs text-gray-500 mb-2">Compare with...</div>
+              <select 
+                className="w-full px-2 py-1 border border-gray-300 rounded-sm font-mono text-xs"
+                onChange={(e) => {
+                  if (e.target.value) {
+                    const snapshots = JSON.parse(localStorage.getItem('personaLoomSnapshots') || '[]');
+                    const snap = snapshots[parseInt(e.target.value)];
+                    if (snap) {
+                      const data = JSON.parse(snap.data);
+                      const stats = countSectionFields(data);
+                      alert(`Snapshot: ${snap.name}\nCompletion: ${stats.percent}%\nFields: ${stats.filled}/${stats.total}`);
+                    }
+                  }
+                }}
+              >
+                <option value="">Select snapshot...</option>
+                {JSON.parse(localStorage.getItem('personaLoomSnapshots') || '[]').map((snap, i) => (
+                  <option key={i} value={i}>{snap.name} - {new Date(snap.timestamp).toLocaleDateString()}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        {/* Changelog */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📝 Session Changes</h4>
+          <p className="font-mono text-xs text-gray-500 mb-4">Track what has changed since the session started.</p>
+          <div className="p-4 bg-gray-50 rounded-sm">
+            <div className="font-mono text-xs text-gray-600">
+              <p>• Session started: <strong>{new Date().toLocaleString()}</strong></p>
+              <p>• Current completion: <strong>{totalStats.percent}%</strong></p>
+              <p>• Total fields filled: <strong>{totalStats.filled}</strong></p>
+            </div>
+          </div>
+        </div>
+
+        {/* Tips */}
+        <div className="bg-violet-50 border border-violet-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-violet-800 mb-2">💡 Tips</h4>
+          <ul className="font-mono text-[10px] text-violet-700 space-y-1">
+            <li>• Snapshots are stored locally in your browser</li>
+            <li>• Maximum of 10 snapshots are kept</li>
+            <li>• Use Export → Import/Backup for permanent saves</li>
+            <li>• Clear browser data will remove snapshots</li>
+          </ul>
+        </div>
+      </div>
+    ),
+  };
 
   return (
     <div className="animate-fadeIn">
       <div className="mb-8">
-        <span className="inline-block bg-[#1a365d] text-white font-mono text-[9px] px-2 py-1 tracking-[0.15em]">SYSTEM // DATA REGISTRY</span>
+        <span className="inline-block bg-[#1a365d] text-white font-mono text-[9px] px-2 py-1 tracking-[0.15em]">SYSTEM // DATABASE</span>
       </div>
       <h1 className="font-serif text-4xl font-black italic text-gray-900 mb-4">Character Database</h1>
-      <p className="font-mono text-xs text-gray-500 mb-8">Real-time structured data from all profile sections.</p>
+      <p className="font-mono text-xs text-gray-500 mb-8">View, browse, and analyze your character data.</p>
       
-      <div className="flex items-center gap-4 mb-6 p-4 bg-white/70 border border-gray-200">
-        <div className="flex-1">
-          <div className="flex justify-between mb-2">
-            <span className="font-mono text-[10px] text-gray-500 uppercase">Completion</span>
-            <span className="font-mono text-sm font-bold">{stats.filled}/{stats.total}</span>
-          </div>
-          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-emerald-600 transition-all" style={{ width: `${percent}%` }} />
-          </div>
-        </div>
-        <div className="text-center px-4 border-l border-gray-200">
-          <div className="font-mono text-2xl font-black">{percent}%</div>
-        </div>
-      </div>
-      
-      <div className="flex gap-3 mb-6">
-        <button onClick={onCopy} className="flex items-center gap-2 px-4 py-2 bg-gray-900 text-white font-mono text-xs uppercase hover:bg-gray-700">
-          {copied ? <Icons.Check width={14} height={14} /> : <Icons.Copy width={14} height={14} />}
-          {copied ? 'Copied!' : 'Copy JSON'}
-        </button>
-        <button onClick={onDownload} className="flex items-center gap-2 px-4 py-2 border-2 border-gray-900 font-mono text-xs uppercase hover:bg-gray-100">
-          <Icons.Download width={14} height={14} />
-          Download
-        </button>
-      </div>
-      
-      <div className="bg-[#1e293b] rounded-t-md">
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex gap-1.5">
-            <div className="w-3 h-3 rounded-full bg-red-500/80" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-            <div className="w-3 h-3 rounded-full bg-green-500/80" />
-          </div>
-          <span className="font-mono text-[10px] text-gray-400 ml-2">character_profile.json</span>
-        </div>
-      </div>
-      <div className="bg-slate-50 border-2 border-t-0 border-[#1e293b] rounded-b-md p-4 max-h-[400px] overflow-auto">
-        <pre className="font-mono text-xs text-gray-700 whitespace-pre-wrap">{JSON.stringify(characterData, null, 2)}</pre>
-      </div>
+      {subtabContent[subtab] || subtabContent[0]}
     </div>
   );
 };
 
 // ============================================================================
-// EXPORT CONTENT
+// EXPORT CONTENT - Complete with multiple formats
 // ============================================================================
-const ExportContent = ({ characterData, onCopy, onDownload }) => {
+const ExportContent = ({ characterData, onCopy, onDownload, updateData, subtab = 0 }) => {
   const [exportFormat, setExportFormat] = useState('json');
-  
+  const [selectedSections, setSelectedSections] = useState(['all']);
+  const [importText, setImportText] = useState('');
+  const [importError, setImportError] = useState('');
+  const [importSuccess, setImportSuccess] = useState('');
+
+  // Section list
+  const allSections = [
+    'identity', 'appearance', 'psychology', 'physique', 'voice', 'history', 
+    'relationships', 'intimacy', 'occupation', 'intelligence', 'worldview', 
+    'favorites', 'behavior', 'secrets', 'goals', 'directives'
+  ];
+
+  // Toggle section selection
+  const toggleSection = (section) => {
+    if (section === 'all') {
+      setSelectedSections(['all']);
+    } else {
+      setSelectedSections(prev => {
+        const filtered = prev.filter(s => s !== 'all');
+        if (filtered.includes(section)) {
+          return filtered.filter(s => s !== section);
+        } else {
+          return [...filtered, section];
+        }
+      });
+    }
+  };
+
+  // Get filtered data
+  const getFilteredData = () => {
+    if (selectedSections.includes('all')) return characterData;
+    const filtered = {};
+    selectedSections.forEach(s => {
+      if (characterData[s]) filtered[s] = characterData[s];
+    });
+    return filtered;
+  };
+
+  // Generate text export
   const generateTextExport = () => {
+    const data = getFilteredData();
     let text = `CHARACTER PROFILE: ${characterData.identity?.core?.firstName || 'Unnamed'} ${characterData.identity?.core?.lastName || ''}\n`;
     text += `${'='.repeat(60)}\n\n`;
     
-    const addSection = (title, obj, depth = 0) => {
+    const addSection = (title, obj) => {
       if (!obj) return;
       text += `${title.toUpperCase()}\n${'-'.repeat(40)}\n`;
       Object.entries(obj).forEach(([key, val]) => {
         if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
           text += `\n[${key}]\n`;
           Object.entries(val).forEach(([k, v]) => {
-            if (Array.isArray(v) && v.length > 0) text += `${k}: ${v.join(', ')}\n`;
-            else if (v && v !== '' && v !== 5) text += `${k}: ${v}\n`;
+            if (Array.isArray(v) && v.length > 0) text += `  ${k}: ${v.join(', ')}\n`;
+            else if (v && v !== '' && v !== 5) text += `  ${k}: ${v}\n`;
           });
         }
       });
       text += '\n';
     };
     
-    addSection('Identity', characterData.identity);
-    addSection('Appearance', characterData.appearance);
-    addSection('Psychology', characterData.psychology);
-    addSection('Worldview', characterData.worldview);
-    addSection('Favorites', characterData.favorites);
-    addSection('Behavior', characterData.behavior);
-    addSection('Secrets', characterData.secrets);
-    addSection('Goals', characterData.goals);
+    Object.entries(data).forEach(([key, val]) => {
+      addSection(key, val);
+    });
     
-    text += `\nGenerated by Persona Loom v4\n`;
+    text += `\nGenerated by Persona Loom v6\n`;
+    text += `Export Date: ${new Date().toISOString()}\n`;
     return text;
   };
-  
-  const handleExport = () => {
-    if (exportFormat === 'json') {
-      onDownload();
-    } else {
-      const text = generateTextExport();
-      const blob = new Blob([text], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `${characterData.identity?.core?.firstName || 'character'}_profile.txt`;
-      a.click();
-      URL.revokeObjectURL(url);
+
+  // Generate Markdown export
+  const generateMarkdownExport = () => {
+    const data = getFilteredData();
+    const name = `${characterData.identity?.core?.firstName || 'Unnamed'} ${characterData.identity?.core?.lastName || ''}`;
+    let md = `# ${name}\n\n`;
+    md += `> Generated by Persona Loom v6 on ${new Date().toLocaleDateString()}\n\n`;
+    
+    const addSection = (title, obj, level = 2) => {
+      if (!obj) return;
+      md += `${'#'.repeat(level)} ${title}\n\n`;
+      Object.entries(obj).forEach(([key, val]) => {
+        if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+          md += `${'#'.repeat(level + 1)} ${key.charAt(0).toUpperCase() + key.slice(1)}\n\n`;
+          Object.entries(val).forEach(([k, v]) => {
+            if (Array.isArray(v) && v.length > 0) {
+              md += `- **${k}**: ${v.join(', ')}\n`;
+            } else if (v && v !== '' && v !== 5) {
+              md += `- **${k}**: ${v}\n`;
+            }
+          });
+          md += '\n';
+        }
+      });
+    };
+    
+    Object.entries(data).forEach(([key, val]) => {
+      addSection(key.charAt(0).toUpperCase() + key.slice(1), val);
+    });
+    
+    return md;
+  };
+
+  // Generate ElevenLabs voice description
+  const generateElevenLabsVoice = () => {
+    const voice = characterData.voice || {};
+    const design = voice.design || {};
+    const languages = voice.languages || {};
+    
+    const parts = [];
+    if (design.voiceGender) parts.push(design.voiceGender);
+    if (design.voiceAge) parts.push(`${design.voiceAge} voice`);
+    
+    const pitch = design.pitch;
+    if (pitch) {
+      const pitchMap = { 'very-deep': 'very deep', 'deep': 'deep', 'low': 'low', 'high': 'high-pitched', 'very-high': 'very high-pitched' };
+      if (pitchMap[pitch]) parts.push(pitchMap[pitch]);
     }
+    
+    const warmth = design.timbreWarmth;
+    if (warmth) {
+      const warmthMap = { 'icy': 'icy', 'cool': 'cool', 'warm': 'warm', 'very-warm': 'very warm' };
+      if (warmthMap[warmth]) parts.push(warmthMap[warmth]);
+    }
+    
+    const smoothness = design.timbreSmoothness;
+    if (smoothness) {
+      const smoothnessMap = { 'gravelly': 'gravelly', 'rough': 'rough', 'smooth': 'smooth', 'silky': 'silky', 'velvety': 'velvety' };
+      if (smoothnessMap[smoothness]) parts.push(smoothnessMap[smoothness]);
+    }
+    
+    if (design.breathiness && design.breathiness !== 'none' && design.breathiness !== 'minimal') parts.push('breathy');
+    if (design.roughness && design.roughness !== 'none' && design.roughness !== 'minimal') parts.push('raspy');
+    if (design.voiceTexture) parts.push(design.voiceTexture.toLowerCase());
+    if (design.emotionalTone) parts.push(`${design.emotionalTone.toLowerCase()} tone`);
+    
+    if (languages.accent) {
+      const strength = languages.accentStrength || 'moderate';
+      const strengthMap = { 'barely-noticeable': 'slight', 'slight': 'slight', 'mild': 'mild', 'moderate': 'moderate', 'noticeable': 'noticeable', 'strong': 'strong', 'very-strong': 'very strong', 'thick': 'thick' };
+      parts.push(`with ${strengthMap[strength] || 'moderate'} ${languages.accent} accent`);
+    }
+    
+    return parts.join(', ') || 'No voice settings configured.';
+  };
+
+  // Generate RP summary (for Character.AI, etc)
+  const generateRPSummary = () => {
+    const identity = characterData.identity || {};
+    const core = identity.core || {};
+    const vitals = identity.vitals || {};
+    const psychology = characterData.psychology || {};
+    const appearance = characterData.appearance || {};
+    const directives = characterData.directives || {};
+    
+    let summary = `Name: ${core.firstName || 'Unknown'} ${core.lastName || ''}\n`;
+    if (core.nickname) summary += `Nickname: "${core.nickname}"\n`;
+    summary += `Age: ${vitals.age || 'Unknown'}\n`;
+    summary += `Gender: ${vitals.genderIdentity || 'Unknown'}\n`;
+    if (vitals.nationality) summary += `Nationality: ${vitals.nationality}\n`;
+    summary += '\n';
+    
+    if (psychology.core?.personalityTraits?.length > 0) {
+      summary += `Personality: ${psychology.core.personalityTraits.join(', ')}\n`;
+    }
+    if (psychology.core?.mbtiType) {
+      summary += `MBTI: ${psychology.core.mbtiType}\n`;
+    }
+    summary += '\n';
+    
+    if (appearance.body?.height || appearance.body?.build) {
+      summary += `Build: ${appearance.body?.height || ''} ${appearance.body?.build || ''}\n`;
+    }
+    if (appearance.hair?.color) {
+      summary += `Hair: ${appearance.hair.color} ${appearance.hair.style || ''}\n`;
+    }
+    if (appearance.eyes?.color) {
+      summary += `Eyes: ${appearance.eyes.color}\n`;
+    }
+    summary += '\n';
+    
+    // Add directive outputs if available
+    if (directives.formatting?.responseLength) {
+      summary += `[Response Style Preferences]\n`;
+    }
+    
+    return summary;
+  };
+
+  // Generate Directive text
+  const generateDirectiveOutput = () => {
+    const directives = characterData.directives || {};
+    let output = '';
+    
+    // Directive Responses
+    output += '=== DIRECTIVE RESPONSES (250 chars) ===\n';
+    const directiveParts = [];
+    Object.entries(directives.formatting || {}).forEach(([k, v]) => {
+      if (v) directiveParts.push(`${k}: ${v}`);
+    });
+    Object.entries(directives.writingStyle || {}).forEach(([k, v]) => {
+      if (v) directiveParts.push(`${k}: ${v}`);
+    });
+    output += directiveParts.join('. ') || 'Not configured';
+    output += '\n\n';
+    
+    // Ruler
+    output += '=== RULER (750 chars) ===\n';
+    const ruler = directives.ruler || {};
+    const rulerParts = [];
+    Object.entries(ruler).forEach(([k, v]) => {
+      if (v && k !== 'importantRules' && k !== 'customRules') {
+        rulerParts.push(`${k}: ${v}`);
+      }
+    });
+    if (ruler.importantRules?.length > 0) {
+      rulerParts.push(`Important rules: ${ruler.importantRules.join(', ')}`);
+    }
+    output += rulerParts.join('\n') || 'Not configured';
+    output += '\n\n';
+    
+    // Proactive
+    output += '=== PROACTIVE (300 chars) ===\n';
+    const proactive = directives.proactive || {};
+    const proactiveParts = [];
+    Object.entries(proactive).forEach(([k, v]) => {
+      if (v && k !== 'actionTypes' && k !== 'customDirective') {
+        proactiveParts.push(`${k}: ${v}`);
+      }
+    });
+    if (proactive.actionTypes?.length > 0) {
+      proactiveParts.push(`Actions: ${proactive.actionTypes.join(', ')}`);
+    }
+    output += proactiveParts.join('\n') || 'Not configured';
+    
+    return output;
+  };
+
+  // Handle export
+  const handleExport = (format) => {
+    let content, filename, type;
+    
+    switch (format) {
+      case 'json':
+        content = JSON.stringify(getFilteredData(), null, 2);
+        filename = `${characterData.identity?.core?.firstName || 'character'}_full.json`;
+        type = 'application/json';
+        break;
+      case 'txt':
+        content = generateTextExport();
+        filename = `${characterData.identity?.core?.firstName || 'character'}_profile.txt`;
+        type = 'text/plain';
+        break;
+      case 'md':
+        content = generateMarkdownExport();
+        filename = `${characterData.identity?.core?.firstName || 'character'}_profile.md`;
+        type = 'text/markdown';
+        break;
+      case 'elevenlabs':
+        content = generateElevenLabsVoice();
+        filename = `${characterData.identity?.core?.firstName || 'character'}_voice.txt`;
+        type = 'text/plain';
+        break;
+      case 'rp':
+        content = generateRPSummary();
+        filename = `${characterData.identity?.core?.firstName || 'character'}_rp.txt`;
+        type = 'text/plain';
+        break;
+      case 'directives':
+        content = generateDirectiveOutput();
+        filename = `${characterData.identity?.core?.firstName || 'character'}_directives.txt`;
+        type = 'text/plain';
+        break;
+      default:
+        content = JSON.stringify(getFilteredData(), null, 2);
+        filename = 'character.json';
+        type = 'application/json';
+    }
+    
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Handle import
+  const handleImport = () => {
+    setImportError('');
+    setImportSuccess('');
+    
+    try {
+      const data = JSON.parse(importText);
+      
+      // Validate basic structure
+      if (typeof data !== 'object') {
+        throw new Error('Invalid data format');
+      }
+      
+      // Merge with existing data
+      if (updateData) {
+        Object.entries(data).forEach(([key, value]) => {
+          if (allSections.includes(key)) {
+            updateData(key, value);
+          }
+        });
+        setImportSuccess('Character data imported successfully!');
+        setImportText('');
+      }
+    } catch (e) {
+      setImportError(`Import failed: ${e.message}`);
+    }
+  };
+
+  // Handle file upload
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        setImportText(event.target.result);
+      };
+      reader.readAsText(file);
+    }
+  };
+
+  // Subtab content
+  const subtabContent = {
+    // SUBTAB 0: Quick Export
+    0: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">⚡ QUICK EXPORT</h3>
+          <p className="font-mono text-xs text-slate-300">Export your character in various formats.</p>
+        </div>
+
+        {/* Export format selection */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📁 Export Format</h4>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {[
+              { id: 'json', icon: '📄', label: 'JSON', desc: 'Full data, machine-readable' },
+              { id: 'txt', icon: '📝', label: 'Text', desc: 'Human-readable summary' },
+              { id: 'md', icon: '📋', label: 'Markdown', desc: 'Formatted documentation' },
+            ].map(format => (
+              <button 
+                key={format.id}
+                onClick={() => setExportFormat(format.id)}
+                className={`p-4 border-2 rounded-sm transition-all text-left ${
+                  exportFormat === format.id ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                <div className="text-2xl mb-2">{format.icon}</div>
+                <div className="font-mono text-sm font-bold">{format.label}</div>
+                <div className="font-mono text-[10px] text-gray-500">{format.desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Quick actions */}
+        <div className="flex gap-3">
+          <button 
+            onClick={() => handleExport(exportFormat)} 
+            className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-900 text-white font-mono text-xs uppercase hover:bg-gray-700 rounded-sm"
+          >
+            <Icons.Download width={16} height={16} />
+            Download {exportFormat.toUpperCase()}
+          </button>
+          <button 
+            onClick={onCopy} 
+            className="flex items-center gap-2 px-4 py-3 border-2 border-gray-900 font-mono text-xs uppercase hover:bg-gray-100 rounded-sm"
+          >
+            <Icons.Copy width={16} height={16} />
+            Copy JSON
+          </button>
+        </div>
+
+        {/* Preview */}
+        <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-gray-600 mb-3">👁️ Preview</h4>
+          <div className="bg-white border border-gray-200 rounded-sm p-4 max-h-[300px] overflow-auto">
+            <pre className="font-mono text-[10px] text-gray-600 whitespace-pre-wrap">
+              {exportFormat === 'json' 
+                ? JSON.stringify(characterData, null, 2).substring(0, 2000) + '...'
+                : exportFormat === 'md'
+                  ? generateMarkdownExport().substring(0, 2000) + '...'
+                  : generateTextExport().substring(0, 2000) + '...'
+              }
+            </pre>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 1: Platform Templates
+    1: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-purple-800 to-pink-800 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">🎯 PLATFORM TEMPLATES</h3>
+          <p className="font-mono text-xs text-purple-200">Export optimized for specific RP platforms and TTS services.</p>
+        </div>
+
+        {/* TTS Platforms */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🎙️ Text-to-Speech Platforms</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* ElevenLabs */}
+            <div className="border border-purple-200 rounded-sm p-4 bg-purple-50/30">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🎙️</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-purple-800">ElevenLabs</h5>
+                  <p className="font-mono text-[10px] text-gray-500">Voice Design description</p>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded border border-purple-200 mb-3 max-h-20 overflow-auto">
+                <p className="font-mono text-[10px] text-gray-700">{generateElevenLabsVoice()}</p>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {navigator.clipboard.writeText(generateElevenLabsVoice()); alert('ElevenLabs voice description copied!');}}
+                  className="flex-1 px-3 py-2 bg-purple-600 hover:bg-purple-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            {/* Generic TTS */}
+            <div className="border border-blue-200 rounded-sm p-4 bg-blue-50/30">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🔊</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-blue-800">Generic TTS</h5>
+                  <p className="font-mono text-[10px] text-gray-500">For other TTS services</p>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded border border-blue-200 mb-3 max-h-20 overflow-auto">
+                <p className="font-mono text-[10px] text-gray-700">
+                  {`Voice: ${characterData.voice?.design?.voiceGender || 'Not set'}, ${characterData.voice?.design?.voiceAge || ''}\nPitch: ${characterData.voice?.design?.pitch || 'Not set'}\nSpeed: ${characterData.voice?.design?.speed || 'Not set'}\nAccent: ${characterData.voice?.languages?.accent || 'None'}`}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {
+                    const text = `Voice: ${characterData.voice?.design?.voiceGender || 'Not set'}, ${characterData.voice?.design?.voiceAge || ''}\nPitch: ${characterData.voice?.design?.pitch || 'Not set'}\nSpeed: ${characterData.voice?.design?.speed || 'Not set'}\nAccent: ${characterData.voice?.languages?.accent || 'None'}`;
+                    navigator.clipboard.writeText(text); 
+                    alert('Generic TTS settings copied!');
+                  }}
+                  className="flex-1 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RP Platforms */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🎭 RP Platforms</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Kindroid */}
+            <div className="border border-pink-200 rounded-sm p-4 bg-pink-50/30">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🤖</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-pink-800">Kindroid</h5>
+                  <p className="font-mono text-[10px] text-gray-500">Backstory + Directive + Ruler</p>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded border border-pink-200 mb-3 max-h-20 overflow-auto">
+                <pre className="font-mono text-[10px] text-gray-700 whitespace-pre-wrap">{`[Backstory]\n${characterData.history?.childhood?.childhoodSummary || 'No backstory set'}\n\n[Directive]\n${generateDirectiveOutput().substring(0, 150)}...`}</pre>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {
+                    const kindroid = `[Backstory]\n${characterData.history?.childhood?.childhoodSummary || ''}\n${characterData.history?.formative?.formativeEvent || ''}\n\n[Directive Responses]\n${generateDirectiveOutput()}\n\n[Proactive Mode]\nSee Directives tab for proactive settings.`;
+                    navigator.clipboard.writeText(kindroid);
+                    alert('Kindroid format copied!');
+                  }}
+                  className="flex-1 px-3 py-2 bg-pink-600 hover:bg-pink-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy Full
+                </button>
+              </div>
+            </div>
+
+            {/* Character.AI */}
+            <div className="border border-amber-200 rounded-sm p-4 bg-amber-50/30">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">💬</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-amber-800">Character.AI</h5>
+                  <p className="font-mono text-[10px] text-gray-500">Character definition format</p>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded border border-amber-200 mb-3 max-h-20 overflow-auto">
+                <pre className="font-mono text-[10px] text-gray-700 whitespace-pre-wrap">{generateRPSummary().substring(0, 200)}...</pre>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {navigator.clipboard.writeText(generateRPSummary()); alert('Character.AI format copied!');}}
+                  className="flex-1 px-3 py-2 bg-amber-600 hover:bg-amber-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+
+            {/* SillyTavern */}
+            <div className="border border-green-200 rounded-sm p-4 bg-green-50/30">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🍺</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-green-800">SillyTavern</h5>
+                  <p className="font-mono text-[10px] text-gray-500">Character card format (W++)</p>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded border border-green-200 mb-3 max-h-20 overflow-auto">
+                <pre className="font-mono text-[10px] text-gray-700 whitespace-pre-wrap">{`[character("${characterData.identity?.core?.firstName || 'Name'}")]\n{\nAge("${characterData.identity?.vitals?.age || '?'}")\nGender("${characterData.identity?.vitals?.genderIdentity || '?'}")\nPersonality("${characterData.psychology?.core?.personalityTraits?.slice(0,3).join('" + "') || '?'}")\n}`}</pre>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {
+                    const wpp = `[character("${characterData.identity?.core?.firstName || 'Name'}")]\n{\nAge("${characterData.identity?.vitals?.age || '?'}")\nGender("${characterData.identity?.vitals?.genderIdentity || '?'}")\nPersonality("${characterData.psychology?.core?.personalityTraits?.join('" + "') || '?'}")\nAppearance("${characterData.appearance?.hair?.color || ''} hair" + "${characterData.appearance?.eyes?.color || ''} eyes")\nOccupation("${characterData.occupation?.jobs?.[0]?.title || '?'}")\n}`;
+                    navigator.clipboard.writeText(wpp);
+                    alert('SillyTavern W++ format copied!');
+                  }}
+                  className="flex-1 px-3 py-2 bg-green-600 hover:bg-green-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy W++
+                </button>
+              </div>
+            </div>
+
+            {/* Janitor AI */}
+            <div className="border border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">🧹</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-indigo-800">Janitor AI</h5>
+                  <p className="font-mono text-[10px] text-gray-500">Character bio format</p>
+                </div>
+              </div>
+              <div className="bg-white p-3 rounded border border-indigo-200 mb-3 max-h-20 overflow-auto">
+                <pre className="font-mono text-[10px] text-gray-700 whitespace-pre-wrap">{`Name: ${characterData.identity?.core?.firstName || ''} ${characterData.identity?.core?.lastName || ''}\nAge: ${characterData.identity?.vitals?.age || '?'}\nGender: ${characterData.identity?.vitals?.genderIdentity || '?'}`}</pre>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {
+                    const janitor = `Name: ${characterData.identity?.core?.firstName || ''} ${characterData.identity?.core?.lastName || ''}\nNickname: ${characterData.identity?.core?.nickname || ''}\nAge: ${characterData.identity?.vitals?.age || '?'}\nGender: ${characterData.identity?.vitals?.genderIdentity || '?'}\nNationality: ${characterData.identity?.vitals?.nationality || '?'}\n\nAppearance:\n- Hair: ${characterData.appearance?.hair?.color || '?'} ${characterData.appearance?.hair?.style || ''}\n- Eyes: ${characterData.appearance?.eyes?.color || '?'}\n- Height: ${characterData.appearance?.body?.height || '?'}\n- Build: ${characterData.appearance?.body?.build || '?'}\n\nPersonality: ${characterData.psychology?.core?.personalityTraits?.join(', ') || '?'}\nMBTI: ${characterData.psychology?.core?.mbtiType || '?'}\n\nOccupation: ${characterData.occupation?.jobs?.[0]?.title || '?'}`;
+                    navigator.clipboard.writeText(janitor);
+                    alert('Janitor AI format copied!');
+                  }}
+                  className="flex-1 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Documentation Formats */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📄 Documentation Formats</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Markdown */}
+            <div className="border border-gray-200 rounded-sm p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">📋</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-gray-800">Markdown</h5>
+                  <p className="font-mono text-[10px] text-gray-500">Full documentation</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {navigator.clipboard.writeText(generateMarkdownExport()); alert('Markdown copied!');}}
+                  className="flex-1 px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy MD
+                </button>
+                <button 
+                  onClick={() => handleExport('md')}
+                  className="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-mono text-xs rounded-sm"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+
+            {/* Directives */}
+            <div className="border border-gray-200 rounded-sm p-4">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="text-2xl">⚙️</span>
+                <div>
+                  <h5 className="font-mono text-sm font-bold text-gray-800">Directives Only</h5>
+                  <p className="font-mono text-[10px] text-gray-500">All RP settings</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button 
+                  onClick={() => {navigator.clipboard.writeText(generateDirectiveOutput()); alert('Directives copied!');}}
+                  className="flex-1 px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white font-mono text-xs rounded-sm"
+                >
+                  Copy
+                </button>
+                <button 
+                  onClick={() => handleExport('directives')}
+                  className="flex-1 px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-mono text-xs rounded-sm"
+                >
+                  Download
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tips */}
+        <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-blue-800 mb-2">💡 Platform Tips</h4>
+          <ul className="font-mono text-[10px] text-blue-700 space-y-1">
+            <li>• <strong>Kindroid:</strong> Use Directive Responses (250 chars), Ruler (750 chars), Proactive (300 chars)</li>
+            <li>• <strong>Character.AI:</strong> Keep definitions concise, focus on personality and speaking style</li>
+            <li>• <strong>SillyTavern:</strong> W++ format works best, include scenario for context</li>
+            <li>• <strong>ElevenLabs:</strong> Voice Design accepts natural language descriptions</li>
+          </ul>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 2: Custom Export
+    2: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-teal-800 to-cyan-800 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">🔧 CUSTOM EXPORT</h3>
+          <p className="font-mono text-xs text-teal-200">Select specific sections to export.</p>
+        </div>
+
+        {/* Section selection */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📁 Select Sections</h4>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <button
+              onClick={() => toggleSection('all')}
+              className={`px-3 py-1 rounded-sm font-mono text-xs transition-all ${
+                selectedSections.includes('all') ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
+              }`}
+            >
+              All Sections
+            </button>
+            {allSections.map(section => (
+              <button
+                key={section}
+                onClick={() => toggleSection(section)}
+                className={`px-3 py-1 rounded-sm font-mono text-xs transition-all capitalize ${
+                  selectedSections.includes(section) ? 'bg-blue-600 text-white' : 'bg-gray-100 hover:bg-gray-200'
+                }`}
+              >
+                {section}
+              </button>
+            ))}
+          </div>
+          <p className="font-mono text-[10px] text-gray-500">
+            Selected: {selectedSections.includes('all') ? 'All sections' : selectedSections.join(', ') || 'None'}
+          </p>
+        </div>
+
+        {/* Export buttons */}
+        <div className="grid grid-cols-3 gap-3">
+          <button 
+            onClick={() => handleExport('json')}
+            className="p-4 border border-gray-200 rounded-sm hover:bg-gray-50 text-center"
+          >
+            <div className="text-2xl mb-2">📄</div>
+            <div className="font-mono text-xs font-bold">JSON</div>
+          </button>
+          <button 
+            onClick={() => handleExport('txt')}
+            className="p-4 border border-gray-200 rounded-sm hover:bg-gray-50 text-center"
+          >
+            <div className="text-2xl mb-2">📝</div>
+            <div className="font-mono text-xs font-bold">Text</div>
+          </button>
+          <button 
+            onClick={() => handleExport('md')}
+            className="p-4 border border-gray-200 rounded-sm hover:bg-gray-50 text-center"
+          >
+            <div className="text-2xl mb-2">📋</div>
+            <div className="font-mono text-xs font-bold">Markdown</div>
+          </button>
+        </div>
+
+        {/* Preview filtered data */}
+        <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-gray-600 mb-3">👁️ Preview (filtered)</h4>
+          <div className="bg-white border border-gray-200 rounded-sm p-4 max-h-[300px] overflow-auto">
+            <pre className="font-mono text-[10px] text-gray-600 whitespace-pre-wrap">
+              {JSON.stringify(getFilteredData(), null, 2).substring(0, 3000)}...
+            </pre>
+          </div>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 3: Import/Backup
+    3: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-amber-800 to-orange-800 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">📥 IMPORT / BACKUP</h3>
+          <p className="font-mono text-xs text-amber-200">Import character data or create backups.</p>
+        </div>
+
+        {/* Backup current */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">💾 Create Backup</h4>
+          <p className="font-mono text-xs text-gray-500 mb-4">Download a full backup of your character.</p>
+          <button 
+            onClick={() => {
+              const backup = {
+                _meta: {
+                  version: 'PersonaLoom v6',
+                  exportDate: new Date().toISOString(),
+                  characterName: characterData.identity?.core?.firstName || 'Unknown'
+                },
+                data: characterData
+              };
+              const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${characterData.identity?.core?.firstName || 'character'}_backup_${new Date().toISOString().split('T')[0]}.json`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-mono text-xs uppercase rounded-sm"
+          >
+            <Icons.Download width={16} height={16} />
+            Download Full Backup
+          </button>
+        </div>
+
+        {/* Import */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📤 Import Character</h4>
+          <p className="font-mono text-xs text-gray-500 mb-4">Load character data from a JSON file or paste JSON text.</p>
+          
+          {/* File upload */}
+          <div className="mb-4">
+            <label className="block font-mono text-xs text-gray-600 mb-2">Upload File</label>
+            <input 
+              type="file" 
+              accept=".json"
+              onChange={handleFileUpload}
+              className="w-full px-3 py-2 border border-gray-200 rounded-sm font-mono text-xs"
+            />
+          </div>
+
+          {/* Paste JSON */}
+          <div className="mb-4">
+            <label className="block font-mono text-xs text-gray-600 mb-2">Or Paste JSON</label>
+            <textarea
+              value={importText}
+              onChange={(e) => setImportText(e.target.value)}
+              placeholder='{"identity": {...}, "appearance": {...}}'
+              className="w-full h-32 px-3 py-2 border border-gray-200 rounded-sm font-mono text-xs resize-none"
+            />
+          </div>
+
+          {/* Error/Success messages */}
+          {importError && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-sm">
+              <p className="font-mono text-xs text-red-700">{importError}</p>
+            </div>
+          )}
+          {importSuccess && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-sm">
+              <p className="font-mono text-xs text-green-700">{importSuccess}</p>
+            </div>
+          )}
+
+          <button 
+            onClick={handleImport}
+            disabled={!importText}
+            className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-mono text-xs uppercase rounded-sm ${
+              importText 
+                ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`}
+          >
+            <Icons.Upload width={16} height={16} />
+            Import Data
+          </button>
+        </div>
+
+        {/* Warning */}
+        <div className="bg-amber-50 border border-amber-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-amber-800 mb-2">⚠️ Warning</h4>
+          <p className="font-mono text-[10px] text-amber-700">
+            Importing data will merge with existing data. Make a backup first if you want to preserve current data.
+          </p>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 4: Character Card (Visual)
+    4: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-rose-800 to-pink-800 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">🎴 CHARACTER CARD</h3>
+          <p className="font-mono text-xs text-rose-200">Generate a visual character card for sharing.</p>
+        </div>
+
+        {/* Character Card Preview */}
+        <div className="flex justify-center">
+          <div 
+            id="character-card"
+            className="w-[400px] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 rounded-lg overflow-hidden shadow-2xl border border-slate-700"
+          >
+            {/* Header */}
+            <div className="relative h-32 bg-gradient-to-r from-purple-600 via-blue-600 to-cyan-600">
+              <div className="absolute inset-0 bg-black/20" />
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-900 to-transparent" />
+            </div>
+            
+            {/* Avatar */}
+            <div className="relative -mt-12 flex justify-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 border-4 border-slate-900 flex items-center justify-center text-4xl font-bold text-white shadow-lg">
+                {characterData.identity?.core?.firstName?.charAt(0)?.toUpperCase() || '?'}
+              </div>
+            </div>
+
+            {/* Info */}
+            <div className="p-6 text-center">
+              <h2 className="text-2xl font-bold text-white mb-1">
+                {characterData.identity?.core?.firstName || 'Unnamed'} {characterData.identity?.core?.lastName || ''}
+              </h2>
+              {characterData.identity?.core?.nickname && (
+                <p className="text-slate-400 text-sm mb-3">"{characterData.identity.core.nickname}"</p>
+              )}
+              
+              {/* Tags */}
+              <div className="flex flex-wrap justify-center gap-2 mb-4">
+                {characterData.identity?.vitals?.age && (
+                  <span className="px-2 py-1 bg-blue-500/20 text-blue-300 rounded text-xs">{characterData.identity.vitals.age} years</span>
+                )}
+                {characterData.identity?.vitals?.genderIdentity && (
+                  <span className="px-2 py-1 bg-pink-500/20 text-pink-300 rounded text-xs">{characterData.identity.vitals.genderIdentity}</span>
+                )}
+                {characterData.psychology?.core?.mbtiType && (
+                  <span className="px-2 py-1 bg-purple-500/20 text-purple-300 rounded text-xs">{characterData.psychology.core.mbtiType}</span>
+                )}
+              </div>
+
+              {/* Quick Stats */}
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                {characterData.appearance?.hair?.color && (
+                  <div className="p-2 bg-slate-800 rounded">
+                    <div className="text-[10px] text-slate-500">Hair</div>
+                    <div className="text-xs text-slate-300">{characterData.appearance.hair.color}</div>
+                  </div>
+                )}
+                {characterData.appearance?.eyes?.color && (
+                  <div className="p-2 bg-slate-800 rounded">
+                    <div className="text-[10px] text-slate-500">Eyes</div>
+                    <div className="text-xs text-slate-300">{characterData.appearance.eyes.color}</div>
+                  </div>
+                )}
+                {characterData.appearance?.body?.height && (
+                  <div className="p-2 bg-slate-800 rounded">
+                    <div className="text-[10px] text-slate-500">Height</div>
+                    <div className="text-xs text-slate-300">{characterData.appearance.body.height}</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Traits */}
+              {characterData.psychology?.core?.personalityTraits?.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-1 mb-4">
+                  {characterData.psychology.core.personalityTraits.slice(0, 5).map((trait, i) => (
+                    <span key={i} className="px-2 py-0.5 bg-slate-700 text-slate-300 rounded-full text-[10px]">{trait}</span>
+                  ))}
+                </div>
+              )}
+
+              {/* Occupation */}
+              {characterData.occupation?.jobs?.[0]?.title && (
+                <div className="text-sm text-slate-400">
+                  💼 {characterData.occupation.jobs[0].title}
+                  {characterData.occupation.jobs[0].company && ` @ ${characterData.occupation.jobs[0].company}`}
+                </div>
+              )}
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-3 bg-slate-800/50 border-t border-slate-700 flex justify-between items-center">
+              <span className="font-mono text-[10px] text-slate-500">Persona Loom v6</span>
+              <span className="font-mono text-[10px] text-slate-500">{new Date().toLocaleDateString()}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Export Card Options */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📥 Export Card</h4>
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              onClick={() => {
+                const card = document.getElementById('character-card');
+                if (card) {
+                  alert('Card HTML copied! For best results, use a screenshot tool or browser extension to capture the card.');
+                  navigator.clipboard.writeText(card.outerHTML);
+                }
+              }}
+              className="p-3 border border-gray-200 rounded-sm hover:bg-gray-50 text-center"
+            >
+              <div className="text-xl mb-1">📋</div>
+              <div className="font-mono text-xs font-bold">Copy HTML</div>
+            </button>
+            <button 
+              onClick={() => {
+                alert('💡 Tip: Use your browser\'s screenshot feature or a tool like Lightshot to capture the card above!');
+              }}
+              className="p-3 border border-gray-200 rounded-sm hover:bg-gray-50 text-center"
+            >
+              <div className="text-xl mb-1">📸</div>
+              <div className="font-mono text-xs font-bold">Screenshot</div>
+            </button>
+          </div>
+        </div>
+
+        {/* Card Style Options */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">🎨 Card Includes</h4>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { label: 'Name & Nickname', included: !!characterData.identity?.core?.firstName },
+              { label: 'Age & Gender', included: !!characterData.identity?.vitals?.age },
+              { label: 'MBTI Type', included: !!characterData.psychology?.core?.mbtiType },
+              { label: 'Appearance', included: !!characterData.appearance?.hair?.color },
+              { label: 'Personality Traits', included: characterData.psychology?.core?.personalityTraits?.length > 0 },
+              { label: 'Occupation', included: !!characterData.occupation?.jobs?.[0]?.title },
+            ].map((item, i) => (
+              <div key={i} className={`flex items-center gap-2 p-2 rounded ${item.included ? 'bg-green-50' : 'bg-gray-50'}`}>
+                <span className={item.included ? 'text-green-600' : 'text-gray-400'}>{item.included ? '✓' : '✗'}</span>
+                <span className="font-mono text-xs text-gray-700">{item.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ),
+
+    // SUBTAB 5: Share
+    5: (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-cyan-800 to-blue-800 rounded-sm p-4 text-white">
+          <h3 className="font-mono text-sm font-bold mb-2">🔗 SHARE CHARACTER</h3>
+          <p className="font-mono text-xs text-cyan-200">Share your character with others.</p>
+        </div>
+
+        {/* Share Link Generator */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">🌐 Share via Link</h4>
+          <p className="font-mono text-xs text-gray-500 mb-4">Generate a shareable link containing your character data.</p>
+          
+          <div className="space-y-3">
+            <button 
+              onClick={() => {
+                const compressed = btoa(encodeURIComponent(JSON.stringify(characterData)));
+                const shareUrl = `${window.location.origin}${window.location.pathname}#import=${compressed.substring(0, 100)}...`;
+                navigator.clipboard.writeText(compressed);
+                alert('Character data encoded and copied!\n\nNote: Full sharing links require a backend service. The encoded data has been copied to your clipboard for manual sharing.');
+              }}
+              className="w-full px-4 py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-mono text-xs uppercase rounded-sm"
+            >
+              📋 Copy Encoded Data
+            </button>
+            
+            <div className="p-3 bg-gray-50 rounded-sm">
+              <div className="font-mono text-[10px] text-gray-500 mb-1">Encoded character data (first 100 chars):</div>
+              <div className="font-mono text-[10px] text-gray-700 break-all">
+                {btoa(encodeURIComponent(JSON.stringify(characterData))).substring(0, 100)}...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Share Text */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📝 Quick Share Text</h4>
+          <p className="font-mono text-xs text-gray-500 mb-4">Copy a text summary to share on social media or forums.</p>
+          
+          <div className="bg-gray-50 p-4 rounded-sm mb-3">
+            <pre className="font-mono text-xs text-gray-700 whitespace-pre-wrap">
+{`✨ Meet ${characterData.identity?.core?.firstName || 'my character'} ${characterData.identity?.core?.lastName || ''}!
+
+${characterData.identity?.vitals?.age ? `📅 Age: ${characterData.identity.vitals.age}` : ''}
+${characterData.identity?.vitals?.genderIdentity ? `⚧ Gender: ${characterData.identity.vitals.genderIdentity}` : ''}
+${characterData.psychology?.core?.mbtiType ? `🧠 MBTI: ${characterData.psychology.core.mbtiType}` : ''}
+${characterData.psychology?.core?.personalityTraits?.length > 0 ? `💫 Traits: ${characterData.psychology.core.personalityTraits.slice(0, 3).join(', ')}` : ''}
+${characterData.occupation?.jobs?.[0]?.title ? `💼 ${characterData.occupation.jobs[0].title}` : ''}
+
+Created with Persona Loom v6 🎭`}
+            </pre>
+          </div>
+          
+          <button 
+            onClick={() => {
+              const text = `✨ Meet ${characterData.identity?.core?.firstName || 'my character'} ${characterData.identity?.core?.lastName || ''}!\n\n${characterData.identity?.vitals?.age ? `📅 Age: ${characterData.identity.vitals.age}\n` : ''}${characterData.identity?.vitals?.genderIdentity ? `⚧ Gender: ${characterData.identity.vitals.genderIdentity}\n` : ''}${characterData.psychology?.core?.mbtiType ? `🧠 MBTI: ${characterData.psychology.core.mbtiType}\n` : ''}${characterData.psychology?.core?.personalityTraits?.length > 0 ? `💫 Traits: ${characterData.psychology.core.personalityTraits.slice(0, 3).join(', ')}\n` : ''}${characterData.occupation?.jobs?.[0]?.title ? `💼 ${characterData.occupation.jobs[0].title}\n` : ''}\nCreated with Persona Loom v6 🎭`;
+              navigator.clipboard.writeText(text);
+              alert('Share text copied to clipboard!');
+            }}
+            className="w-full px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-mono text-xs rounded-sm"
+          >
+            Copy Share Text
+          </button>
+        </div>
+
+        {/* Platform-Specific Sharing */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📲 Platform Sharing</h4>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { name: 'Twitter/X', icon: '𝕏', color: 'bg-black' },
+              { name: 'Discord', icon: '💬', color: 'bg-indigo-600' },
+              { name: 'Reddit', icon: '🔴', color: 'bg-orange-600' },
+              { name: 'Tumblr', icon: '📝', color: 'bg-blue-900' },
+            ].map((platform, i) => (
+              <button 
+                key={i}
+                onClick={() => {
+                  const text = `Check out my character ${characterData.identity?.core?.firstName || ''} created with Persona Loom!`;
+                  navigator.clipboard.writeText(text);
+                  alert(`Text for ${platform.name} copied!\n\nPaste it along with your character card or JSON file.`);
+                }}
+                className={`p-3 ${platform.color} text-white rounded-sm hover:opacity-90 transition-opacity`}
+              >
+                <div className="text-xl mb-1">{platform.icon}</div>
+                <div className="font-mono text-[10px]">{platform.name}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* QR Code (placeholder) */}
+        <div className="bg-white border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">📱 QR Code</h4>
+          <div className="flex justify-center">
+            <div className="w-32 h-32 bg-gray-100 border-2 border-dashed border-gray-300 rounded flex items-center justify-center">
+              <span className="font-mono text-xs text-gray-400 text-center">QR Code<br/>(requires backend)</span>
+            </div>
+          </div>
+          <p className="font-mono text-[10px] text-gray-500 text-center mt-2">
+            QR code generation requires a server-side service.
+          </p>
+        </div>
+
+        {/* Export for specific platforms */}
+        <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
+          <h4 className="font-mono text-xs font-bold text-blue-800 mb-2">💡 Sharing Tips</h4>
+          <ul className="font-mono text-[10px] text-blue-700 space-y-1">
+            <li>• For RP platforms: Use Platform Templates to get formatted exports</li>
+            <li>• For visual sharing: Use Character Card and screenshot</li>
+            <li>• For backup/transfer: Use Import/Backup for full JSON</li>
+            <li>• Encoded data can be decoded using Base64 decoders</li>
+          </ul>
+        </div>
+      </div>
+    ),
   };
 
   return (
@@ -13913,54 +26302,17 @@ const ExportContent = ({ characterData, onCopy, onDownload }) => {
       <div className="mb-8">
         <span className="inline-block bg-[#2C3E50] text-white font-mono text-[9px] px-2 py-1 tracking-[0.15em]">SYSTEM // EXPORT</span>
       </div>
-      <h1 className="font-serif text-4xl font-black italic text-gray-900 mb-4">Export Character</h1>
-      <p className="font-mono text-xs text-gray-500 mb-8">Export your character profile in different formats.</p>
+      <h1 className="font-serif text-4xl font-black italic text-gray-900 mb-4">Export & Import</h1>
+      <p className="font-mono text-xs text-gray-500 mb-8">Export your character in multiple formats or import existing data.</p>
       
-      <div className="space-y-6">
-        <div className="bg-white border border-gray-200 rounded-sm p-6">
-          <h3 className="font-mono text-sm font-bold text-gray-800 mb-4">Export Format</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <button onClick={() => setExportFormat('json')} className={`p-4 border-2 rounded-sm transition-all ${exportFormat === 'json' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
-              <div className="text-2xl mb-2">📄</div>
-              <div className="font-mono text-sm font-bold">JSON</div>
-              <div className="font-mono text-[10px] text-gray-500">Full data, machine-readable</div>
-            </button>
-            <button onClick={() => setExportFormat('txt')} className={`p-4 border-2 rounded-sm transition-all ${exportFormat === 'txt' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
-              <div className="text-2xl mb-2">📝</div>
-              <div className="font-mono text-sm font-bold">Text</div>
-              <div className="font-mono text-[10px] text-gray-500">Human-readable summary</div>
-            </button>
-          </div>
-        </div>
-        
-        <div className="flex gap-3">
-          <button onClick={handleExport} className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gray-900 text-white font-mono text-xs uppercase hover:bg-gray-700">
-            <Icons.Download width={16} height={16} />
-            Export as {exportFormat.toUpperCase()}
-          </button>
-          <button onClick={onCopy} className="flex items-center gap-2 px-4 py-3 border-2 border-gray-900 font-mono text-xs uppercase hover:bg-gray-100">
-            <Icons.Copy width={16} height={16} />
-            Copy JSON
-          </button>
-        </div>
-        
-        <div className="bg-gray-50 border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-xs font-bold text-gray-600 mb-3">Preview</h4>
-          <div className="bg-white border border-gray-200 rounded-sm p-4 max-h-[300px] overflow-auto">
-            <pre className="font-mono text-[10px] text-gray-600 whitespace-pre-wrap">
-              {exportFormat === 'json' ? JSON.stringify(characterData, null, 2).substring(0, 1500) + '...' : generateTextExport()}
-            </pre>
-          </div>
-        </div>
-      </div>
+      {subtabContent[subtab] || subtabContent[0]}
     </div>
   );
 };
-
 // ============================================================================
 // MAIN APP
 // ============================================================================
-export default function PersonaLoomV4() {
+export default function PersonaLoomV6() {
   const [activeTab, setActiveTab] = useState('identity');
   const [activeSubtab, setActiveSubtab] = useState(0);
   const [copied, setCopied] = useState(false);
@@ -13978,7 +26330,13 @@ export default function PersonaLoomV4() {
   }, [isAdult]);
   
   function hasIntimacyData(intimacy) {
-    return Object.values(intimacy).some(section => Object.values(section).some(val => val !== '' && val !== 5));
+    return Object.values(intimacy).some(section => 
+      Object.values(section).some(val => 
+        val !== '' && val !== null && val !== undefined && 
+        !(typeof val === 'number' && val === 5) &&
+        !(Array.isArray(val) && val.length === 0)
+      )
+    );
   }
   
   const isTabLocked = (tabId) => tabId === 'intimacy' && !isAdult;
@@ -14020,19 +26378,19 @@ export default function PersonaLoomV4() {
       case 'identity':
         return <IdentityContent data={characterData.identity} updateData={updateData} subtab={activeSubtab} />;
       case 'appearance':
-        return <AppearanceContent data={characterData.appearance} updateData={updateData} subtab={activeSubtab} />;
+        return <AppearanceContent data={characterData.appearance} updateData={updateData} subtab={activeSubtab} characterAge={characterData.identity?.vitals?.age} characterGender={characterData.identity?.vitals?.genderIdentity || characterData.identity?.vitals?.biologicalSex} />;
       case 'psychology':
         return <PsychologyContent data={characterData.psychology} updateData={updateData} subtab={activeSubtab} />;
       case 'physique':
-        return <GenericTabContent tabId={activeTab} data={characterData.physique} updateData={updateData} subtab={activeSubtab} subtabs={currentTabConfig?.subtabs} />;
+        return <PhysiqueContent data={characterData.physique} updateData={updateData} subtab={activeSubtab} />;
       case 'voice':
         return <VoiceContent data={characterData.voice} updateData={updateData} subtab={activeSubtab} />;
       case 'history':
-        return <GenericTabContent tabId={activeTab} data={characterData.history} updateData={updateData} subtab={activeSubtab} subtabs={currentTabConfig?.subtabs} />;
+        return <HistoryContent data={characterData.history} updateData={updateData} subtab={activeSubtab} characterAge={characterData.identity?.vitals?.age} birthDate={characterData.history?.origin?.birthDate} />;
       case 'relationships':
-        return <GenericTabContent tabId={activeTab} data={characterData.relationships} updateData={updateData} subtab={activeSubtab} subtabs={currentTabConfig?.subtabs} />;
+        return <RelationshipsContent data={characterData.relationships} updateData={updateData} subtab={activeSubtab} />;
       case 'intimacy':
-        return <GenericTabContent tabId={activeTab} data={characterData.intimacy} updateData={updateData} subtab={activeSubtab} subtabs={currentTabConfig?.subtabs} />;
+        return <IntimacyContent data={characterData.intimacy} updateData={updateData} subtab={activeSubtab} />;
       case 'occupation':
         return <OccupationContent data={characterData.occupation} updateData={updateData} subtab={activeSubtab} />;
       case 'intelligence':
@@ -14047,10 +26405,12 @@ export default function PersonaLoomV4() {
         return <SecretsContent data={characterData.secrets} updateData={updateData} subtab={activeSubtab} />;
       case 'goals':
         return <GoalsContent data={characterData.goals} updateData={updateData} subtab={activeSubtab} />;
+      case 'directives':
+        return <DirectiveResponsesContent data={characterData.directives} updateData={updateData} subtab={activeSubtab} />;
       case 'database':
-        return <DatabaseContent characterData={characterData} onCopy={handleCopy} onDownload={handleDownload} copied={copied} />;
+        return <DatabaseContent characterData={characterData} onCopy={handleCopy} onDownload={handleDownload} copied={copied} subtab={activeSubtab} />;
       case 'export':
-        return <ExportContent characterData={characterData} onCopy={handleCopy} onDownload={handleDownload} />;
+        return <ExportContent characterData={characterData} onCopy={handleCopy} onDownload={handleDownload} updateData={updateData} subtab={activeSubtab} />;
       default:
         return <GenericTabContent tabId={activeTab} data={characterData[activeTab]} updateData={updateData} subtab={activeSubtab} subtabs={currentTabConfig?.subtabs || []} />;
     }
@@ -14099,7 +26459,7 @@ export default function PersonaLoomV4() {
           
           <div className="mt-auto p-3">
             <div className="font-mono text-[7px] text-gray-500 uppercase tracking-widest opacity-50" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
-              PERSONA LOOM v4
+              PERSONA LOOM v6
             </div>
           </div>
         </div>
