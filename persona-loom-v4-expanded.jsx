@@ -13833,9 +13833,13 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
     { value: 'constantly', label: 'Constantly — Dripping sarcasm' }
   ];
 
-  const sections = {
+  const activeSubtab = parseInt(subtab) || 0;
+
+  switch (activeSubtab) {
+
     // ========== SUBTAB 0: VOICE DESIGN (ElevenLabs Compatible) ==========
-    0: (
+    case 0:
+    default: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">🎙️ VOICE DESIGN</h3>
@@ -14036,10 +14040,9 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
           </div>
         </div>
       </div>
-    ),
-
+    );
     // ========== SUBTAB 1: SPEECH PATTERNS ==========
-    1: (
+    case 1: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">💬 SPEECH PATTERNS</h3>
@@ -14240,10 +14243,9 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
           </div>
         </div>
       </div>
-    ),
-
+    );
     // ========== SUBTAB 2: LANGUAGES & ACCENT ==========
-    2: (
+    case 2: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-green-900 mb-2">🌍 LANGUAGES & ACCENT</h3>
@@ -14369,10 +14371,9 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
           </div>
         </div>
       </div>
-    ),
-
+    );
     // ========== SUBTAB 3: VOICE PREVIEW ==========
-    3: (
+    case 3: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-white mb-2">📋 VOICE PREVIEW</h3>
@@ -14489,10 +14490,8 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
           </button>
         </div>
       </div>
-    ),
-  };
-
-  return sections[subtab] || sections[0];
+    );
+  }
 };
 
 
