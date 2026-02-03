@@ -2408,3 +2408,131 @@ export const HAIR_COLOR_OPTIONS = [
   { value: 'gray-silver', label: 'Silver — Bright metallic gray' },
   { value: 'gray-steel', label: 'Steel Gray — Blue-tinted gray' }
 ];
+
+// EMPLOYMENT STATUS
+export const EMPLOYMENT_STATUS = [
+  { value: 'full-time', label: 'Full-Time Employee' },
+  { value: 'part-time', label: 'Part-Time Employee' },
+  { value: 'contract', label: 'Contract Worker' },
+  { value: 'temporary', label: 'Temporary' },
+  { value: 'seasonal', label: 'Seasonal' },
+  { value: 'probationary', label: 'Probationary' },
+  { value: 'intern-paid', label: 'Paid Intern' },
+  { value: 'intern-unpaid', label: 'Unpaid Intern' },
+  { value: 'apprentice', label: 'Apprentice' },
+  { value: 'trainee', label: 'Trainee' },
+  { value: 'freelancer', label: 'Freelancer' },
+  { value: 'consultant', label: 'Independent Consultant' },
+  { value: 'contractor', label: 'Independent Contractor' },
+  { value: 'gig-worker', label: 'Gig Worker' },
+  { value: 'business-owner', label: 'Business Owner' },
+  { value: 'entrepreneur', label: 'Entrepreneur' },
+  { value: 'startup-founder', label: 'Startup Founder' },
+  { value: 'solopreneur', label: 'Solopreneur' },
+  { value: 'creator', label: 'Content Creator' },
+  { value: 'influencer', label: 'Influencer' },
+  { value: 'unemployed', label: 'Unemployed' },
+  { value: 'retired', label: 'Retired' },
+  { value: 'student', label: 'Student' },
+  { value: 'homemaker', label: 'Homemaker' },
+];
+
+// INCOME SOURCE
+export const INCOME_SOURCE = [
+  { value: 'salary', label: 'Salary' },
+  { value: 'hourly', label: 'Hourly Wage' },
+  { value: 'commission', label: 'Commission' },
+  { value: 'bonus-heavy', label: 'Bonus-Heavy' },
+  { value: 'freelance', label: 'Freelance' },
+  { value: 'business-profit', label: 'Business Profit' },
+  { value: 'investments', label: 'Investments' },
+  { value: 'dividends', label: 'Dividends' },
+  { value: 'rental', label: 'Rental Income' },
+  { value: 'royalties', label: 'Royalties' },
+  { value: 'inheritance', label: 'Inheritance' },
+  { value: 'trust-fund', label: 'Trust Fund' },
+  { value: 'spouse-partner', label: 'Spouse/Partner Support' },
+  { value: 'family-support', label: 'Family Support' },
+  { value: 'government', label: 'Government Benefits' },
+  { value: 'pension', label: 'Pension' },
+  { value: 'alimony', label: 'Alimony' },
+  { value: 'gig-economy', label: 'Gig Economy' },
+  { value: 'tips', label: 'Tips' },
+  { value: 'illegal', label: 'Illegal Activities' },
+  { value: 'multiple', label: 'Multiple Streams' },
+  { value: 'unknown', label: 'Unknown' },
+];
+
+// WEALTH STATUS
+export const WEALTH_STATUS = [
+  { value: 'negative', label: 'Negative Net Worth' },
+  { value: 'zero', label: 'Zero / Breaking Even' },
+  { value: 'building', label: 'Building Wealth' },
+  { value: 'modest', label: 'Modest Savings' },
+  { value: 'comfortable', label: 'Comfortable' },
+  { value: 'significant', label: 'Significant Assets' },
+  { value: 'wealthy', label: 'Wealthy' },
+  { value: 'generational', label: 'Generational Wealth' },
+  { value: 'very-wealthy', label: 'Very Wealthy' },
+  { value: 'ultra-wealthy', label: 'Ultra-Wealthy (1%)' },
+  { value: 'billionaire', label: 'Billionaire' },
+];
+
+// INCOME STABILITY
+export const INCOME_STABILITY = [
+  { value: 'rock-solid', label: 'Rock Solid' },
+  { value: 'stable', label: 'Stable' },
+  { value: 'mostly-stable', label: 'Mostly Stable' },
+  { value: 'somewhat-variable', label: 'Somewhat Variable' },
+  { value: 'variable', label: 'Variable' },
+  { value: 'unpredictable', label: 'Unpredictable' },
+  { value: 'feast-or-famine', label: 'Feast or Famine' },
+  { value: 'declining', label: 'Declining' },
+  { value: 'growing', label: 'Growing' },
+];
+
+// HUMAN NATURE
+export const HUMAN_NATURE = [
+  { value: 'inherently-good', label: 'Inherently Good' },
+  { value: 'mostly-good', label: 'Mostly Good' },
+  { value: 'blank-slate', label: 'Blank Slate' },
+  { value: 'complex', label: 'Complex' },
+  { value: 'self-interested', label: 'Self-Interested' },
+  { value: 'mostly-bad', label: 'Mostly Bad' },
+  { value: 'inherently-evil', label: 'Inherently Evil' },
+];
+
+// LIFE PHILOSOPHY
+export const LIFE_PHILOSOPHY = [
+  { value: 'stoicism', label: 'Stoicism' },
+  { value: 'epicureanism', label: 'Epicureanism' },
+  { value: 'hedonism', label: 'Hedonism' },
+  { value: 'existentialism', label: 'Existentialism' },
+  { value: 'nihilism', label: 'Nihilism' },
+  { value: 'absurdism', label: 'Absurdism' },
+  { value: 'pragmatism', label: 'Pragmatism' },
+  { value: 'humanism', label: 'Humanism' },
+  { value: 'buddhist', label: 'Buddhist Philosophy' },
+  { value: 'traditionalist', label: 'Traditionalist' },
+  { value: 'no-philosophy', label: 'No Defined Philosophy' },
+];
+
+// VIEW ON CHANGE
+export const VIEW_ON_CHANGE = [
+  { value: 'embraces', label: 'Embraces' },
+  { value: 'accepts', label: 'Accepts' },
+  { value: 'cautious', label: 'Cautious' },
+  { value: 'resistant', label: 'Resistant' },
+  { value: 'fears', label: 'Fears' },
+];
+
+// VIEW ON DEATH
+export const VIEW_ON_DEATH = [
+  { value: 'terrified', label: 'Terrified' },
+  { value: 'fears', label: 'Fears' },
+  { value: 'accepts', label: 'Accepts' },
+  { value: 'peaceful', label: 'Peaceful' },
+  { value: 'welcomes', label: 'Welcomes' },
+  { value: 'denies', label: 'Denies' },
+  { value: 'defiant', label: 'Defiant' },
+];
