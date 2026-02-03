@@ -19195,43 +19195,10 @@ const SecretsContent = ({ data, updateData, subtab }) => {
     updateData('secrets', { ...data, [section]: { ...data[section], [field]: value } });
   };
 
-  const sections = {
-    // ========== SUBTAB 0: HIDDEN TRUTHS ==========
-    0: (
-      <div className="space-y-6">
-        <div className="bg-gray-900 border border-gray-700 rounded-sm p-4">
-          <h3 className="font-mono text-sm font-bold text-red-400 mb-2">🔒 VERDADES OCULTAS</h3>
-          <p className="font-mono text-xs text-gray-400 leading-relaxed">Os segredos mais profundos que o personagem guarda.</p>
-        </div>
 
-        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
-          <h4 className="font-mono text-sm font-bold text-red-800 mb-2">💀 O Maior Segredo</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">O que destruiria a vida dele se fosse revelado?</p>
-          <textarea value={data.hidden?.biggestSecret || ''} onChange={(e) => update('hidden', 'biggestSecret', e.target.value)} placeholder="O segredo que carrega, que pouquíssimas pessoas (ou ninguém) sabem..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
-        </div>
-
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Mentiras Mantidas</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Mentiras que conta regularmente ou há muito tempo.</p>
-          <textarea value={data.hidden?.liesMaintained || ''} onChange={(e) => update('hidden', 'liesMaintained', e.target.value)} placeholder="Ex: Finge que se formou na faculdade, diz que os pais morreram, esconde vício..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
-        </div>
-
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚫 Nunca Admitiria</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Coisas que nunca confessaria, mesmo sob tortura.</p>
-          <textarea value={data.hidden?.neverAdmit || ''} onChange={(e) => update('hidden', 'neverAdmit', e.target.value)} placeholder="Verdades que nega até para si mesmo, coisas que morreria sem revelar..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
-        </div>
-
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💭 Desejos Secretos</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Vontades que tem vergonha de admitir.</p>
-          <textarea value={data.hidden?.secretDesires || ''} onChange={(e) => update('hidden', 'secretDesires', e.target.value)} placeholder="Ex: Quer largar tudo e sumir, fantasia com a vida de outra pessoa, inveja alguém..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
-        </div>
-      </div>
-    ),
-
-    // ========== SUBTAB 1: CONTRADICTIONS ==========
-    1: (
+  // ========== SUBTAB 1: CONTRADICTIONS ==========
+  if (subtab === 1) {
+    return (
       <div className="space-y-6">
         <div className="bg-amber-50 border border-amber-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">⚖️ CONTRADIÇÕES</h3>
@@ -19256,10 +19223,12 @@ const SecretsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.contradictions?.unawareHypocrisy || ''} onChange={(e) => update('contradictions', 'unawareHypocrisy', e.target.value)} placeholder="Ex: Reclama de fofoca mas fofoca, critica preconceito mas tem preconceitos, etc..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
+    );
+  }
 
-    // ========== SUBTAB 2: SKELETONS ==========
-    2: (
+  // ========== SUBTAB 2: SKELETONS ==========
+  if (subtab === 2) {
+    return (
       <div className="space-y-6">
         <div className="bg-slate-800 border border-slate-600 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-slate-200 mb-2">💀 ESQUELETOS NO ARMÁRIO</h3>
@@ -19284,10 +19253,42 @@ const SecretsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.skeletons?.couldDestroyThem || ''} onChange={(e) => update('skeletons', 'couldDestroyThem', e.target.value)} placeholder="Nomes de pessoas que têm informação comprometedora, ex-parceiros vingativos, testemunhas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
-  };
+    );
+  }
 
-  return sections[subtab] || sections[0];
+  // Default: SUBTAB 0 (Hidden Truths)
+  return (
+    <div className="space-y-6">
+      <div className="bg-gray-900 border border-gray-700 rounded-sm p-4 text-white">
+        <h3 className="font-mono text-sm font-bold text-red-400 mb-2">🔒 VERDADES OCULTAS</h3>
+        <p className="font-mono text-xs text-gray-400 leading-relaxed">Os segredos mais profundos que o personagem guarda.</p>
+      </div>
+
+      <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+        <h4 className="font-mono text-sm font-bold text-red-800 mb-2">💀 O Maior Segredo</h4>
+        <p className="font-mono text-[10px] text-gray-500 mb-3">O que destruiria a vida dele se fosse revelado?</p>
+        <textarea value={data.hidden?.biggestSecret || ''} onChange={(e) => update('hidden', 'biggestSecret', e.target.value)} placeholder="O segredo que carrega, que pouquíssimas pessoas (ou ninguém) sabem..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+      </div>
+
+      <div className="border border-gray-200 rounded-sm p-4">
+        <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Mentiras Mantidas</h4>
+        <p className="font-mono text-[10px] text-gray-500 mb-3">Mentiras que conta regularmente ou há muito tempo.</p>
+        <textarea value={data.hidden?.liesMaintained || ''} onChange={(e) => update('hidden', 'liesMaintained', e.target.value)} placeholder="Ex: Finge que se formou na faculdade, diz que os pais morreram, esconde vício..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+      </div>
+
+      <div className="border border-gray-200 rounded-sm p-4">
+        <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚫 Nunca Admitiria</h4>
+        <p className="font-mono text-[10px] text-gray-500 mb-3">Coisas que nunca confessaria, mesmo sob tortura.</p>
+        <textarea value={data.hidden?.neverAdmit || ''} onChange={(e) => update('hidden', 'neverAdmit', e.target.value)} placeholder="Verdades que nega até para si mesmo, coisas que morreria sem revelar..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+      </div>
+
+      <div className="border border-gray-200 rounded-sm p-4">
+        <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💭 Desejos Secretos</h4>
+        <p className="font-mono text-[10px] text-gray-500 mb-3">Vontades que tem vergonha de admitir.</p>
+        <textarea value={data.hidden?.secretDesires || ''} onChange={(e) => update('hidden', 'secretDesires', e.target.value)} placeholder="Ex: Quer largar tudo e sumir, fantasia com a vida de outra pessoa, inveja alguém..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+      </div>
+    </div>
+  );
 };
 
 
