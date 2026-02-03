@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 
 // ============================================================================
 // PERSONA LOOM v6 - Complete Character Creation Tool
@@ -8,31 +8,81 @@ import React, { useState, useEffect } from 'react';
 // ============================================================================
 // ICONS
 // ============================================================================
+
+// ============================================================================
+// ICONS COMPONENT
+// Optimized to prevent re-creation on every render
+// ============================================================================
+const IconFingerprint = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"/><path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.17-.02 2"/></svg>));
+const IconEye = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>));
+const IconBrain = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>));
+const IconActivity = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>));
+const IconMic = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>));
+const IconBook = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>));
+const IconHeart = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>));
+const IconUsers = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>));
+const IconBriefcase = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>));
+const IconLightbulb = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>));
+const IconGlobe = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>));
+const IconStar = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>));
+const IconZap = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>));
+const IconLock = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>));
+const IconTarget = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>));
+const IconDatabase = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>));
+const IconShare = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>));
+const IconCopy = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>));
+const IconDownload = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>));
+const IconCheck = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>));
+const IconChevronRight = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>));
+const IconChevronDown = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>));
+const IconSliders = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></svg>));
+const IconAlertCircle = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>));
+const IconSearch = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>));
+const IconUpload = memo((props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>));
+
+
+// ============================================================================
+// STYLES
+// ============================================================================
+const STYLES = {
+  LABEL: "font-mono text-[10px] text-gray-600 mb-1 block",
+  INPUT: "w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs",
+  TEXTAREA: "w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs resize-none",
+  SECTION: "border border-gray-200 rounded-sm p-4",
+  SECTION_TITLE: "font-mono text-sm font-bold text-gray-800 mb-2",
+  GRID_2: "grid grid-cols-1 md:grid-cols-2 gap-4",
+  SUBTITLE: "font-mono text-[10px] text-gray-500 mb-3",
+  FLEX_WRAP: "flex flex-wrap gap-2",
+  SPACE_Y: "space-y-4"
+};
+
 const Icons = {
-  Fingerprint: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12C2 6.5 6.5 2 12 2a10 10 0 0 1 8 4"/><path d="M5 19.5C5.5 18 6 15 6 12c0-.7.12-1.37.34-2"/><path d="M17.29 21.02c.12-.6.43-2.3.5-3.02"/><path d="M12 10a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"/><path d="M8.65 22c.21-.66.45-1.32.57-2"/><path d="M14 13.12c0 2.38 0 6.38-1 8.88"/><path d="M2 16h.01"/><path d="M21.8 16c.2-2 .131-5.354 0-6"/><path d="M9 6.8a6 6 0 0 1 9 5.2c0 .47 0 1.17-.02 2"/></svg>),
-  Eye: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>),
-  Brain: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/></svg>),
-  Activity: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>),
-  Mic: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>),
-  Book: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/></svg>),
-  Heart: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>),
-  Users: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>),
-  Briefcase: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>),
-  Lightbulb: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>),
-  Globe: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>),
-  Star: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>),
-  Zap: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>),
-  Lock: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>),
-  Target: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>),
-  Database: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>),
-  Share: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/></svg>),
-  Copy: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>),
-  Download: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>),
-  Check: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>),
-  ChevronRight: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>),
-  ChevronDown: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>),
-  Sliders: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="4" y1="21" y2="14"/><line x1="4" x2="4" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><line x1="20" x2="20" y1="21" y2="16"/><line x1="20" x2="20" y1="12" y2="3"/><line x1="2" x2="6" y1="14" y2="14"/><line x1="10" x2="14" y1="8" y2="8"/><line x1="18" x2="22" y1="16" y2="16"/></svg>),
-  AlertCircle: (props) => (<svg {...props} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>),
+  Fingerprint: IconFingerprint,
+  Eye: IconEye,
+  Brain: IconBrain,
+  Activity: IconActivity,
+  Mic: IconMic,
+  Book: IconBook,
+  Heart: IconHeart,
+  Users: IconUsers,
+  Briefcase: IconBriefcase,
+  Lightbulb: IconLightbulb,
+  Globe: IconGlobe,
+  Star: IconStar,
+  Zap: IconZap,
+  Lock: IconLock,
+  Target: IconTarget,
+  Database: IconDatabase,
+  Share: IconShare,
+  Copy: IconCopy,
+  Download: IconDownload,
+  Check: IconCheck,
+  ChevronRight: IconChevronRight,
+  ChevronDown: IconChevronDown,
+  Sliders: IconSliders,
+  AlertCircle: IconAlertCircle,
+  Search: IconSearch,
+  Upload: IconUpload
 };
 
 // ============================================================================
@@ -171,6 +221,328 @@ const TABS_CONFIG = [
 // ============================================================================
 // INITIAL CHARACTER DATA STRUCTURE
 // ============================================================================
+
+const NATIONALITY_OPTIONS = [
+  {
+    label: '─── Africa ───',
+    options: [
+      { value: 'Algerian', label: 'Algerian' },
+      { value: 'Angolan', label: 'Angolan' },
+      { value: 'Beninese', label: 'Beninese' },
+      { value: 'Botswanan', label: 'Botswanan' },
+      { value: 'Burkinabé', label: 'Burkinabé' },
+      { value: 'Burundian', label: 'Burundian' },
+      { value: 'Cabo Verdean', label: 'Cabo Verdean' },
+      { value: 'Cameroonian', label: 'Cameroonian' },
+      { value: 'Central African', label: 'Central African' },
+      { value: 'Chadian', label: 'Chadian' },
+      { value: 'Comorian', label: 'Comorian' },
+      { value: 'Congolese (DRC)', label: 'Congolese (DRC)' },
+      { value: 'Congolese (Republic)', label: 'Congolese (Republic)' },
+      { value: 'Djiboutian', label: 'Djiboutian' },
+      { value: 'Egyptian', label: 'Egyptian' },
+      { value: 'Equatorial Guinean', label: 'Equatorial Guinean' },
+      { value: 'Eritrean', label: 'Eritrean' },
+      { value: 'Eswatini', label: 'Eswatini' },
+      { value: 'Ethiopian', label: 'Ethiopian' },
+      { value: 'Gabonese', label: 'Gabonese' },
+      { value: 'Gambian', label: 'Gambian' },
+      { value: 'Ghanaian', label: 'Ghanaian' },
+      { value: 'Guinean', label: 'Guinean' },
+      { value: 'Guinea-Bissauan', label: 'Guinea-Bissauan' },
+      { value: 'Ivorian', label: 'Ivorian' },
+      { value: 'Kenyan', label: 'Kenyan' },
+      { value: 'Lesotho', label: 'Lesotho' },
+      { value: 'Liberian', label: 'Liberian' },
+      { value: 'Libyan', label: 'Libyan' },
+      { value: 'Malagasy', label: 'Malagasy' },
+      { value: 'Malawian', label: 'Malawian' },
+      { value: 'Malian', label: 'Malian' },
+      { value: 'Mauritanian', label: 'Mauritanian' },
+      { value: 'Mauritian', label: 'Mauritian' },
+      { value: 'Moroccan', label: 'Moroccan' },
+      { value: 'Mozambican', label: 'Mozambican' },
+      { value: 'Namibian', label: 'Namibian' },
+      { value: 'Nigerien', label: 'Nigerien' },
+      { value: 'Nigerian', label: 'Nigerian' },
+      { value: 'Rwandan', label: 'Rwandan' },
+      { value: 'São Toméan', label: 'São Toméan' },
+      { value: 'Senegalese', label: 'Senegalese' },
+      { value: 'Seychellois', label: 'Seychellois' },
+      { value: 'Sierra Leonean', label: 'Sierra Leonean' },
+      { value: 'Somali', label: 'Somali' },
+      { value: 'South African', label: 'South African' },
+      { value: 'South Sudanese', label: 'South Sudanese' },
+      { value: 'Sudanese', label: 'Sudanese' },
+      { value: 'Tanzanian', label: 'Tanzanian' },
+      { value: 'Togolese', label: 'Togolese' },
+      { value: 'Tunisian', label: 'Tunisian' },
+      { value: 'Ugandan', label: 'Ugandan' },
+      { value: 'Zambian', label: 'Zambian' },
+      { value: 'Zimbabwean', label: 'Zimbabwean' },
+    ]
+  },
+  {
+    label: '─── Americas (North) ───',
+    options: [
+      { value: 'American', label: 'American' },
+      { value: 'Canadian', label: 'Canadian' },
+      { value: 'Mexican', label: 'Mexican' },
+    ]
+  },
+  {
+    label: '─── Americas (Central & Caribbean) ───',
+    options: [
+      { value: 'Antiguan', label: 'Antiguan' },
+      { value: 'Bahamian', label: 'Bahamian' },
+      { value: 'Barbadian', label: 'Barbadian' },
+      { value: 'Belizean', label: 'Belizean' },
+      { value: 'Costa Rican', label: 'Costa Rican' },
+      { value: 'Cuban', label: 'Cuban' },
+      { value: 'Dominican (Dominica)', label: 'Dominican (Dominica)' },
+      { value: 'Dominican (Republic)', label: 'Dominican (Republic)' },
+      { value: 'Salvadoran', label: 'Salvadoran' },
+      { value: 'Grenadian', label: 'Grenadian' },
+      { value: 'Guatemalan', label: 'Guatemalan' },
+      { value: 'Haitian', label: 'Haitian' },
+      { value: 'Honduran', label: 'Honduran' },
+      { value: 'Jamaican', label: 'Jamaican' },
+      { value: 'Nicaraguan', label: 'Nicaraguan' },
+      { value: 'Panamanian', label: 'Panamanian' },
+      { value: 'Puerto Rican', label: 'Puerto Rican' },
+      { value: 'Kittitian/Nevisian', label: 'Kittitian/Nevisian' },
+      { value: 'Saint Lucian', label: 'Saint Lucian' },
+      { value: 'Vincentian', label: 'Vincentian' },
+      { value: 'Trinidadian/Tobagonian', label: 'Trinidadian/Tobagonian' },
+    ]
+  },
+  {
+    label: '─── Americas (South) ───',
+    options: [
+      { value: 'Argentine', label: 'Argentine' },
+      { value: 'Bolivian', label: 'Bolivian' },
+      { value: 'Brazilian', label: 'Brazilian' },
+      { value: 'Chilean', label: 'Chilean' },
+      { value: 'Colombian', label: 'Colombian' },
+      { value: 'Ecuadorian', label: 'Ecuadorian' },
+      { value: 'Guyanese', label: 'Guyanese' },
+      { value: 'Paraguayan', label: 'Paraguayan' },
+      { value: 'Peruvian', label: 'Peruvian' },
+      { value: 'Surinamese', label: 'Surinamese' },
+      { value: 'Uruguayan', label: 'Uruguayan' },
+      { value: 'Venezuelan', label: 'Venezuelan' },
+    ]
+  },
+  {
+    label: '─── Asia (East) ───',
+    options: [
+      { value: 'Chinese', label: 'Chinese' },
+      { value: 'Hong Konger', label: 'Hong Konger' },
+      { value: 'Japanese', label: 'Japanese' },
+      { value: 'Korean (North)', label: 'Korean (North)' },
+      { value: 'Korean (South)', label: 'Korean (South)' },
+      { value: 'Macanese', label: 'Macanese' },
+      { value: 'Mongolian', label: 'Mongolian' },
+      { value: 'Taiwanese', label: 'Taiwanese' },
+    ]
+  },
+  {
+    label: '─── Asia (Southeast) ───',
+    options: [
+      { value: 'Bruneian', label: 'Bruneian' },
+      { value: 'Burmese', label: 'Burmese' },
+      { value: 'Cambodian', label: 'Cambodian' },
+      { value: 'Filipino', label: 'Filipino' },
+      { value: 'Indonesian', label: 'Indonesian' },
+      { value: 'Laotian', label: 'Laotian' },
+      { value: 'Malaysian', label: 'Malaysian' },
+      { value: 'Singaporean', label: 'Singaporean' },
+      { value: 'Thai', label: 'Thai' },
+      { value: 'Timorese', label: 'Timorese' },
+      { value: 'Vietnamese', label: 'Vietnamese' },
+    ]
+  },
+  {
+    label: '─── Asia (South) ───',
+    options: [
+      { value: 'Afghan', label: 'Afghan' },
+      { value: 'Bangladeshi', label: 'Bangladeshi' },
+      { value: 'Bhutanese', label: 'Bhutanese' },
+      { value: 'Indian', label: 'Indian' },
+      { value: 'Maldivian', label: 'Maldivian' },
+      { value: 'Nepali', label: 'Nepali' },
+      { value: 'Pakistani', label: 'Pakistani' },
+      { value: 'Sri Lankan', label: 'Sri Lankan' },
+    ]
+  },
+  {
+    label: '─── Asia (Central) ───',
+    options: [
+      { value: 'Kazakh', label: 'Kazakh' },
+      { value: 'Kyrgyz', label: 'Kyrgyz' },
+      { value: 'Tajik', label: 'Tajik' },
+      { value: 'Turkmen', label: 'Turkmen' },
+      { value: 'Uzbek', label: 'Uzbek' },
+    ]
+  },
+  {
+    label: '─── Asia (West) / Middle East ───',
+    options: [
+      { value: 'Armenian', label: 'Armenian' },
+      { value: 'Azerbaijani', label: 'Azerbaijani' },
+      { value: 'Bahraini', label: 'Bahraini' },
+      { value: 'Cypriot', label: 'Cypriot' },
+      { value: 'Georgian', label: 'Georgian' },
+      { value: 'Iranian', label: 'Iranian' },
+      { value: 'Iraqi', label: 'Iraqi' },
+      { value: 'Israeli', label: 'Israeli' },
+      { value: 'Jordanian', label: 'Jordanian' },
+      { value: 'Kuwaiti', label: 'Kuwaiti' },
+      { value: 'Lebanese', label: 'Lebanese' },
+      { value: 'Omani', label: 'Omani' },
+      { value: 'Palestinian', label: 'Palestinian' },
+      { value: 'Qatari', label: 'Qatari' },
+      { value: 'Saudi', label: 'Saudi' },
+      { value: 'Syrian', label: 'Syrian' },
+      { value: 'Turkish', label: 'Turkish' },
+      { value: 'Emirati', label: 'Emirati' },
+      { value: 'Yemeni', label: 'Yemeni' },
+    ]
+  },
+  {
+    label: '─── Europe (Western) ───',
+    options: [
+      { value: 'Austrian', label: 'Austrian' },
+      { value: 'Belgian', label: 'Belgian' },
+      { value: 'Dutch', label: 'Dutch' },
+      { value: 'French', label: 'French' },
+      { value: 'German', label: 'German' },
+      { value: 'Liechtensteiner', label: 'Liechtensteiner' },
+      { value: 'Luxembourger', label: 'Luxembourger' },
+      { value: 'Monacan', label: 'Monacan' },
+      { value: 'Swiss', label: 'Swiss' },
+    ]
+  },
+  {
+    label: '─── Europe (Northern) ───',
+    options: [
+      { value: 'British', label: 'British' },
+      { value: 'Danish', label: 'Danish' },
+      { value: 'Estonian', label: 'Estonian' },
+      { value: 'Finnish', label: 'Finnish' },
+      { value: 'Icelandic', label: 'Icelandic' },
+      { value: 'Irish', label: 'Irish' },
+      { value: 'Latvian', label: 'Latvian' },
+      { value: 'Lithuanian', label: 'Lithuanian' },
+      { value: 'Norwegian', label: 'Norwegian' },
+      { value: 'Swedish', label: 'Swedish' },
+    ]
+  },
+  {
+    label: '─── Europe (Southern) ───',
+    options: [
+      { value: 'Albanian', label: 'Albanian' },
+      { value: 'Andorran', label: 'Andorran' },
+      { value: 'Bosnian', label: 'Bosnian' },
+      { value: 'Croatian', label: 'Croatian' },
+      { value: 'Greek', label: 'Greek' },
+      { value: 'Italian', label: 'Italian' },
+      { value: 'Kosovar', label: 'Kosovar' },
+      { value: 'Macedonian', label: 'Macedonian' },
+      { value: 'Maltese', label: 'Maltese' },
+      { value: 'Montenegrin', label: 'Montenegrin' },
+      { value: 'Portuguese', label: 'Portuguese' },
+      { value: 'San Marinese', label: 'San Marinese' },
+      { value: 'Serbian', label: 'Serbian' },
+      { value: 'Slovenian', label: 'Slovenian' },
+      { value: 'Spanish', label: 'Spanish' },
+      { value: 'Vatican', label: 'Vatican' },
+    ]
+  },
+  {
+    label: '─── Europe (Eastern) ───',
+    options: [
+      { value: 'Belarusian', label: 'Belarusian' },
+      { value: 'Bulgarian', label: 'Bulgarian' },
+      { value: 'Czech', label: 'Czech' },
+      { value: 'Hungarian', label: 'Hungarian' },
+      { value: 'Moldovan', label: 'Moldovan' },
+      { value: 'Polish', label: 'Polish' },
+      { value: 'Romanian', label: 'Romanian' },
+      { value: 'Russian', label: 'Russian' },
+      { value: 'Slovak', label: 'Slovak' },
+      { value: 'Ukrainian', label: 'Ukrainian' },
+    ]
+  },
+  {
+    label: '─── Oceania ───',
+    options: [
+      { value: 'Australian', label: 'Australian' },
+      { value: 'Fijian', label: 'Fijian' },
+      { value: 'Kiribati', label: 'Kiribati' },
+      { value: 'Marshallese', label: 'Marshallese' },
+      { value: 'Micronesian', label: 'Micronesian' },
+      { value: 'Nauruan', label: 'Nauruan' },
+      { value: 'New Zealander', label: 'New Zealander' },
+      { value: 'Palauan', label: 'Palauan' },
+      { value: 'Papua New Guinean', label: 'Papua New Guinean' },
+      { value: 'Samoan', label: 'Samoan' },
+      { value: 'Solomon Islander', label: 'Solomon Islander' },
+      { value: 'Tongan', label: 'Tongan' },
+      { value: 'Tuvaluan', label: 'Tuvaluan' },
+      { value: 'Vanuatuan', label: 'Vanuatuan' },
+    ]
+  },
+  {
+    label: '─── Historical Nations ───',
+    options: [
+      { value: 'Soviet (USSR)', label: 'Soviet (USSR) [1922-1991]' },
+      { value: 'Yugoslav', label: 'Yugoslav [1918-1992]' },
+      { value: 'Czechoslovak', label: 'Czechoslovak [1918-1993]' },
+      { value: 'East German (DDR)', label: 'East German (DDR) [1949-1990]' },
+      { value: 'West German (FRG)', label: 'West German (FRG) [1949-1990]' },
+      { value: 'Austro-Hungarian', label: 'Austro-Hungarian [1867-1918]' },
+      { value: 'Ottoman', label: 'Ottoman [1299-1922]' },
+      { value: 'Prussian', label: 'Prussian [1525-1947]' },
+      { value: 'Russian Imperial', label: 'Russian Imperial [1721-1917]' },
+      { value: 'Byzantine', label: 'Byzantine [330-1453]' },
+      { value: 'Roman', label: 'Roman [753 BC-476 AD]' },
+      { value: 'Ancient Egyptian', label: 'Ancient Egyptian [3100 BC-30 BC]' },
+      { value: 'Ancient Greek', label: 'Ancient Greek [800 BC-31 BC]' },
+      { value: 'Persian (Ancient)', label: 'Persian (Ancient) [550 BC-330 BC]' },
+      { value: 'Mesopotamian', label: 'Mesopotamian [3500 BC-539 BC]' },
+      { value: 'Phoenician', label: 'Phoenician [1500 BC-300 BC]' },
+      { value: 'Carthaginian', label: 'Carthaginian [814 BC-146 BC]' },
+      { value: 'Mongol Empire', label: 'Mongol Empire [1206-1368]' },
+      { value: 'Holy Roman', label: 'Holy Roman [800-1806]' },
+      { value: 'Rhodesian', label: 'Rhodesian [1965-1979]' },
+      { value: 'South Vietnamese', label: 'South Vietnamese [1955-1975]' },
+      { value: 'North Vietnamese', label: 'North Vietnamese [1945-1976]' },
+      { value: 'Tibetan (historical)', label: 'Tibetan (historical) [618-1950]' },
+      { value: 'Hawaiian Kingdom', label: 'Hawaiian Kingdom [1795-1893]' },
+      { value: 'Confederate (CSA)', label: 'Confederate (CSA) [1861-1865]' },
+      { value: 'Republic of Texas', label: 'Republic of Texas [1836-1846]' },
+      { value: 'Gran Colombian', label: 'Gran Colombian [1819-1831]' },
+      { value: 'Zulu Kingdom', label: 'Zulu Kingdom [1816-1897]' },
+      { value: 'Incan', label: 'Incan [1438-1533]' },
+      { value: 'Aztec', label: 'Aztec [1428-1521]' },
+      { value: 'Mayan', label: 'Mayan [2000 BC-1697 AD]' },
+      { value: 'Other Historical', label: 'Other Historical' },
+    ]
+  },
+  {
+    label: '─── Stateless / Other ───',
+    options: [
+      { value: 'Stateless', label: 'Stateless' },
+      { value: 'Dual Nationality', label: 'Dual Nationality' },
+      { value: 'Refugee', label: 'Refugee' },
+      { value: 'Unknown', label: 'Unknown' },
+      { value: 'Fictional Nation', label: 'Fictional Nation' },
+      { value: 'Custom', label: 'Custom / Other' },
+    ]
+  },
+];
+
 const createInitialCharacterData = () => ({
   identity: {
     core: { firstName: '', middleName: '', lastName: '', nicknames: '', dateOfBirth: '', archetype: '' },
@@ -891,7 +1263,7 @@ const LockedContentScreen = ({ reason, tabName }) => (
 // TAB CONTENT COMPONENTS
 // ============================================================================
 
-const IdentityContent = ({ data, updateData, subtab }) => {
+const IdentityContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('identity', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -1183,292 +1555,13 @@ const IdentityContent = ({ data, updateData, subtab }) => {
             className="w-full bg-gray-50 border border-gray-300 rounded-sm py-2 px-2 font-mono text-sm text-gray-800 focus:border-gray-900 focus:outline-none cursor-pointer"
           >
             <option value="">-- Select Country --</option>
-            
-            <optgroup label="─── Africa ───">
-              <option value="Algerian">Algerian</option>
-              <option value="Angolan">Angolan</option>
-              <option value="Beninese">Beninese</option>
-              <option value="Botswanan">Botswanan</option>
-              <option value="Burkinabé">Burkinabé</option>
-              <option value="Burundian">Burundian</option>
-              <option value="Cabo Verdean">Cabo Verdean</option>
-              <option value="Cameroonian">Cameroonian</option>
-              <option value="Central African">Central African</option>
-              <option value="Chadian">Chadian</option>
-              <option value="Comorian">Comorian</option>
-              <option value="Congolese (DRC)">Congolese (DRC)</option>
-              <option value="Congolese (Republic)">Congolese (Republic)</option>
-              <option value="Djiboutian">Djiboutian</option>
-              <option value="Egyptian">Egyptian</option>
-              <option value="Equatorial Guinean">Equatorial Guinean</option>
-              <option value="Eritrean">Eritrean</option>
-              <option value="Eswatini">Eswatini</option>
-              <option value="Ethiopian">Ethiopian</option>
-              <option value="Gabonese">Gabonese</option>
-              <option value="Gambian">Gambian</option>
-              <option value="Ghanaian">Ghanaian</option>
-              <option value="Guinean">Guinean</option>
-              <option value="Guinea-Bissauan">Guinea-Bissauan</option>
-              <option value="Ivorian">Ivorian</option>
-              <option value="Kenyan">Kenyan</option>
-              <option value="Lesotho">Lesotho</option>
-              <option value="Liberian">Liberian</option>
-              <option value="Libyan">Libyan</option>
-              <option value="Malagasy">Malagasy</option>
-              <option value="Malawian">Malawian</option>
-              <option value="Malian">Malian</option>
-              <option value="Mauritanian">Mauritanian</option>
-              <option value="Mauritian">Mauritian</option>
-              <option value="Moroccan">Moroccan</option>
-              <option value="Mozambican">Mozambican</option>
-              <option value="Namibian">Namibian</option>
-              <option value="Nigerien">Nigerien</option>
-              <option value="Nigerian">Nigerian</option>
-              <option value="Rwandan">Rwandan</option>
-              <option value="São Toméan">São Toméan</option>
-              <option value="Senegalese">Senegalese</option>
-              <option value="Seychellois">Seychellois</option>
-              <option value="Sierra Leonean">Sierra Leonean</option>
-              <option value="Somali">Somali</option>
-              <option value="South African">South African</option>
-              <option value="South Sudanese">South Sudanese</option>
-              <option value="Sudanese">Sudanese</option>
-              <option value="Tanzanian">Tanzanian</option>
-              <option value="Togolese">Togolese</option>
-              <option value="Tunisian">Tunisian</option>
-              <option value="Ugandan">Ugandan</option>
-              <option value="Zambian">Zambian</option>
-              <option value="Zimbabwean">Zimbabwean</option>
-            </optgroup>
-            
-            <optgroup label="─── Americas (North) ───">
-              <option value="American">American</option>
-              <option value="Canadian">Canadian</option>
-              <option value="Mexican">Mexican</option>
-            </optgroup>
-            
-            <optgroup label="─── Americas (Central & Caribbean) ───">
-              <option value="Antiguan">Antiguan</option>
-              <option value="Bahamian">Bahamian</option>
-              <option value="Barbadian">Barbadian</option>
-              <option value="Belizean">Belizean</option>
-              <option value="Costa Rican">Costa Rican</option>
-              <option value="Cuban">Cuban</option>
-              <option value="Dominican (Dominica)">Dominican (Dominica)</option>
-              <option value="Dominican (Republic)">Dominican (Republic)</option>
-              <option value="Salvadoran">Salvadoran</option>
-              <option value="Grenadian">Grenadian</option>
-              <option value="Guatemalan">Guatemalan</option>
-              <option value="Haitian">Haitian</option>
-              <option value="Honduran">Honduran</option>
-              <option value="Jamaican">Jamaican</option>
-              <option value="Nicaraguan">Nicaraguan</option>
-              <option value="Panamanian">Panamanian</option>
-              <option value="Puerto Rican">Puerto Rican</option>
-              <option value="Kittitian/Nevisian">Kittitian/Nevisian</option>
-              <option value="Saint Lucian">Saint Lucian</option>
-              <option value="Vincentian">Vincentian</option>
-              <option value="Trinidadian/Tobagonian">Trinidadian/Tobagonian</option>
-            </optgroup>
-            
-            <optgroup label="─── Americas (South) ───">
-              <option value="Argentine">Argentine</option>
-              <option value="Bolivian">Bolivian</option>
-              <option value="Brazilian">Brazilian</option>
-              <option value="Chilean">Chilean</option>
-              <option value="Colombian">Colombian</option>
-              <option value="Ecuadorian">Ecuadorian</option>
-              <option value="Guyanese">Guyanese</option>
-              <option value="Paraguayan">Paraguayan</option>
-              <option value="Peruvian">Peruvian</option>
-              <option value="Surinamese">Surinamese</option>
-              <option value="Uruguayan">Uruguayan</option>
-              <option value="Venezuelan">Venezuelan</option>
-            </optgroup>
-            
-            <optgroup label="─── Asia (East) ───">
-              <option value="Chinese">Chinese</option>
-              <option value="Hong Konger">Hong Konger</option>
-              <option value="Japanese">Japanese</option>
-              <option value="Korean (North)">Korean (North)</option>
-              <option value="Korean (South)">Korean (South)</option>
-              <option value="Macanese">Macanese</option>
-              <option value="Mongolian">Mongolian</option>
-              <option value="Taiwanese">Taiwanese</option>
-            </optgroup>
-            
-            <optgroup label="─── Asia (Southeast) ───">
-              <option value="Bruneian">Bruneian</option>
-              <option value="Burmese">Burmese</option>
-              <option value="Cambodian">Cambodian</option>
-              <option value="Filipino">Filipino</option>
-              <option value="Indonesian">Indonesian</option>
-              <option value="Laotian">Laotian</option>
-              <option value="Malaysian">Malaysian</option>
-              <option value="Singaporean">Singaporean</option>
-              <option value="Thai">Thai</option>
-              <option value="Timorese">Timorese</option>
-              <option value="Vietnamese">Vietnamese</option>
-            </optgroup>
-            
-            <optgroup label="─── Asia (South) ───">
-              <option value="Afghan">Afghan</option>
-              <option value="Bangladeshi">Bangladeshi</option>
-              <option value="Bhutanese">Bhutanese</option>
-              <option value="Indian">Indian</option>
-              <option value="Maldivian">Maldivian</option>
-              <option value="Nepali">Nepali</option>
-              <option value="Pakistani">Pakistani</option>
-              <option value="Sri Lankan">Sri Lankan</option>
-            </optgroup>
-            
-            <optgroup label="─── Asia (Central) ───">
-              <option value="Kazakh">Kazakh</option>
-              <option value="Kyrgyz">Kyrgyz</option>
-              <option value="Tajik">Tajik</option>
-              <option value="Turkmen">Turkmen</option>
-              <option value="Uzbek">Uzbek</option>
-            </optgroup>
-            
-            <optgroup label="─── Asia (West) / Middle East ───">
-              <option value="Armenian">Armenian</option>
-              <option value="Azerbaijani">Azerbaijani</option>
-              <option value="Bahraini">Bahraini</option>
-              <option value="Cypriot">Cypriot</option>
-              <option value="Georgian">Georgian</option>
-              <option value="Iranian">Iranian</option>
-              <option value="Iraqi">Iraqi</option>
-              <option value="Israeli">Israeli</option>
-              <option value="Jordanian">Jordanian</option>
-              <option value="Kuwaiti">Kuwaiti</option>
-              <option value="Lebanese">Lebanese</option>
-              <option value="Omani">Omani</option>
-              <option value="Palestinian">Palestinian</option>
-              <option value="Qatari">Qatari</option>
-              <option value="Saudi">Saudi</option>
-              <option value="Syrian">Syrian</option>
-              <option value="Turkish">Turkish</option>
-              <option value="Emirati">Emirati</option>
-              <option value="Yemeni">Yemeni</option>
-            </optgroup>
-            
-            <optgroup label="─── Europe (Western) ───">
-              <option value="Austrian">Austrian</option>
-              <option value="Belgian">Belgian</option>
-              <option value="Dutch">Dutch</option>
-              <option value="French">French</option>
-              <option value="German">German</option>
-              <option value="Liechtensteiner">Liechtensteiner</option>
-              <option value="Luxembourger">Luxembourger</option>
-              <option value="Monacan">Monacan</option>
-              <option value="Swiss">Swiss</option>
-            </optgroup>
-            
-            <optgroup label="─── Europe (Northern) ───">
-              <option value="British">British</option>
-              <option value="Danish">Danish</option>
-              <option value="Estonian">Estonian</option>
-              <option value="Finnish">Finnish</option>
-              <option value="Icelandic">Icelandic</option>
-              <option value="Irish">Irish</option>
-              <option value="Latvian">Latvian</option>
-              <option value="Lithuanian">Lithuanian</option>
-              <option value="Norwegian">Norwegian</option>
-              <option value="Swedish">Swedish</option>
-            </optgroup>
-            
-            <optgroup label="─── Europe (Southern) ───">
-              <option value="Albanian">Albanian</option>
-              <option value="Andorran">Andorran</option>
-              <option value="Bosnian">Bosnian</option>
-              <option value="Croatian">Croatian</option>
-              <option value="Greek">Greek</option>
-              <option value="Italian">Italian</option>
-              <option value="Kosovar">Kosovar</option>
-              <option value="Macedonian">Macedonian</option>
-              <option value="Maltese">Maltese</option>
-              <option value="Montenegrin">Montenegrin</option>
-              <option value="Portuguese">Portuguese</option>
-              <option value="San Marinese">San Marinese</option>
-              <option value="Serbian">Serbian</option>
-              <option value="Slovenian">Slovenian</option>
-              <option value="Spanish">Spanish</option>
-              <option value="Vatican">Vatican</option>
-            </optgroup>
-            
-            <optgroup label="─── Europe (Eastern) ───">
-              <option value="Belarusian">Belarusian</option>
-              <option value="Bulgarian">Bulgarian</option>
-              <option value="Czech">Czech</option>
-              <option value="Hungarian">Hungarian</option>
-              <option value="Moldovan">Moldovan</option>
-              <option value="Polish">Polish</option>
-              <option value="Romanian">Romanian</option>
-              <option value="Russian">Russian</option>
-              <option value="Slovak">Slovak</option>
-              <option value="Ukrainian">Ukrainian</option>
-            </optgroup>
-            
-            <optgroup label="─── Oceania ───">
-              <option value="Australian">Australian</option>
-              <option value="Fijian">Fijian</option>
-              <option value="Kiribati">Kiribati</option>
-              <option value="Marshallese">Marshallese</option>
-              <option value="Micronesian">Micronesian</option>
-              <option value="Nauruan">Nauruan</option>
-              <option value="New Zealander">New Zealander</option>
-              <option value="Palauan">Palauan</option>
-              <option value="Papua New Guinean">Papua New Guinean</option>
-              <option value="Samoan">Samoan</option>
-              <option value="Solomon Islander">Solomon Islander</option>
-              <option value="Tongan">Tongan</option>
-              <option value="Tuvaluan">Tuvaluan</option>
-              <option value="Vanuatuan">Vanuatuan</option>
-            </optgroup>
-            
-            <optgroup label="─── Historical Nations ───">
-              <option value="Soviet (USSR)">Soviet (USSR) [1922-1991]</option>
-              <option value="Yugoslav">Yugoslav [1918-1992]</option>
-              <option value="Czechoslovak">Czechoslovak [1918-1993]</option>
-              <option value="East German (DDR)">East German (DDR) [1949-1990]</option>
-              <option value="West German (FRG)">West German (FRG) [1949-1990]</option>
-              <option value="Austro-Hungarian">Austro-Hungarian [1867-1918]</option>
-              <option value="Ottoman">Ottoman [1299-1922]</option>
-              <option value="Prussian">Prussian [1525-1947]</option>
-              <option value="Russian Imperial">Russian Imperial [1721-1917]</option>
-              <option value="Byzantine">Byzantine [330-1453]</option>
-              <option value="Roman">Roman [753 BC-476 AD]</option>
-              <option value="Ancient Egyptian">Ancient Egyptian [3100 BC-30 BC]</option>
-              <option value="Ancient Greek">Ancient Greek [800 BC-31 BC]</option>
-              <option value="Persian (Ancient)">Persian (Ancient) [550 BC-330 BC]</option>
-              <option value="Mesopotamian">Mesopotamian [3500 BC-539 BC]</option>
-              <option value="Phoenician">Phoenician [1500 BC-300 BC]</option>
-              <option value="Carthaginian">Carthaginian [814 BC-146 BC]</option>
-              <option value="Mongol Empire">Mongol Empire [1206-1368]</option>
-              <option value="Holy Roman">Holy Roman [800-1806]</option>
-              <option value="Rhodesian">Rhodesian [1965-1979]</option>
-              <option value="South Vietnamese">South Vietnamese [1955-1975]</option>
-              <option value="North Vietnamese">North Vietnamese [1945-1976]</option>
-              <option value="Tibetan (historical)">Tibetan (historical) [618-1950]</option>
-              <option value="Hawaiian Kingdom">Hawaiian Kingdom [1795-1893]</option>
-              <option value="Confederate (CSA)">Confederate (CSA) [1861-1865]</option>
-              <option value="Republic of Texas">Republic of Texas [1836-1846]</option>
-              <option value="Gran Colombian">Gran Colombian [1819-1831]</option>
-              <option value="Zulu Kingdom">Zulu Kingdom [1816-1897]</option>
-              <option value="Incan">Incan [1438-1533]</option>
-              <option value="Aztec">Aztec [1428-1521]</option>
-              <option value="Mayan">Mayan [2000 BC-1697 AD]</option>
-              <option value="Other Historical">Other Historical</option>
-            </optgroup>
-            
-            <optgroup label="─── Stateless / Other ───">
-              <option value="Stateless">Stateless</option>
-              <option value="Dual Nationality">Dual Nationality</option>
-              <option value="Refugee">Refugee</option>
-              <option value="Unknown">Unknown</option>
-              <option value="Fictional Nation">Fictional Nation</option>
-              <option value="Custom">Custom / Other</option>
-            </optgroup>
+            {NATIONALITY_OPTIONS.map((group) => (
+              <optgroup key={group.label} label={group.label}>
+                {group.options.map((opt) => (
+                  <option key={opt.value} value={opt.value}>{opt.label}</option>
+                ))}
+              </optgroup>
+            ))}
           </select>
           
           {/* Custom nationality input for special cases */}
@@ -3554,8 +3647,9 @@ const IdentityContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const IdentityContent = memo(IdentityContentBase);
 
-const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGender }) => {
+const AppearanceContentBase = ({ data, updateData, subtab, characterAge, characterGender }) => {
   const update = (section, field, value) => {
     updateData('appearance', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -3573,7 +3667,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
 
   const FaceSelect = ({ label, value, onChange, options, placeholder = "-- Select --" }) => (
     <div className="mb-3">
-      <label className="font-mono text-[10px] text-gray-600 mb-1 block">{label}</label>
+      <label className={STYLES.LABEL}>{label}</label>
       <select value={value || ''} onChange={onChange} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs focus:border-teal-400 focus:outline-none">
         <option value="">{placeholder}</option>
         {options.map(opt => (
@@ -3587,7 +3681,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
 
   const FaceInput = ({ label, value, onChange, placeholder }) => (
     <div className="mb-3">
-      <label className="font-mono text-[10px] text-gray-600 mb-1 block">{label}</label>
+      <label className={STYLES.LABEL}>{label}</label>
       <input type="text" value={value || ''} onChange={onChange} placeholder={placeholder} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs focus:border-teal-400 focus:outline-none" />
     </div>
   );
@@ -3663,7 +3757,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
             <FaceSelect label="Skin Tone" value={data.face?.skinTone} onChange={(e) => update('face', 'skinTone', e.target.value)} options={skinToneOptions} />
             <FaceSelect label="Skin Undertone" value={data.face?.skinUndertone} onChange={(e) => update('face', 'skinUndertone', e.target.value)} options={skinUndertoneOptions} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Skin Texture" value={data.face?.skinTexture} onChange={(e) => update('face', 'skinTexture', e.target.value)}
               options={[
                 { value: 'smooth', label: 'Smooth — No visible texture' },
@@ -3735,7 +3829,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'bushy', label: 'Bushy — Untrimmed, wild' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Eyebrow Arch" value={data.face?.eyebrowArch} onChange={(e) => update('face', 'eyebrowArch', e.target.value)}
               options={[
                 { value: 'no-arch', label: 'No Arch — Completely straight' },
@@ -3781,7 +3875,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'protruding', label: 'Protruding — Prominent' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Eye Size" value={data.face?.eyeSize} onChange={(e) => update('face', 'eyeSize', e.target.value)}
               options={['Very Small', 'Small', 'Medium', 'Large', 'Very Large']} />
             <FaceSelect label="Eyelashes" value={data.face?.eyeLashes} onChange={(e) => update('face', 'eyeLashes', e.target.value)}
@@ -3880,7 +3974,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
             <FaceSelect label="Jawline Definition" value={data.face?.jawlineDefinition} onChange={(e) => update('face', 'jawlineDefinition', e.target.value)}
               options={['Undefined', 'Soft', 'Moderate', 'Defined', 'Sharp', 'Chiseled']} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Chin Shape" value={data.face?.chinShape} onChange={(e) => update('face', 'chinShape', e.target.value)}
               options={['Pointed', 'Rounded', 'Square', 'Cleft', 'Dimpled', 'Receding', 'Protruding', 'Double']} />
             <FaceSelect label="Chin Size" value={data.face?.chinSize} onChange={(e) => update('face', 'chinSize', e.target.value)}
@@ -3937,7 +4031,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
             <FaceSelect label="Dimples" value={data.face?.dimples} onChange={(e) => update('face', 'dimples', e.target.value)}
               options={['None', 'Cheeks', 'Chin', 'One Cheek', 'Cheeks and Chin']} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Wrinkles" value={data.face?.wrinkles} onChange={(e) => update('face', 'wrinkles', e.target.value)}
               options={['None', 'Expression Lines', 'Fine Lines', 'Moderate', 'Pronounced', 'Deep', 'Forehead Lines', 'Crows Feet', 'Smile Lines']} />
             <FaceInput label="Distinctive Marks" value={data.face?.distinctiveMarks} onChange={(e) => update('face', 'distinctiveMarks', e.target.value)}
@@ -4032,7 +4126,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'roots', label: 'Visible roots showing' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Color Shine/Luster" value={data.hair?.colorShine} onChange={(e) => update('hair', 'colorShine', e.target.value)}
               options={['Matte/Dull', 'Low Shine', 'Natural Shine', 'Glossy', 'Very Glossy/Shiny', 'Metallic Sheen']} />
             <FaceSelect label="Gray/White Amount" value={data.hair?.grayAmount} onChange={(e) => update('hair', 'grayAmount', e.target.value)}
@@ -4150,7 +4244,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'cowlick', label: 'Has Cowlick(s)' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Part/Parting" value={data.hair?.parting} onChange={(e) => update('hair', 'parting', e.target.value)}
               options={[
                 { value: 'none', label: 'No Part — Slicked or combed back' },
@@ -4294,7 +4388,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">📅 Era-Inspired Style (Optional)</h4>
           <p className="font-mono text-[10px] text-purple-600 mb-4">If your character has a style inspired by a specific era, select it here.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Style Era" value={data.hair?.styleEra} onChange={(e) => update('hair', 'styleEra', e.target.value)}
               options={[
                 { value: '', label: '— No specific era —' },
@@ -4410,7 +4504,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'daily', label: 'Daily — Every day' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Hair Accessories" value={data.hair?.accessories} onChange={(e) => update('hair', 'accessories', e.target.value)}
               options={[
                 { value: 'none', label: 'None' },
@@ -4467,7 +4561,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
             <FaceInput label="Exact Height (optional)" value={data.body?.exactHeight} onChange={(e) => update('body', 'exactHeight', e.target.value)} 
               placeholder="e.g. 5'9 / 175cm" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Weight Category" value={data.body?.weightCategory} onChange={(e) => update('body', 'weightCategory', e.target.value)}
               options={[
                 { value: 'underweight', label: 'Underweight — Below healthy range' },
@@ -4655,7 +4749,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'very-large', label: 'Very Large' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Hand Appearance" value={data.body?.handAppearance} onChange={(e) => update('body', 'handAppearance', e.target.value)}
               options={[
                 { value: 'elegant', label: 'Elegant — Long, graceful fingers' },
@@ -5029,7 +5123,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
               <p className="font-mono text-[10px] text-rose-600 mb-4">Detailed body characteristics for adult characters (18+).</p>
               
               {isFemale && (
-                <div className="space-y-4">
+                <div className={STYLES.SPACE_Y}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <FaceSelect label="Bust Size" value={data.body?.bustSize} onChange={(e) => update('body', 'bustSize', e.target.value)}
                       options={[
@@ -5068,7 +5162,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
               )}
               
               {isMale && (
-                <div className="space-y-4">
+                <div className={STYLES.SPACE_Y}>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <FaceSelect label="Chest" value={data.body?.chestMale} onChange={(e) => update('body', 'chestMale', e.target.value)}
                       options={[
@@ -5106,7 +5200,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
               )}
 
               {isNonBinary && (
-                <div className="space-y-4">
+                <div className={STYLES.SPACE_Y}>
                   <p className="font-mono text-[10px] text-gray-500 mb-2">Select the options that apply to your character's physique:</p>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <FaceSelect label="Chest" value={data.body?.chestNB} onChange={(e) => update('body', 'chestNB', e.target.value)}
@@ -5174,7 +5268,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'nervous', label: 'Nervous — Twitchy, hesitant' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="General Presence" value={data.body?.presence} onChange={(e) => update('body', 'presence', e.target.value)}
               options={[
                 { value: 'commanding', label: 'Commanding — Demands attention' },
@@ -5226,7 +5320,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'exceptional', label: 'Exceptional — Marathon level' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Physical Disabilities/Conditions" value={data.body?.disabilities} onChange={(e) => update('body', 'disabilities', e.target.value)}
               options={[
                 { value: 'none', label: 'None' },
@@ -5376,7 +5470,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'varied', label: 'Varied — Depends on item' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Clothing Quality" value={data.style?.clothingQuality} onChange={(e) => update('style', 'clothingQuality', e.target.value)}
               options={[
                 { value: 'luxury', label: 'Luxury — Designer, high-end' },
@@ -5446,7 +5540,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'varies', label: 'Varies — No preference' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Pattern Preference" value={data.style?.patternPreference} onChange={(e) => update('style', 'patternPreference', e.target.value)}
               options={[
                 { value: 'solid-only', label: 'Solid Colors Only' },
@@ -5540,7 +5634,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'avant-garde', label: 'Avant-Garde — Experimental' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Makeup Style" value={data.style?.makeupStyle} onChange={(e) => update('style', 'makeupStyle', e.target.value)}
               options={[
                 { value: 'none', label: 'N/A — No makeup' },
@@ -5681,7 +5775,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'always', label: 'Always — Signature look' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Hat Style" value={data.style?.hatStyle} onChange={(e) => update('style', 'hatStyle', e.target.value)}
               options={[
                 { value: 'none', label: 'N/A' },
@@ -5774,7 +5868,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'various', label: 'Various Locations' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceInput label="Tattoo Details" value={data.style?.tattooDetails} onChange={(e) => update('style', 'tattooDetails', e.target.value)} 
               placeholder="Describe specific tattoos, their locations, and meanings..." />
             <FaceInput label="Piercing Details" value={data.style?.piercingDetails} onChange={(e) => update('style', 'piercingDetails', e.target.value)} 
@@ -5817,7 +5911,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
                 { value: 'chameleon', label: 'Chameleon — Adapts to situation' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <FaceSelect label="Attention to Appearance" value={data.style?.attentionToAppearance} onChange={(e) => update('style', 'attentionToAppearance', e.target.value)}
               options={[
                 { value: 'obsessive', label: 'Obsessive — Constantly checking' },
@@ -5838,8 +5932,9 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
 
   return sections[subtab] || sections[0];
 };
+const AppearanceContent = memo(AppearanceContentBase);
 
-const PsychologyContent = ({ data, updateData, subtab }) => {
+const PsychologyContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('psychology', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -6992,7 +7087,7 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
             <h4 className="font-mono text-sm font-bold text-gray-800">O — Openness</h4>
             <span className="font-mono text-xs text-gray-500">Abertura à Experiência</span>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Mede curiosidade intelectual, criatividade e preferência por novidade vs. tradição.
           </p>
           <div className="space-y-2">
@@ -7046,7 +7141,7 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
             <h4 className="font-mono text-sm font-bold text-gray-800">C — Conscientiousness</h4>
             <span className="font-mono text-xs text-gray-500">Conscienciosidade</span>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Mede organização, disciplina, confiabilidade e orientação a metas vs. espontaneidade.
           </p>
           <div className="space-y-2">
@@ -7100,7 +7195,7 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
             <h4 className="font-mono text-sm font-bold text-gray-800">E — Extraversion</h4>
             <span className="font-mono text-xs text-gray-500">Extroversão</span>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Mede sociabilidade, assertividade e busca por estímulos externos vs. reflexão interna.
           </p>
           <div className="space-y-2">
@@ -7154,7 +7249,7 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
             <h4 className="font-mono text-sm font-bold text-gray-800">A — Agreeableness</h4>
             <span className="font-mono text-xs text-gray-500">Amabilidade</span>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Mede cooperação, empatia e harmonia social vs. ceticismo, competitividade e assertividade.
           </p>
           <div className="space-y-2">
@@ -7208,7 +7303,7 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
             <h4 className="font-mono text-sm font-bold text-gray-800">N — Neuroticism</h4>
             <span className="font-mono text-xs text-gray-500">Neuroticismo / Estabilidade Emocional</span>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Mede estabilidade emocional e resiliência vs. sensibilidade, ansiedade e reatividade emocional.
           </p>
           <div className="space-y-2">
@@ -8386,6 +8481,7 @@ const traitsDatabase = {
     { id: 'bigoted', label: 'Bigoted', cat: 'Judgment', desc: 'Intolerant toward others' },
   ]
 };
+const PsychologyContent = memo(PsychologyContentBase);
 
           const positiveTraits = data.traits.positiveTraits || [];
           const neutralTraits = data.traits.neutralTraits || [];
@@ -8511,7 +8607,7 @@ const traitsDatabase = {
           };
 
           return (
-            <div className="space-y-4">
+            <div className={STYLES.SPACE_Y}>
               {/* Validation Status */}
               <div className={`p-3 rounded-sm border-2 ${
                 isValid ? 'bg-green-50 border-green-300' : 'bg-amber-50 border-amber-300'
@@ -8764,7 +8860,7 @@ const traitsDatabase = {
               {/* Perceived vs Reality - Visual System */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="bg-gradient-to-r from-cyan-50 to-purple-50 border border-cyan-200 rounded-sm p-4 mb-4">
-                  <h3 className="font-mono text-sm font-bold text-gray-800 mb-2">👁️💀 MÁSCARA vs VERDADE</h3>
+                  <h3 className={STYLES.SECTION_TITLE}>👁️💀 MÁSCARA vs VERDADE</h3>
                   <p className="font-mono text-xs text-gray-600 leading-relaxed">
                     O contraste entre como o personagem é <strong>percebido pelos outros</strong> e <strong>quem realmente é</strong> por dentro.
                     Baseado nos traits visíveis e ocultos que você selecionou.
@@ -8864,7 +8960,7 @@ const traitsDatabase = {
                     <select
                       value={data.traits.whoKnowsTruth || ''}
                       onChange={(e) => update('traits', 'whoKnowsTruth', e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                      className={STYLES.INPUT}
                     >
                       <option value="">-- Selecione --</option>
                       <option value="nobody">Ninguém — Completamente isolado</option>
@@ -8886,7 +8982,7 @@ const traitsDatabase = {
                     <select
                       value={data.traits.maskFallsTrigger || ''}
                       onChange={(e) => update('traits', 'maskFallsTrigger', e.target.value)}
-                      className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                      className={STYLES.INPUT}
                     >
                       <option value="">-- Selecione --</option>
                       <option value="never">Nunca — Controle absoluto</option>
@@ -8911,7 +9007,7 @@ const traitsDatabase = {
                       value={data.traits.whyHiding || ''}
                       onChange={(e) => update('traits', 'whyHiding', e.target.value)}
                       placeholder="Ex: Medo de rejeição, trauma do passado, vergonha, proteção..."
-                      className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+                      className={`${STYLES.TEXTAREA} h-20`}
                     />
                   </div>
 
@@ -8924,7 +9020,7 @@ const traitsDatabase = {
                       value={data.traits.whenRevealed || ''}
                       onChange={(e) => update('traits', 'whenRevealed', e.target.value)}
                       placeholder="Ex: Fica em negação, ataca quem descobriu, fecha-se completamente, sente alívio..."
-                      className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+                      className={`${STYLES.TEXTAREA} h-20`}
                     />
                   </div>
                 </div>
@@ -8946,12 +9042,12 @@ const traitsDatabase = {
         </div>
 
         {/* Emotional Range - Qualitative */}
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <div className="flex items-center justify-between mb-2">
             <h4 className="font-mono text-sm font-bold text-gray-800">🎭 Amplitude Emocional</h4>
             <span className="font-mono text-xs text-gray-500">Como expressa emoções</span>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Quão intensamente o personagem demonstra suas emoções para os outros.
           </p>
           <div className="space-y-2">
@@ -8999,9 +9095,9 @@ const traitsDatabase = {
         </div>
 
         {/* Default Mood */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😊 Humor Base</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😊 Humor Base</h4>
+          <p className={STYLES.SUBTITLE}>
             O estado emocional padrão quando nada específico está acontecendo.
           </p>
           <select
@@ -9042,9 +9138,9 @@ const traitsDatabase = {
         </div>
 
         {/* Emotional Triggers - Multi-select */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⚡ Gatilhos Emocionais</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⚡ Gatilhos Emocionais</h4>
+          <p className={STYLES.SUBTITLE}>
             O que provoca reações emocionais intensas. Selecione até 5.
           </p>
           
@@ -9139,9 +9235,9 @@ const traitsDatabase = {
         </div>
 
         {/* Coping Mechanisms - Multi-select */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🛡️ Mecanismos de Coping</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🛡️ Mecanismos de Coping</h4>
+          <p className={STYLES.SUBTITLE}>
             Como lida com estresse e emoções difíceis. Selecione até 4.
           </p>
           
@@ -9258,9 +9354,9 @@ const traitsDatabase = {
         </div>
 
         {/* Attachment Style */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💕 Estilo de Apego</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💕 Estilo de Apego</h4>
+          <p className={STYLES.SUBTITLE}>
             Como forma e mantém vínculos emocionais com outras pessoas.
           </p>
           <select
@@ -9326,11 +9422,11 @@ const traitsDatabase = {
         </div>
 
         {/* Emotional Volatility */}
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <div className="flex items-center justify-between mb-2">
             <h4 className="font-mono text-sm font-bold text-gray-800">🌊 Volatilidade Emocional</h4>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Quão rapidamente as emoções mudam e quão intensas são as oscilações.
           </p>
           <div className="space-y-2">
@@ -9372,11 +9468,11 @@ const traitsDatabase = {
         </div>
 
         {/* Emotional Intelligence */}
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <div className="flex items-center justify-between mb-2">
             <h4 className="font-mono text-sm font-bold text-gray-800">🧠 Inteligência Emocional</h4>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Capacidade de reconhecer, entender e gerenciar emoções próprias e dos outros.
           </p>
           <div className="space-y-2">
@@ -9418,15 +9514,15 @@ const traitsDatabase = {
         </div>
 
         {/* Dominant Emotion */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💖 Emoção Dominante</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💖 Emoção Dominante</h4>
+          <p className={STYLES.SUBTITLE}>
             A emoção que o personagem mais sente, que colore sua experiência do mundo.
           </p>
           <select
             value={data.emotional.dominantEmotion || ''}
             onChange={(e) => update('emotional', 'dominantEmotion', e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+            className={STYLES.INPUT}
           >
             <option value="">-- Selecione a emoção dominante --</option>
             <optgroup label="🌟 Emoções Positivas">
@@ -9466,15 +9562,15 @@ const traitsDatabase = {
         </div>
 
         {/* Avoided Emotion */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚫 Emoção Evitada</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🚫 Emoção Evitada</h4>
+          <p className={STYLES.SUBTITLE}>
             A emoção que o personagem mais reprime, evita ou não consegue lidar.
           </p>
           <select
             value={data.emotional.avoidedEmotion || ''}
             onChange={(e) => update('emotional', 'avoidedEmotion', e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+            className={STYLES.INPUT}
           >
             <option value="">-- Selecione a emoção evitada --</option>
             <optgroup label="😔 Emoções Frequentemente Evitadas">
@@ -9508,7 +9604,7 @@ const traitsDatabase = {
               <select
                 value={data.emotional.avoidedEmotionReason || ''}
                 onChange={(e) => update('emotional', 'avoidedEmotionReason', e.target.value)}
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Selecione a razão --</option>
                 <option value="childhood">Childhood (Infância) — Aprendeu que não era seguro/permitido</option>
@@ -9539,9 +9635,9 @@ const traitsDatabase = {
         </div>
 
         {/* Core Fears - Multi-select up to 4 */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😨 Medos Centrais</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😨 Medos Centrais</h4>
+          <p className={STYLES.SUBTITLE}>
             Os medos mais profundos que motivam comportamentos. Selecione até 4.
           </p>
           
@@ -9726,7 +9822,7 @@ const traitsDatabase = {
                     value={data.innerWorld.customFear || ''}
                     onChange={(e) => update('innerWorld', 'customFear', e.target.value)}
                     placeholder="Descreva um medo específico não listado..."
-                    className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                    className={STYLES.INPUT}
                   />
                 </div>
               </div>
@@ -9735,9 +9831,9 @@ const traitsDatabase = {
         </div>
 
         {/* Core Desires - Multi-select up to 4 */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💫 Desejos Centrais</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💫 Desejos Centrais</h4>
+          <p className={STYLES.SUBTITLE}>
             O que o personagem mais quer na vida, consciente ou inconscientemente. Selecione até 4.
           </p>
           
@@ -9920,7 +10016,7 @@ const traitsDatabase = {
                     value={data.innerWorld.customDesire || ''}
                     onChange={(e) => update('innerWorld', 'customDesire', e.target.value)}
                     placeholder="Descreva um desejo específico não listado..."
-                    className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                    className={STYLES.INPUT}
                   />
                 </div>
               </div>
@@ -9929,9 +10025,9 @@ const traitsDatabase = {
         </div>
 
         {/* Core Shame - Multi-select up to 4 */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😔 Vergonhas / Inseguranças Centrais</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😔 Vergonhas / Inseguranças Centrais</h4>
+          <p className={STYLES.SUBTITLE}>
             As vergonhas mais profundas, aquilo que mais teme que descubram sobre si. Selecione até 4.
           </p>
           
@@ -10114,7 +10210,7 @@ const traitsDatabase = {
                     value={data.innerWorld.customShame || ''}
                     onChange={(e) => update('innerWorld', 'customShame', e.target.value)}
                     placeholder="Descreva uma vergonha específica não listada..."
-                    className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                    className={STYLES.INPUT}
                   />
                 </div>
               </div>
@@ -10123,9 +10219,9 @@ const traitsDatabase = {
         </div>
 
         {/* Defense Mechanisms - Multi-select up to 4 */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🛡️ Mecanismos de Defesa</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🛡️ Mecanismos de Defesa</h4>
+          <p className={STYLES.SUBTITLE}>
             Como a mente se protege de pensamentos e emoções dolorosas. Selecione até 4.
           </p>
           
@@ -10279,7 +10375,7 @@ const traitsDatabase = {
                     value={data.innerWorld.customDefense || ''}
                     onChange={(e) => update('innerWorld', 'customDefense', e.target.value)}
                     placeholder="Descreva um mecanismo de defesa específico..."
-                    className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                    className={STYLES.INPUT}
                   />
                 </div>
               </div>
@@ -10288,9 +10384,9 @@ const traitsDatabase = {
         </div>
 
         {/* Inner Critic Voice - Multi-select up to 5 */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👤 Voz do Crítico Interior</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👤 Voz do Crítico Interior</h4>
+          <p className={STYLES.SUBTITLE}>
             O que a voz negativa interna diz constantemente. Selecione até 5 frases principais.
           </p>
           
@@ -10483,9 +10579,9 @@ const traitsDatabase = {
         {data.mentalHealth.hasMentalHealthHistory && (
           <>
             {/* Diagnosed Conditions - Multi-select with CID */}
-            <div className="border border-gray-200 rounded-sm p-4">
-              <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📋 Condições Diagnosticadas</h4>
-              <p className="font-mono text-[10px] text-gray-500 mb-3">
+            <div className={STYLES.SECTION}>
+              <h4 className={STYLES.SECTION_TITLE}>📋 Condições Diagnosticadas</h4>
+              <p className={STYLES.SUBTITLE}>
                 Diagnósticos oficiais com código CID-10. Selecione até 3.
               </p>
               
@@ -10624,7 +10720,7 @@ const traitsDatabase = {
                         value={data.mentalHealth.customCondition || ''}
                         onChange={(e) => update('mentalHealth', 'customCondition', e.target.value)}
                         placeholder="Descreva uma condição específica..."
-                        className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                        className={STYLES.INPUT}
                       />
                     </div>
                   </div>
@@ -10633,9 +10729,9 @@ const traitsDatabase = {
             </div>
 
             {/* Undiagnosed Tendencies */}
-            <div className="border border-gray-200 rounded-sm p-4">
-              <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">❓ Tendências Não-Diagnosticadas</h4>
-              <p className="font-mono text-[10px] text-gray-500 mb-3">
+            <div className={STYLES.SECTION}>
+              <h4 className={STYLES.SECTION_TITLE}>❓ Tendências Não-Diagnosticadas</h4>
+              <p className={STYLES.SUBTITLE}>
                 Padrões comportamentais ou emocionais que o personagem demonstra, mas nunca foram formalmente diagnosticados. Selecione até 3.
               </p>
               
@@ -10720,9 +10816,9 @@ const traitsDatabase = {
             </div>
 
             {/* Therapy History */}
-            <div className="border border-gray-200 rounded-sm p-4">
-              <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🛋️ Histórico de Terapia</h4>
-              <p className="font-mono text-[10px] text-gray-500 mb-3">
+            <div className={STYLES.SECTION}>
+              <h4 className={STYLES.SECTION_TITLE}>🛋️ Histórico de Terapia</h4>
+              <p className={STYLES.SUBTITLE}>
                 Experiência do personagem com tratamento psicológico/psiquiátrico.
               </p>
               
@@ -10732,7 +10828,7 @@ const traitsDatabase = {
                 <select
                   value={data.mentalHealth.therapyStatus || ''}
                   onChange={(e) => update('mentalHealth', 'therapyStatus', e.target.value)}
-                  className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                  className={STYLES.INPUT}
                 >
                   <option value="">-- Selecione --</option>
                   <option value="never">Nunca fez terapia</option>
@@ -10753,7 +10849,7 @@ const traitsDatabase = {
                   <select
                     value={data.mentalHealth.therapyType || ''}
                     onChange={(e) => update('mentalHealth', 'therapyType', e.target.value)}
-                    className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                    className={STYLES.INPUT}
                   >
                     <option value="">-- Selecione --</option>
                     <optgroup label="Abordagens Principais">
@@ -10786,7 +10882,7 @@ const traitsDatabase = {
                 <select
                   value={data.mentalHealth.therapyRelationship || ''}
                   onChange={(e) => update('mentalHealth', 'therapyRelationship', e.target.value)}
-                  className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                  className={STYLES.INPUT}
                 >
                   <option value="">-- Selecione --</option>
                   <option value="engaged">Engajado — Participa ativamente, faz as tarefas</option>
@@ -10802,9 +10898,9 @@ const traitsDatabase = {
             </div>
 
             {/* Medications */}
-            <div className="border border-gray-200 rounded-sm p-4">
-              <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💊 Medicação Psiquiátrica</h4>
-              <p className="font-mono text-[10px] text-gray-500 mb-3">
+            <div className={STYLES.SECTION}>
+              <h4 className={STYLES.SECTION_TITLE}>💊 Medicação Psiquiátrica</h4>
+              <p className={STYLES.SUBTITLE}>
                 Classes de medicamentos (não marcas específicas). Selecione até 3.
               </p>
               
@@ -10959,7 +11055,7 @@ const traitsDatabase = {
                       <select
                         value={data.mentalHealth.medCompliance || ''}
                         onChange={(e) => update('mentalHealth', 'medCompliance', e.target.value)}
-                        className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                        className={STYLES.INPUT}
                       >
                         <option value="">-- Selecione --</option>
                         <option value="perfect">Perfeita — Nunca esquece, horários certos</option>
@@ -10978,12 +11074,12 @@ const traitsDatabase = {
             </div>
 
             {/* Hospitalization History */}
-            <div className="border border-gray-200 rounded-sm p-4">
-              <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏥 Histórico de Internação</h4>
+            <div className={STYLES.SECTION}>
+              <h4 className={STYLES.SECTION_TITLE}>🏥 Histórico de Internação</h4>
               <select
                 value={data.mentalHealth.hospitalization || ''}
                 onChange={(e) => update('mentalHealth', 'hospitalization', e.target.value)}
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Selecione --</option>
                 <option value="never">Nunca foi internado</option>
@@ -11008,7 +11104,7 @@ const traitsDatabase = {
 // INTELLIGENCE CONTENT - Complete Implementation
 // ============================================================================
 
-const IntelligenceContent = ({ data, updateData, subtab }) => {
+const IntelligenceContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('intelligence', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -11037,15 +11133,15 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* IQ Range */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📊 Faixa de QI</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📊 Faixa de QI</h4>
+          <p className={STYLES.SUBTITLE}>
             Estimativa geral da capacidade intelectual. Lembre-se que QI não mede todos os tipos de inteligência.
           </p>
           <select
             value={data.cognitive?.iqRange || ''}
             onChange={(e) => update('cognitive', 'iqRange', e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+            className={STYLES.INPUT}
           >
             <option value="">-- Selecione a faixa --</option>
             <option value="below-70">Below 70 — Deficiência Intelectual</option>
@@ -11072,11 +11168,11 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Processing Speed */}
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <div className="flex items-center justify-between mb-2">
             <h4 className="font-mono text-sm font-bold text-gray-800">⚡ Velocidade de Processamento</h4>
           </div>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+          <p className={STYLES.SUBTITLE}>
             Quão rápido processa informações e chega a conclusões.
           </p>
           <div className="space-y-2">
@@ -11118,12 +11214,12 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Memory Types */}
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">🗃️ Tipos de Memória</h4>
           
           {/* Working Memory */}
           <div className="mb-4">
-            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Working Memory (Memória de Trabalho)</label>
+            <label className={STYLES.LABEL}>Working Memory (Memória de Trabalho)</label>
             <p className="font-mono text-[9px] text-gray-400 mb-2">Capacidade de manter informações "na cabeça" enquanto trabalha com elas.</p>
             <div className="flex gap-2">
               {[1,2,3,4,5].map(level => (
@@ -11148,7 +11244,7 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
 
           {/* Long-term Memory */}
           <div className="mb-4">
-            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Long-term Memory (Memória de Longo Prazo)</label>
+            <label className={STYLES.LABEL}>Long-term Memory (Memória de Longo Prazo)</label>
             <p className="font-mono text-[9px] text-gray-400 mb-2">Capacidade de reter informações ao longo do tempo.</p>
             <div className="flex gap-2">
               {[1,2,3,4,5].map(level => (
@@ -11173,11 +11269,11 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
 
           {/* Eidetic Memory */}
           <div>
-            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Eidetic/Photographic Memory (Memória Fotográfica)</label>
+            <label className={STYLES.LABEL}>Eidetic/Photographic Memory (Memória Fotográfica)</label>
             <select
               value={data.cognitive?.eidetikMemory || ''}
               onChange={(e) => update('cognitive', 'eidetikMemory', e.target.value)}
-              className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+              className={STYLES.INPUT}
             >
               <option value="">-- Selecione --</option>
               <option value="none">No — Memória normal</option>
@@ -11189,15 +11285,15 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Learning Style */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📚 Estilo de Aprendizagem</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📚 Estilo de Aprendizagem</h4>
+          <p className={STYLES.SUBTITLE}>
             Como o personagem aprende melhor (modelo VARK).
           </p>
           <select
             value={data.cognitive?.learningStyle || ''}
             onChange={(e) => update('cognitive', 'learningStyle', e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+            className={STYLES.INPUT}
           >
             <option value="">-- Selecione --</option>
             <option value="visual">👁️ Visual — Aprende vendo: diagramas, gráficos, vídeos, demonstrações</option>
@@ -11209,7 +11305,7 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Thinking Styles - Sliders */}
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🎯 Estilos de Pensamento</h4>
           
           {/* Analytical vs Intuitive */}
@@ -11564,10 +11660,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Tech Skills */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💻 Tech Skills</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades tecnológicas e digitais. Selecione até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💻 Tech Skills</h4>
+          <p className={STYLES.SUBTITLE}>Habilidades tecnológicas e digitais. Selecione até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'Programming', 'Web Development', 'Mobile Dev', 'Data Science', 'AI/Machine Learning',
               'Cybersecurity', 'Networking', 'Database Admin', 'Cloud Computing', 'DevOps',
@@ -11591,10 +11687,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Creative Skills */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎨 Creative Skills</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades artísticas e criativas. Selecione até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎨 Creative Skills</h4>
+          <p className={STYLES.SUBTITLE}>Habilidades artísticas e criativas. Selecione até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'Drawing', 'Painting', 'Sculpture', 'Photography', 'Cinematography', 'Animation',
               'Graphic Design', 'Fashion Design', 'Interior Design', 'Architecture',
@@ -11619,10 +11715,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Physical Skills */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💪 Physical Skills</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades físicas e manuais. Selecione até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💪 Physical Skills</h4>
+          <p className={STYLES.SUBTITLE}>Habilidades físicas e manuais. Selecione até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'Martial Arts', 'Boxing', 'Wrestling', 'Fencing', 'Archery', 'Shooting',
               'Swimming', 'Diving', 'Running', 'Cycling', 'Climbing', 'Parkour',
@@ -11648,10 +11744,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Professional Skills */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💼 Professional Skills</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades profissionais e de negócios. Selecione até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💼 Professional Skills</h4>
+          <p className={STYLES.SUBTITLE}>Habilidades profissionais e de negócios. Selecione até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'Accounting', 'Finance', 'Investment', 'Legal/Law', 'Contract Negotiation',
               'Project Management', 'Business Strategy', 'Entrepreneurship', 'Sales', 'Marketing',
@@ -11677,10 +11773,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Survival Skills */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏕️ Survival Skills</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades de sobrevivência e autossuficiência. Selecione até 6.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🏕️ Survival Skills</h4>
+          <p className={STYLES.SUBTITLE}>Habilidades de sobrevivência e autossuficiência. Selecione até 6.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'First Aid', 'CPR', 'Wilderness Survival', 'Navigation', 'Tracking',
               'Hunting', 'Fishing', 'Foraging', 'Shelter Building', 'Fire Making',
@@ -11704,10 +11800,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Social Skills */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🗣️ Social Skills</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades interpessoais e comunicativas. Selecione até 6.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🗣️ Social Skills</h4>
+          <p className={STYLES.SUBTITLE}>Habilidades interpessoais e comunicativas. Selecione até 6.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'Public Speaking', 'Negotiation', 'Persuasion', 'Debate', 'Mediation',
               'Active Listening', 'Networking', 'Interviewing', 'Conflict Resolution',
@@ -11732,26 +11828,26 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Hidden Talents */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">✨ Talentos Ocultos</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades que o personagem tem mas que poucas pessoas sabem.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>✨ Talentos Ocultos</h4>
+          <p className={STYLES.SUBTITLE}>Habilidades que o personagem tem mas que poucas pessoas sabem.</p>
           <textarea
             value={data.skills?.hiddenTalents || ''}
             onChange={(e) => update('skills', 'hiddenTalents', e.target.value)}
             placeholder="Ex: Sabe cantar ópera mas tem vergonha, é excelente em xadrez mas esconde, etc."
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+            className={`${STYLES.TEXTAREA} h-20`}
           />
         </div>
 
         {/* Notable Weaknesses */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⚠️ Fraquezas Notáveis</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Coisas em que o personagem é particularmente ruim ou incapaz.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⚠️ Fraquezas Notáveis</h4>
+          <p className={STYLES.SUBTITLE}>Coisas em que o personagem é particularmente ruim ou incapaz.</p>
           <textarea
             value={data.skills?.notableWeaknesses || ''}
             onChange={(e) => update('skills', 'notableWeaknesses', e.target.value)}
             placeholder="Ex: Péssimo com direções, não sabe cozinhar nada, terrível com tecnologia, etc."
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+            className={`${STYLES.TEXTAREA} h-20`}
           />
         </div>
       </div>
@@ -11769,10 +11865,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Areas of Expertise */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎓 Áreas de Expertise</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Campos onde o personagem é especialista ou muito conhecedor. Até 5.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎓 Áreas de Expertise</h4>
+          <p className={STYLES.SUBTITLE}>Campos onde o personagem é especialista ou muito conhecedor. Até 5.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'History', 'Philosophy', 'Psychology', 'Sociology', 'Anthropology', 'Political Science',
               'Economics', 'Business', 'Law', 'Medicine', 'Biology', 'Chemistry', 'Physics',
@@ -11801,10 +11897,10 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Intellectual Interests */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💭 Interesses Intelectuais</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Tópicos que o personagem gosta de pensar, discutir ou aprender sobre. Até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💭 Interesses Intelectuais</h4>
+          <p className={STYLES.SUBTITLE}>Tópicos que o personagem gosta de pensar, discutir ou aprender sobre. Até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'Philosophy of Mind', 'Ethics/Morality', 'Politics', 'Social Issues', 'Environment',
               'Futurism', 'Technology Trends', 'AI/Robotics', 'Space Exploration', 'Transhumanism',
@@ -11834,22 +11930,22 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Currently Learning */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📖 Aprendendo Atualmente</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">O que o personagem está estudando ou tentando aprender no momento.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📖 Aprendendo Atualmente</h4>
+          <p className={STYLES.SUBTITLE}>O que o personagem está estudando ou tentando aprender no momento.</p>
           <textarea
             value={data.knowledge?.currentlyLearning || ''}
             onChange={(e) => update('knowledge', 'currentlyLearning', e.target.value)}
             placeholder="Ex: Tentando aprender japonês, fazendo curso de fotografia online, estudando para certificação..."
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+            className={`${STYLES.TEXTAREA} h-20`}
           />
         </div>
 
         {/* Information Diet */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📱 Dieta de Informação</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Como o personagem consome informação. Até 6.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📱 Dieta de Informação</h4>
+          <p className={STYLES.SUBTITLE}>Como o personagem consome informação. Até 6.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {[
               'Books (Fiction)', 'Books (Non-fiction)', 'Academic Papers', 'News Sites',
               'Newspapers (Print)', 'Magazines', 'Podcasts', 'Audiobooks', 'YouTube',
@@ -11874,9 +11970,9 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Curiosity Level */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔍 Nível de Curiosidade</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Quão curioso o personagem é por natureza.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🔍 Nível de Curiosidade</h4>
+          <p className={STYLES.SUBTITLE}>Quão curioso o personagem é por natureza.</p>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500">
               <span>Incurious</span>
@@ -11931,12 +12027,12 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Highest Education Level */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📜 Nível Educacional Mais Alto</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📜 Nível Educacional Mais Alto</h4>
           <select
             value={data.education?.highestLevel || ''}
             onChange={(e) => update('education', 'highestLevel', e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+            className={STYLES.INPUT}
           >
             <option value="">-- Selecione --</option>
             <option value="none">Nenhuma educação formal</option>
@@ -11957,13 +12053,13 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* School Performance */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📊 Desempenho Escolar Geral</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Como era/é como aluno de forma geral.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📊 Desempenho Escolar Geral</h4>
+          <p className={STYLES.SUBTITLE}>Como era/é como aluno de forma geral.</p>
           <select
             value={data.education?.schoolPerformance || ''}
             onChange={(e) => update('education', 'schoolPerformance', e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+            className={STYLES.INPUT}
           >
             <option value="">-- Selecione --</option>
             <option value="top">Top da Classe — Sempre entre os melhores, medalhas, honras</option>
@@ -12611,9 +12707,9 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Autodidact Level */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📖 Nível de Autodidatismo</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Quanto aprende por conta própria, fora de instituições formais.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📖 Nível de Autodidatismo</h4>
+          <p className={STYLES.SUBTITLE}>Quanto aprende por conta própria, fora de instituições formais.</p>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500">
               <span>Needs Structure</span>
@@ -12652,12 +12748,12 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Attitude Toward Education */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Atitude em Relação à Educação Formal</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎭 Atitude em Relação à Educação Formal</h4>
           <select
             value={data.education?.attitudeToEducation || ''}
             onChange={(e) => update('education', 'attitudeToEducation', e.target.value)}
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+            className={STYLES.INPUT}
           >
             <option value="">-- Selecione --</option>
             <option value="values-highly">Valoriza Muito — Vê educação como essencial para sucesso</option>
@@ -12673,14 +12769,14 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* Incomplete Studies */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⚠️ Estudos Incompletos (Notas)</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Informações adicionais sobre cursos ou formações não completados.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⚠️ Estudos Incompletos (Notas)</h4>
+          <p className={STYLES.SUBTITLE}>Informações adicionais sobre cursos ou formações não completados.</p>
           <textarea
             value={data.education?.incompleteStudies || ''}
             onChange={(e) => update('education', 'incompleteStudies', e.target.value)}
             placeholder="Ex: Trancou Medicina no 3º ano por questões financeiras, abandonou mestrado por oportunidade de emprego..."
-            className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+            className={`${STYLES.TEXTAREA} h-20`}
           />
         </div>
       </div>
@@ -12689,11 +12785,12 @@ const IntelligenceContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const IntelligenceContent = memo(IntelligenceContentBase);
 
 // ============================================
 // PHYSIQUE CONTENT - Complete Physical Health
 // ============================================
-const PhysiqueContent = ({ data, updateData, subtab }) => {
+const PhysiqueContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('physique', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -12906,7 +13003,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'pacifist', label: 'Pacifist — Refuses to fight' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueSelect label="Dance/Movement" value={data.condition?.dance} onChange={(e) => update('condition', 'dance', e.target.value)}
               options={[
                 { value: 'professional', label: 'Professional — Performance level' },
@@ -12958,7 +13055,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'monochrome', label: 'Monochrome — Sees grayscale' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueSelect label="Night Vision" value={data.senses?.nightVision} onChange={(e) => update('senses', 'nightVision', e.target.value)}
               options={[
                 { value: 'excellent', label: 'Excellent — Sees well in dark' },
@@ -13001,7 +13098,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'misophonia', label: 'Misophonia — Specific sounds trigger' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueSelect label="Musical Ear" value={data.senses?.musicalEar} onChange={(e) => update('senses', 'musicalEar', e.target.value)}
               options={[
                 { value: 'perfect-pitch', label: 'Perfect Pitch — Identifies any note' },
@@ -13092,7 +13189,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'cross-dominant', label: 'Cross-Dominant — Opposite to hand' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueSelect label="Motion Sensitivity" value={data.senses?.motionSensitivity} onChange={(e) => update('senses', 'motionSensitivity', e.target.value)}
               options={[
                 { value: 'none', label: 'None — Never gets motion sick' },
@@ -13266,7 +13363,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'tattoo', label: 'Medical Tattoo' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueInput label="Past Injuries/Surgeries" value={data.medical?.pastInjuries} onChange={(e) => update('medical', 'pastInjuries', e.target.value)} 
               placeholder="Broken bones, surgeries, significant injuries..." />
             <PhysiqueInput label="Current Medications" value={data.medical?.medications} onChange={(e) => update('medical', 'medications', e.target.value)} 
@@ -13346,7 +13443,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'variable', label: 'Variable — Inconsistent' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueSelect label="Sleep Quality" value={data.habits?.sleepQuality} onChange={(e) => update('habits', 'sleepQuality', e.target.value)}
               options={[
                 { value: 'excellent', label: 'Excellent — Deep, restful' },
@@ -13471,7 +13568,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'excessive', label: 'Excessive — Unhealthy amount' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueSelect label="Other Substances" value={data.habits?.substanceUse} onChange={(e) => update('habits', 'substanceUse', e.target.value)}
               options={[
                 { value: 'none', label: 'None — No other substances' },
@@ -13519,7 +13616,7 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
                 { value: 'varied', label: 'Varied — Mix of activities' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <PhysiqueSelect label="Self-Care Level" value={data.habits?.selfCareLevel} onChange={(e) => update('habits', 'selfCareLevel', e.target.value)}
               options={[
                 { value: 'excellent', label: 'Excellent — Prioritizes self-care' },
@@ -13539,8 +13636,9 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const PhysiqueContent = memo(PhysiqueContentBase);
 
-const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
+const VoiceContentBase = ({ data, updateData, subtab, characterNationality }) => {
   const update = (section, field, value) => {
     updateData('voice', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -13853,7 +13951,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.design?.voiceGender || ''} 
                 onChange={(e) => update('design', 'voiceGender', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Male">Male</option>
@@ -13867,7 +13965,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.design?.voiceAge || ''} 
                 onChange={(e) => update('design', 'voiceAge', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Child">Child (under 12)</option>
@@ -13880,7 +13978,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <VoiceSelect 
               label="Pitch" 
               value={data.design?.pitch || ''} 
@@ -13915,7 +14013,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
           <h4 className="font-mono text-xs font-bold text-purple-800 mb-4">🎨 TIMBRE CHARACTERISTICS</h4>
           <p className="font-mono text-[9px] text-purple-600 mb-4">The unique color and texture of the voice</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <VoiceSelect 
               label="Warmth" 
               value={data.design?.timbreWarmth || ''} 
@@ -13958,7 +14056,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
         <div className="border-2 border-teal-200 rounded-sm p-4 bg-teal-50/30">
           <h4 className="font-mono text-xs font-bold text-teal-800 mb-4">✨ SPECIAL CHARACTERISTICS</h4>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <VoiceSelect 
               label="Breathiness" 
               value={data.design?.breathiness || ''} 
@@ -13999,7 +14097,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
           
           <div className="mb-4">
             <label className="block font-mono text-xs font-bold text-gray-700 mb-2">Voice Texture Descriptor</label>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {VOICE_TEXTURES.map((texture) => (
                 <button
                   key={texture}
@@ -14018,7 +14116,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
 
           <div>
             <label className="block font-mono text-xs font-bold text-gray-700 mb-2">Base Emotional Tone</label>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {EMOTIONAL_TONES.map((tone) => (
                 <button
                   key={tone}
@@ -14056,7 +14154,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.speech?.articulation || ''} 
                 onChange={(e) => update('speech', 'articulation', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Crisp and precise">Crisp and precise</option>
@@ -14074,7 +14172,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.speech?.sentenceStructure || ''} 
                 onChange={(e) => update('speech', 'sentenceStructure', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Short and direct">Short and direct</option>
@@ -14089,13 +14187,13 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <div>
               <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Speech Rhythm</label>
               <select 
                 value={data.speech?.speechRhythm || ''} 
                 onChange={(e) => update('speech', 'speechRhythm', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Steady and even">Steady and even</option>
@@ -14113,7 +14211,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.speech?.pausePattern || ''} 
                 onChange={(e) => update('speech', 'pausePattern', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Minimal pauses">Minimal pauses</option>
@@ -14133,7 +14231,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
         <div className="border border-gray-200 rounded-sm p-4 bg-white">
           <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">🔄 VERBAL HABITS</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Filler Words</label>
               <input 
@@ -14141,7 +14239,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
                 value={data.speech?.fillerWords || ''} 
                 onChange={(e) => update('speech', 'fillerWords', e.target.value)} 
                 placeholder="e.g., 'like', 'um', 'you know', 'basically', 'I mean'" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               />
             </div>
 
@@ -14150,7 +14248,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.speech?.emphasis || ''} 
                 onChange={(e) => update('speech', 'emphasis', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Volume increase">Volume increase</option>
@@ -14190,7 +14288,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.speech?.humorStyle || ''} 
                 onChange={(e) => update('speech', 'humorStyle', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Dry/Deadpan">Dry/Deadpan</option>
@@ -14211,12 +14309,12 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
                 value={data.speech?.laughType || ''} 
                 onChange={(e) => update('speech', 'laughType', e.target.value)} 
                 placeholder="e.g., hearty belly laugh, quiet chuckle, snort" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               />
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <div>
               <label className="block font-mono text-xs font-bold text-gray-700 mb-1">When Crying</label>
               <input 
@@ -14224,7 +14322,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
                 value={data.speech?.cryingStyle || ''} 
                 onChange={(e) => update('speech', 'cryingStyle', e.target.value)} 
                 placeholder="e.g., silent tears, sobbing, hiccups" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               />
             </div>
             <div>
@@ -14234,7 +14332,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
                 value={data.speech?.shoutingStyle || ''} 
                 onChange={(e) => update('speech', 'shoutingStyle', e.target.value)} 
                 placeholder="e.g., roars, voice cracks, cold and quiet" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               />
             </div>
           </div>
@@ -14262,7 +14360,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
                 value={data.languages?.nativeLanguage || ''} 
                 onChange={(e) => update('languages', 'nativeLanguage', e.target.value)} 
                 placeholder="e.g., English, Spanish, Mandarin" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               />
             </div>
             <div>
@@ -14270,7 +14368,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.languages?.accent?.split(' - ')[0] || ''} 
                 onChange={(e) => update('languages', 'accent', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select Region --</option>
                 {Object.entries(ACCENT_OPTIONS).map(([region, accents]) => (
@@ -14284,7 +14382,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <VoiceSelect 
               label="Accent Strength" 
               value={data.languages?.accentStrength || ''} 
@@ -14299,7 +14397,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
               <select 
                 value={data.languages?.accentInfluence || ''} 
                 onChange={(e) => update('languages', 'accentInfluence', e.target.value)} 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               >
                 <option value="">-- Select --</option>
                 <option value="Pronunciation only">Pronunciation only</option>
@@ -14318,14 +14416,14 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
         <div className="border border-gray-200 rounded-sm p-4 bg-white">
           <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">📚 ADDITIONAL LANGUAGES</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Second Languages (with fluency level)</label>
               <textarea 
                 value={data.languages?.secondLanguages || ''} 
                 onChange={(e) => update('languages', 'secondLanguages', e.target.value)} 
                 placeholder="e.g., Spanish (fluent), French (conversational), Japanese (basic), Latin (reading only)" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+                className={`${STYLES.TEXTAREA} h-20`}
               />
             </div>
 
@@ -14336,7 +14434,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
                 value={data.languages?.codeSwitching || ''} 
                 onChange={(e) => update('languages', 'codeSwitching', e.target.value)} 
                 placeholder="e.g., Switches to Spanish when emotional, uses French phrases" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs"
+                className={STYLES.INPUT}
               />
             </div>
           </div>
@@ -14346,14 +14444,14 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
         <div className="border border-gray-200 rounded-sm p-4 bg-white">
           <h4 className="font-mono text-xs font-bold text-gray-800 mb-4">🔤 DIALECT FEATURES</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="block font-mono text-xs font-bold text-gray-700 mb-1">Dialect-Specific Features</label>
               <textarea 
                 value={data.languages?.dialectFeatures || ''} 
                 onChange={(e) => update('languages', 'dialectFeatures', e.target.value)} 
                 placeholder="e.g., Drops 'g' endings (runnin'), uses 'y'all', pronounces 'car' as 'cah', uses glottal stops" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none"
+                className={`${STYLES.TEXTAREA} h-20`}
               />
             </div>
 
@@ -14363,7 +14461,7 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
                 value={data.languages?.writtenVsSpoken || ''} 
                 onChange={(e) => update('languages', 'writtenVsSpoken', e.target.value)} 
                 placeholder="e.g., Writes formally but speaks casually, texting style differs from speech" 
-                className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none"
+                className={`${STYLES.TEXTAREA} h-16`}
               />
             </div>
           </div>
@@ -14494,13 +14592,14 @@ const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
 
   return sections[subtab] || sections[0];
 };
+const VoiceContent = memo(VoiceContentBase);
 
 
 // ============================================================================
 // WORLDVIEW CONTENT - Complete Implementation
 // ============================================================================
 
-const WorldviewContent = ({ data, updateData, subtab }) => {
+const WorldviewContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('worldview', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -14521,8 +14620,8 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
           <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">🌌 FILOSOFIA CENTRAL</h3>
           <p className="font-mono text-xs text-blue-800 leading-relaxed">As crenças fundamentais sobre a natureza da realidade, vida e existência.</p>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">☀️ Otimismo vs Pessimismo</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>☀️ Otimismo vs Pessimismo</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Pessimist</span><span>Optimist</span></div>
             <input type="range" min="1" max="9" value={data.philosophy?.optimismPessimism || 5} onChange={(e) => update('philosophy', 'optimismPessimism', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-slate-400 via-gray-200 to-yellow-400 rounded-lg appearance-none cursor-pointer" />
@@ -14531,9 +14630,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             </span></div>
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👥 Visão da Natureza Humana</h4>
-          <select value={data.philosophy?.humanNature || ''} onChange={(e) => update('philosophy', 'humanNature', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👥 Visão da Natureza Humana</h4>
+          <select value={data.philosophy?.humanNature || ''} onChange={(e) => update('philosophy', 'humanNature', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="inherently-good">Inherently Good — Pessoas são naturalmente boas</option>
             <option value="mostly-good">Mostly Good — A maioria é boa, com exceções</option>
@@ -14544,16 +14643,16 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="inherently-evil">Inherently Evil — Pessoas são naturalmente más</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎲 Livre Arbítrio vs Determinismo</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎲 Livre Arbítrio vs Determinismo</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Determinism</span><span>Free Will</span></div>
             <input type="range" min="1" max="9" value={data.philosophy?.freeWillDeterminism || 5} onChange={(e) => update('philosophy', 'freeWillDeterminism', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-purple-400 via-gray-200 to-green-400 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🌟 Sentido da Vida</h4>
-          <select value={data.philosophy?.meaningOfLife || ''} onChange={(e) => update('philosophy', 'meaningOfLife', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🌟 Sentido da Vida</h4>
+          <select value={data.philosophy?.meaningOfLife || ''} onChange={(e) => update('philosophy', 'meaningOfLife', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <optgroup label="Pessoais"><option value="happiness">Happiness</option><option value="self-actualization">Self-Actualization</option><option value="experience">Experience</option><option value="knowledge">Knowledge</option><option value="creativity">Creativity</option></optgroup>
             <optgroup label="Relacionais"><option value="love">Love</option><option value="family">Family</option><option value="connection">Connection</option><option value="service">Service</option><option value="legacy">Legacy</option></optgroup>
@@ -14561,9 +14660,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <optgroup label="Céticos"><option value="no-inherent-meaning">No Inherent Meaning</option><option value="create-own-meaning">Create Own Meaning</option><option value="uncertain">Uncertain</option></optgroup>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📚 Filosofia de Vida</h4>
-          <select value={data.philosophy?.lifePhilosophy || ''} onChange={(e) => update('philosophy', 'lifePhilosophy', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📚 Filosofia de Vida</h4>
+          <select value={data.philosophy?.lifePhilosophy || ''} onChange={(e) => update('philosophy', 'lifePhilosophy', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="stoicism">Stoicism — Aceitar o que não pode controlar</option>
             <option value="epicureanism">Epicureanism — Buscar prazeres moderados</option>
@@ -14578,13 +14677,13 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="no-philosophy">No Defined Philosophy</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💬 Lema de Vida</h4>
-          <input type="text" value={data.philosophy?.lifeMotto || ''} onChange={(e) => update('philosophy', 'lifeMotto', e.target.value)} placeholder="Ex: Carpe diem, Isso também passará..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💬 Lema de Vida</h4>
+          <input type="text" value={data.philosophy?.lifeMotto || ''} onChange={(e) => update('philosophy', 'lifeMotto', e.target.value)} placeholder="Ex: Carpe diem, Isso também passará..." className={STYLES.INPUT} />
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔄 Visão sobre Mudança</h4>
-          <select value={data.philosophy?.viewOnChange || ''} onChange={(e) => update('philosophy', 'viewOnChange', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🔄 Visão sobre Mudança</h4>
+          <select value={data.philosophy?.viewOnChange || ''} onChange={(e) => update('philosophy', 'viewOnChange', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="embraces">Embraces — Adora novidade</option>
             <option value="accepts">Accepts — Aceita como parte da vida</option>
@@ -14593,9 +14692,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="fears">Fears — Mudança causa ansiedade</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💀 Visão sobre a Morte</h4>
-          <select value={data.philosophy?.viewOnDeath || ''} onChange={(e) => update('philosophy', 'viewOnDeath', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💀 Visão sobre a Morte</h4>
+          <select value={data.philosophy?.viewOnDeath || ''} onChange={(e) => update('philosophy', 'viewOnDeath', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="terrified">Terrified — Medo intenso</option>
             <option value="fears">Fears — Tem medo mas lida</option>
@@ -14606,9 +14705,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="defiant">Defiant — Quer vencer a morte</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😢 Visão sobre o Sofrimento</h4>
-          <select value={data.philosophy?.viewOnSuffering || ''} onChange={(e) => update('philosophy', 'viewOnSuffering', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😢 Visão sobre o Sofrimento</h4>
+          <select value={data.philosophy?.viewOnSuffering || ''} onChange={(e) => update('philosophy', 'viewOnSuffering', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="meaningless">Meaningless — Aleatório sem propósito</option>
             <option value="builds-character">Builds Character — Fortalece e ensina</option>
@@ -14627,9 +14726,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">⚖️ BÚSSOLA MORAL</h3>
           <p className="font-mono text-xs text-amber-800 leading-relaxed">Sistema ético: como decide o que é certo/errado, flexibilidade moral, linhas que nunca cruza.</p>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📜 Framework Ético</h4>
-          <select value={data.moral?.ethicalFramework || ''} onChange={(e) => update('moral', 'ethicalFramework', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📜 Framework Ético</h4>
+          <select value={data.moral?.ethicalFramework || ''} onChange={(e) => update('moral', 'ethicalFramework', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="deontology">Deontology — Regras são absolutas</option>
             <option value="utilitarianism">Utilitarianism — Maior bem para maior número</option>
@@ -14642,8 +14741,8 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="pragmatic">Pragmatic — Faz o que funciona</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔄 Flexibilidade Moral</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🔄 Flexibilidade Moral</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Rigid</span><span>Flexible</span></div>
             <input type="range" min="1" max="9" value={data.moral?.moralFlexibility || 5} onChange={(e) => update('moral', 'moralFlexibility', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-blue-400 via-gray-200 to-orange-400 rounded-lg appearance-none cursor-pointer" />
@@ -14652,19 +14751,19 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             </span></div>
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎯 "Os Fins Justificam os Meios"</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎯 "Os Fins Justificam os Meios"</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Never</span><span>Always</span></div>
             <input type="range" min="1" max="9" value={data.moral?.endsJustifyMeans || 5} onChange={(e) => update('moral', 'endsJustifyMeans', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-green-400 via-gray-200 to-red-400 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">🤔 Dilemas Morais</h4>
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             {[{key:'wouldLieToProtect',label:'Mentiria para proteger alguém?'},{key:'wouldStealIfStarving',label:'Roubaria comida se morrendo de fome?'},{key:'wouldKillInDefense',label:'Mataria em legítima defesa?'}].map(q => (
               <div key={q.key}>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">{q.label}</label>
+                <label className={STYLES.LABEL}>{q.label}</label>
                 <div className="flex gap-2">
                   {['never','unlikely','depends','likely','absolutely'].map(opt => (
                     <button key={opt} onClick={() => update('moral', q.key, opt)} className={`flex-1 py-1.5 rounded font-mono text-[10px] transition-all ${data.moral?.[q.key] === opt ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>
@@ -14676,21 +14775,21 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚫 Linhas que Nunca Cruzaria</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Ações que NUNCA faria. Até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🚫 Linhas que Nunca Cruzaria</h4>
+          <p className={STYLES.SUBTITLE}>Ações que NUNCA faria. Até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Betray Family','Betray Friends','Harm Children','Harm Innocents','Kill (Anyone)','Torture','Sexual Violence','Steal from Poor','Break Promise','Snitch/Inform','Use Drugs','Adultery','Animal Cruelty'].map(line => (
               <button key={line} onClick={() => toggleArrayItem('moral', 'linesNeverCrossed', line, 8)} className={`px-3 py-1 rounded-full font-mono text-[10px] transition-all ${(data.moral?.linesNeverCrossed || []).includes(line) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{line}</button>
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📋 Código Pessoal</h4>
-          <textarea value={data.moral?.personalCode || ''} onChange={(e) => update('moral', 'personalCode', e.target.value)} placeholder="Regras pessoais: 'Sempre pago dívidas', 'Nunca ataco primeiro'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📋 Código Pessoal</h4>
+          <textarea value={data.moral?.personalCode || ''} onChange={(e) => update('moral', 'personalCode', e.target.value)} placeholder="Regras pessoais: 'Sempre pago dívidas', 'Nunca ataco primeiro'..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😔 Consciência Pesada</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😔 Consciência Pesada</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>No Guilt</span><span>Heavy Guilt</span></div>
             <input type="range" min="1" max="9" value={data.moral?.guiltyConscienceLevel || 5} onChange={(e) => update('moral', 'guiltyConscienceLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-slate-400 via-gray-200 to-purple-400 rounded-lg appearance-none cursor-pointer" />
@@ -14704,9 +14803,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
           <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">🙏 CRENÇAS & FÉ</h3>
           <p className="font-mono text-xs text-purple-800 leading-relaxed">Relação com religião, espiritualidade, sobrenatural e transcendente.</p>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⛪ Afiliação Religiosa</h4>
-          <select value={data.beliefs?.religiousAffiliation || ''} onChange={(e) => update('beliefs', 'religiousAffiliation', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⛪ Afiliação Religiosa</h4>
+          <select value={data.beliefs?.religiousAffiliation || ''} onChange={(e) => update('beliefs', 'religiousAffiliation', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <optgroup label="Não-Religiosos">
               <option value="atheist">Atheist</option><option value="agnostic">Agnostic</option><option value="spiritual">Spiritual but not Religious</option>
@@ -14725,8 +14824,8 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             </optgroup>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📿 Nível de Religiosidade</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📿 Nível de Religiosidade</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Non-Practicing</span><span>Devout</span></div>
             <input type="range" min="1" max="9" value={data.beliefs?.religiosityLevel || 5} onChange={(e) => update('beliefs', 'religiosityLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 via-purple-200 to-purple-500 rounded-lg appearance-none cursor-pointer" />
@@ -14735,9 +14834,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             </span></div>
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">✨ Visão sobre Vida Após Morte</h4>
-          <select value={data.beliefs?.viewOnAfterlife || ''} onChange={(e) => update('beliefs', 'viewOnAfterlife', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>✨ Visão sobre Vida Após Morte</h4>
+          <select value={data.beliefs?.viewOnAfterlife || ''} onChange={(e) => update('beliefs', 'viewOnAfterlife', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="nothing">Nothing — Morte é o fim</option>
             <option value="uncertain">Uncertain — Não sabe</option>
@@ -14748,9 +14847,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="spirit-world">Spirit World</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👻 Posição sobre Sobrenatural</h4>
-          <select value={data.beliefs?.supernaturalStance || ''} onChange={(e) => update('beliefs', 'supernaturalStance', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👻 Posição sobre Sobrenatural</h4>
+          <select value={data.beliefs?.supernaturalStance || ''} onChange={(e) => update('beliefs', 'supernaturalStance', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="hardline-skeptic">Hardline Skeptic — Nada existe</option>
             <option value="skeptic">Skeptic — Duvida mas aberto</option>
@@ -14761,24 +14860,24 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="practitioner">Practitioner — Pratica</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🍀 Superstições</h4>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🍀 Superstições</h4>
+          <div className={STYLES.FLEX_WRAP}>
             {['Black Cats','Friday 13th','Broken Mirror','Knock on Wood','Evil Eye','Full Moon','Lucky Numbers','Astrology','Tarot','Dreams as Omens','Karma is Literal','No Superstitions'].map(item => (
               <button key={item} onClick={() => toggleArrayItem('beliefs', 'superstitions', item, 6)} className={`px-3 py-1 rounded-full font-mono text-[10px] transition-all ${(data.beliefs?.superstitions || []).includes(item) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{item}</button>
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🧘 Práticas Espirituais</h4>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🧘 Práticas Espirituais</h4>
+          <div className={STYLES.FLEX_WRAP}>
             {['Prayer','Meditation','Yoga','Fasting','Church Attendance','Scripture Reading','Rituals','Chanting','Offerings','Ancestor Veneration','Crystal Healing','None'].map(p => (
               <button key={p} onClick={() => toggleArrayItem('beliefs', 'spiritualPractices', p, 6)} className={`px-3 py-1 rounded-full font-mono text-[10px] transition-all ${(data.beliefs?.spiritualPractices || []).includes(p) ? 'bg-indigo-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{p}</button>
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Destino vs Escolha</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎭 Destino vs Escolha</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Everything is Fate</span><span>We Make Our Path</span></div>
             <input type="range" min="1" max="9" value={data.beliefs?.fateVsChoice || 5} onChange={(e) => update('beliefs', 'fateVsChoice', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-blue-400 via-gray-200 to-green-400 rounded-lg appearance-none cursor-pointer" />
@@ -14792,8 +14891,8 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
           <h3 className="font-mono text-sm font-bold text-red-900 mb-2">🏛️ POLÍTICO & SOCIAL</h3>
           <p className="font-mono text-xs text-red-800 leading-relaxed">Posicionamentos políticos, econômicos e sociais. Personagens podem ter visões diversas.</p>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⬅️ Espectro Político ➡️</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⬅️ Espectro Político ➡️</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Far Left</span><span>Far Right</span></div>
             <input type="range" min="1" max="9" value={data.political?.politicalSpectrum || 5} onChange={(e) => update('political', 'politicalSpectrum', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-500 via-gray-300 to-blue-500 rounded-lg appearance-none cursor-pointer" />
@@ -14802,40 +14901,40 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             </span></div>
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💰 Visão Econômica</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💰 Visão Econômica</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Socialist</span><span>Capitalist</span></div>
             <input type="range" min="1" max="9" value={data.political?.economicViews || 5} onChange={(e) => update('political', 'economicViews', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-400 via-gray-200 to-green-400 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👥 Visão Social</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👥 Visão Social</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Progressive</span><span>Conservative</span></div>
             <input type="range" min="1" max="9" value={data.political?.socialViews || 5} onChange={(e) => update('political', 'socialViews', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-pink-400 via-gray-200 to-amber-400 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🗽 Liberdade vs Autoridade</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🗽 Liberdade vs Autoridade</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Libertarian</span><span>Authoritarian</span></div>
             <input type="range" min="1" max="9" value={data.political?.libertarianAuthoritarian || 5} onChange={(e) => update('political', 'libertarianAuthoritarian', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-yellow-400 via-gray-200 to-slate-500 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏴 Nacionalismo</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🏴 Nacionalismo</h4>
           <div className="space-y-2">
             <div className="flex justify-between font-mono text-[10px] text-gray-500"><span>Globalist</span><span>Nationalist</span></div>
             <input type="range" min="1" max="9" value={data.political?.nationalismLevel || 5} onChange={(e) => update('political', 'nationalismLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-blue-400 via-gray-200 to-red-400 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">🏢 Confiança em Instituições</h4>
           <div className="grid grid-cols-2 gap-4">
             {[{key:'trustInGovernment',label:'🏛️ Government'},{key:'trustInMedia',label:'📺 Media'},{key:'trustInScience',label:'🔬 Science'},{key:'trustInReligion',label:'⛪ Religious Inst.'}].map(item => (
               <div key={item.key}>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">{item.label}</label>
+                <label className={STYLES.LABEL}>{item.label}</label>
                 <div className="flex gap-1">
                   {[1,2,3,4,5].map(level => (
                     <button key={level} onClick={() => update('political', item.key, level)} className={`flex-1 py-1 rounded font-mono text-[10px] transition-all ${(data.political?.[item.key] || 3) === level ? level <= 2 ? 'bg-red-500 text-white' : level >= 4 ? 'bg-green-500 text-white' : 'bg-yellow-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{level}</button>
@@ -14846,17 +14945,17 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
           </div>
           <p className="font-mono text-[9px] text-gray-400 mt-2 text-center">1 = Nenhuma, 5 = Total</p>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">✊ Causas que Apoia</h4>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>✊ Causas que Apoia</h4>
+          <div className={STYLES.FLEX_WRAP}>
             {['Environment','Human Rights','LGBTQ+ Rights','Racial Justice','Economic Equality','Gun Rights','Gun Control','Religious Freedom','Free Speech','Anti-War','Strong Military','Immigration Reform','Border Security','Criminal Justice Reform','Traditional Values','None/Apolitical'].map(cause => (
               <button key={cause} onClick={() => toggleArrayItem('political', 'causesSupported', cause, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.political?.causesSupported || []).includes(cause) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{cause}</button>
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🗳️ Engajamento Político</h4>
-          <select value={data.political?.politicalEngagement || ''} onChange={(e) => update('political', 'politicalEngagement', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🗳️ Engajamento Político</h4>
+          <select value={data.political?.politicalEngagement || ''} onChange={(e) => update('political', 'politicalEngagement', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="apathetic">Apathetic — Não se importa</option>
             <option value="passive">Passive — Acompanha mas não participa</option>
@@ -14875,44 +14974,44 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
           <h3 className="font-mono text-sm font-bold text-emerald-900 mb-2">⚖️ JULGAMENTOS & VALORES</h3>
           <p className="font-mono text-xs text-emerald-800 leading-relaxed">O que respeita, despreza, e como julga outros. Valores fundamentais e prioridades.</p>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👍 O Que Respeita</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Qualidades que admira. Até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👍 O Que Respeita</h4>
+          <p className={STYLES.SUBTITLE}>Qualidades que admira. Até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Intelligence','Wisdom','Kindness','Honesty','Integrity','Loyalty','Courage','Strength','Resilience','Ambition','Success','Wealth','Creativity','Humor','Humility','Hard Work','Independence','Authenticity','Leadership','Faith','Family Values'].map(item => (
               <button key={item} onClick={() => toggleArrayItem('judgments', 'whatTheyRespect', item, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.judgments?.whatTheyRespect || []).includes(item) ? 'bg-emerald-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{item}</button>
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👎 O Que Despreza</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Qualidades que detesta. Até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👎 O Que Despreza</h4>
+          <p className={STYLES.SUBTITLE}>Qualidades que detesta. Até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Weakness','Cowardice','Dishonesty','Hypocrisy','Betrayal','Cruelty','Arrogance','Narcissism','Laziness','Incompetence','Stupidity','Ignorance','Greed','Selfishness','Conformity','Manipulation','Injustice','Complaining','Victimhood','Entitlement'].map(item => (
               <button key={item} onClick={() => toggleArrayItem('judgments', 'whatTheyDespise', item, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.judgments?.whatTheyDespise || []).includes(item) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{item}</button>
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🌟 Modelos/Inspirações</h4>
-          <textarea value={data.judgments?.roleModels || ''} onChange={(e) => update('judgments', 'roleModels', e.target.value)} placeholder="Pessoas que admira ou quer ser como..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🌟 Modelos/Inspirações</h4>
+          <textarea value={data.judgments?.roleModels || ''} onChange={(e) => update('judgments', 'roleModels', e.target.value)} placeholder="Pessoas que admira ou quer ser como..." className={`${STYLES.TEXTAREA} h-16`} />
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👃 Olha com Desdém</h4>
-          <textarea value={data.judgments?.looksDownOn || ''} onChange={(e) => update('judgments', 'looksDownOn', e.target.value)} placeholder="Tipos de pessoas que menospreza..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👃 Olha com Desdém</h4>
+          <textarea value={data.judgments?.looksDownOn || ''} onChange={(e) => update('judgments', 'looksDownOn', e.target.value)} placeholder="Tipos de pessoas que menospreza..." className={`${STYLES.TEXTAREA} h-16`} />
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⚠️ Preconceitos Conhecidos</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⚠️ Preconceitos Conhecidos</h4>
           <p className="font-mono text-[10px] text-amber-600 mb-3">Para personagens realistas, não endosso. Até 5.</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {['Against Poor','Against Rich','Against Uneducated','Against Intellectuals','Against Young','Against Old','Against Immigrants','Against Certain Religions','Against Atheists','Against Certain Races','Against Disabled','Against Overweight','Against Rural','Against Urban','None Significant'].map(item => (
               <button key={item} onClick={() => toggleArrayItem('judgments', 'knownPrejudices', item, 5)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.judgments?.knownPrejudices || []).includes(item) ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{item}</button>
             ))}
           </div>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔍 Como Julga Outros</h4>
-          <select value={data.judgments?.howJudgesOthers || ''} onChange={(e) => update('judgments', 'howJudgesOthers', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🔍 Como Julga Outros</h4>
+          <select value={data.judgments?.howJudgesOthers || ''} onChange={(e) => update('judgments', 'howJudgesOthers', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="actions">By Actions — Ações falam mais alto</option>
             <option value="intentions">By Intentions — Importa o que quis fazer</option>
@@ -14925,9 +15024,9 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
             <option value="non-judgmental">Non-Judgmental — Tenta não julgar</option>
           </select>
         </div>
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏆 Hierarquia de Valores (Top 5)</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Os 5 valores mais importantes, em ordem de prioridade.</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🏆 Hierarquia de Valores (Top 5)</h4>
+          <p className={STYLES.SUBTITLE}>Os 5 valores mais importantes, em ordem de prioridade.</p>
           <div className="flex flex-wrap gap-2 mb-3">
             {['Family','Friends','Love','Freedom','Security','Health','Wealth','Power','Success','Career','Knowledge','Truth','Justice','Honor','Loyalty','Faith','Adventure','Pleasure','Peace','Creativity','Independence','Legacy'].map(value => {
               const currentValues = data.judgments?.topValues || [];
@@ -14945,7 +15044,7 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
           {(data.judgments?.topValues || []).length > 0 && (
             <div className="bg-emerald-50 rounded p-3 border border-emerald-200">
               <p className="font-mono text-[10px] text-emerald-800 mb-2">Ordem:</p>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {(data.judgments?.topValues || []).map((value, idx) => (
                   <span key={value} className="px-2 py-1 bg-emerald-200 rounded font-mono text-[10px] text-emerald-800">#{idx + 1} {value}</span>
                 ))}
@@ -14959,13 +15058,14 @@ const WorldviewContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const WorldviewContent = memo(WorldviewContentBase);
 
 
 // ============================================================================
 // FAVORITES CONTENT - Complete Implementation
 // ============================================================================
 
-const FavoritesContent = ({ data, updateData, subtab }) => {
+const FavoritesContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('favorites', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -14992,10 +15092,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🎵 Música</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Gêneros Favoritos (até 8)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Rock','Classic Rock','Hard Rock','Soft Rock','Progressive Rock','Psychedelic Rock','Pop','Synth Pop','Dream Pop','Art Pop','Indie Pop','Electropop','Hip-Hop/Rap','Old School Hip-Hop','Trap','Drill','Conscious Rap','R&B/Soul','Neo-Soul','Motown','Contemporary R&B','Jazz','Smooth Jazz','Bebop','Fusion Jazz','Acid Jazz','Classical','Baroque','Romantic Era','Contemporary Classical','Opera','Chamber Music','Electronic/EDM','House','Techno','Trance','Drum & Bass','Dubstep','Hardstyle','Deep House','Chillwave','Synthwave','Vaporwave','Metal','Heavy Metal','Thrash Metal','Death Metal','Black Metal','Doom Metal','Power Metal','Nu-Metal','Metalcore','Country','Outlaw Country','Bluegrass','Americana','Country Pop','Indie','Indie Rock','Indie Folk','Post-Punk','Shoegaze','Lo-Fi Indie','Folk','Traditional Folk','Contemporary Folk','Celtic','Latin','Reggaeton','Salsa','Bachata','Cumbia','Bossa Nova','Samba','Tango','Mariachi','K-Pop','J-Pop','J-Rock','City Pop','C-Pop','Cantopop','Reggae','Dancehall','Dub','Ska','Blues','Delta Blues','Chicago Blues','Electric Blues','Punk','Hardcore Punk','Pop Punk','Emo','Post-Hardcore','Alternative','Grunge','Britpop','New Wave','Noise Rock','Gospel','Christian Rock','Worship','Spirituals','World Music','Afrobeats','Highlife','Bollywood','Flamenco','Fado','Klezmer','Lo-Fi','Lo-Fi Hip Hop','Chillhop','Ambient','Dark Ambient','New Age','Drone','Soundtrack/OST','Video Game Music','Anime OST','Film Score','Musical Theater','Experimental','Avant-Garde','Noise','Industrial','Glitch'].map(g => (
                   <button key={g} onClick={() => toggleArrayItem('entertainment', 'musicGenres', g, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.entertainment?.musicGenres || []).includes(g) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{g}</button>
                 ))}
@@ -15004,7 +15104,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Era Musical Preferida</label>
+                <label className={STYLES.LABEL}>Era Musical Preferida</label>
                 <select value={data.entertainment?.musicEra || ''} onChange={(e) => update('entertainment', 'musicEra', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="classical">Classical Era (Baroque, Romantic)</option>
@@ -15019,13 +15119,13 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Toca Instrumento?</label>
+                <label className={STYLES.LABEL}>Toca Instrumento?</label>
                 <input type="text" value={data.entertainment?.playsInstrument || ''} onChange={(e) => update('entertainment', 'playsInstrument', e.target.value)} placeholder="Ex: Guitarra, Piano, Nenhum..." className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]" />
               </div>
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Importância da Música na Vida</label>
+              <label className={STYLES.LABEL}>Importância da Música na Vida</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Background</span><span>Central</span></div>
               <input type="range" min="1" max="9" value={data.entertainment?.musicImportance || 5} onChange={(e) => update('entertainment', 'musicImportance', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-purple-400 rounded-lg appearance-none cursor-pointer" />
             </div>
@@ -15036,10 +15136,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-3">🎬 Filmes & TV</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Gêneros Favoritos (até 8)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Action','Martial Arts','Espionage/Spy','Heist','Comedy','Romantic Comedy','Dark Comedy','Slapstick','Parody','Satire','Stand-Up','Improv','Drama','Period Drama','Legal Drama','Medical Drama','Family Drama','Teen Drama','Melodrama','Horror','Psychological Horror','Slasher','Supernatural Horror','Body Horror','Found Footage','Cosmic Horror','Gothic Horror','Zombie','Sci-Fi','Space Opera','Dystopian','Cyberpunk','Time Travel','Post-Apocalyptic','Alien Invasion','Hard Sci-Fi','Romance','Period Romance','Contemporary Romance','LGBTQ+ Romance','Forbidden Love','Thriller','Psychological Thriller','Political Thriller','Techno-Thriller','Conspiracy','Erotic Thriller','Documentary','Nature Documentary','True Crime Doc','Historical Doc','Music Documentary','Sports Documentary','Social Issue Doc','Animation','2D Animation','3D Animation','Stop Motion','Claymation','Rotoscope','Fantasy','High Fantasy','Urban Fantasy','Dark Fantasy','Fairy Tale','Sword & Sorcery','Crime','Noir','Neo-Noir','Gangster','Police Procedural','Detective','Organized Crime','Mystery','Whodunit','Cozy Mystery','Locked Room','Amateur Sleuth','Adventure','Survival','Treasure Hunt','Expedition','Swashbuckler','War','WWII','Vietnam','Modern Warfare','Anti-War','War Drama','Western','Spaghetti Western','Neo-Western','Revisionist Western','Musical','Jukebox Musical','Original Musical','Dance Film','Opera Film','Biographical','Sports Biopic','Music Biopic','Historical Figure','Artist Biography','Superhero','MCU Style','DC Style','Anti-Hero','Origin Story','Team-Up','Anime','Shonen','Shojo','Seinen','Josei','Isekai','Mecha','Slice of Life Anime','Reality TV','Competition Reality','Dating Shows','Makeover Shows','Survival Reality','Celebrity Reality','Docu-Reality','Sitcom','Single-Camera','Multi-Camera','Workplace Sitcom','Family Sitcom','True Crime','Crime Investigation','Serial Killer','Missing Persons','Court Cases','K-Drama','Historical K-Drama','Romance K-Drama','Thriller K-Drama','Workplace K-Drama','Variety Show','Cooking Show','Travel Show','Talk Show','Game Show','Mini-Series','Limited Series','Anthology','Soap Opera','Telenovela'].map(g => (
                   <button key={g} onClick={() => toggleArrayItem('entertainment', 'movieTvGenres', g, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.entertainment?.movieTvGenres || []).includes(g) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{g}</button>
                 ))}
@@ -15048,7 +15148,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo Preferido</label>
+                <label className={STYLES.LABEL}>Tipo Preferido</label>
                 <select value={data.entertainment?.movieType || ''} onChange={(e) => update('entertainment', 'movieType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="mainstream">Mainstream/Blockbusters</option>
@@ -15059,14 +15159,14 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Binge-Watching Level</label>
+                <label className={STYLES.LABEL}>Binge-Watching Level</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>1 ep/vez</span><span>Maratona</span></div>
                 <input type="range" min="1" max="9" value={data.entertainment?.bingeLevel || 5} onChange={(e) => update('entertainment', 'bingeLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-red-400 rounded-lg appearance-none cursor-pointer" />
               </div>
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Filmes/Séries Favoritos</label>
+              <label className={STYLES.LABEL}>Filmes/Séries Favoritos</label>
               <textarea value={data.entertainment?.favoriteShows || ''} onChange={(e) => update('entertainment', 'favoriteShows', e.target.value)} placeholder="Liste alguns favoritos..." className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px] h-16 resize-none" />
             </div>
           </div>
@@ -15076,10 +15176,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
           <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">📚 Livros & Leitura</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Gêneros Literários (até 6)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Literary Fiction','Contemporary Fiction','Experimental Fiction','Postmodern','Magical Realism','Southern Gothic','Dystopian Fiction','Utopian Fiction','Absurdist Fiction','Sci-Fi','Hard Science Fiction','Space Opera','Cyberpunk','Steampunk','Dieselpunk','Biopunk','Climate Fiction','Military Sci-Fi','First Contact','Fantasy','Epic/High Fantasy','Urban Fantasy','Dark Fantasy','Grimdark','Sword & Sorcery','Portal Fantasy','Fairy Tale Retelling','Mythological Fiction','Arthurian','Low Fantasy','Mystery/Thriller','Cozy Mystery','Police Procedural','Noir','Legal Thriller','Medical Thriller','Spy Thriller','Psychological Thriller','Techno-Thriller','Political Thriller','Domestic Thriller','Romance','Contemporary Romance','Historical Romance','Paranormal Romance','Romantic Suspense','Erotic Romance','LGBTQ+ Romance','Regency Romance','Gothic Romance','Sports Romance','Horror','Cosmic Horror','Gothic Horror','Psychological Horror','Supernatural Horror','Folk Horror','Body Horror','Splatterpunk','Quiet Horror','Historical Fiction','Ancient History','Medieval','Renaissance','Victorian','WWI/WWII','1960s-70s','Alternative History','Non-Fiction','Narrative Non-Fiction','Creative Non-Fiction','Investigative Journalism','Essay Collections','Biography/Memoir','Autobiography','Celebrity Memoir','Coming-of-Age Memoir','Travel Memoir','Family Memoir','Addiction & Recovery','Self-Help','Productivity','Relationships','Mindfulness','Financial','Career Development','Personal Growth','Philosophy','Eastern Philosophy','Western Philosophy','Ethics','Existentialism','Stoicism','Political Philosophy','History','Ancient History','Medieval History','Military History','Social History','Cultural History','Art History','Science History','Science','Popular Science','Physics','Biology','Astronomy','Neuroscience','Evolution','Climate Science','Psychology','Business','Entrepreneurship','Leadership','Marketing','Economics','Investing','Management','Poetry','Contemporary Poetry','Classical Poetry','Spoken Word','Haiku','Epic Poetry','Confessional Poetry','Graphic Novels/Comics','Superhero Comics','Manga','Indie Comics','Memoir Comics','Webcomics','Young Adult','YA Fantasy','YA Dystopian','YA Romance','YA Contemporary','YA Horror','New Adult','Classic Literature','Victorian Classics','Russian Classics','American Classics','British Classics','French Classics','Modernist Classics','Ancient Classics','Plays/Drama','Tragedy','Comedy of Manners','Absurdist Drama','Contemporary Drama','Musical Theater Scripts','True Crime Books','Cold Cases','Serial Killers','Wrongful Convictions','Organized Crime','Religious/Spiritual','Religious Fiction','Spiritual Growth','Theology','Sacred Texts','Devotional','Humor','Satire','Parody','Comedic Essays','Absurdist Humor','Academic/Scholarly','Textbooks','Research Papers','Thesis','Academic Essays','Anthologies','Short Story Collections','Flash Fiction','Novellas','Mixed Genre Collections','LitRPG/GameLit','Progression Fantasy','Wuxia/Xianxia','Cultivation','Isekai Novels'].map(g => (
                   <button key={g} onClick={() => toggleArrayItem('entertainment', 'bookGenres', g, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.entertainment?.bookGenres || []).includes(g) ? 'bg-emerald-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{g}</button>
                 ))}
@@ -15088,12 +15188,12 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Frequência de Leitura</label>
+                <label className={STYLES.LABEL}>Frequência de Leitura</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Nunca</span><span>Diário</span></div>
                 <input type="range" min="1" max="9" value={data.entertainment?.readingFrequency || 5} onChange={(e) => update('entertainment', 'readingFrequency', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-emerald-400 rounded-lg appearance-none cursor-pointer" />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Formato Preferido</label>
+                <label className={STYLES.LABEL}>Formato Preferido</label>
                 <select value={data.entertainment?.bookFormat || ''} onChange={(e) => update('entertainment', 'bookFormat', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="physical">Physical Books</option>
@@ -15111,10 +15211,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">🎮 Games</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Tipos de Games (até 6)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['RPG','JRPG','Western RPG','Action RPG','Tactical RPG','MMORPG','Dungeon Crawler','Roguelike','Roguelite','FPS/Shooter','Tactical Shooter','Hero Shooter','Looter Shooter','Military Shooter','Arena Shooter','Third-Person Shooter','Action/Adventure','Open World','Metroidvania','Soulslike','Character Action','Hack and Slash','Beat Em Up','Strategy','Real-Time Strategy','Turn-Based Strategy','4X Strategy','Grand Strategy','Tower Defense','Auto Battler','City Builder','Sports','Soccer/Football','Basketball','American Football','Baseball','Hockey','Golf','Tennis','Extreme Sports','Wrestling','Boxing/MMA','Racing','Arcade Racing','Simulation Racing','Kart Racing','Combat Racing','Open World Racing','Motorcycle','Fighting','2D Fighting','3D Fighting','Platform Fighter','Tag Team','Puzzle','Match-3','Physics Puzzle','Escape Room','Point-and-Click','Hidden Object','Brain Training','Simulation','Life Simulation','Farming Simulation','Business Simulation','Flight Simulation','Driving Simulation','Social Simulation','God Games','Horror','Survival Horror','Psychological Horror','Action Horror','Cosmic Horror','MOBA','Battle Royale','Platformer','2D Platformer','3D Platformer','Precision Platformer','Collectathon','Sandbox','Survival Sandbox','Creative Sandbox','Open World Sandbox','MMO','MMORPG','Sandbox MMO','Action MMO','Visual Novel','Dating Sim','Mystery VN','Horror VN','Otome','Board Games','Classic Board Games','Euro Games','Deck Building','Worker Placement','Area Control','Cooperative','Card Games','Trading Card Games','Collectible Card Games','Deck Builders Digital','Poker/Casino','Tabletop RPG','D&D Style','Narrative TTRPG','Rules-Light','Crunchy Systems','Mobile Games','Gacha Games','Idle Games','Hyper Casual','Puzzle Mobile','Rhythm Games','Music/Rhythm','Dance Games','Instrument Games','Stealth','Tactical Stealth','Action Stealth','Social Stealth','Immersive Sim','Party Games','Trivia Games','Drawing Games','Minigame Collections','Educational','Language Learning','Math Games','History Games','Science Games','Narrative/Story','Interactive Fiction','Choice-Based','Walking Simulator','Episodic Adventure','Cozy Games','Farming Cozy','Animal Crossing Style','Relaxation Games','Crafting Focus','VR Games','VR Action','VR Simulation','VR Social','VR Horror','Indie Games','Retro/Pixel Art','Experimental Indie','Narrative Indie','Art Games','Multiplayer','Co-op','Competitive','Asymmetric','Local Multiplayer','MMO','Esports Titles','Doesn\'t Play'].map(g => (
                   <button key={g} onClick={() => toggleArrayItem('entertainment', 'gameTypes', g, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.entertainment?.gameTypes || []).includes(g) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{g}</button>
                 ))}
@@ -15124,14 +15224,14 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="font-mono text-[10px] text-gray-600 mb-2 block">Plataformas (até 3)</label>
-                <div className="flex flex-wrap gap-2">
+                <div className={STYLES.FLEX_WRAP}>
                   {['PC','PlayStation','Xbox','Nintendo','Mobile','Tabletop'].map(p => (
                     <button key={p} onClick={() => toggleArrayItem('entertainment', 'gamePlatforms', p, 3)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.entertainment?.gamePlatforms || []).includes(p) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{p}</button>
                   ))}
                 </div>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Competitividade</label>
+                <label className={STYLES.LABEL}>Competitividade</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Casual</span><span>Hardcore</span></div>
                 <input type="range" min="1" max="9" value={data.entertainment?.competitiveness || 5} onChange={(e) => update('entertainment', 'competitiveness', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-green-300 to-red-400 rounded-lg appearance-none cursor-pointer" />
               </div>
@@ -15143,10 +15243,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
           <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">📱 Redes Sociais</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Plataformas Usadas (até 6)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Instagram','TikTok','Twitter/X','Facebook','YouTube','YouTube Shorts','LinkedIn','Reddit','Discord','Snapchat','Pinterest','Twitch','BeReal','Threads','WhatsApp','Telegram','Signal','Mastodon','Bluesky','Tumblr','WeChat','Line','KakaoTalk','Viber','VK','QQ','Weibo','Xiaohongshu','Douyin','Bilibili','Nico Nico','Steam Community','Xbox Live','PlayStation Network','Nintendo Online','Letterboxd','Goodreads','Last.fm','Spotify Social','Strava','Untappd','Yelp','Nextdoor','Meetup','Clubhouse','Patreon','Substack','Medium','DeviantArt','ArtStation','Behance','Dribbble','Figma Community','GitHub','Stack Overflow','Hacker News','Product Hunt','AngelList','Glassdoor','Indeed','Quora','Wikipedia','Fandom/Wikia','4chan','8kun','Gab','Parler','Truth Social','Gettr','Rumble','Odysee','BitChute','Minds','OnlyFans','Fansly','Ko-fi','Buy Me a Coffee','Linktree','Carrd','About.me','VSCO','500px','Flickr','SmugMug','Imgur','Giphy','Tenor','SoundCloud','Bandcamp','Mixcloud','Audiomack','Deezer','Apple Music Connect','Tidal','Pandora','iHeartRadio','Stitcher','Pocket Casts','Overcast','Spotify Podcasts','Apple Podcasts','Anchor','Podbean','Dating Apps','Tinder','Bumble','Hinge','OkCupid','Match.com','eHarmony','Grindr','HER','Feeld','Gaming Social','Battle.net','Origin/EA App','Ubisoft Connect','GOG Galaxy','Epic Games','Roblox','Minecraft Realms','None/Minimal'].map(p => (
                   <button key={p} onClick={() => toggleArrayItem('entertainment', 'socialPlatforms', p, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.entertainment?.socialPlatforms || []).includes(p) ? 'bg-pink-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{p}</button>
                 ))}
@@ -15155,12 +15255,12 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nível de Uso</label>
+                <label className={STYLES.LABEL}>Nível de Uso</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Non-User</span><span>Addicted</span></div>
                 <input type="range" min="1" max="9" value={data.entertainment?.socialMediaUsage || 5} onChange={(e) => update('entertainment', 'socialMediaUsage', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-pink-400 rounded-lg appearance-none cursor-pointer" />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Uso</label>
+                <label className={STYLES.LABEL}>Tipo de Uso</label>
                 <select value={data.entertainment?.socialMediaType || ''} onChange={(e) => update('entertainment', 'socialMediaType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="lurker">Lurker — Só observa, nunca posta</option>
@@ -15185,10 +15285,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* CUISINES */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🌍 Cozinhas Favoritas</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Tipos de culinária que mais gosta. Até 8.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🌍 Cozinhas Favoritas</h4>
+          <p className={STYLES.SUBTITLE}>Tipos de culinária que mais gosta. Até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Italian','Northern Italian','Southern Italian','Sicilian','Tuscan','Japanese','Sushi/Sashimi','Ramen','Izakaya','Kaiseki','Teppanyaki','Yakitori','Okonomiyaki','Mexican','Tex-Mex','Oaxacan','Yucatecan','Baja Style','Taco Stand','Chinese','Cantonese','Sichuan','Hunan','Shanghainese','Beijing','Dim Sum','Hot Pot','Indian','North Indian','South Indian','Punjabi','Bengali','Goan','Hyderabadi','French','Provençal','Parisian Bistro','Haute Cuisine','Normandy','Thai','Bangkok Street Food','Northern Thai','Isaan','Southern Thai','American','Southern/Soul Food','New England','Cajun','Creole','BBQ','Midwest','Pacific Northwest','California','Hawaiian','Brazilian','Churrasco','Bahian','Mineiro','Gaúcho','Paulistano','Amazonian','Mediterranean','Spanish','Catalan','Basque','Galician','Andalusian','Tapas','Korean','Korean BBQ','Fried Chicken','Temple Food','Street Food','Vietnamese','Pho','Banh Mi','Southern Vietnamese','Central Vietnamese','Greek','Cypriot','Cretan','Spanish','Portuguese','Alentejo','Lisbon','Middle Eastern','Lebanese','Syrian','Palestinian','Jordanian','Iraqi','Gulf','Turkish','Ottoman','Anatolian','Aegean','Black Sea','Ethiopian/Eritrean','Moroccan','Tunisian','Algerian','Egyptian','West African','Nigerian','Ghanaian','Senegalese','South African','East African','Peruvian','Ceviche','Nikkei','Criollo','Andean','Caribbean','Jamaican','Cuban','Puerto Rican','Dominican','Trinidadian','Haitian','German','Bavarian','Austrian','Swiss','Belgian','Dutch','Scandinavian','Swedish','Norwegian','Danish','Finnish','Icelandic','British','English','Scottish','Welsh','Irish','Russian','Ukrainian','Polish','Czech','Hungarian','Balkan','Serbian','Croatian','Bulgarian','Romanian','Central Asian','Georgian','Armenian','Uzbek','Kazakh','Afghan','Pakistani','Bangladeshi','Sri Lankan','Nepalese','Tibetan','Malaysian','Singaporean','Indonesian','Filipino','Burmese','Cambodian','Laotian','Australian','New Zealand','Oceanian','Comfort/Home','Diner Food','Fast Food','Fast Casual','Fine Dining','Farm-to-Table','Fusion','Asian Fusion','Latin Fusion','Modern American','Contemporary','Molecular Gastronomy','Vegan Cuisine','Raw Food','Plant-Based','Kosher','Halal','Gluten-Free Focus','Allergen-Friendly','Paleo/Keto','Health Food','Organic Focus','Locavore','Street Food General','Food Truck','Pop-Up','Night Market','Hawker Center','Izakaya Style'].map(c => (
               <button key={c} onClick={() => toggleArrayItem('food', 'cuisines', c, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.food?.cuisines || []).includes(c) ? 'bg-orange-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{c}</button>
             ))}
@@ -15196,9 +15296,9 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* ADVENTUROUSNESS & RESTRICTIONS */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎲 Aventura Gastronômica</h4>
+        <div className={STYLES.GRID_2}>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>🎲 Aventura Gastronômica</h4>
             <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Picky Eater</span><span>Adventurous</span></div>
             <input type="range" min="1" max="9" value={data.food?.adventurousness || 5} onChange={(e) => update('food', 'adventurousness', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-yellow-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
             <p className="font-mono text-[9px] text-gray-500 mt-2 text-center italic">
@@ -15208,9 +15308,9 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
             </p>
           </div>
 
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🥗 Restrições/Dieta</h4>
-            <div className="flex flex-wrap gap-2">
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>🥗 Restrições/Dieta</h4>
+            <div className={STYLES.FLEX_WRAP}>
               {['Vegetarian','Lacto-Vegetarian','Ovo-Vegetarian','Lacto-Ovo Vegetarian','Flexitarian','Vegan','Raw Vegan','Whole Food Vegan','Junk Food Vegan','Pescatarian','Pollotarian','Keto','Standard Keto','Cyclical Keto','Targeted Keto','Low-Carb','Atkins','South Beach','Zone Diet','Gluten-Free','Celiac','Non-Celiac Sensitivity','Wheat-Free','Lactose-Free','Dairy-Free','Casein-Free','Halal','Kosher','Kosher Style','Strict Orthodox','Allergies','Nut Allergy','Peanut Allergy','Tree Nut Allergy','Shellfish Allergy','Fish Allergy','Egg Allergy','Soy Allergy','Sesame Allergy','Mustard Allergy','Sulfite Sensitivity','MSG Sensitivity','Nightshade Sensitivity','FODMAP','Low FODMAP','Elimination Diet','Paleo','Autoimmune Paleo','Primal','Whole30','Clean Eating','Anti-Inflammatory','Mediterranean Diet','DASH Diet','MIND Diet','Heart-Healthy','Diabetic-Friendly','Low Sodium','Low Sugar','No Added Sugar','Sugar-Free','Carnivore','Lion Diet','Nose-to-Tail','Organ Meats','Raw Food','Fruitarian','Macrobiotic','Ayurvedic','Sattvic','Blood Type Diet','Intermittent Fasting','16:8','OMAD','5:2','Alternate Day','Calorie Counting','CICO','Portion Control','Intuitive Eating','Mindful Eating','Weight Watchers','Noom','Macro Counting','IIFYM','High Protein','Bodybuilder Diet','Athletic Performance','Pre-Competition','Bulking','Cutting','Maintenance','Pregnancy Diet','Breastfeeding Diet','Pediatric','Senior Nutrition','Medical Diet','Renal Diet','Liver-Friendly','Cancer Diet','Post-Surgery','Tube Feeding','No Restrictions'].map(d => (
                 <button key={d} onClick={() => toggleArrayItem('food', 'dietaryRestrictions', d, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.food?.dietaryRestrictions || []).includes(d) ? 'bg-green-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{d}</button>
               ))}
@@ -15219,10 +15319,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* DRINKS */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🥤 Bebidas Favoritas</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Até 6 bebidas.</p>
-          <div className="flex flex-wrap gap-2">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🥤 Bebidas Favoritas</h4>
+          <p className={STYLES.SUBTITLE}>Até 6 bebidas.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Coffee','Espresso','Americano','Latte','Cappuccino','Flat White','Macchiato','Mocha','Cold Brew','Iced Coffee','Nitro Cold Brew','Pour Over','French Press','Turkish Coffee','Irish Coffee','Vietnamese Coffee','Affogato','Tea','Black Tea','Green Tea','Oolong','White Tea','Pu-erh','Herbal Tea','Chamomile','Peppermint','Rooibos','Chai','Matcha','Earl Grey','English Breakfast','Darjeeling','Jasmine Tea','Bubble Tea','Thai Tea','Water','Sparkling Water','Mineral Water','Flavored Water','Coconut Water','Alkaline Water','Spring Water','Soda/Soft Drinks','Cola','Lemon-Lime','Root Beer','Ginger Ale','Cream Soda','Orange Soda','Grape Soda','Dr Pepper Style','Juice','Orange Juice','Apple Juice','Grape Juice','Cranberry','Pomegranate','Grapefruit','Pineapple','Mango','Passion Fruit','Tomato/V8','Green Juice','Cold Pressed','Smoothies','Fruit Smoothie','Green Smoothie','Protein Smoothie','Acai Bowl Drinks','Energy Drinks','Red Bull Style','Monster Style','Natural Energy','Yerba Mate','Guayusa','Pre-Workout','Wine','Red Wine','Cabernet','Merlot','Pinot Noir','Syrah/Shiraz','Malbec','Tempranillo','Sangiovese','Zinfandel','White Wine','Chardonnay','Sauvignon Blanc','Pinot Grigio','Riesling','Moscato','Gewürztraminer','Rosé','Sparkling Wine','Champagne','Prosecco','Cava','Crémant','Dessert Wine','Port','Sherry','Ice Wine','Fortified Wine','Natural Wine','Orange Wine','Biodynamic','Beer','Lager','Pilsner','Pale Ale','IPA','Double IPA','Hazy IPA','Stout','Porter','Wheat Beer','Belgian','Sour Beer','Gose','Amber Ale','Brown Ale','Kolsch','Hefeweizen','Craft Beer','Import Beer','Light Beer','Non-Alcoholic Beer','Cocktails','Margarita','Mojito','Old Fashioned','Manhattan','Martini','Cosmopolitan','Negroni','Daiquiri','Whiskey Sour','Mai Tai','Piña Colada','Long Island','Moscow Mule','Aperol Spritz','Bellini','Bloody Mary','Mimosa','Gin & Tonic','Rum & Coke','Vodka Soda','Paloma','Espresso Martini','Tiki Drinks','Whiskey/Bourbon','Scotch','Irish Whiskey','Japanese Whisky','Rye','Tennessee','Canadian','Single Malt','Blended','Bourbon','Vodka','Flavored Vodka','Premium Vodka','Craft Vodka','Rum','White Rum','Dark Rum','Spiced Rum','Aged Rum','Cachaça','Tequila','Blanco','Reposado','Añejo','Mezcal','Gin','London Dry','Old Tom','Plymouth','Navy Strength','Botanical Gin','Sake','Junmai','Ginjo','Daiginjo','Nigori','Sparkling Sake','Shochu','Soju','Baijiu','Brandy','Cognac','Armagnac','Calvados','Grappa','Pisco','Liqueurs','Amaretto','Kahlua','Baileys','Grand Marnier','Cointreau','Chartreuse','Limoncello','Sambuca','Jägermeister','Milk/Dairy','Whole Milk','Skim Milk','2% Milk','Chocolate Milk','Buttermilk','Kefir','Lassi','Horchata','Eggnog','Plant Milk','Oat Milk','Almond Milk','Soy Milk','Coconut Milk','Cashew Milk','Rice Milk','Hemp Milk','Kombucha','Hard Kombucha','Jun','Tepache','Kvass','Cider','Hard Cider','Apple Cider','Mulled Cider','Mead','Functional Drinks','Probiotic Drinks','Collagen Drinks','CBD Drinks','Adaptogen Drinks','Electrolyte Drinks','Sports Drinks','Hot Chocolate','Horchata','Agua Fresca','Lemonade','Arnold Palmer','Iced Tea','Sweet Tea'].map(d => (
               <button key={d} onClick={() => toggleArrayItem('food', 'drinks', d, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.food?.drinks || []).includes(d) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{d}</button>
             ))}
@@ -15230,10 +15330,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* ALCOHOL & COFFEE */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🍷 Relação com Álcool</h4>
-            <select value={data.food?.alcoholRelation || ''} onChange={(e) => update('food', 'alcoholRelation', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.GRID_2}>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>🍷 Relação com Álcool</h4>
+            <select value={data.food?.alcoholRelation || ''} onChange={(e) => update('food', 'alcoholRelation', e.target.value)} className={STYLES.INPUT}>
               <option value="">-- Selecione --</option>
               <option value="never">Never — Não bebe (escolha pessoal)</option>
               <option value="cant">Cannot — Não pode (saúde, religião)</option>
@@ -15245,24 +15345,24 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
             </select>
           </div>
 
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">☕ Dependência de Café</h4>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>☕ Dependência de Café</h4>
             <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Não bebe</span><span>IV Drip</span></div>
             <input type="range" min="1" max="9" value={data.food?.coffeeDependency || 5} onChange={(e) => update('food', 'coffeeDependency', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-amber-700 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
 
         {/* COOKING & FAST FOOD */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👨‍🍳 Frequência de Cozinhar</h4>
+        <div className={STYLES.GRID_2}>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>👨‍🍳 Frequência de Cozinhar</h4>
             <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Nunca</span><span>Sempre</span></div>
             <input type="range" min="1" max="9" value={data.food?.cookingFrequency || 5} onChange={(e) => update('food', 'cookingFrequency', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-orange-400 rounded-lg appearance-none cursor-pointer" />
           </div>
 
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🍔 Atitude com Fast Food</h4>
-            <select value={data.food?.fastFoodAttitude || ''} onChange={(e) => update('food', 'fastFoodAttitude', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>🍔 Atitude com Fast Food</h4>
+            <select value={data.food?.fastFoodAttitude || ''} onChange={(e) => update('food', 'fastFoodAttitude', e.target.value)} className={STYLES.INPUT}>
               <option value="">-- Selecione --</option>
               <option value="loves">Loves — Adora, come sempre que pode</option>
               <option value="enjoys">Enjoys — Gosta, mas com moderação</option>
@@ -15274,15 +15374,15 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* COMFORT FOODS & GUILTY PLEASURES */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🤗 Comfort Foods</h4>
-            <textarea value={data.food?.comfortFoods || ''} onChange={(e) => update('food', 'comfortFoods', e.target.value)} placeholder="Comidas que trazem conforto emocional..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.GRID_2}>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>🤗 Comfort Foods</h4>
+            <textarea value={data.food?.comfortFoods || ''} onChange={(e) => update('food', 'comfortFoods', e.target.value)} placeholder="Comidas que trazem conforto emocional..." className={`${STYLES.TEXTAREA} h-20`} />
           </div>
 
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😈 Guilty Pleasures</h4>
-            <textarea value={data.food?.guiltyPleasures || ''} onChange={(e) => update('food', 'guiltyPleasures', e.target.value)} placeholder="Comidas 'proibidas' que adora secretamente..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>😈 Guilty Pleasures</h4>
+            <textarea value={data.food?.guiltyPleasures || ''} onChange={(e) => update('food', 'guiltyPleasures', e.target.value)} placeholder="Comidas 'proibidas' que adora secretamente..." className={`${STYLES.TEXTAREA} h-20`} />
           </div>
         </div>
       </div>
@@ -15299,8 +15399,8 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         {/* ACTIVE HOBBIES */}
         <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-2">🏃 Hobbies Ativos & Esportes</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Atividades físicas e esportivas. Até 8.</p>
-          <div className="flex flex-wrap gap-2">
+          <p className={STYLES.SUBTITLE}>Atividades físicas e esportivas. Até 8.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Running','Jogging','Sprinting','Trail Running','Marathon','Ultra Running','Cross Country','Track & Field','Swimming','Lap Swimming','Open Water','Synchronized','Water Polo','Diving','Snorkeling','Cycling','Road Cycling','Mountain Biking','BMX','Cyclocross','Gravel Biking','Spinning','Triathlon','Gym/Weightlifting','Powerlifting','Olympic Lifting','Bodybuilding','CrossFit','Functional Fitness','Calisthenics','HIIT','Circuit Training','Bootcamp','Yoga','Vinyasa','Hatha','Ashtanga','Bikram/Hot Yoga','Restorative','Yin Yoga','Power Yoga','Aerial Yoga','Pilates','Mat Pilates','Reformer Pilates','Barre','Martial Arts','Karate','Taekwondo','Judo','Jiu-Jitsu','BJJ','Muay Thai','Kickboxing','MMA','Kung Fu','Wing Chun','Capoeira','Aikido','Krav Maga','Hapkido','Kendo','Fencing','Boxing','Kickboxing','Cardio Boxing','Dance','Ballet','Contemporary','Jazz Dance','Hip-Hop Dance','Breakdancing','Salsa','Bachata','Tango','Swing','Ballroom','Line Dancing','Belly Dance','Pole Dancing','Zumba','Aerobics','Step Aerobics','Tennis','Pickleball','Padel','Squash','Racquetball','Badminton','Table Tennis','Golf','Disc Golf','Mini Golf','Footgolf','Soccer','Futsal','Beach Soccer','Indoor Soccer','Basketball','3x3 Basketball','Streetball','Volleyball','Beach Volleyball','Indoor Volleyball','Baseball','Softball','Cricket','Rugby','Rugby Union','Rugby League','Touch Rugby','Flag Football','American Football','Touch Football','Hockey','Ice Hockey','Field Hockey','Roller Hockey','Street Hockey','Lacrosse','Ultimate Frisbee','Handball','Netball','Hiking','Day Hiking','Backpacking','Thru-Hiking','Peak Bagging','Climbing','Rock Climbing','Bouldering','Sport Climbing','Trad Climbing','Ice Climbing','Alpine Climbing','Indoor Climbing','Mountaineering','Surfing','Shortboard','Longboard','Bodyboarding','Stand Up Paddle','Windsurfing','Kitesurfing','Wakeboarding','Water Skiing','Jet Skiing','Skiing','Alpine Skiing','Cross-Country Skiing','Backcountry Skiing','Telemark','Snowboarding','Freestyle','Freeride','Splitboarding','Snowshoeing','Ice Skating','Figure Skating','Speed Skating','Roller Skating','Inline Skating','Roller Derby','Skateboarding','Street Skating','Vert Skating','Longboarding','Fishing','Fly Fishing','Deep Sea Fishing','Ice Fishing','Bass Fishing','Kayak Fishing','Spearfishing','Hunting','Big Game Hunting','Bird Hunting','Bow Hunting','Horseback Riding','Dressage','Show Jumping','Eventing','Trail Riding','Western Riding','Polo','Rodeo','Kayaking','White Water Kayaking','Sea Kayaking','Recreational Kayaking','Canoeing','Rowing','Crew/Sculling','Dragon Boat','Rafting','Scuba Diving','Technical Diving','Cave Diving','Wreck Diving','Free Diving','Sailing','Racing','Cruising','Catamaran','Windsurfing','Parkour','Freerunning','Obstacle Course Racing','Ninja Warrior','Mud Runs','Adventure Racing','Orienteering','Geocaching','Airsoft','Paintball','Archery','Target Archery','Field Archery','3D Archery','Shooting Sports','Target Shooting','Clay Pigeon','Biathlon','Motorsports','Go-Karting','Track Days','Rally','Motocross','ATV/Quad','Equestrian','Horse Racing','Polo','Rodeo','E-Sports','Competitive Gaming','Speed Running','VR Fitness','Beat Saber','Ring Fit','Walking','Power Walking','Nordic Walking','Racewalking','Dog Walking','Tai Chi','Qigong','Stretching','Foam Rolling','Animal Flow','Gymnastics','Artistic','Rhythmic','Trampoline','Acrobatics','Circus Arts','Aerial Silks','Trapeze','Cheerleading','Team Sports General','Individual Sports','Combat Sports','Water Sports','Winter Sports','Extreme Sports','Adventure Sports','Mind-Body','Outdoor Recreation','None'].map(h => (
               <button key={h} onClick={() => toggleArrayItem('hobbies', 'activeHobbies', h, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.hobbies?.activeHobbies || []).includes(h) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{h}</button>
             ))}
@@ -15310,8 +15410,8 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         {/* CREATIVE HOBBIES */}
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-2">🎨 Hobbies Criativos</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Atividades artísticas e criativas. Até 6.</p>
-          <div className="flex flex-wrap gap-2">
+          <p className={STYLES.SUBTITLE}>Atividades artísticas e criativas. Até 6.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Drawing/Sketching','Pencil Drawing','Charcoal','Ink Drawing','Gesture Drawing','Figure Drawing','Botanical Illustration','Architectural Drawing','Fashion Illustration','Caricature','Manga/Anime Art','Comic Art','Painting','Oil Painting','Acrylic','Watercolor','Gouache','Tempera','Encaustic','Spray Paint/Graffiti','Mural Art','Palette Knife','Plein Air','Abstract Painting','Portrait Painting','Landscape Painting','Still Life','Digital Art','Digital Painting','Digital Illustration','Concept Art','Character Design','Environment Design','Pixel Art','Voxel Art','Vector Art','3D Modeling','3D Sculpting','3D Animation','Motion Graphics','VFX','AI Art','NFT Art','Generative Art','Photography','Portrait Photography','Landscape Photography','Street Photography','Wildlife Photography','Macro Photography','Architectural Photography','Product Photography','Food Photography','Fashion Photography','Astrophotography','Drone Photography','Film Photography','Darkroom/Analog','Instant Film','Cyanotype','Alternative Processes','Photo Manipulation','Photo Editing','Videography','Short Films','Documentary','Music Videos','Vlogs','Cinematography','Video Editing','Color Grading','Sound Design','Stop Motion','Animation','Writing/Fiction','Novel Writing','Short Stories','Flash Fiction','Fan Fiction','Genre Fiction','Literary Fiction','Screenwriting','Playwriting','Journaling','Bullet Journaling','Art Journaling','Travel Journaling','Dream Journaling','Gratitude Journaling','Blogging','Personal Blog','Niche Blogging','Microblogging','Newsletter Writing','Poetry','Free Verse','Sonnets','Haiku','Slam Poetry','Spoken Word','Lyric Writing','Music/Instrument','Piano','Guitar','Acoustic Guitar','Electric Guitar','Bass Guitar','Ukulele','Violin','Viola','Cello','Double Bass','Harp','Drums','Percussion','Saxophone','Trumpet','Trombone','French Horn','Clarinet','Flute','Oboe','Bassoon','Harmonica','Accordion','Banjo','Mandolin','Synthesizer','Keyboard','Organ','Turntables','Electronic Music','Beatmaking','Singing','Choral','Opera','A Cappella','Beatboxing','Rapping','Voice Acting','DJing','Club DJ','Radio DJ','Wedding DJ','Turntablism','Music Production','Recording','Mixing','Mastering','Sound Engineering','Foley','Podcast Production','Audio Books','Acting','Theater Acting','Film Acting','Improv','Method Acting','Voice Acting','Motion Capture','Sculpting','Clay Sculpting','Stone Carving','Wood Carving','Ice Sculpting','Sand Sculpting','Wire Sculpture','Found Object Art','Pottery','Wheel Throwing','Hand Building','Glazing','Raku','Porcelain','Stoneware','Earthenware','Ceramic Sculpture','Knitting','Cable Knitting','Fair Isle','Lace Knitting','Sock Knitting','Sweater Making','Crocheting','Amigurumi','Granny Squares','Filet Crochet','Tunisian Crochet','Sewing','Garment Making','Alterations','Quilting','Patchwork','Embroidery','Cross-Stitch','Needlepoint','Hand Embroidery','Machine Embroidery','Beading','Weaving','Loom Weaving','Tapestry','Macramé','Basket Weaving','Felting','Wet Felting','Needle Felting','Woodworking','Furniture Making','Cabinetry','Turning','Whittling','Scroll Saw','Pyrography','Wood Burning','Marquetry','Metalworking','Blacksmithing','Jewelry Making','Silversmithing','Welding','Metal Sculpture','DIY Projects','Home Improvement','Upcycling','Restoration','Crafts','Paper Crafts','Origami','Kirigami','Quilling','Paper Mache','Card Making','Scrapbooking','Bookbinding','Leather Crafting','Candle Making','Soap Making','Resin Art','Epoxy','Glass Blowing','Stained Glass','Mosaic','Enamel','Cosplay','Costume Making','Prop Making','Armor Crafting','Wig Styling','Prosthetics','Makeup Art','Special FX Makeup','Body Painting','Face Painting','Nail Art','Henna','Calligraphy','Western Calligraphy','Chinese Calligraphy','Japanese Calligraphy','Arabic Calligraphy','Brush Lettering','Hand Lettering','Typography','Font Design','Graphic Design','Logo Design','Brand Design','Print Design','Packaging Design','UI/UX Design','Web Design','App Design','Game Design','Interior Design','Fashion Design','Textile Design','Pattern Making','Draping','Surface Design','Floral Design','Flower Arranging','Ikebana','Terrarium Making','Bonsai','Garden Design','Landscape Design','Cake Decorating','Sugar Art','Fondant','Food Styling','Mixology/Cocktail Creation','Perfume Making','Fragrance Blending','Aromatherapy','Herbalism','Tea Blending','Coffee Roasting','Fermentation/Brewing','Home Brewing','Wine Making','Mead Making','Kombucha','Pickling','Model Making','Scale Models','Miniatures','Diorama','Warhammer/Miniature Painting','Dollhouse','Model Trains','RC Vehicles','Drone Building','Robotics','Arduino','Raspberry Pi','Electronics','Circuit Design','Invention','Tattooing','Tattoo Design','Henna Design','None'].map(h => (
               <button key={h} onClick={() => toggleArrayItem('hobbies', 'creativeHobbies', h, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.hobbies?.creativeHobbies || []).includes(h) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{h}</button>
             ))}
@@ -15321,8 +15421,8 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         {/* MENTAL HOBBIES */}
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-2">🧠 Hobbies Mentais & Intelectuais</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Atividades que exercitam a mente. Até 6.</p>
-          <div className="flex flex-wrap gap-2">
+          <p className={STYLES.SUBTITLE}>Atividades que exercitam a mente. Até 6.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Chess','Speed Chess','Bullet Chess','Correspondence Chess','Chess Puzzles','Chess Variants','Shogi','Go/Weiqi','Xiangqi','Poker/Card Games','Texas Holdem','Omaha','Blackjack','Bridge','Canasta','Rummy','Gin Rummy','Spades','Hearts','Euchre','Pinochle','Cribbage','Solitaire','Patience','Magic: The Gathering','Puzzles/Crosswords','NYT Crossword','Cryptic Crosswords','Word Search','Anagrams','Sudoku','Killer Sudoku','Kakuro','Nonograms','Logic Puzzles','Jigsaw Puzzles','3D Puzzles','Mechanical Puzzles','Rubiks Cube','Speedcubing','Escape Rooms','Puzzle Boxes','Trivia/Quiz','Pub Trivia','Quiz Bowl','Jeopardy Style','Sporcle','General Knowledge','Specialized Trivia','Board Games','Euro Games','Catan','Ticket to Ride','Carcassonne','Agricola','Terraforming Mars','Wingspan','Scythe','Gloomhaven','Pandemic','Cooperative Games','Legacy Games','Deck Building','Dominion','Star Realms','Clank','Worker Placement','Lords of Waterdeep','Viticulture','Strategy Games','Risk','Axis & Allies','Twilight Imperium','Diplomacy','War Games','Wargaming','Miniatures Gaming','Warhammer 40K','Age of Sigmar','Historical Wargames','Party Games','Codenames','Dixit','Telestrations','Wavelength','Deception Games','Mafia/Werewolf','Secret Hitler','Avalon','Abstract Strategy','Azul','Sagrada','Hive','Santorini','Learning Languages','Spanish','French','German','Italian','Portuguese','Japanese','Chinese Mandarin','Korean','Arabic','Russian','Hindi','Greek','Latin','Hebrew','Sign Language','Constructed Languages','Esperanto','Conlangs','Language Exchange','Polyglot Challenge','Online Courses','Coursera','edX','Udemy','Skillshare','MasterClass','Khan Academy','MIT OpenCourseWare','University MOOCs','Certification Courses','Professional Development','Reading','Speed Reading','Book Clubs','Reading Challenges','Audiobooks','Research/Deep Dives','Wikipedia Rabbit Holes','Academic Papers','Investigative Research','OSINT','Fact Checking','Investing/Trading','Stock Trading','Day Trading','Swing Trading','Options','Futures','Forex','Crypto Trading','Value Investing','Index Investing','Real Estate Investing','Dividend Investing','Technical Analysis','Fundamental Analysis','Programming/Coding','Web Development','Mobile Development','Game Development','Data Science','Machine Learning','AI Development','Blockchain','Open Source','Competitive Programming','Hackathons','Code Golf','Automation','Scripting','Building PCs','Custom Builds','Overclocking','Water Cooling','Server Building','Home Lab','NAS Building','Tinkering/Electronics','Arduino Projects','Raspberry Pi','IoT','Home Automation','Smart Home','Soldering','Circuit Design','Radio/Ham Radio','Amateur Radio','SDR','Scanner Listening','3D Printing','FDM Printing','Resin Printing','3D Design','CAD','Parametric Design','Astronomy','Amateur Astronomy','Astrophotography','Telescope Building','Star Parties','Satellite Tracking','Space News','Birdwatching','Bird Photography','Bird Calls','Life Lists','eBird','Birding Tours','Genealogy','Family History','DNA Testing','Ancestry Research','Historical Records','Family Trees','Collecting','Stamps','Coins','Currency','Sports Cards','Trading Cards','Pokemon Cards','Vinyl Records','Vintage Items','Antiques','Art Collecting','Book Collecting','Wine Collecting','Sneaker Collecting','Watch Collecting','Memorabilia','Autographs','Comics','Action Figures','Minerals/Gems','Fossils','Maps','Vintage Tech','Philosophy','Reading Philosophy','Philosophical Debates','Ethics Discussions','Applied Philosophy','Meditation/Mindfulness','Meditation Apps','Mindfulness Practice','Breathwork','Contemplation','Writing Philosophy','Mathematics','Recreational Math','Math Puzzles','Statistics','Probability','Cryptography','Number Theory','History Study','Military History','Ancient History','Medieval Studies','Modern History','Local History','Science Study','Physics','Biology','Chemistry','Astronomy','Earth Science','Environmental Science','Current Events','News Analysis','Geopolitics','Economics','Politics','Debate','Competitive Debate','Casual Debate','Devils Advocate','Rhetoric','Critical Thinking','Logic','Argumentation','Fallacy Spotting','Memory Training','Memory Palace','Mnemonics','Speed Memory','Memory Competitions','Creativity Exercises','Brainstorming','Mind Mapping','Lateral Thinking','TRIZ','None'].map(h => (
               <button key={h} onClick={() => toggleArrayItem('hobbies', 'mentalHobbies', h, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.hobbies?.mentalHobbies || []).includes(h) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{h}</button>
             ))}
@@ -15332,8 +15432,8 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         {/* RELAXATION */}
         <div className="border-2 border-teal-200 rounded-sm p-4 bg-teal-50/30">
           <h4 className="font-mono text-sm font-bold text-teal-800 mb-2">😌 Atividades de Relaxamento</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Como o personagem relaxa e recarrega. Até 6.</p>
-          <div className="flex flex-wrap gap-2">
+          <p className={STYLES.SUBTITLE}>Como o personagem relaxa e recarrega. Até 6.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Watching TV/Movies','Binge Watching','Movie Marathons','Rewatching Favorites','Comfort Shows','Background TV','Reading','Light Reading','Beach Reads','Comfort Rereads','Magazines','Comics/Manga','Napping/Sleeping','Power Naps','Sleep In','Afternoon Naps','Lazy Mornings','Taking Baths','Bubble Baths','Bath Bombs','Hot Springs','Sauna','Steam Room','Hot Tub','Cold Plunge','Walking','Leisurely Walks','Neighborhood Walks','Park Walks','Window Shopping','Aimless Wandering','Listening to Music','Background Music','Active Listening','Vinyl Sessions','Playlist Curating','Music Discovery','Podcasts','Playing Games','Casual Gaming','Mobile Games','Cozy Games','Replay Old Games','Scrolling Social Media','Mindless Scrolling','Meme Browsing','Reddit Browsing','TikTok','Instagram','Twitter Lurking','YouTube Rabbit Holes','Meditation','Guided Meditation','Mindfulness','Body Scan','Breathing Exercises','Progressive Relaxation','ASMR','Visualization','Yoga','Gentle Yoga','Restorative Yoga','Yin Yoga','Stretching','Light Stretching','Morning Stretch','Evening Routine','Foam Rolling','Cooking/Baking','Comfort Food Cooking','Baking Therapy','Meal Prep','Trying New Recipes','Slow Cooking','Gardening','Puttering in Garden','Watering Plants','Plant Care','Houseplants','Weeding','Flower Arranging','Pet Time','Cuddling Pets','Playing with Pets','Walking Dog','Grooming','Training','Just Being Together','Doing Nothing','Staring at Wall','Lying Down','Zoning Out','Quiet Time','Stillness','Nature/Outdoors','Sitting Outside','Porch Sitting','Park Bench','Beach Time','Forest Bathing','Star Gazing','Cloud Watching','Sunset Watching','Sunrise Watching','Shopping','Window Shopping','Online Shopping','Thrift Shopping','Browsing Stores','Retail Therapy','Spa/Self-Care','Face Masks','Skincare Routine','Manicure/Pedicure','Hair Care','Body Care','Massage','Self Massage','Aromatherapy','Essential Oils','Candle Lighting','Incense','Driving','Aimless Driving','Scenic Routes','Late Night Drives','Road Trips','Listening to Music in Car','People Watching','Cafe Sitting','Park Bench','Airport','Mall','Public Spaces','Daydreaming','Mind Wandering','Fantasy','Future Planning','Reminiscing','Imagination','Drinking Tea/Coffee','Tea Ceremony','Coffee Ritual','Morning Coffee','Afternoon Tea','Comfort Drinks','Comfort Foods','Snacking','Eating Treats','Guilty Pleasures','Midnight Snacks','Socializing Casually','Chatting with Friends','Phone Calls','Video Calls','Hanging Out','Comfortable Silence','Crafting','Easy Crafts','Adult Coloring','Diamond Painting','Simple Projects','Organizing','Tidying Up','Decluttering','Sorting Things','Marie Kondo Style','Rearranging','Cleaning','Satisfying Cleaning','Deep Cleaning','Light Tidying','Laundry','Ironing','Watching Sports','Casual Sports Viewing','Background Sports','Game Day','Watching Others Play Games','Twitch','YouTube Gaming','Let\'s Plays','Speedruns','Writing','Journaling','Free Writing','Letters','Lists','Planning','Home Activities','Puzzles','Board Games Solo','Card Games Solo','Crosswords','Sudoku','Hobbies at Easy Pace','Low-Key Creative Work','Maintenance Tasks','Photo Organizing','Listening to Rain','Thunderstorm Sounds','Nature Sounds','White Noise','Lo-Fi','Ambient Music','Binaural Beats','Sound Healing','Hammock','Swing','Rocking Chair','Lounging','Couch Time','Bed Lounging','Floor Time','Sunbathing','Tanning','Vitamin D','Light Exposure','Hugging/Cuddling','Physical Affection','Weighted Blanket','Cozy Clothes','Comfort Items','Sensory Items','Fidget Toys','Texture Play','Prayer/Spiritual','Religious Practice','Spiritual Reading','Contemplation','Gratitude Practice','Affirmations','Screen-Free Time','Digital Detox','Unplugging','Quiet Hours','Tech Sabbath','Nothing Specific','Just Existing','Being Present','Mindful Moments'].map(a => (
               <button key={a} onClick={() => toggleArrayItem('hobbies', 'relaxationActivities', a, 6)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.hobbies?.relaxationActivities || []).includes(a) ? 'bg-teal-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{a}</button>
             ))}
@@ -15341,10 +15441,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* COLLECTIONS */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📦 Coleções</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Se coleciona algo, descreva.</p>
-          <textarea value={data.hobbies?.collects || ''} onChange={(e) => update('hobbies', 'collects', e.target.value)} placeholder="Ex: Vinil, selos, action figures, livros raros, moedas, arte, plantas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📦 Coleções</h4>
+          <p className={STYLES.SUBTITLE}>Se coleciona algo, descreva.</p>
+          <textarea value={data.hobbies?.collects || ''} onChange={(e) => update('hobbies', 'collects', e.target.value)} placeholder="Ex: Vinil, selos, action figures, livros raros, moedas, arte, plantas..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
       </div>
     ),
@@ -15358,9 +15458,9 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* FASHION STYLE */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👕 Estilo de Moda</h4>
-          <select value={data.style?.fashionStyle || ''} onChange={(e) => update('style', 'fashionStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👕 Estilo de Moda</h4>
+          <select value={data.style?.fashionStyle || ''} onChange={(e) => update('style', 'fashionStyle', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <optgroup label="Basic Styles">
               <option value="casual">Casual — Jeans, camiseta, confortável</option>
@@ -15508,33 +15608,33 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* APPEARANCE IMPORTANCE & DRESS CODE */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💄 Importância da Aparência</h4>
+        <div className={STYLES.GRID_2}>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>💄 Importância da Aparência</h4>
             <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Não liga</span><span>Obsessed</span></div>
             <input type="range" min="1" max="9" value={data.style?.appearanceImportance || 5} onChange={(e) => update('style', 'appearanceImportance', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-pink-400 rounded-lg appearance-none cursor-pointer" />
           </div>
 
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👔 Dress Code Pessoal</h4>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>👔 Dress Code Pessoal</h4>
             <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Pijama OK</span><span>Sempre Arrumado</span></div>
             <input type="range" min="1" max="9" value={data.style?.dressCode || 5} onChange={(e) => update('style', 'dressCode', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-violet-400 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
 
         {/* SIGNATURE ITEM */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⭐ Peça Signature / Item Característico</h4>
-          <input type="text" value={data.style?.signatureItem || ''} onChange={(e) => update('style', 'signatureItem', e.target.value)} placeholder="Ex: Jaqueta de couro, óculos redondos, sempre de preto, relógio específico..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⭐ Peça Signature / Item Característico</h4>
+          <input type="text" value={data.style?.signatureItem || ''} onChange={(e) => update('style', 'signatureItem', e.target.value)} placeholder="Ex: Jaqueta de couro, óculos redondos, sempre de preto, relógio específico..." className={STYLES.INPUT} />
         </div>
 
         {/* COLORS */}
-        <div className="border border-gray-200 rounded-sm p-4">
+        <div className={STYLES.SECTION}>
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-3">🎨 Cores</h4>
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Cores Favoritas (até 3)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {[
                   {name:'Black',color:'bg-black'},{name:'Charcoal',color:'bg-gray-800'},{name:'Jet Black',color:'bg-neutral-950'},
                   {name:'White',color:'bg-white border border-gray-300'},{name:'Off-White',color:'bg-stone-100'},{name:'Cream',color:'bg-amber-50'},
@@ -15577,15 +15677,15 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
             </div>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Cores que Evita (até 2)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Black','White','Gray','Red','Orange','Yellow','Green','Blue','Purple','Pink','Brown','Neon','Pastels','None'].map(c => (
                   <button key={c} onClick={() => toggleArrayItem('style', 'avoidColors', c, 2)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.style?.avoidColors || []).includes(c) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{c}</button>
                 ))}
               </div>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Paleta Geral</label>
-              <select value={data.style?.colorPalette || ''} onChange={(e) => update('style', 'colorPalette', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Paleta Geral</label>
+              <select value={data.style?.colorPalette || ''} onChange={(e) => update('style', 'colorPalette', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="bright">Bright & Vibrant — Cores vivas e chamativas</option>
                 <option value="muted">Muted & Soft — Tons suaves e apagados</option>
@@ -15601,10 +15701,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* DECORATION STYLE */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏠 Estilo de Decoração</h4>
-            <select value={data.style?.decorStyle || ''} onChange={(e) => update('style', 'decorStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.GRID_2}>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>🏠 Estilo de Decoração</h4>
+            <select value={data.style?.decorStyle || ''} onChange={(e) => update('style', 'decorStyle', e.target.value)} className={STYLES.INPUT}>
               <option value="">-- Selecione --</option>
               <optgroup label="Modern & Contemporary">
                 <option value="modern">Modern/Contemporary — Linhas limpas, atual</option>
@@ -15722,25 +15822,25 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
             </select>
           </div>
 
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📐 Nível de Organização</h4>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>📐 Nível de Organização</h4>
             <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Caótico</span><span>Impecável</span></div>
             <input type="range" min="1" max="9" value={data.style?.organizationLevel || 5} onChange={(e) => update('style', 'organizationLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 to-blue-400 rounded-lg appearance-none cursor-pointer" />
           </div>
         </div>
 
         {/* SPACE IMPORTANCE */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚪 Importância do Espaço Pessoal</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🚪 Importância do Espaço Pessoal</h4>
           <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Não liga</span><span>Muito importante</span></div>
           <input type="range" min="1" max="9" value={data.style?.spaceImportance || 5} onChange={(e) => update('style', 'spaceImportance', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-gray-300 to-indigo-400 rounded-lg appearance-none cursor-pointer" />
         </div>
 
         {/* FAVORITE ERA */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🕰️ Era/Época Estética Favorita</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <select value={data.style?.favoriteEra || ''} onChange={(e) => update('style', 'favoriteEra', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🕰️ Era/Época Estética Favorita</h4>
+          <div className={STYLES.GRID_2}>
+            <select value={data.style?.favoriteEra || ''} onChange={(e) => update('style', 'favoriteEra', e.target.value)} className={STYLES.INPUT}>
               <option value="">-- Selecione --</option>
               <option value="ancient">Ancient (Greek, Roman, Egyptian)</option>
               <option value="medieval">Medieval (Knights, Castles)</option>
@@ -15759,7 +15859,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
               <option value="futuristic">Futuristic (Sci-Fi, Cyberpunk)</option>
               <option value="timeless">Timeless/No Preference</option>
             </select>
-            <input type="text" value={data.style?.eraReason || ''} onChange={(e) => update('style', 'eraReason', e.target.value)} placeholder="Por quê? (nostalgia, estética, história...)" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+            <input type="text" value={data.style?.eraReason || ''} onChange={(e) => update('style', 'eraReason', e.target.value)} placeholder="Por quê? (nostalgia, estética, história...)" className={STYLES.INPUT} />
           </div>
         </div>
       </div>
@@ -15777,16 +15877,16 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
           <h4 className="font-mono text-sm font-bold text-green-800 mb-3">🌍 Ambiente & Clima</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Natureza vs Urbano</label>
+              <label className={STYLES.LABEL}>Natureza vs Urbano</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>🌲 Nature</span><span>🏙️ Urban</span></div>
               <input type="range" min="1" max="9" value={data.preferences?.natureUrban || 5} onChange={(e) => update('preferences', 'natureUrban', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-green-400 to-gray-500 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Clima Preferido</label>
+                <label className={STYLES.LABEL}>Clima Preferido</label>
                 <select value={data.preferences?.climate || ''} onChange={(e) => update('preferences', 'climate', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="tropical">Tropical — Quente e úmido o ano todo</option>
@@ -15799,7 +15899,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estação Favorita</label>
+                <label className={STYLES.LABEL}>Estação Favorita</label>
                 <select value={data.preferences?.season || ''} onChange={(e) => update('preferences', 'season', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="spring">🌸 Spring — Renovação, flores, clima ameno</option>
@@ -15813,7 +15913,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Horário do Dia</label>
+                <label className={STYLES.LABEL}>Horário do Dia</label>
                 <select value={data.preferences?.timeOfDay || ''} onChange={(e) => update('preferences', 'timeOfDay', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="early-morning">🌅 Early Morning (5-8am)</option>
@@ -15825,7 +15925,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Silêncio vs Ruído</label>
+                <label className={STYLES.LABEL}>Silêncio vs Ruído</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>🤫 Silence</span><span>🔊 Noise</span></div>
                 <input type="range" min="1" max="9" value={data.preferences?.silenceNoise || 5} onChange={(e) => update('preferences', 'silenceNoise', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-blue-300 to-orange-400 rounded-lg appearance-none cursor-pointer" />
               </div>
@@ -15837,10 +15937,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🐾 Animais</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Animais Favoritos (até 3)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Dogs','Puppies','Golden Retriever','Labrador','German Shepherd','Husky','Corgi','Poodle','Bulldog','Beagle','Border Collie','Shiba Inu','Pomeranian','Chihuahua','Great Dane','Rottweiler','Dalmatian','Pit Bull','Cats','Kittens','Persian','Siamese','Maine Coon','British Shorthair','Scottish Fold','Bengal','Ragdoll','Sphynx','Tabby','Black Cat','Orange Tabby','Tuxedo Cat','Horses','Wild Horses','Ponies','Unicorns','Pegasus','Zebras','Donkeys','Birds','Parrots','Macaws','Cockatoos','Budgies','Cockatiels','Lovebirds','Canaries','Finches','Doves','Pigeons','Crows','Ravens','Magpies','Hummingbirds','Peacocks','Flamingos','Swans','Ducks','Geese','Chickens','Roosters','Turkeys','Fish','Goldfish','Koi','Betta Fish','Tropical Fish','Clownfish','Sharks','Great White Shark','Whale Shark','Manta Rays','Stingrays','Seahorses','Jellyfish','Octopus','Squid','Starfish','Sea Turtles','Rabbits','Bunnies','Lop-Eared Rabbits','Hamsters','Guinea Pigs','Chinchillas','Ferrets','Gerbils','Mice','Rats','Hedgehogs','Sugar Gliders','Snakes','Pythons','Boa Constrictors','Corn Snakes','Ball Pythons','Cobras','Rattlesnakes','Lizards','Geckos','Leopard Geckos','Bearded Dragons','Chameleons','Iguanas','Komodo Dragons','Monitor Lizards','Salamanders','Newts','Axolotls','Frogs','Tree Frogs','Poison Dart Frogs','Toads','Turtles','Tortoises','Box Turtles','Crocodiles','Alligators','Spiders','Tarantulas','Jumping Spiders','Black Widows','Scorpions','Crabs','Hermit Crabs','Lobsters','Shrimp','Insects','Butterflies','Monarch Butterflies','Moths','Luna Moths','Ladybugs','Fireflies','Dragonflies','Damselflies','Bees','Bumblebees','Honeybees','Praying Mantis','Beetles','Stag Beetles','Rhinoceros Beetles','Ants','Caterpillars','Grasshoppers','Crickets','Cicadas','Wolves','Gray Wolves','Arctic Wolves','Timber Wolves','Werewolves','Lions','Lionesses','White Lions','Tigers','Bengal Tigers','White Tigers','Siberian Tigers','Bears','Grizzly Bears','Polar Bears','Black Bears','Panda Bears','Red Pandas','Koalas','Sun Bears','Sloth Bears','Elephants','African Elephants','Asian Elephants','Baby Elephants','Mammoths','Dolphins','Bottlenose Dolphins','Orcas/Killer Whales','Porpoises','Whales','Blue Whales','Humpback Whales','Sperm Whales','Beluga Whales','Narwhals','Owls','Barn Owls','Snowy Owls','Great Horned Owls','Burrowing Owls','Eagle Owls','Eagles','Bald Eagles','Golden Eagles','Hawks','Falcons','Peregrine Falcons','Vultures','Condors','Ospreys','Foxes','Red Foxes','Arctic Foxes','Fennec Foxes','Gray Foxes','Deer','Fawns','Elk','Moose','Reindeer','Caribou','Antelope','Gazelles','Impala','Pandas','Giant Pandas','Red Pandas','Penguins','Emperor Penguins','King Penguins','Adelie Penguins','Little Blue Penguins','Puffins','Monkeys','Chimpanzees','Gorillas','Orangutans','Bonobos','Baboons','Macaques','Capuchins','Spider Monkeys','Howler Monkeys','Lemurs','Ring-Tailed Lemurs','Aye-Ayes','Gibbons','Sloths','Two-Toed Sloths','Three-Toed Sloths','Anteaters','Armadillos','Pangolins','Bats','Flying Foxes','Fruit Bats','Vampire Bats','Squirrels','Chipmunks','Flying Squirrels','Prairie Dogs','Groundhogs','Beavers','Otters','Sea Otters','River Otters','Seals','Sea Lions','Walruses','Manatees','Dugongs','Hippos','Pygmy Hippos','Rhinos','White Rhinos','Black Rhinos','Giraffes','Okapi','Camels','Llamas','Alpacas','Vicuñas','Kangaroos','Wallabies','Wombats','Tasmanian Devils','Platypus','Possums','Opossums','Raccoons','Badgers','Honey Badgers','Wolverines','Minks','Weasels','Stoats','Skunks','Porcupines','Hyenas','Cheetahs','Leopards','Snow Leopards','Clouded Leopards','Jaguars','Panthers','Black Panthers','Cougars/Mountain Lions','Lynx','Bobcats','Caracals','Servals','Ocelots','Wildcats','Buffalos','Bison','Yaks','Oxen','Bulls','Cows','Highland Cattle','Goats','Mountain Goats','Ibex','Sheep','Bighorn Sheep','Lambs','Pigs','Wild Boars','Warthogs','Tapirs','Mongooses','Meerkats','Aardvarks','Capybaras','Nutrias','Maras','Chinchillas','Pikas','Hares','Jackrabbits','Coyotes','Dingoes','Jackals','African Wild Dogs','Dholes','Dinosaurs','T-Rex','Velociraptors','Triceratops','Brontosaurus','Pterodactyls','Stegosaurus','Dragons','Phoenix','Griffins','Mythical Creatures','None'].map(a => (
                   <button key={a} onClick={() => toggleArrayItem('preferences', 'favoriteAnimals', a, 3)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.preferences?.favoriteAnimals || []).includes(a) ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{a}</button>
                 ))}
@@ -15849,7 +15949,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Preferência de Pet</label>
+                <label className={STYLES.LABEL}>Preferência de Pet</label>
                 <select value={data.preferences?.petPreference || ''} onChange={(e) => update('preferences', 'petPreference', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="dogs">🐕 Dogs — Definitivamente cães</option>
@@ -15862,7 +15962,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relação com Animais</label>
+                <label className={STYLES.LABEL}>Relação com Animais</label>
                 <select value={data.preferences?.animalRelation || ''} onChange={(e) => update('preferences', 'animalRelation', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="loves">Loves — Adora todos os animais</option>
@@ -15882,10 +15982,10 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">✈️ Viagem</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Viagem</label>
+                <label className={STYLES.LABEL}>Estilo de Viagem</label>
                 <select value={data.preferences?.travelStyle || ''} onChange={(e) => update('preferences', 'travelStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <optgroup label="Accommodation Style">
@@ -15982,7 +16082,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Frequência Ideal</label>
+                <label className={STYLES.LABEL}>Frequência Ideal</label>
                 <select value={data.preferences?.travelFrequency || ''} onChange={(e) => update('preferences', 'travelFrequency', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="homebody">Homebody — Raramente/nunca viaja</option>
@@ -15995,7 +16095,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Destinos Favoritos/Sonho</label>
+              <label className={STYLES.LABEL}>Destinos Favoritos/Sonho</label>
               <input type="text" value={data.preferences?.travelDestinations || ''} onChange={(e) => update('preferences', 'travelDestinations', e.target.value)} placeholder="Ex: Japão, Itália, Nova York, Patagônia..." className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]" />
             </div>
           </div>
@@ -16005,34 +16105,34 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
           <h4 className="font-mono text-sm font-bold text-violet-800 mb-3">🎚️ Tendências Pessoais</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Rotina vs Espontaneidade</label>
+              <label className={STYLES.LABEL}>Rotina vs Espontaneidade</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>📅 Routine</span><span>🎲 Spontaneous</span></div>
               <input type="range" min="1" max="9" value={data.preferences?.routineSpontaneity || 5} onChange={(e) => update('preferences', 'routineSpontaneity', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-blue-400 to-yellow-400 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Planejamento vs Improviso</label>
+              <label className={STYLES.LABEL}>Planejamento vs Improviso</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>📋 Planner</span><span>🌊 Go with Flow</span></div>
               <input type="range" min="1" max="9" value={data.preferences?.planningImproving || 5} onChange={(e) => update('preferences', 'planningImproving', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-green-400 to-orange-400 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qualidade vs Quantidade</label>
+              <label className={STYLES.LABEL}>Qualidade vs Quantidade</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>💎 Quality</span><span>📦 Quantity</span></div>
               <input type="range" min="1" max="9" value={data.preferences?.qualityQuantity || 5} onChange={(e) => update('preferences', 'qualityQuantity', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-purple-400 to-teal-400 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nostalgia vs Novidade</label>
+              <label className={STYLES.LABEL}>Nostalgia vs Novidade</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>📼 Nostalgic</span><span>🚀 Early Adopter</span></div>
               <input type="range" min="1" max="9" value={data.preferences?.oldNew || 5} onChange={(e) => update('preferences', 'oldNew', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-amber-400 to-cyan-400 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Sweet vs Savory</label>
+                <label className={STYLES.LABEL}>Sweet vs Savory</label>
                 <select value={data.preferences?.sweetSavory || ''} onChange={(e) => update('preferences', 'sweetSavory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="sweet">🍰 Sweet — Prefere doces</option>
@@ -16042,7 +16142,7 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Hot vs Cold Drinks</label>
+                <label className={STYLES.LABEL}>Hot vs Cold Drinks</label>
                 <select value={data.preferences?.hotCold || ''} onChange={(e) => update('preferences', 'hotCold', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-1.5 px-2 font-mono text-[10px]">
                   <option value="">-- Selecione --</option>
                   <option value="hot">☕ Hot — Prefere bebidas quentes</option>
@@ -16060,11 +16160,12 @@ const FavoritesContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const FavoritesContent = memo(FavoritesContentBase);
 
 // ============================================================================
 // HISTORY CONTENT - Complete Implementation
 // ============================================================================
-const HistoryContent = ({ data, updateData, subtab }) => {
+const HistoryContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('history', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -16186,19 +16287,19 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
           <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">👶 Nascimento</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Data de Nascimento</label>
-                <input type="text" value={data.origin?.birthDate || ''} onChange={(e) => update('origin', 'birthDate', e.target.value)} placeholder="Ex: 15/03/1990, Primavera de 1985..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Data de Nascimento</label>
+                <input type="text" value={data.origin?.birthDate || ''} onChange={(e) => update('origin', 'birthDate', e.target.value)} placeholder="Ex: 15/03/1990, Primavera de 1985..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Local de Nascimento</label>
-                <input type="text" value={data.origin?.birthPlace || ''} onChange={(e) => update('origin', 'birthPlace', e.target.value)} placeholder="Ex: São Paulo, Hospital Santa Casa..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Local de Nascimento</label>
+                <input type="text" value={data.origin?.birthPlace || ''} onChange={(e) => update('origin', 'birthPlace', e.target.value)} placeholder="Ex: São Paulo, Hospital Santa Casa..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ordem de Nascimento</label>
-                <select value={data.origin?.birthOrder || ''} onChange={(e) => update('origin', 'birthOrder', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Ordem de Nascimento</label>
+                <select value={data.origin?.birthOrder || ''} onChange={(e) => update('origin', 'birthOrder', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="only">Filho único</option>
                   <option value="firstborn">Primogênito</option>
@@ -16211,10 +16312,10 @@ const HistoryContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Gravidez/Chegada</label>
-                <select value={data.origin?.plannedPregnancy || ''} onChange={(e) => update('origin', 'plannedPregnancy', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Gravidez/Chegada</label>
+                <select value={data.origin?.plannedPregnancy || ''} onChange={(e) => update('origin', 'plannedPregnancy', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="planned-wanted">Planejado e muito desejado</option>
                   <option value="planned">Planejado</option>
@@ -16229,8 +16330,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Circunstâncias do Nascimento</label>
-                <select value={data.origin?.birthCircumstances || ''} onChange={(e) => update('origin', 'birthCircumstances', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Circunstâncias do Nascimento</label>
+                <select value={data.origin?.birthCircumstances || ''} onChange={(e) => update('origin', 'birthCircumstances', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="normal">Normal, sem complicações</option>
                   <option value="difficult">Parto difícil</option>
@@ -16253,11 +16354,11 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🧒 Primeira Infância (0-6 anos)</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ambiente de Criação</label>
-                <select value={data.origin?.childhoodEnvironment || ''} onChange={(e) => update('origin', 'childhoodEnvironment', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Ambiente de Criação</label>
+                <select value={data.origin?.childhoodEnvironment || ''} onChange={(e) => update('origin', 'childhoodEnvironment', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="loving-stable">Amoroso e estável</option>
                   <option value="loving-chaotic">Amoroso mas caótico</option>
@@ -16276,8 +16377,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Condição Socioeconômica</label>
-                <select value={data.origin?.childhoodSocioeconomic || ''} onChange={(e) => update('origin', 'childhoodSocioeconomic', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Condição Socioeconômica</label>
+                <select value={data.origin?.childhoodSocioeconomic || ''} onChange={(e) => update('origin', 'childhoodSocioeconomic', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="poverty">Pobreza</option>
                   <option value="working-class">Classe trabalhadora</option>
@@ -16294,8 +16395,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estabilidade do Lar</label>
-              <select value={data.origin?.childhoodStability || ''} onChange={(e) => update('origin', 'childhoodStability', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Estabilidade do Lar</label>
+              <select value={data.origin?.childhoodStability || ''} onChange={(e) => update('origin', 'childhoodStability', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="very-stable">Muito estável — Mesmo lar, rotina consistente</option>
                 <option value="stable">Estável — Poucas mudanças</option>
@@ -16307,13 +16408,13 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Primeira Infância</label>
-              <textarea value={data.origin?.earlyChildhood || ''} onChange={(e) => update('origin', 'earlyChildhood', e.target.value)} placeholder="Como foram os primeiros anos? Memórias, ambiente, cuidadores..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Descrição da Primeira Infância</label>
+              <textarea value={data.origin?.earlyChildhood || ''} onChange={(e) => update('origin', 'earlyChildhood', e.target.value)} placeholder="Como foram os primeiros anos? Memórias, ambiente, cuidadores..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Personalidade na Infância</label>
-              <select value={data.origin?.childhoodPersonality || ''} onChange={(e) => update('origin', 'childhoodPersonality', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Personalidade na Infância</label>
+              <select value={data.origin?.childhoodPersonality || ''} onChange={(e) => update('origin', 'childhoodPersonality', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="happy-outgoing">Feliz e extrovertido</option>
                 <option value="shy-quiet">Tímido e quieto</option>
@@ -16336,10 +16437,10 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
           <h4 className="font-mono text-sm font-bold text-yellow-800 mb-3">📚 Infância (7-12 anos)</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência Escolar (Fundamental)</label>
-              <select value={data.origin?.elementarySchool || ''} onChange={(e) => update('origin', 'elementarySchool', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Experiência Escolar (Fundamental)</label>
+              <select value={data.origin?.elementarySchool || ''} onChange={(e) => update('origin', 'elementarySchool', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="loved">Amava a escola</option>
                 <option value="good-student">Bom aluno, experiência positiva</option>
@@ -16359,8 +16460,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Amizades na Infância</label>
-              <select value={data.origin?.childhoodFriendships || ''} onChange={(e) => update('origin', 'childhoodFriendships', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Amizades na Infância</label>
+              <select value={data.origin?.childhoodFriendships || ''} onChange={(e) => update('origin', 'childhoodFriendships', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="many-friends">Muitos amigos, muito social</option>
                 <option value="few-close">Poucos mas próximos</option>
@@ -16390,10 +16491,10 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
           <h4 className="font-mono text-sm font-bold text-orange-800 mb-3">🎒 Adolescência (13-17 anos)</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência no Ensino Médio</label>
-              <select value={data.origin?.highSchoolExperience || ''} onChange={(e) => update('origin', 'highSchoolExperience', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Experiência no Ensino Médio</label>
+              <select value={data.origin?.highSchoolExperience || ''} onChange={(e) => update('origin', 'highSchoolExperience', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="best-years">Melhores anos da vida</option>
                 <option value="good">Experiência boa</option>
@@ -16413,8 +16514,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nível de Rebeldia Adolescente</label>
-              <select value={data.origin?.teenageRebellion || ''} onChange={(e) => update('origin', 'teenageRebellion', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Nível de Rebeldia Adolescente</label>
+              <select value={data.origin?.teenageRebellion || ''} onChange={(e) => update('origin', 'teenageRebellion', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="none">Nenhuma — Era muito comportado</option>
                 <option value="mild">Leve — Pequenos atos de rebeldia</option>
@@ -16428,8 +16529,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Primeiro Amor / Experiências Românticas</label>
-              <select value={data.origin?.firstLove || ''} onChange={(e) => update('origin', 'firstLove', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Primeiro Amor / Experiências Românticas</label>
+              <select value={data.origin?.firstLove || ''} onChange={(e) => update('origin', 'firstLove', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="none">Nenhuma experiência</option>
                 <option value="crushes-only">Apenas crushes não correspondidos</option>
@@ -16446,13 +16547,13 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Adolescência</label>
-              <textarea value={data.origin?.adolescence || ''} onChange={(e) => update('origin', 'adolescence', e.target.value)} placeholder="Como foi a adolescência? Desafios, descobertas, formação de identidade..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Descrição da Adolescência</label>
+              <textarea value={data.origin?.adolescence || ''} onChange={(e) => update('origin', 'adolescence', e.target.value)} placeholder="Como foi a adolescência? Desafios, descobertas, formação de identidade..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Passagem para a Vida Adulta</label>
-              <select value={data.origin?.comingOfAge || ''} onChange={(e) => update('origin', 'comingOfAge', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Passagem para a Vida Adulta</label>
+              <select value={data.origin?.comingOfAge || ''} onChange={(e) => update('origin', 'comingOfAge', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="smooth">Suave — Transição natural</option>
                 <option value="eager">Ansioso — Mal podia esperar</option>
@@ -16471,10 +16572,10 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🏠 Vida Adulta</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Fase Atual da Vida</label>
-              <select value={data.origin?.currentLifePhase || ''} onChange={(e) => update('origin', 'currentLifePhase', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Fase Atual da Vida</label>
+              <select value={data.origin?.currentLifePhase || ''} onChange={(e) => update('origin', 'currentLifePhase', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="late-adolescence">Adolescência tardia (17-19)</option>
                 <option value="emerging-adult">Adulto emergente (20-25)</option>
@@ -16497,13 +16598,13 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Jovem Adulto / Vida Adulta Inicial</label>
-              <textarea value={data.origin?.youngAdulthood || ''} onChange={(e) => update('origin', 'youngAdulthood', e.target.value)} placeholder="Como foi a transição para a vida adulta? Desafios, conquistas, mudanças..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Jovem Adulto / Vida Adulta Inicial</label>
+              <textarea value={data.origin?.youngAdulthood || ''} onChange={(e) => update('origin', 'youngAdulthood', e.target.value)} placeholder="Como foi a transição para a vida adulta? Desafios, conquistas, mudanças..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Notas sobre a Fase Atual</label>
-              <textarea value={data.origin?.lifePhaseNotes || ''} onChange={(e) => update('origin', 'lifePhaseNotes', e.target.value)} placeholder="O que define esta fase da vida? Preocupações, objetivos, estado atual..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Notas sobre a Fase Atual</label>
+              <textarea value={data.origin?.lifePhaseNotes || ''} onChange={(e) => update('origin', 'lifePhaseNotes', e.target.value)} placeholder="O que define esta fase da vida? Preocupações, objetivos, estado atual..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -16524,11 +16625,11 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🏠 Estrutura Familiar</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Família</label>
-                <select value={data.family?.familyStructure || ''} onChange={(e) => update('family', 'familyStructure', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Tipo de Família</label>
+                <select value={data.family?.familyStructure || ''} onChange={(e) => update('family', 'familyStructure', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="nuclear-traditional">Nuclear tradicional (pai, mãe, filhos)</option>
                   <option value="single-mother">Mãe solo</option>
@@ -16546,8 +16647,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relacionamento dos Pais</label>
-                <select value={data.family?.parentsRelationship || ''} onChange={(e) => update('family', 'parentsRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Relacionamento dos Pais</label>
+                <select value={data.family?.parentsRelationship || ''} onChange={(e) => update('family', 'parentsRelationship', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="loving-stable">Amoroso e estável</option>
                   <option value="loving-passionate">Amoroso e intenso</option>
@@ -16572,15 +16673,15 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
           <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">👩 Figura Materna</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Mãe/Figura Materna</label>
-              <textarea value={data.family?.motherDescription || ''} onChange={(e) => update('family', 'motherDescription', e.target.value)} placeholder="Quem era/é? Personalidade, ocupação, características marcantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Descrição da Mãe/Figura Materna</label>
+              <textarea value={data.family?.motherDescription || ''} onChange={(e) => update('family', 'motherDescription', e.target.value)} placeholder="Quem era/é? Personalidade, ocupação, características marcantes..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qualidade da Relação</label>
-                <select value={data.family?.motherRelationship || ''} onChange={(e) => update('family', 'motherRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Qualidade da Relação</label>
+                <select value={data.family?.motherRelationship || ''} onChange={(e) => update('family', 'motherRelationship', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="loving">Amorosa e próxima</option>
                   <option value="close">Próxima</option>
@@ -16600,8 +16701,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
-                <select value={data.family?.motherStatus || ''} onChange={(e) => update('family', 'motherStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Status Atual</label>
+                <select value={data.family?.motherStatus || ''} onChange={(e) => update('family', 'motherStatus', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="alive-contact">Viva, em contato</option>
                   <option value="alive-distant">Viva, pouco contato</option>
@@ -16621,15 +16722,15 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">👨 Figura Paterna</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição do Pai/Figura Paterna</label>
-              <textarea value={data.family?.fatherDescription || ''} onChange={(e) => update('family', 'fatherDescription', e.target.value)} placeholder="Quem era/é? Personalidade, ocupação, características marcantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Descrição do Pai/Figura Paterna</label>
+              <textarea value={data.family?.fatherDescription || ''} onChange={(e) => update('family', 'fatherDescription', e.target.value)} placeholder="Quem era/é? Personalidade, ocupação, características marcantes..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qualidade da Relação</label>
-                <select value={data.family?.fatherRelationship || ''} onChange={(e) => update('family', 'fatherRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Qualidade da Relação</label>
+                <select value={data.family?.fatherRelationship || ''} onChange={(e) => update('family', 'fatherRelationship', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="loving">Amorosa e próxima</option>
                   <option value="close">Próxima</option>
@@ -16649,8 +16750,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
-                <select value={data.family?.fatherStatus || ''} onChange={(e) => update('family', 'fatherStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Status Atual</label>
+                <select value={data.family?.fatherStatus || ''} onChange={(e) => update('family', 'fatherStatus', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="alive-contact">Vivo, em contato</option>
                   <option value="alive-distant">Vivo, pouco contato</option>
@@ -16670,7 +16771,7 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-gray-200 rounded-sm p-4 bg-gray-50/30">
           <h4 className="font-mono text-sm font-bold text-gray-700 mb-3">👥 Padrasto/Madrasta (se aplicável)</h4>
           <div>
-            <textarea value={data.family?.stepParents || ''} onChange={(e) => update('family', 'stepParents', e.target.value)} placeholder="Se teve padrasto ou madrasta, descreva a relação e impacto..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+            <textarea value={data.family?.stepParents || ''} onChange={(e) => update('family', 'stepParents', e.target.value)} placeholder="Se teve padrasto ou madrasta, descreva a relação e impacto..." className={`${STYLES.TEXTAREA} h-16`} />
           </div>
         </div>
 
@@ -16678,11 +16779,11 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
           <h4 className="font-mono text-sm font-bold text-green-800 mb-3">👫 Irmãos</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Número de Irmãos</label>
-                <select value={data.family?.siblingsCount || ''} onChange={(e) => update('family', 'siblingsCount', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Número de Irmãos</label>
+                <select value={data.family?.siblingsCount || ''} onChange={(e) => update('family', 'siblingsCount', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="0">Filho único</option>
                   <option value="1">1 irmão/irmã</option>
@@ -16696,8 +16797,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Dinâmica entre Irmãos</label>
-                <select value={data.family?.siblingsDynamic || ''} onChange={(e) => update('family', 'siblingsDynamic', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Dinâmica entre Irmãos</label>
+                <select value={data.family?.siblingsDynamic || ''} onChange={(e) => update('family', 'siblingsDynamic', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="best-friends">Melhores amigos</option>
                   <option value="close">Próximos</option>
@@ -16715,13 +16816,13 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Detalhes sobre os Irmãos</label>
-              <textarea value={data.family?.siblingsDetails || ''} onChange={(e) => update('family', 'siblingsDetails', e.target.value)} placeholder="Nomes, idades, personalidades, relação com cada um..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Detalhes sobre os Irmãos</label>
+              <textarea value={data.family?.siblingsDetails || ''} onChange={(e) => update('family', 'siblingsDetails', e.target.value)} placeholder="Nomes, idades, personalidades, relação com cada um..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Rivalidade entre Irmãos</label>
-              <select value={data.family?.siblingRivalry || ''} onChange={(e) => update('family', 'siblingRivalry', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Rivalidade entre Irmãos</label>
+              <select value={data.family?.siblingRivalry || ''} onChange={(e) => update('family', 'siblingRivalry', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="none">Nenhuma rivalidade</option>
                 <option value="mild">Leve, saudável</option>
@@ -16740,10 +16841,10 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
           <h4 className="font-mono text-sm font-bold text-violet-800 mb-3">👪 Família Extensa & Valores</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Influência dos Avós</label>
-              <select value={data.family?.grandparentsInfluence || ''} onChange={(e) => update('family', 'grandparentsInfluence', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Influência dos Avós</label>
+              <select value={data.family?.grandparentsInfluence || ''} onChange={(e) => update('family', 'grandparentsInfluence', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="very-present">Muito presentes, grande influência</option>
                 <option value="present">Presentes na vida</option>
@@ -16757,8 +16858,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Família Extensa (tios, primos, etc.)</label>
-              <textarea value={data.family?.extendedFamily || ''} onChange={(e) => update('family', 'extendedFamily', e.target.value)} placeholder="Presença e importância da família extensa..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Família Extensa (tios, primos, etc.)</label>
+              <textarea value={data.family?.extendedFamily || ''} onChange={(e) => update('family', 'extendedFamily', e.target.value)} placeholder="Presença e importância da família extensa..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
@@ -16785,11 +16886,11 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
           <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">🎭 Dinâmica & Papéis Familiares</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Seu Papel na Família</label>
-                <select value={data.family?.familyRole || ''} onChange={(e) => update('family', 'familyRole', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Seu Papel na Família</label>
+                <select value={data.family?.familyRole || ''} onChange={(e) => update('family', 'familyRole', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="golden-child">Filho de ouro — Favorito</option>
                   <option value="black-sheep">Ovelha negra — O diferente</option>
@@ -16807,8 +16908,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Expectativas da Família</label>
-                <select value={data.family?.familyExpectations || ''} onChange={(e) => update('family', 'familyExpectations', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Expectativas da Família</label>
+                <select value={data.family?.familyExpectations || ''} onChange={(e) => update('family', 'familyExpectations', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="high-met">Altas, e foram cumpridas</option>
                   <option value="high-unmet">Altas, não cumpridas</option>
@@ -16834,18 +16935,18 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Conflitos Familiares</label>
-              <textarea value={data.family?.familyConflicts || ''} onChange={(e) => update('family', 'familyConflicts', e.target.value)} placeholder="Principais conflitos, brigas, tensões na família..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Conflitos Familiares</label>
+              <textarea value={data.family?.familyConflicts || ''} onChange={(e) => update('family', 'familyConflicts', e.target.value)} placeholder="Principais conflitos, brigas, tensões na família..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Segredos de Família</label>
-              <textarea value={data.family?.familySecrets || ''} onChange={(e) => update('family', 'familySecrets', e.target.value)} placeholder="O que a família esconde? Segredos, tabus, assuntos proibidos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Segredos de Família</label>
+              <textarea value={data.family?.familySecrets || ''} onChange={(e) => update('family', 'familySecrets', e.target.value)} placeholder="O que a família esconde? Segredos, tabus, assuntos proibidos..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Legado Familiar</label>
-              <textarea value={data.family?.familyLegacy || ''} onChange={(e) => update('family', 'familyLegacy', e.target.value)} placeholder="O que a família representa? História, reputação, herança..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Legado Familiar</label>
+              <textarea value={data.family?.familyLegacy || ''} onChange={(e) => update('family', 'familyLegacy', e.target.value)} placeholder="O que a família representa? História, reputação, herança..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -16866,7 +16967,7 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🌟 Momentos que Mudaram Tudo</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Tipos de Momentos Definidores (até 6)</label>
               <div className="flex flex-wrap gap-1">
@@ -16886,8 +16987,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Pontos de Virada (descrição detalhada)</label>
-              <textarea value={data.moments?.turningPoints || ''} onChange={(e) => update('moments', 'turningPoints', e.target.value)} placeholder="Descreva os momentos específicos que mudaram o rumo da vida..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+              <label className={STYLES.LABEL}>Pontos de Virada (descrição detalhada)</label>
+              <textarea value={data.moments?.turningPoints || ''} onChange={(e) => update('moments', 'turningPoints', e.target.value)} placeholder="Descreva os momentos específicos que mudaram o rumo da vida..." className={`${STYLES.TEXTAREA} h-24`} />
             </div>
           </div>
         </div>
@@ -16896,19 +16997,19 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
           <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">😊 Memória Mais Feliz</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qual é a memória mais feliz?</label>
-              <textarea value={data.moments?.happiestMemory || ''} onChange={(e) => update('moments', 'happiestMemory', e.target.value)} placeholder="Descreva em detalhes a lembrança mais feliz..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Qual é a memória mais feliz?</label>
+              <textarea value={data.moments?.happiestMemory || ''} onChange={(e) => update('moments', 'happiestMemory', e.target.value)} placeholder="Descreva em detalhes a lembrança mais feliz..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade na época</label>
-                <input type="text" value={data.moments?.happiestMemoryAge || ''} onChange={(e) => update('moments', 'happiestMemoryAge', e.target.value)} placeholder="Ex: 8 anos, adolescência, 25..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Idade na época</label>
+                <input type="text" value={data.moments?.happiestMemoryAge || ''} onChange={(e) => update('moments', 'happiestMemoryAge', e.target.value)} placeholder="Ex: 8 anos, adolescência, 25..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Por que é tão especial?</label>
-                <input type="text" value={data.moments?.happiestMemoryWhy || ''} onChange={(e) => update('moments', 'happiestMemoryWhy', e.target.value)} placeholder="O que torna essa memória tão importante?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Por que é tão especial?</label>
+                <input type="text" value={data.moments?.happiestMemoryWhy || ''} onChange={(e) => update('moments', 'happiestMemoryWhy', e.target.value)} placeholder="O que torna essa memória tão importante?" className={STYLES.INPUT} />
               </div>
             </div>
           </div>
@@ -16918,19 +17019,19 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-3">😢 Pior Memória</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Qual é a pior memória?</label>
-              <textarea value={data.moments?.worstMemory || ''} onChange={(e) => update('moments', 'worstMemory', e.target.value)} placeholder="Descreva a lembrança mais dolorosa ou difícil..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Qual é a pior memória?</label>
+              <textarea value={data.moments?.worstMemory || ''} onChange={(e) => update('moments', 'worstMemory', e.target.value)} placeholder="Descreva a lembrança mais dolorosa ou difícil..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade na época</label>
-                <input type="text" value={data.moments?.worstMemoryAge || ''} onChange={(e) => update('moments', 'worstMemoryAge', e.target.value)} placeholder="Ex: 12 anos, início dos 20..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Idade na época</label>
+                <input type="text" value={data.moments?.worstMemoryAge || ''} onChange={(e) => update('moments', 'worstMemoryAge', e.target.value)} placeholder="Ex: 12 anos, início dos 20..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Impacto duradouro</label>
-                <input type="text" value={data.moments?.worstMemoryImpact || ''} onChange={(e) => update('moments', 'worstMemoryImpact', e.target.value)} placeholder="Como isso ainda afeta hoje?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Impacto duradouro</label>
+                <input type="text" value={data.moments?.worstMemoryImpact || ''} onChange={(e) => update('moments', 'worstMemoryImpact', e.target.value)} placeholder="Como isso ainda afeta hoje?" className={STYLES.INPUT} />
               </div>
             </div>
           </div>
@@ -16940,23 +17041,23 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🏆 Conquistas & Arrependimentos</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maior Orgulho/Conquista</label>
-              <textarea value={data.moments?.proudestAchievement || ''} onChange={(e) => update('moments', 'proudestAchievement', e.target.value)} placeholder="Do que tem mais orgulho de ter feito ou conquistado?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Maior Orgulho/Conquista</label>
+              <textarea value={data.moments?.proudestAchievement || ''} onChange={(e) => update('moments', 'proudestAchievement', e.target.value)} placeholder="Do que tem mais orgulho de ter feito ou conquistado?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade da conquista</label>
-              <input type="text" value={data.moments?.achievementAge || ''} onChange={(e) => update('moments', 'achievementAge', e.target.value)} placeholder="Quando aconteceu?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              <label className={STYLES.LABEL}>Idade da conquista</label>
+              <input type="text" value={data.moments?.achievementAge || ''} onChange={(e) => update('moments', 'achievementAge', e.target.value)} placeholder="Quando aconteceu?" className={STYLES.INPUT} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maior Arrependimento</label>
-              <textarea value={data.moments?.biggestRegret || ''} onChange={(e) => update('moments', 'biggestRegret', e.target.value)} placeholder="O que mais se arrepende de ter feito ou não feito?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Maior Arrependimento</label>
+              <textarea value={data.moments?.biggestRegret || ''} onChange={(e) => update('moments', 'biggestRegret', e.target.value)} placeholder="O que mais se arrepende de ter feito ou não feito?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Resolução do Arrependimento</label>
-              <select value={data.moments?.regretResolution || ''} onChange={(e) => update('moments', 'regretResolution', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Resolução do Arrependimento</label>
+              <select value={data.moments?.regretResolution || ''} onChange={(e) => update('moments', 'regretResolution', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="resolved">Resolvido — Fez as pazes com isso</option>
                 <option value="processing">Processando — Ainda trabalhando nisso</option>
@@ -16973,10 +17074,10 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">📋 Outros Eventos Significativos</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência de Quase-Morte</label>
-              <textarea value={data.moments?.nearDeathExperience || ''} onChange={(e) => update('moments', 'nearDeathExperience', e.target.value)} placeholder="Já passou por situação de risco de vida? Descreva..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Experiência de Quase-Morte</label>
+              <textarea value={data.moments?.nearDeathExperience || ''} onChange={(e) => update('moments', 'nearDeathExperience', e.target.value)} placeholder="Já passou por situação de risco de vida? Descreva..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
@@ -16989,22 +17090,22 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maiores Fracassos</label>
-              <textarea value={data.moments?.majorFailures || ''} onChange={(e) => update('moments', 'majorFailures', e.target.value)} placeholder="Falhas significativas, projetos que deram errado, tentativas fracassadas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Maiores Fracassos</label>
+              <textarea value={data.moments?.majorFailures || ''} onChange={(e) => update('moments', 'majorFailures', e.target.value)} placeholder="Falhas significativas, projetos que deram errado, tentativas fracassadas..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Lições dos Fracassos</label>
-              <textarea value={data.moments?.failureLessons || ''} onChange={(e) => update('moments', 'failureLessons', e.target.value)} placeholder="O que aprendeu com os fracassos?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Lições dos Fracassos</label>
+              <textarea value={data.moments?.failureLessons || ''} onChange={(e) => update('moments', 'failureLessons', e.target.value)} placeholder="O que aprendeu com os fracassos?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Golpes de Sorte</label>
-                <textarea value={data.moments?.luckyBreaks || ''} onChange={(e) => update('moments', 'luckyBreaks', e.target.value)} placeholder="Momentos de sorte que mudaram algo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Golpes de Sorte</label>
+                <textarea value={data.moments?.luckyBreaks || ''} onChange={(e) => update('moments', 'luckyBreaks', e.target.value)} placeholder="Momentos de sorte que mudaram algo..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Oportunidades Perdidas</label>
-                <textarea value={data.moments?.missedOpportunities || ''} onChange={(e) => update('moments', 'missedOpportunities', e.target.value)} placeholder="Chances que deixou passar e lamenta..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Oportunidades Perdidas</label>
+                <textarea value={data.moments?.missedOpportunities || ''} onChange={(e) => update('moments', 'missedOpportunities', e.target.value)} placeholder="Chances que deixou passar e lamenta..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
             </div>
           </div>
@@ -17026,7 +17127,7 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-3">⚠️ Tipos de Trauma Experienciados</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Traumas da Infância (até 5)</label>
               <div className="flex flex-wrap gap-1">
@@ -17037,14 +17138,14 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Impacto do Trauma de Infância</label>
-              <textarea value={data.trauma?.childhoodTraumaImpact || ''} onChange={(e) => update('trauma', 'childhoodTraumaImpact', e.target.value)} placeholder="Como os traumas de infância afetaram o desenvolvimento e vida adulta?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Impacto do Trauma de Infância</label>
+              <textarea value={data.trauma?.childhoodTraumaImpact || ''} onChange={(e) => update('trauma', 'childhoodTraumaImpact', e.target.value)} placeholder="Como os traumas de infância afetaram o desenvolvimento e vida adulta?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo Principal de Trauma</label>
-                <select value={data.trauma?.traumaType || ''} onChange={(e) => update('trauma', 'traumaType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Tipo Principal de Trauma</label>
+                <select value={data.trauma?.traumaType || ''} onChange={(e) => update('trauma', 'traumaType', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="none">Nenhum trauma significativo</option>
                   <option value="developmental">Desenvolvimento — Ocorreu na infância</option>
@@ -17057,8 +17158,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade do Trauma Principal</label>
-                <input type="text" value={data.trauma?.traumaAge || ''} onChange={(e) => update('trauma', 'traumaAge', e.target.value)} placeholder="Ex: 7 anos, adolescência, 25..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Idade do Trauma Principal</label>
+                <input type="text" value={data.trauma?.traumaAge || ''} onChange={(e) => update('trauma', 'traumaAge', e.target.value)} placeholder="Ex: 7 anos, adolescência, 25..." className={STYLES.INPUT} />
               </div>
             </div>
           </div>
@@ -17068,7 +17169,7 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-orange-200 rounded-sm p-4 bg-orange-50/30">
           <h4 className="font-mono text-sm font-bold text-orange-800 mb-3">🩹 Feridas Centrais (Core Wounds)</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Feridas Emocionais Principais (até 4)</label>
               <div className="flex flex-wrap gap-1">
@@ -17079,13 +17180,13 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Origem da Ferida Principal</label>
-              <textarea value={data.trauma?.woundOrigin || ''} onChange={(e) => update('trauma', 'woundOrigin', e.target.value)} placeholder="Quando e como essa ferida se formou?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Origem da Ferida Principal</label>
+              <textarea value={data.trauma?.woundOrigin || ''} onChange={(e) => update('trauma', 'woundOrigin', e.target.value)} placeholder="Quando e como essa ferida se formou?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Feridas de Apego</label>
-              <select value={data.trauma?.attachmentWounds || ''} onChange={(e) => update('trauma', 'attachmentWounds', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Feridas de Apego</label>
+              <select value={data.trauma?.attachmentWounds || ''} onChange={(e) => update('trauma', 'attachmentWounds', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="none">Nenhuma ferida de apego significativa</option>
                 <option value="inconsistent-care">Cuidado inconsistente — Nunca sabia o que esperar</option>
@@ -17105,20 +17206,20 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
           <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">📝 Experiências Específicas</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiências de Abandono</label>
-              <textarea value={data.trauma?.abandonmentExperiences || ''} onChange={(e) => update('trauma', 'abandonmentExperiences', e.target.value)} placeholder="Situações em que se sentiu abandonado(a)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Experiências de Abandono</label>
+              <textarea value={data.trauma?.abandonmentExperiences || ''} onChange={(e) => update('trauma', 'abandonmentExperiences', e.target.value)} placeholder="Situações em que se sentiu abandonado(a)..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiências de Traição</label>
-              <textarea value={data.trauma?.betrayalExperiences || ''} onChange={(e) => update('trauma', 'betrayalExperiences', e.target.value)} placeholder="Situações em que foi traído(a) ou teve confiança quebrada..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Experiências de Traição</label>
+              <textarea value={data.trauma?.betrayalExperiences || ''} onChange={(e) => update('trauma', 'betrayalExperiences', e.target.value)} placeholder="Situações em que foi traído(a) ou teve confiança quebrada..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Histórico de Bullying</label>
-              <select value={data.trauma?.bullyingHistory || ''} onChange={(e) => update('trauma', 'bullyingHistory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Histórico de Bullying</label>
+              <select value={data.trauma?.bullyingHistory || ''} onChange={(e) => update('trauma', 'bullyingHistory', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="none">Nunca sofreu bullying</option>
                 <option value="mild">Leve — Provocações ocasionais</option>
@@ -17132,13 +17233,13 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Trauma de Perda</label>
-              <textarea value={data.trauma?.lossTrauma || ''} onChange={(e) => update('trauma', 'lossTrauma', e.target.value)} placeholder="Perdas traumáticas (morte, separação, etc.)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Trauma de Perda</label>
+              <textarea value={data.trauma?.lossTrauma || ''} onChange={(e) => update('trauma', 'lossTrauma', e.target.value)} placeholder="Perdas traumáticas (morte, separação, etc.)..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Trauma Testemunhado</label>
-              <textarea value={data.trauma?.witnessedTrauma || ''} onChange={(e) => update('trauma', 'witnessedTrauma', e.target.value)} placeholder="Traumas que presenciou acontecer com outros..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Trauma Testemunhado</label>
+              <textarea value={data.trauma?.witnessedTrauma || ''} onChange={(e) => update('trauma', 'witnessedTrauma', e.target.value)} placeholder="Traumas que presenciou acontecer com outros..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -17147,7 +17248,7 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
           <h4 className="font-mono text-sm font-bold text-yellow-800 mb-3">⚡ Sintomas & Gatilhos</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Sintomas de TEPT (até 5)</label>
               <div className="flex flex-wrap gap-1">
@@ -17172,7 +17273,7 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">🛠️ Mecanismos de Enfrentamento</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Mecanismos Saudáveis (até 5)</label>
               <div className="flex flex-wrap gap-1">
@@ -17197,10 +17298,10 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
           <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">🌱 Jornada de Cura</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Histórico de Terapia</label>
-              <select value={data.trauma?.therapyHistory || ''} onChange={(e) => update('trauma', 'therapyHistory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Histórico de Terapia</label>
+              <select value={data.trauma?.therapyHistory || ''} onChange={(e) => update('trauma', 'therapyHistory', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="never">Nunca fez terapia</option>
                 <option value="tried-quit">Tentou mas parou</option>
@@ -17231,8 +17332,8 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição da Jornada de Cura</label>
-              <textarea value={data.trauma?.healingJourney || ''} onChange={(e) => update('trauma', 'healingJourney', e.target.value)} placeholder="Como tem sido o processo de cura? O que ajudou, o que dificultou..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Descrição da Jornada de Cura</label>
+              <textarea value={data.trauma?.healingJourney || ''} onChange={(e) => update('trauma', 'healingJourney', e.target.value)} placeholder="Como tem sido o processo de cura? O que ajudou, o que dificultou..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
 
             <div>
@@ -17254,13 +17355,13 @@ const HistoryContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Crescimento Pós-Traumático</label>
-              <textarea value={data.trauma?.postTraumaticGrowth || ''} onChange={(e) => update('trauma', 'postTraumaticGrowth', e.target.value)} placeholder="O que ganhou ou aprendeu através do sofrimento? Como se tornou mais forte?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Crescimento Pós-Traumático</label>
+              <textarea value={data.trauma?.postTraumaticGrowth || ''} onChange={(e) => update('trauma', 'postTraumaticGrowth', e.target.value)} placeholder="O que ganhou ou aprendeu através do sofrimento? Como se tornou mais forte?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Trauma Não Processado</label>
-              <textarea value={data.trauma?.unprocessedTrauma || ''} onChange={(e) => update('trauma', 'unprocessedTrauma', e.target.value)} placeholder="O que ainda não foi trabalhado ou resolvido? Feridas abertas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Trauma Não Processado</label>
+              <textarea value={data.trauma?.unprocessedTrauma || ''} onChange={(e) => update('trauma', 'unprocessedTrauma', e.target.value)} placeholder="O que ainda não foi trabalhado ou resolvido? Feridas abertas..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -17281,15 +17382,15 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
           <h4 className="font-mono text-sm font-bold text-indigo-800 mb-3">🌅 Primeiras Memórias</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memória Mais Antiga</label>
-                <textarea value={data.memories?.earliestMemory || ''} onChange={(e) => update('memories', 'earliestMemory', e.target.value)} placeholder="Qual é a primeira memória que consegue lembrar?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Memória Mais Antiga</label>
+                <textarea value={data.memories?.earliestMemory || ''} onChange={(e) => update('memories', 'earliestMemory', e.target.value)} placeholder="Qual é a primeira memória que consegue lembrar?" className={`${STYLES.TEXTAREA} h-16`} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade da Primeira Memória</label>
-                <input type="text" value={data.memories?.earliestMemoryAge || ''} onChange={(e) => update('memories', 'earliestMemoryAge', e.target.value)} placeholder="Ex: 2-3 anos, 4 anos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Idade da Primeira Memória</label>
+                <input type="text" value={data.memories?.earliestMemoryAge || ''} onChange={(e) => update('memories', 'earliestMemoryAge', e.target.value)} placeholder="Ex: 2-3 anos, 4 anos..." className={STYLES.INPUT} />
               </div>
             </div>
           </div>
@@ -17299,31 +17400,31 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">👃 Memórias Sensoriais da Infância</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">A Casa da Infância</label>
-              <textarea value={data.memories?.childhoodHome || ''} onChange={(e) => update('memories', 'childhoodHome', e.target.value)} placeholder="Descreva a casa onde cresceu: cômodos, móveis, atmosfera..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>A Casa da Infância</label>
+              <textarea value={data.memories?.childhoodHome || ''} onChange={(e) => update('memories', 'childhoodHome', e.target.value)} placeholder="Descreva a casa onde cresceu: cômodos, móveis, atmosfera..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Cheiros da Infância</label>
-                <input type="text" value={data.memories?.childhoodSmells || ''} onChange={(e) => update('memories', 'childhoodSmells', e.target.value)} placeholder="Ex: Comida da avó, perfume da mãe, grama cortada..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Cheiros da Infância</label>
+                <input type="text" value={data.memories?.childhoodSmells || ''} onChange={(e) => update('memories', 'childhoodSmells', e.target.value)} placeholder="Ex: Comida da avó, perfume da mãe, grama cortada..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Sons da Infância</label>
-                <input type="text" value={data.memories?.childhoodSounds || ''} onChange={(e) => update('memories', 'childhoodSounds', e.target.value)} placeholder="Ex: Música que tocava, vozes, sons do bairro..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Sons da Infância</label>
+                <input type="text" value={data.memories?.childhoodSounds || ''} onChange={(e) => update('memories', 'childhoodSounds', e.target.value)} placeholder="Ex: Música que tocava, vozes, sons do bairro..." className={STYLES.INPUT} />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Brinquedo Favorito</label>
-                <input type="text" value={data.memories?.favoriteChildhoodToy || ''} onChange={(e) => update('memories', 'favoriteChildhoodToy', e.target.value)} placeholder="Qual era o brinquedo ou objeto mais querido?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Brinquedo Favorito</label>
+                <input type="text" value={data.memories?.favoriteChildhoodToy || ''} onChange={(e) => update('memories', 'favoriteChildhoodToy', e.target.value)} placeholder="Qual era o brinquedo ou objeto mais querido?" className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Esconderijo/Lugar Secreto</label>
-                <input type="text" value={data.memories?.childhoodHideout || ''} onChange={(e) => update('memories', 'childhoodHideout', e.target.value)} placeholder="Tinha um cantinho especial ou esconderijo?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Esconderijo/Lugar Secreto</label>
+                <input type="text" value={data.memories?.childhoodHideout || ''} onChange={(e) => update('memories', 'childhoodHideout', e.target.value)} placeholder="Tinha um cantinho especial ou esconderijo?" className={STYLES.INPUT} />
               </div>
             </div>
 
@@ -17351,36 +17452,36 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
           <h4 className="font-mono text-sm font-bold text-cyan-800 mb-3">📸 Memórias Específicas</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias da Escola</label>
-              <textarea value={data.memories?.schoolMemories || ''} onChange={(e) => update('memories', 'schoolMemories', e.target.value)} placeholder="Memórias marcantes da época escolar..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Memórias da Escola</label>
+              <textarea value={data.memories?.schoolMemories || ''} onChange={(e) => update('memories', 'schoolMemories', e.target.value)} placeholder="Memórias marcantes da época escolar..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Professores que Marcaram</label>
-              <textarea value={data.memories?.teachersRemembered || ''} onChange={(e) => update('memories', 'teachersRemembered', e.target.value)} placeholder="Professores que influenciaram (positiva ou negativamente)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Professores que Marcaram</label>
+              <textarea value={data.memories?.teachersRemembered || ''} onChange={(e) => update('memories', 'teachersRemembered', e.target.value)} placeholder="Professores que influenciaram (positiva ou negativamente)..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias de Amizades</label>
-              <textarea value={data.memories?.friendshipMemories || ''} onChange={(e) => update('memories', 'friendshipMemories', e.target.value)} placeholder="Momentos marcantes com amigos ao longo da vida..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Memórias de Amizades</label>
+              <textarea value={data.memories?.friendshipMemories || ''} onChange={(e) => update('memories', 'friendshipMemories', e.target.value)} placeholder="Momentos marcantes com amigos ao longo da vida..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Férias em Família</label>
-                <textarea value={data.memories?.familyVacations || ''} onChange={(e) => update('memories', 'familyVacations', e.target.value)} placeholder="Viagens e férias memoráveis..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Férias em Família</label>
+                <textarea value={data.memories?.familyVacations || ''} onChange={(e) => update('memories', 'familyVacations', e.target.value)} placeholder="Viagens e férias memoráveis..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias de Feriados</label>
-                <textarea value={data.memories?.holidayMemories || ''} onChange={(e) => update('memories', 'holidayMemories', e.target.value)} placeholder="Natal, Ano Novo, aniversários..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Memórias de Feriados</label>
+                <textarea value={data.memories?.holidayMemories || ''} onChange={(e) => update('memories', 'holidayMemories', e.target.value)} placeholder="Natal, Ano Novo, aniversários..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias de Aniversários</label>
-              <textarea value={data.memories?.birthdayMemories || ''} onChange={(e) => update('memories', 'birthdayMemories', e.target.value)} placeholder="Aniversários marcantes (bons ou ruins)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Memórias de Aniversários</label>
+              <textarea value={data.memories?.birthdayMemories || ''} onChange={(e) => update('memories', 'birthdayMemories', e.target.value)} placeholder="Aniversários marcantes (bons ou ruins)..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -17389,30 +17490,30 @@ const HistoryContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
           <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">🌀 Memórias Complexas</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Embaraçosas</label>
-              <textarea value={data.memories?.embarrassingMemories || ''} onChange={(e) => update('memories', 'embarrassingMemories', e.target.value)} placeholder="Momentos de vergonha que ainda lembra..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Memórias Embaraçosas</label>
+              <textarea value={data.memories?.embarrassingMemories || ''} onChange={(e) => update('memories', 'embarrassingMemories', e.target.value)} placeholder="Momentos de vergonha que ainda lembra..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Secretas</label>
-              <textarea value={data.memories?.secretMemories || ''} onChange={(e) => update('memories', 'secretMemories', e.target.value)} placeholder="Memórias que guarda para si, que nunca contou a ninguém..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Memórias Secretas</label>
+              <textarea value={data.memories?.secretMemories || ''} onChange={(e) => update('memories', 'secretMemories', e.target.value)} placeholder="Memórias que guarda para si, que nunca contou a ninguém..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Reprimidas</label>
-              <textarea value={data.memories?.memoriesRepressed || ''} onChange={(e) => update('memories', 'memoriesRepressed', e.target.value)} placeholder="Há lacunas na memória? Períodos que não lembra bem?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Memórias Reprimidas</label>
+              <textarea value={data.memories?.memoriesRepressed || ''} onChange={(e) => update('memories', 'memoriesRepressed', e.target.value)} placeholder="Há lacunas na memória? Períodos que não lembra bem?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Memórias Idealizadas</label>
-              <textarea value={data.memories?.memoriesIdealized || ''} onChange={(e) => update('memories', 'memoriesIdealized', e.target.value)} placeholder="Memórias que talvez sejam melhores do que realmente foram..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Memórias Idealizadas</label>
+              <textarea value={data.memories?.memoriesIdealized || ''} onChange={(e) => update('memories', 'memoriesIdealized', e.target.value)} placeholder="Memórias que talvez sejam melhores do que realmente foram..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Se Pudesse Fotografar Momentos</label>
-              <textarea value={data.memories?.photographMoments || ''} onChange={(e) => update('memories', 'photographMoments', e.target.value)} placeholder="Se pudesse voltar no tempo para tirar fotos, quais momentos escolheria?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Se Pudesse Fotografar Momentos</label>
+              <textarea value={data.memories?.photographMoments || ''} onChange={(e) => update('memories', 'photographMoments', e.target.value)} placeholder="Se pudesse voltar no tempo para tirar fotos, quais momentos escolheria?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -17422,13 +17523,14 @@ const HistoryContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const HistoryContent = memo(HistoryContentBase);
 
 // Generic placeholder for other tabs
 
 // ============================================================================
 // RELATIONSHIPS CONTENT - Complete Implementation with NPCs
 // ============================================================================
-const RelationshipsContent = ({ data, updateData, subtab }) => {
+const RelationshipsContentBase = ({ data, updateData, subtab }) => {
   const [editingNpcIndex, setEditingNpcIndex] = React.useState(null);
   const MAX_NPCS = 5;
   const IDEAL_NPCS = 3;
@@ -17787,19 +17889,19 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
           <h4 className="font-mono text-sm font-bold text-rose-800 mb-3">👤 Informações Básicas</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nome Completo *</label>
-                <input type="text" value={npc.name || ''} onChange={(e) => updateNpc(index, 'name', e.target.value)} placeholder="Ex: Maria Silva Santos" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Nome Completo *</label>
+                <input type="text" value={npc.name || ''} onChange={(e) => updateNpc(index, 'name', e.target.value)} placeholder="Ex: Maria Silva Santos" className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Apelido/Como é Chamado</label>
-                <input type="text" value={npc.nickname || ''} onChange={(e) => updateNpc(index, 'nickname', e.target.value)} placeholder="Ex: Má, Tia Mari, Dona Maria" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Apelido/Como é Chamado</label>
+                <input type="text" value={npc.nickname || ''} onChange={(e) => updateNpc(index, 'nickname', e.target.value)} placeholder="Ex: Má, Tia Mari, Dona Maria" className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status na Vida do Personagem</label>
-                <select value={npc.status || 'active'} onChange={(e) => updateNpc(index, 'status', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Status na Vida do Personagem</label>
+                <select value={npc.status || 'active'} onChange={(e) => updateNpc(index, 'status', e.target.value)} className={STYLES.INPUT}>
                   <option value="active">✓ Ativo — Presente e em contato</option>
                   <option value="distant">📍 Distante — Pouco contato atualmente</option>
                   <option value="estranged">💔 Afastado — Rompimento/Sem contato</option>
@@ -17814,12 +17916,12 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade</label>
-                <input type="text" value={npc.age || ''} onChange={(e) => updateNpc(index, 'age', e.target.value)} placeholder="Ex: 45, ~30, 60s" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Idade</label>
+                <input type="text" value={npc.age || ''} onChange={(e) => updateNpc(index, 'age', e.target.value)} placeholder="Ex: 45, ~30, 60s" className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Faixa Etária</label>
-                <select value={npc.ageCategory || ''} onChange={(e) => updateNpc(index, 'ageCategory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Faixa Etária</label>
+                <select value={npc.ageCategory || ''} onChange={(e) => updateNpc(index, 'ageCategory', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="child">Criança (0-12)</option>
                   <option value="teen">Adolescente (13-17)</option>
@@ -17832,8 +17934,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Gênero</label>
-                <select value={npc.gender || ''} onChange={(e) => updateNpc(index, 'gender', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Gênero</label>
+                <select value={npc.gender || ''} onChange={(e) => updateNpc(index, 'gender', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="male">Masculino</option>
                   <option value="female">Feminino</option>
@@ -17845,8 +17947,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Pronomes</label>
-                <select value={npc.pronouns || ''} onChange={(e) => updateNpc(index, 'pronouns', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Pronomes</label>
+                <select value={npc.pronouns || ''} onChange={(e) => updateNpc(index, 'pronouns', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="he-him">Ele/Dele</option>
                   <option value="she-her">Ela/Dela</option>
@@ -17857,14 +17959,14 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ocupação</label>
-                <input type="text" value={npc.occupation || ''} onChange={(e) => updateNpc(index, 'occupation', e.target.value)} placeholder="Ex: Professor aposentado, médica, estudante..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Ocupação</label>
+                <input type="text" value={npc.occupation || ''} onChange={(e) => updateNpc(index, 'occupation', e.target.value)} placeholder="Ex: Professor aposentado, médica, estudante..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Classe Social</label>
-                <select value={npc.socialClass || ''} onChange={(e) => updateNpc(index, 'socialClass', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Classe Social</label>
+                <select value={npc.socialClass || ''} onChange={(e) => updateNpc(index, 'socialClass', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="poverty">Pobreza</option>
                   <option value="working-class">Classe trabalhadora</option>
@@ -17885,27 +17987,27 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-violet-200 rounded-sm p-4 bg-violet-50/30">
           <h4 className="font-mono text-sm font-bold text-violet-800 mb-3">🎭 Aparência & Personalidade</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição Física</label>
-              <textarea value={npc.physicalDescription || ''} onChange={(e) => updateNpc(index, 'physicalDescription', e.target.value)} placeholder="Altura, corpo, cabelo, olhos, características marcantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Descrição Física</label>
+              <textarea value={npc.physicalDescription || ''} onChange={(e) => updateNpc(index, 'physicalDescription', e.target.value)} placeholder="Altura, corpo, cabelo, olhos, características marcantes..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Características Distintivas</label>
-                <input type="text" value={npc.distinctiveFeatures || ''} onChange={(e) => updateNpc(index, 'distinctiveFeatures', e.target.value)} placeholder="Cicatriz, tatuagem, usa óculos, manca..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Características Distintivas</label>
+                <input type="text" value={npc.distinctiveFeatures || ''} onChange={(e) => updateNpc(index, 'distinctiveFeatures', e.target.value)} placeholder="Cicatriz, tatuagem, usa óculos, manca..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo Visual</label>
-                <input type="text" value={npc.styleDescription || ''} onChange={(e) => updateNpc(index, 'styleDescription', e.target.value)} placeholder="Sempre de terno, estilo hippie, casual..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Estilo Visual</label>
+                <input type="text" value={npc.styleDescription || ''} onChange={(e) => updateNpc(index, 'styleDescription', e.target.value)} placeholder="Sempre de terno, estilo hippie, casual..." className={STYLES.INPUT} />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Personalidade (MBTI)</label>
-                <select value={npc.personalityType || ''} onChange={(e) => updateNpc(index, 'personalityType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Tipo de Personalidade (MBTI)</label>
+                <select value={npc.personalityType || ''} onChange={(e) => updateNpc(index, 'personalityType', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <optgroup label="Analistas">
                     <option value="INTJ">INTJ — Arquiteto</option>
@@ -17935,8 +18037,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Temperamento</label>
-                <select value={npc.temperament || ''} onChange={(e) => updateNpc(index, 'temperament', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Temperamento</label>
+                <select value={npc.temperament || ''} onChange={(e) => updateNpc(index, 'temperament', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="sanguine">Sanguíneo — Otimista, social, impulsivo</option>
                   <option value="choleric">Colérico — Ambicioso, líder, irritável</option>
@@ -17948,18 +18050,18 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Personalidade em Poucas Palavras</label>
-              <input type="text" value={npc.personalityBrief || ''} onChange={(e) => updateNpc(index, 'personalityBrief', e.target.value)} placeholder="Ex: Rigoroso mas carinhoso, otimista demais, sarcástico e leal..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              <label className={STYLES.LABEL}>Personalidade em Poucas Palavras</label>
+              <input type="text" value={npc.personalityBrief || ''} onChange={(e) => updateNpc(index, 'personalityBrief', e.target.value)} placeholder="Ex: Rigoroso mas carinhoso, otimista demais, sarcástico e leal..." className={STYLES.INPUT} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Frase Característica / Bordão</label>
-                <input type="text" value={npc.catchphrase || ''} onChange={(e) => updateNpc(index, 'catchphrase', e.target.value)} placeholder="Ex: 'Na minha época...', 'Relaxa que dá certo'" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Frase Característica / Bordão</label>
+                <input type="text" value={npc.catchphrase || ''} onChange={(e) => updateNpc(index, 'catchphrase', e.target.value)} placeholder="Ex: 'Na minha época...', 'Relaxa que dá certo'" className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Fala</label>
-                <select value={npc.speakingStyle || ''} onChange={(e) => updateNpc(index, 'speakingStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Estilo de Fala</label>
+                <select value={npc.speakingStyle || ''} onChange={(e) => updateNpc(index, 'speakingStyle', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="formal">Formal — Linguagem culta e educada</option>
                   <option value="casual">Casual — Relaxado e informal</option>
@@ -17983,11 +18085,11 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">💜 Tipo de Relacionamento</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Categoria Principal *</label>
-                <select value={npc.relationshipType || ''} onChange={(e) => updateNpc(index, 'relationshipType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Categoria Principal *</label>
+                <select value={npc.relationshipType || ''} onChange={(e) => updateNpc(index, 'relationshipType', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <optgroup label="👨‍👩‍👧 Família">
                     <option value="family-parent">Pai/Mãe</option>
@@ -18041,15 +18143,15 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Especificação</label>
-                <input type="text" value={npc.relationshipSubtype || ''} onChange={(e) => updateNpc(index, 'relationshipSubtype', e.target.value)} placeholder="Ex: Mãe biológica, ex-namorado do colégio, chefe direto..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Especificação</label>
+                <input type="text" value={npc.relationshipSubtype || ''} onChange={(e) => updateNpc(index, 'relationshipSubtype', e.target.value)} placeholder="Ex: Mãe biológica, ex-namorado do colégio, chefe direto..." className={STYLES.INPUT} />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Papel na Vida do Personagem</label>
-                <select value={npc.roleInLife || ''} onChange={(e) => updateNpc(index, 'roleInLife', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Papel na Vida do Personagem</label>
+                <select value={npc.roleInLife || ''} onChange={(e) => updateNpc(index, 'roleInLife', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="anchor">⚓ Âncora — Estabiliza e dá segurança</option>
                   <option value="mirror">🪞 Espelho — Reflete quem realmente é</option>
@@ -18072,8 +18174,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Importância Narrativa</label>
-                <select value={npc.narrativeImportance || ''} onChange={(e) => updateNpc(index, 'narrativeImportance', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Importância Narrativa</label>
+                <select value={npc.narrativeImportance || ''} onChange={(e) => updateNpc(index, 'narrativeImportance', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="central">⭐⭐⭐ Central — Essencial para a história</option>
                   <option value="major">⭐⭐ Importante — Aparece frequentemente</option>
@@ -18090,7 +18192,7 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
           <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">💗 Proximidade & Dinâmica</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             {/* Slider principal de proximidade */}
             <div className="bg-white rounded-sm p-3 border border-pink-200">
               <div className="flex justify-between items-center mb-2">
@@ -18108,7 +18210,7 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
             </div>
 
             {/* Grid de sliders secundários */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div className="bg-white rounded-sm p-3 border border-gray-200">
                 <div className="flex justify-between items-center mb-1">
                   <label className="font-mono text-[10px] text-gray-600">🤝 Confiança</label>
@@ -18146,8 +18248,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
             {/* Dropdowns de dinâmica */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Vínculo Emocional Principal</label>
-                <select value={npc.emotionalBond || ''} onChange={(e) => updateNpc(index, 'emotionalBond', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Vínculo Emocional Principal</label>
+                <select value={npc.emotionalBond || ''} onChange={(e) => updateNpc(index, 'emotionalBond', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <optgroup label="Positivos">
                     <option value="love-unconditional">❤️ Amor Incondicional</option>
@@ -18177,8 +18279,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Dinâmica de Poder</label>
-                <select value={npc.powerDynamic || ''} onChange={(e) => updateNpc(index, 'powerDynamic', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Dinâmica de Poder</label>
+                <select value={npc.powerDynamic || ''} onChange={(e) => updateNpc(index, 'powerDynamic', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="balanced">⚖️ Equilibrada — Iguais</option>
                   <option value="dominant-healthy">👆 Dominante (saudável) — Lidera naturalmente</option>
@@ -18191,8 +18293,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Respeito a Limites</label>
-                <select value={npc.boundaryRespect || ''} onChange={(e) => updateNpc(index, 'boundaryRespect', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Respeito a Limites</label>
+                <select value={npc.boundaryRespect || ''} onChange={(e) => updateNpc(index, 'boundaryRespect', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="always">✓ Sempre — Respeita completamente</option>
                   <option value="mostly">Geralmente — Respeita na maioria das vezes</option>
@@ -18211,11 +18313,11 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
           <h4 className="font-mono text-sm font-bold text-cyan-800 mb-3">💬 Comunicação</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Frequência de Contato</label>
-                <select value={npc.communicationFrequency || ''} onChange={(e) => updateNpc(index, 'communicationFrequency', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Frequência de Contato</label>
+                <select value={npc.communicationFrequency || ''} onChange={(e) => updateNpc(index, 'communicationFrequency', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="constant">🔴 Constante — Várias vezes ao dia</option>
                   <option value="daily">Diária — Todo dia</option>
@@ -18264,11 +18366,11 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">📜 História do Relacionamento</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Como se Conheceram</label>
-                <select value={npc.howTheyMet || ''} onChange={(e) => updateNpc(index, 'howTheyMet', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Como se Conheceram</label>
+                <select value={npc.howTheyMet || ''} onChange={(e) => updateNpc(index, 'howTheyMet', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="birth">👶 Nascimento — Família</option>
                   <option value="childhood">🧒 Infância</option>
@@ -18291,18 +18393,18 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Contexto do Primeiro Encontro</label>
-                <input type="text" value={npc.meetingContext || ''} onChange={(e) => updateNpc(index, 'meetingContext', e.target.value)} placeholder="Ex: Na fila do cinema, primeiro dia de aula..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Contexto do Primeiro Encontro</label>
+                <input type="text" value={npc.meetingContext || ''} onChange={(e) => updateNpc(index, 'meetingContext', e.target.value)} placeholder="Ex: Na fila do cinema, primeiro dia de aula..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Quando se Conheceram</label>
-                <input type="text" value={npc.meetingYear || ''} onChange={(e) => updateNpc(index, 'meetingYear', e.target.value)} placeholder="Ex: 2015, infância, há 10 anos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Quando se Conheceram</label>
+                <input type="text" value={npc.meetingYear || ''} onChange={(e) => updateNpc(index, 'meetingYear', e.target.value)} placeholder="Ex: 2015, infância, há 10 anos..." className={STYLES.INPUT} />
               </div>
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Duração do Relacionamento</label>
-              <select value={npc.relationshipDuration || ''} onChange={(e) => updateNpc(index, 'relationshipDuration', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Duração do Relacionamento</label>
+              <select value={npc.relationshipDuration || ''} onChange={(e) => updateNpc(index, 'relationshipDuration', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="new">Novo — Menos de 6 meses</option>
                 <option value="recent">Recente — 6 meses a 2 anos</option>
@@ -18315,23 +18417,23 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">História Compartilhada</label>
-              <textarea value={npc.sharedHistory || ''} onChange={(e) => updateNpc(index, 'sharedHistory', e.target.value)} placeholder="Eventos marcantes, experiências compartilhadas, momentos decisivos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>História Compartilhada</label>
+              <textarea value={npc.sharedHistory || ''} onChange={(e) => updateNpc(index, 'sharedHistory', e.target.value)} placeholder="Eventos marcantes, experiências compartilhadas, momentos decisivos..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Pontos de Virada no Relacionamento</label>
-              <textarea value={npc.turningPoints || ''} onChange={(e) => updateNpc(index, 'turningPoints', e.target.value)} placeholder="Momentos que mudaram a relação (para melhor ou pior)..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Pontos de Virada no Relacionamento</label>
+              <textarea value={npc.turningPoints || ''} onChange={(e) => updateNpc(index, 'turningPoints', e.target.value)} placeholder="Momentos que mudaram a relação (para melhor ou pior)..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Segredos que Este NPC Sabe</label>
-                <textarea value={npc.secretsKnown || ''} onChange={(e) => updateNpc(index, 'secretsKnown', e.target.value)} placeholder="O que este NPC sabe sobre o personagem..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Segredos que Este NPC Sabe</label>
+                <textarea value={npc.secretsKnown || ''} onChange={(e) => updateNpc(index, 'secretsKnown', e.target.value)} placeholder="O que este NPC sabe sobre o personagem..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Segredos que o Personagem Esconde deste NPC</label>
-                <textarea value={npc.secretsHidden || ''} onChange={(e) => updateNpc(index, 'secretsHidden', e.target.value)} placeholder="O que o personagem esconde deste NPC..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Segredos que o Personagem Esconde deste NPC</label>
+                <textarea value={npc.secretsHidden || ''} onChange={(e) => updateNpc(index, 'secretsHidden', e.target.value)} placeholder="O que o personagem esconde deste NPC..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
             </div>
           </div>
@@ -18341,20 +18443,20 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
           <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">🔄 Dinâmica Atual</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Como está a relação atualmente?</label>
-              <textarea value={npc.currentDynamic || ''} onChange={(e) => updateNpc(index, 'currentDynamic', e.target.value)} placeholder="Descreva o estado atual: estão bem, afastados, em conflito, reconciliando..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Como está a relação atualmente?</label>
+              <textarea value={npc.currentDynamic || ''} onChange={(e) => updateNpc(index, 'currentDynamic', e.target.value)} placeholder="Descreva o estado atual: estão bem, afastados, em conflito, reconciliando..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Mudanças Recentes</label>
-                <textarea value={npc.recentChanges || ''} onChange={(e) => updateNpc(index, 'recentChanges', e.target.value)} placeholder="Algo mudou recentemente na relação?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Mudanças Recentes</label>
+                <textarea value={npc.recentChanges || ''} onChange={(e) => updateNpc(index, 'recentChanges', e.target.value)} placeholder="Algo mudou recentemente na relação?" className={`${STYLES.TEXTAREA} h-16`} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Problemas em Andamento</label>
-                <textarea value={npc.ongoingIssues || ''} onChange={(e) => updateNpc(index, 'ongoingIssues', e.target.value)} placeholder="Questões não resolvidas, tensões persistentes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Problemas em Andamento</label>
+                <textarea value={npc.ongoingIssues || ''} onChange={(e) => updateNpc(index, 'ongoingIssues', e.target.value)} placeholder="Questões não resolvidas, tensões persistentes..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
             </div>
 
@@ -18409,11 +18511,11 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🔮 Futuro & Potencial</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Potencial Futuro</label>
-                <select value={npc.futurePotential || ''} onChange={(e) => updateNpc(index, 'futurePotential', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Potencial Futuro</label>
+                <select value={npc.futurePotential || ''} onChange={(e) => updateNpc(index, 'futurePotential', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="strengthen">📈 Fortalecer — Vai se aproximar mais</option>
                   <option value="stable">➡️ Estável — Continuar como está</option>
@@ -18428,8 +18530,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Papel na História (Meta)</label>
-                <select value={npc.storyRole || ''} onChange={(e) => updateNpc(index, 'storyRole', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Papel na História (Meta)</label>
+                <select value={npc.storyRole || ''} onChange={(e) => updateNpc(index, 'storyRole', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="love-interest">💕 Love Interest</option>
                   <option value="best-friend">🤝 Best Friend/Sidekick</option>
@@ -18448,24 +18550,24 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Assuntos Não Resolvidos</label>
-              <textarea value={npc.unresolvedMatters || ''} onChange={(e) => updateNpc(index, 'unresolvedMatters', e.target.value)} placeholder="Questões pendentes, conversas adiadas, verdades não ditas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Assuntos Não Resolvidos</label>
+              <textarea value={npc.unresolvedMatters || ''} onChange={(e) => updateNpc(index, 'unresolvedMatters', e.target.value)} placeholder="Questões pendentes, conversas adiadas, verdades não ditas..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Esperanças para Este Relacionamento</label>
-                <textarea value={npc.hopes || ''} onChange={(e) => updateNpc(index, 'hopes', e.target.value)} placeholder="O que o personagem espera/deseja desta relação..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Esperanças para Este Relacionamento</label>
+                <textarea value={npc.hopes || ''} onChange={(e) => updateNpc(index, 'hopes', e.target.value)} placeholder="O que o personagem espera/deseja desta relação..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Medos sobre Este Relacionamento</label>
-                <textarea value={npc.fears || ''} onChange={(e) => updateNpc(index, 'fears', e.target.value)} placeholder="O que o personagem teme que aconteça..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+                <label className={STYLES.LABEL}>Medos sobre Este Relacionamento</label>
+                <textarea value={npc.fears || ''} onChange={(e) => updateNpc(index, 'fears', e.target.value)} placeholder="O que o personagem teme que aconteça..." className={`${STYLES.TEXTAREA} h-16`} />
               </div>
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Notas Adicionais</label>
-              <textarea value={npc.notes || ''} onChange={(e) => updateNpc(index, 'notes', e.target.value)} placeholder="Qualquer informação adicional sobre este NPC..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Notas Adicionais</label>
+              <textarea value={npc.notes || ''} onChange={(e) => updateNpc(index, 'notes', e.target.value)} placeholder="Qualquer informação adicional sobre este NPC..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -18732,7 +18834,7 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
 
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">⚡ Energia Social & Estilo</h4>
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
               <div className="flex justify-between items-center mb-2">
                 <label className="font-mono text-[10px] text-gray-600">Introversão ↔ Extroversão</label>
@@ -18755,10 +18857,10 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo em Conflitos</label>
-                <select value={data.patterns?.conflictStyle || ''} onChange={(e) => update('patterns', 'conflictStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Estilo em Conflitos</label>
+                <select value={data.patterns?.conflictStyle || ''} onChange={(e) => update('patterns', 'conflictStyle', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="avoidant">Evitativo — Foge de conflitos</option>
                   <option value="accommodating">Acomodador — Cede para manter a paz</option>
@@ -18771,8 +18873,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Amizade</label>
-                <select value={data.patterns?.friendshipStyle || ''} onChange={(e) => update('patterns', 'friendshipStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Estilo de Amizade</label>
+                <select value={data.patterns?.friendshipStyle || ''} onChange={(e) => update('patterns', 'friendshipStyle', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="few-deep">Poucos e profundos</option>
                   <option value="many-surface">Muitos e superficiais</option>
@@ -18786,10 +18888,10 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Linguagem do Amor Principal</label>
-                <select value={data.patterns?.loveLanguages || ''} onChange={(e) => update('patterns', 'loveLanguages', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Linguagem do Amor Principal</label>
+                <select value={data.patterns?.loveLanguages || ''} onChange={(e) => update('patterns', 'loveLanguages', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="words">Palavras de Afirmação</option>
                   <option value="acts">Atos de Serviço</option>
@@ -18800,8 +18902,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Apego</label>
-                <select value={data.patterns?.attachmentStyle || ''} onChange={(e) => update('patterns', 'attachmentStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Estilo de Apego</label>
+                <select value={data.patterns?.attachmentStyle || ''} onChange={(e) => update('patterns', 'attachmentStyle', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="secure">Seguro — Confortável com intimidade</option>
                   <option value="anxious">Ansioso — Medo de abandono</option>
@@ -18826,26 +18928,26 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
 
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">👥 Grupos Sociais</h4>
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Melhores Amigos (descrição geral)</label>
-              <textarea value={data.circle?.bestFriends || ''} onChange={(e) => update('circle', 'bestFriends', e.target.value)} placeholder="Além dos NPCs detalhados, quem são os melhores amigos?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Melhores Amigos (descrição geral)</label>
+              <textarea value={data.circle?.bestFriends || ''} onChange={(e) => update('circle', 'bestFriends', e.target.value)} placeholder="Além dos NPCs detalhados, quem são os melhores amigos?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Amigos Próximos</label>
-              <textarea value={data.circle?.closeFriends || ''} onChange={(e) => update('circle', 'closeFriends', e.target.value)} placeholder="Amigos com quem tem boa relação..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Amigos Próximos</label>
+              <textarea value={data.circle?.closeFriends || ''} onChange={(e) => update('circle', 'closeFriends', e.target.value)} placeholder="Amigos com quem tem boa relação..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Conhecidos/Colegas</label>
-              <textarea value={data.circle?.acquaintances || ''} onChange={(e) => update('circle', 'acquaintances', e.target.value)} placeholder="Pessoas que conhece mas não são próximas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Conhecidos/Colegas</label>
+              <textarea value={data.circle?.acquaintances || ''} onChange={(e) => update('circle', 'acquaintances', e.target.value)} placeholder="Pessoas que conhece mas não são próximas..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Rivais/Desafetos</label>
-              <textarea value={data.circle?.rivals || ''} onChange={(e) => update('circle', 'rivals', e.target.value)} placeholder="Pessoas com quem tem conflito..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Rivais/Desafetos</label>
+              <textarea value={data.circle?.rivals || ''} onChange={(e) => update('circle', 'rivals', e.target.value)} placeholder="Pessoas com quem tem conflito..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Mentores/Figuras de Referência</label>
-              <textarea value={data.circle?.mentors || ''} onChange={(e) => update('circle', 'mentors', e.target.value)} placeholder="Pessoas que admira ou que servem de modelo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Mentores/Figuras de Referência</label>
+              <textarea value={data.circle?.mentors || ''} onChange={(e) => update('circle', 'mentors', e.target.value)} placeholder="Pessoas que admira ou que servem de modelo..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -18862,11 +18964,11 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
 
         <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
           <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">❤️ Vida Amorosa</h4>
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
-                <select value={data.romantic?.relationshipStatus || ''} onChange={(e) => update('romantic', 'relationshipStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Status Atual</label>
+                <select value={data.romantic?.relationshipStatus || ''} onChange={(e) => update('romantic', 'relationshipStatus', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="single">Solteiro(a)</option>
                   <option value="dating">Namorando</option>
@@ -18883,8 +18985,8 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Experiência Romântica</label>
-                <select value={data.romantic?.romanticExperience || ''} onChange={(e) => update('romantic', 'romanticExperience', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Experiência Romântica</label>
+                <select value={data.romantic?.romanticExperience || ''} onChange={(e) => update('romantic', 'romanticExperience', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="none">Nenhuma experiência</option>
                   <option value="minimal">Mínima — 1-2 relacionamentos</option>
@@ -18897,16 +18999,16 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relacionamentos Passados Significativos</label>
-              <textarea value={data.romantic?.pastRelationships || ''} onChange={(e) => update('romantic', 'pastRelationships', e.target.value)} placeholder="Histórico de relacionamentos importantes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Relacionamentos Passados Significativos</label>
+              <textarea value={data.romantic?.pastRelationships || ''} onChange={(e) => update('romantic', 'pastRelationships', e.target.value)} placeholder="Histórico de relacionamentos importantes..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Padrões em Relacionamentos</label>
-              <textarea value={data.romantic?.romanticPatterns || ''} onChange={(e) => update('romantic', 'romanticPatterns', e.target.value)} placeholder="Padrões repetitivos, tipo de pessoa que atrai/é atraído..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Padrões em Relacionamentos</label>
+              <textarea value={data.romantic?.romanticPatterns || ''} onChange={(e) => update('romantic', 'romanticPatterns', e.target.value)} placeholder="Repetitive patterns, type of person they attract/are attracted to..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Deal Breakers</label>
-              <textarea value={data.romantic?.dealBreakers || ''} onChange={(e) => update('romantic', 'dealBreakers', e.target.value)} placeholder="O que não tolera em um relacionamento..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Deal Breakers</label>
+              <textarea value={data.romantic?.dealBreakers || ''} onChange={(e) => update('romantic', 'dealBreakers', e.target.value)} placeholder="What they cannot tolerate in a relationship..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -18923,18 +19025,18 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
 
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">👪 Família</h4>
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relação Geral com os Pais</label>
-              <textarea value={data.family?.relationshipWithParents || ''} onChange={(e) => update('family', 'relationshipWithParents', e.target.value)} placeholder="Como é a relação com pai e mãe..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Relação Geral com os Pais</label>
+              <textarea value={data.family?.relationshipWithParents || ''} onChange={(e) => update('family', 'relationshipWithParents', e.target.value)} placeholder="Relationship with parents..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relação com Irmãos</label>
-              <textarea value={data.family?.relationshipWithSiblings || ''} onChange={(e) => update('family', 'relationshipWithSiblings', e.target.value)} placeholder="Relação com irmãos, se tiver..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Relação com Irmãos</label>
+              <textarea value={data.family?.relationshipWithSiblings || ''} onChange={(e) => update('family', 'relationshipWithSiblings', e.target.value)} placeholder="Relationship with siblings, if any..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Afastamentos/Rupturas</label>
-              <textarea value={data.family?.estrangements || ''} onChange={(e) => update('family', 'estrangements', e.target.value)} placeholder="Membros com quem não fala, conflitos sérios..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Afastamentos/Rupturas</label>
+              <textarea value={data.family?.estrangements || ''} onChange={(e) => update('family', 'estrangements', e.target.value)} placeholder="Members they don't speak to, serious conflicts..." className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -18944,12 +19046,13 @@ const RelationshipsContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const RelationshipsContent = memo(RelationshipsContentBase);
 
 
 // ============================================================================
 // BEHAVIOR CONTENT - Complete Implementation
 // ============================================================================
-const BehaviorContent = ({ data, updateData, subtab }) => {
+const BehaviorContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('behavior', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -18963,9 +19066,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-violet-800 leading-relaxed">Como o personagem se comunica verbalmente e não-verbalmente.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🗣️ Estilo de Fala</h4>
-          <select value={data.communication?.speakingStyle || ''} onChange={(e) => update('communication', 'speakingStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🗣️ Estilo de Fala</h4>
+          <select value={data.communication?.speakingStyle || ''} onChange={(e) => update('communication', 'speakingStyle', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="eloquent">Eloquent — Articulado, escolhe palavras com cuidado</option>
             <option value="direct">Direct — Vai direto ao ponto, sem rodeios</option>
@@ -18982,9 +19085,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           </select>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📚 Nível de Vocabulário</h4>
-          <select value={data.communication?.vocabularyLevel || ''} onChange={(e) => update('communication', 'vocabularyLevel', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📚 Nível de Vocabulário</h4>
+          <select value={data.communication?.vocabularyLevel || ''} onChange={(e) => update('communication', 'vocabularyLevel', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="simple">Simple — Palavras básicas, frases curtas</option>
             <option value="average">Average — Vocabulário comum, adequado</option>
@@ -18996,19 +19099,19 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           </select>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🌍 Sotaque / Dialeto</h4>
-          <input type="text" value={data.communication?.accentDialect || ''} onChange={(e) => update('communication', 'accentDialect', e.target.value)} placeholder="Ex: Sotaque nordestino, Inglês britânico, Sem sotaque marcante..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🌍 Sotaque / Dialeto</h4>
+          <input type="text" value={data.communication?.accentDialect || ''} onChange={(e) => update('communication', 'accentDialect', e.target.value)} placeholder="Ex: Sotaque nordestino, Inglês britânico, Sem sotaque marcante..." className={STYLES.INPUT} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔄 Tiques Verbais</h4>
-          <textarea value={data.communication?.verbalTics || ''} onChange={(e) => update('communication', 'verbalTics', e.target.value)} placeholder="Ex: Diz 'tipo' frequentemente, pigarreia antes de falar, termina frases com 'sabe?'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🔄 Tiques Verbais</h4>
+          <textarea value={data.communication?.verbalTics || ''} onChange={(e) => update('communication', 'verbalTics', e.target.value)} placeholder="Ex: Diz 'tipo' frequentemente, pigarreia antes de falar, termina frases com 'sabe?'..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👐 Hábitos Não-Verbais</h4>
-          <textarea value={data.communication?.nonVerbalHabits || ''} onChange={(e) => update('communication', 'nonVerbalHabits', e.target.value)} placeholder="Ex: Evita contato visual, gesticula muito, cruza os braços, toca no cabelo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👐 Hábitos Não-Verbais</h4>
+          <textarea value={data.communication?.nonVerbalHabits || ''} onChange={(e) => update('communication', 'nonVerbalHabits', e.target.value)} placeholder="e.g. Avoids eye contact, gestures a lot, crosses arms, touches hair..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
       </div>
     ),
@@ -19021,23 +19124,23 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-amber-800 leading-relaxed">Rotinas, rituais e hábitos do dia-a-dia.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🌅 Rotina Matinal</h4>
-          <textarea value={data.daily?.morningRoutine || ''} onChange={(e) => update('daily', 'morningRoutine', e.target.value)} placeholder="Descreva como começa o dia: acorda cedo/tarde, primeiro café, exercício, etc..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🌅 Rotina Matinal</h4>
+          <textarea value={data.daily?.morningRoutine || ''} onChange={(e) => update('daily', 'morningRoutine', e.target.value)} placeholder="Describe how the day starts: wakes up early/late, first coffee, exercise, etc..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔁 Rituais Diários</h4>
-          <textarea value={data.daily?.dailyRituals || ''} onChange={(e) => update('daily', 'dailyRituals', e.target.value)} placeholder="Hábitos que repete todos os dias: ler antes de dormir, café às 3pm, etc..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🔁 Rituais Diários</h4>
+          <textarea value={data.daily?.dailyRituals || ''} onChange={(e) => update('daily', 'dailyRituals', e.target.value)} placeholder="Habits repeated every day: read before bed, 3pm coffee, etc..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⏰ Hábitos de Procrastinação</h4>
-          <textarea value={data.daily?.procrastinationHabits || ''} onChange={(e) => update('daily', 'procrastinationHabits', e.target.value)} placeholder="Como procrastina: redes sociais, limpeza, soneca, 'só mais um episódio'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⏰ Hábitos de Procrastinação</h4>
+          <textarea value={data.daily?.procrastinationHabits || ''} onChange={(e) => update('daily', 'procrastinationHabits', e.target.value)} placeholder="How they procrastinate: social media, cleaning, naps, 'just one more episode'..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📐 Nível de Organização</h4>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📐 Nível de Organização</h4>
           <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Caótico</span><span>Metódico</span></div>
           <input type="range" min="1" max="9" value={data.daily?.organizationLevel || 5} onChange={(e) => update('daily', 'organizationLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 to-blue-400 rounded-lg appearance-none cursor-pointer" />
         </div>
@@ -19052,14 +19155,14 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-blue-800 leading-relaxed">Como se comporta em diferentes contextos sociais.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👋 Primeira Impressão</h4>
-          <textarea value={data.social?.firstImpression || ''} onChange={(e) => update('social', 'firstImpression', e.target.value)} placeholder="Como as pessoas geralmente o percebem no primeiro encontro..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👋 Primeira Impressão</h4>
+          <textarea value={data.social?.firstImpression || ''} onChange={(e) => update('social', 'firstImpression', e.target.value)} placeholder="Como as pessoas geralmente o percebem no primeiro encontro..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👥 Comportamento em Grupos</h4>
-          <select value={data.social?.behaviorInGroups || ''} onChange={(e) => update('social', 'behaviorInGroups', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>👥 Comportamento em Grupos</h4>
+          <select value={data.social?.behaviorInGroups || ''} onChange={(e) => update('social', 'behaviorInGroups', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="leader">Leader — Assume comando naturalmente</option>
             <option value="entertainer">Entertainer — Conta piadas, anima o grupo</option>
@@ -19073,9 +19176,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           </select>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🤝 Comportamento One-on-One</h4>
-          <select value={data.social?.behaviorOneOnOne || ''} onChange={(e) => update('social', 'behaviorOneOnOne', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🤝 Comportamento One-on-One</h4>
+          <select value={data.social?.behaviorOneOnOne || ''} onChange={(e) => update('social', 'behaviorOneOnOne', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="intimate">Intimate — Abre-se facilmente, conexão profunda</option>
             <option value="guarded">Guarded — Mantém distância, superficial</option>
@@ -19088,9 +19191,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           </select>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😰 Comportamento Sob Estresse</h4>
-          <textarea value={data.social?.behaviorUnderStress || ''} onChange={(e) => update('social', 'behaviorUnderStress', e.target.value)} placeholder="Como muda quando estressado: isola-se, fica irritável, busca ajuda..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😰 Comportamento Sob Estresse</h4>
+          <textarea value={data.social?.behaviorUnderStress || ''} onChange={(e) => update('social', 'behaviorUnderStress', e.target.value)} placeholder="How they change under stress: isolates, gets irritable, seeks help..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
       </div>
     ),
@@ -19103,24 +19206,24 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-pink-800 leading-relaxed">Peculiaridades, tiques e comportamentos característicos.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😬 Hábitos Nervosos</h4>
-          <textarea value={data.quirks?.nervousHabits || ''} onChange={(e) => update('quirks', 'nervousHabits', e.target.value)} placeholder="Ex: Rói unhas, balança a perna, mexe no cabelo, range dentes..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😬 Hábitos Nervosos</h4>
+          <textarea value={data.quirks?.nervousHabits || ''} onChange={(e) => update('quirks', 'nervousHabits', e.target.value)} placeholder="e.g. Bites nails, shakes leg, plays with hair, grinds teeth..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🤗 Comportamentos de Conforto</h4>
-          <textarea value={data.quirks?.comfortBehaviors || ''} onChange={(e) => update('quirks', 'comfortBehaviors', e.target.value)} placeholder="O que faz para se acalmar: come doce, abraça travesseiro, banho quente..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🤗 Comportamentos de Conforto</h4>
+          <textarea value={data.quirks?.comfortBehaviors || ''} onChange={(e) => update('quirks', 'comfortBehaviors', e.target.value)} placeholder="What they do to calm down: eat sweets, hug pillow, hot bath..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😤 Pet Peeves</h4>
-          <textarea value={data.quirks?.petPeeves || ''} onChange={(e) => update('quirks', 'petPeeves', e.target.value)} placeholder="Coisas que irritam desproporcionalmente: barulho de mastigar, atraso, etc..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😤 Pet Peeves</h4>
+          <textarea value={data.quirks?.petPeeves || ''} onChange={(e) => update('quirks', 'petPeeves', e.target.value)} placeholder="Coisas que irritam desproporcionalmente: barulho de mastigar, atraso, etc..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🍀 Superstições Pessoais</h4>
-          <textarea value={data.quirks?.superstitions || ''} onChange={(e) => update('quirks', 'superstitions', e.target.value)} placeholder="Rituais de sorte, manias, 'se eu não fizer X, Y vai acontecer'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🍀 Superstições Pessoais</h4>
+          <textarea value={data.quirks?.superstitions || ''} onChange={(e) => update('quirks', 'superstitions', e.target.value)} placeholder="Luck rituals, quirks, 'if I don't do X, Y will happen'..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
       </div>
     ),
@@ -19133,9 +19236,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-red-800 leading-relaxed">Como reage a crises, falhas e situações extremas.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🥊 Resposta Instintiva</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Qual a primeira reação quando ameaçado ou em perigo?</p>
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🥊 Resposta Instintiva</h4>
+          <p className={STYLES.SUBTITLE}>Qual a primeira reação quando ameaçado ou em perigo?</p>
           <div className="grid grid-cols-4 gap-2">
             {['Fight', 'Flight', 'Freeze', 'Fawn'].map(response => (
               <button key={response} onClick={() => update('pressure', 'fightFlightFreeze', response)} className={`py-3 rounded font-mono text-xs transition-all ${data.pressure?.fightFlightFreeze === response ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>
@@ -19154,9 +19257,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           </p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚨 Personalidade em Crise</h4>
-          <select value={data.pressure?.crisisPersonality || ''} onChange={(e) => update('pressure', 'crisisPersonality', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🚨 Personalidade em Crise</h4>
+          <select value={data.pressure?.crisisPersonality || ''} onChange={(e) => update('pressure', 'crisisPersonality', e.target.value)} className={STYLES.INPUT}>
             <option value="">-- Selecione --</option>
             <option value="calm-leader">Calm Leader — Fica mais calmo, assume controle</option>
             <option value="panics">Panics — Entra em pânico, perde controle</option>
@@ -19170,14 +19273,14 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           </select>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📉 Como Lida com Fracasso</h4>
-          <textarea value={data.pressure?.handleFailure || ''} onChange={(e) => update('pressure', 'handleFailure', e.target.value)} placeholder="Descreva: nega, aprende, se culpa, culpa outros, tenta de novo imediatamente..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📉 Como Lida com Fracasso</h4>
+          <textarea value={data.pressure?.handleFailure || ''} onChange={(e) => update('pressure', 'handleFailure', e.target.value)} placeholder="Descreva: nega, aprende, se culpa, culpa outros, tenta de novo imediatamente..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📈 Como Lida com Sucesso</h4>
-          <textarea value={data.pressure?.handleSuccess || ''} onChange={(e) => update('pressure', 'handleSuccess', e.target.value)} placeholder="Descreva: celebra abertamente, minimiza, fica desconfortável, usa como motivação..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📈 Como Lida com Sucesso</h4>
+          <textarea value={data.pressure?.handleSuccess || ''} onChange={(e) => update('pressure', 'handleSuccess', e.target.value)} placeholder="Describe: celebrates openly, minimizes, gets uncomfortable, uses as motivation..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
       </div>
     ),
@@ -19185,12 +19288,13 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const BehaviorContent = memo(BehaviorContentBase);
 
 
 // ============================================================================
 // SECRETS CONTENT - Complete Implementation
 // ============================================================================
-const SecretsContent = ({ data, updateData, subtab }) => {
+const SecretsContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('secrets', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -19206,26 +19310,26 @@ const SecretsContent = ({ data, updateData, subtab }) => {
 
         <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-2">💀 O Maior Segredo</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">O que destruiria a vida dele se fosse revelado?</p>
-          <textarea value={data.hidden?.biggestSecret || ''} onChange={(e) => update('hidden', 'biggestSecret', e.target.value)} placeholder="O segredo que carrega, que pouquíssimas pessoas (ou ninguém) sabem..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+          <p className={STYLES.SUBTITLE}>O que destruiria a vida dele se fosse revelado?</p>
+          <textarea value={data.hidden?.biggestSecret || ''} onChange={(e) => update('hidden', 'biggestSecret', e.target.value)} placeholder="The secret they carry, that very few people (or no one) know..." className={`${STYLES.TEXTAREA} h-28`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Mentiras Mantidas</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Mentiras que conta regularmente ou há muito tempo.</p>
-          <textarea value={data.hidden?.liesMaintained || ''} onChange={(e) => update('hidden', 'liesMaintained', e.target.value)} placeholder="Ex: Finge que se formou na faculdade, diz que os pais morreram, esconde vício..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎭 Mentiras Mantidas</h4>
+          <p className={STYLES.SUBTITLE}>Mentiras que conta regularmente ou há muito tempo.</p>
+          <textarea value={data.hidden?.liesMaintained || ''} onChange={(e) => update('hidden', 'liesMaintained', e.target.value)} placeholder="e.g. Pretends to have graduated college, says parents died, hides addiction..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚫 Nunca Admitiria</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Coisas que nunca confessaria, mesmo sob tortura.</p>
-          <textarea value={data.hidden?.neverAdmit || ''} onChange={(e) => update('hidden', 'neverAdmit', e.target.value)} placeholder="Verdades que nega até para si mesmo, coisas que morreria sem revelar..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🚫 Nunca Admitiria</h4>
+          <p className={STYLES.SUBTITLE}>Coisas que nunca confessaria, mesmo sob tortura.</p>
+          <textarea value={data.hidden?.neverAdmit || ''} onChange={(e) => update('hidden', 'neverAdmit', e.target.value)} placeholder="Truths denied even to oneself, things they would die without revealing..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💭 Desejos Secretos</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Vontades que tem vergonha de admitir.</p>
-          <textarea value={data.hidden?.secretDesires || ''} onChange={(e) => update('hidden', 'secretDesires', e.target.value)} placeholder="Ex: Quer largar tudo e sumir, fantasia com a vida de outra pessoa, inveja alguém..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>💭 Desejos Secretos</h4>
+          <p className={STYLES.SUBTITLE}>Vontades que tem vergonha de admitir.</p>
+          <textarea value={data.hidden?.secretDesires || ''} onChange={(e) => update('hidden', 'secretDesires', e.target.value)} placeholder="e.g. Wants to drop everything and disappear, fantasizes about another's life, envies someone..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
       </div>
     ),
@@ -19238,22 +19342,22 @@ const SecretsContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-amber-800 leading-relaxed">As inconsistências entre quem o personagem finge ser e quem realmente é.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Público vs Privado</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Como a persona pública difere da pessoa real?</p>
-          <textarea value={data.contradictions?.publicVsPrivate || ''} onChange={(e) => update('contradictions', 'publicVsPrivate', e.target.value)} placeholder="Ex: Parece confiante mas é inseguro, age feliz mas está deprimido, finge ser durão mas é sensível..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎭 Público vs Privado</h4>
+          <p className={STYLES.SUBTITLE}>Como a persona pública difere da pessoa real?</p>
+          <textarea value={data.contradictions?.publicVsPrivate || ''} onChange={(e) => update('contradictions', 'publicVsPrivate', e.target.value)} placeholder="e.g. Seems confident but is insecure, acts happy but is depressed, pretends to be tough but is sensitive..." className={`${STYLES.TEXTAREA} h-28`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🗣️ O Que Prega vs O Que Pratica</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Conselhos que dá mas não segue.</p>
-          <textarea value={data.contradictions?.preachVsPractice || ''} onChange={(e) => update('contradictions', 'preachVsPractice', e.target.value)} placeholder="Ex: Diz para outros serem honestos mas mente, critica vícios mas tem os próprios..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🗣️ O Que Prega vs O Que Pratica</h4>
+          <p className={STYLES.SUBTITLE}>Conselhos que dá mas não segue.</p>
+          <textarea value={data.contradictions?.preachVsPractice || ''} onChange={(e) => update('contradictions', 'preachVsPractice', e.target.value)} placeholder="e.g. Tells others to be honest but lies, criticizes addictions but has their own..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🙈 Hipocrisia Inconsciente</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Contradições que ele nem percebe em si mesmo.</p>
-          <textarea value={data.contradictions?.unawareHypocrisy || ''} onChange={(e) => update('contradictions', 'unawareHypocrisy', e.target.value)} placeholder="Ex: Reclama de fofoca mas fofoca, critica preconceito mas tem preconceitos, etc..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🙈 Hipocrisia Inconsciente</h4>
+          <p className={STYLES.SUBTITLE}>Contradições que ele nem percebe em si mesmo.</p>
+          <textarea value={data.contradictions?.unawareHypocrisy || ''} onChange={(e) => update('contradictions', 'unawareHypocrisy', e.target.value)} placeholder="e.g. Complains about gossip but gossips, criticizes prejudice but is prejudiced, etc..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
       </div>
     ),
@@ -19268,20 +19372,20 @@ const SecretsContent = ({ data, updateData, subtab }) => {
 
         <div className="border-2 border-slate-300 rounded-sm p-4 bg-slate-50">
           <h4 className="font-mono text-sm font-bold text-slate-800 mb-2">❌ Erros do Passado</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Coisas terríveis que fez e gostaria de apagar.</p>
-          <textarea value={data.skeletons?.pastMistakes || ''} onChange={(e) => update('skeletons', 'pastMistakes', e.target.value)} placeholder="Ex: Traiu alguém, causou um acidente, roubou, mentiu com consequências graves..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+          <p className={STYLES.SUBTITLE}>Coisas terríveis que fez e gostaria de apagar.</p>
+          <textarea value={data.skeletons?.pastMistakes || ''} onChange={(e) => update('skeletons', 'pastMistakes', e.target.value)} placeholder="e.g. Betrayed someone, caused an accident, stole, lied with serious consequences..." className={`${STYLES.TEXTAREA} h-28`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">😔 Pessoas que Prejudicou</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Quem ele machucou e ainda carrega essa culpa?</p>
-          <textarea value={data.skeletons?.peopleWronged || ''} onChange={(e) => update('skeletons', 'peopleWronged', e.target.value)} placeholder="Nomes ou descrições de pessoas que prejudicou, abandonou, ou traiu..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>😔 Pessoas que Prejudicou</h4>
+          <p className={STYLES.SUBTITLE}>Quem ele machucou e ainda carrega essa culpa?</p>
+          <textarea value={data.skeletons?.peopleWronged || ''} onChange={(e) => update('skeletons', 'peopleWronged', e.target.value)} placeholder="Names or descriptions of people they harmed, abandoned, or betrayed..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
         <div className="border-2 border-red-300 rounded-sm p-4 bg-red-50">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-2">⚠️ Quem Poderia Destruí-lo?</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Pessoas que sabem demais e poderiam arruinar sua vida.</p>
-          <textarea value={data.skeletons?.couldDestroyThem || ''} onChange={(e) => update('skeletons', 'couldDestroyThem', e.target.value)} placeholder="Nomes de pessoas que têm informação comprometedora, ex-parceiros vingativos, testemunhas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+          <p className={STYLES.SUBTITLE}>Pessoas que sabem demais e poderiam arruinar sua vida.</p>
+          <textarea value={data.skeletons?.couldDestroyThem || ''} onChange={(e) => update('skeletons', 'couldDestroyThem', e.target.value)} placeholder="Names of people with compromising information, vengeful ex-partners, witnesses..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
       </div>
     ),
@@ -19289,12 +19393,13 @@ const SecretsContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const SecretsContent = memo(SecretsContentBase);
 
 
 // ============================================================================
 // GOALS CONTENT - Complete Implementation
 // ============================================================================
-const GoalsContent = ({ data, updateData, subtab }) => {
+const GoalsContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('goals', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -19308,22 +19413,22 @@ const GoalsContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-green-800 leading-relaxed">O que o personagem quer alcançar no futuro próximo.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📅 Esta Semana / Este Mês</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Objetivos imediatos, tarefas urgentes.</p>
-          <textarea value={data.shortTerm?.thisWeekMonth || ''} onChange={(e) => update('shortTerm', 'thisWeekMonth', e.target.value)} placeholder="Ex: Terminar projeto, conversar com alguém, resolver problema específico..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📅 Esta Semana / Este Mês</h4>
+          <p className={STYLES.SUBTITLE}>Objetivos imediatos, tarefas urgentes.</p>
+          <textarea value={data.shortTerm?.thisWeekMonth || ''} onChange={(e) => update('shortTerm', 'thisWeekMonth', e.target.value)} placeholder="e.g. Finish project, talk to someone, solve specific problem..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📆 Este Ano</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Metas para os próximos meses.</p>
-          <textarea value={data.shortTerm?.thisYear || ''} onChange={(e) => update('shortTerm', 'thisYear', e.target.value)} placeholder="Ex: Mudar de emprego, terminar curso, viajar para lugar específico, economizar X..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>📆 Este Ano</h4>
+          <p className={STYLES.SUBTITLE}>Metas para os próximos meses.</p>
+          <textarea value={data.shortTerm?.thisYear || ''} onChange={(e) => update('shortTerm', 'thisYear', e.target.value)} placeholder="e.g. Change jobs, finish course, travel to specific place, save X..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/50">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-2">🚧 Obstáculos Imediatos</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">O que está impedindo de alcançar essas metas?</p>
-          <textarea value={data.shortTerm?.obstacles || ''} onChange={(e) => update('shortTerm', 'obstacles', e.target.value)} placeholder="Ex: Falta de dinheiro, pessoa específica, medo, falta de tempo, habilidade que falta..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+          <p className={STYLES.SUBTITLE}>O que está impedindo de alcançar essas metas?</p>
+          <textarea value={data.shortTerm?.obstacles || ''} onChange={(e) => update('shortTerm', 'obstacles', e.target.value)} placeholder="e.g. Lack of money, specific person, fear, lack of time, missing skill..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
       </div>
     ),
@@ -19338,20 +19443,20 @@ const GoalsContent = ({ data, updateData, subtab }) => {
 
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-2">✨ O Grande Sonho</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Se pudesse ter qualquer coisa na vida, o que seria?</p>
-          <textarea value={data.longTerm?.lifeDream || ''} onChange={(e) => update('longTerm', 'lifeDream', e.target.value)} placeholder="O sonho que persegue, o objetivo final, o que daria sentido à vida..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+          <p className={STYLES.SUBTITLE}>Se pudesse ter qualquer coisa na vida, o que seria?</p>
+          <textarea value={data.longTerm?.lifeDream || ''} onChange={(e) => update('longTerm', 'lifeDream', e.target.value)} placeholder="O sonho que persegue, o objetivo final, o que daria sentido à vida..." className={`${STYLES.TEXTAREA} h-28`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏛️ Legado</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Como quer ser lembrado depois que partir?</p>
-          <textarea value={data.longTerm?.legacy || ''} onChange={(e) => update('longTerm', 'legacy', e.target.value)} placeholder="Ex: Como bom pai, como revolucionário, como artista, como alguém que ajudou os outros..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🏛️ Legado</h4>
+          <p className={STYLES.SUBTITLE}>Como quer ser lembrado depois que partir?</p>
+          <textarea value={data.longTerm?.legacy || ''} onChange={(e) => update('longTerm', 'legacy', e.target.value)} placeholder="e.g. As a good father, as a revolutionary, as an artist, as someone who helped others..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏆 O Que Significa Sucesso?</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Definição pessoal de uma vida bem-sucedida.</p>
-          <textarea value={data.longTerm?.whatSuccessMeans || ''} onChange={(e) => update('longTerm', 'whatSuccessMeans', e.target.value)} placeholder="Ex: Riqueza, família feliz, reconhecimento, paz interior, liberdade, impacto no mundo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🏆 O Que Significa Sucesso?</h4>
+          <p className={STYLES.SUBTITLE}>Definição pessoal de uma vida bem-sucedida.</p>
+          <textarea value={data.longTerm?.whatSuccessMeans || ''} onChange={(e) => update('longTerm', 'whatSuccessMeans', e.target.value)} placeholder="e.g. Wealth, happy family, recognition, inner peace, freedom, impact on the world..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
       </div>
     ),
@@ -19364,22 +19469,22 @@ const GoalsContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-purple-800 leading-relaxed">As batalhas que trava consigo mesmo.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🧠❤️ Cabeça vs Coração</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Onde a razão e a emoção estão em conflito?</p>
-          <textarea value={data.internal?.headVsHeart || ''} onChange={(e) => update('internal', 'headVsHeart', e.target.value)} placeholder="Ex: Sabe que deveria terminar o relacionamento mas não consegue, quer seguir paixão mas precisa de estabilidade..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🧠❤️ Cabeça vs Coração</h4>
+          <p className={STYLES.SUBTITLE}>Onde a razão e a emoção estão em conflito?</p>
+          <textarea value={data.internal?.headVsHeart || ''} onChange={(e) => update('internal', 'headVsHeart', e.target.value)} placeholder="e.g. Knows they should end relationship but can't, wants to follow passion but needs stability..." className={`${STYLES.TEXTAREA} h-28`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⚖️ Dever vs Desejo</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">O que sente que deve fazer vs o que quer fazer.</p>
-          <textarea value={data.internal?.dutyVsDesire || ''} onChange={(e) => update('internal', 'dutyVsDesire', e.target.value)} placeholder="Ex: Obrigação com família vs vontade de ir embora, responsabilidade no trabalho vs sonho pessoal..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>⚖️ Dever vs Desejo</h4>
+          <p className={STYLES.SUBTITLE}>O que sente que deve fazer vs o que quer fazer.</p>
+          <textarea value={data.internal?.dutyVsDesire || ''} onChange={(e) => update('internal', 'dutyVsDesire', e.target.value)} placeholder="e.g. Obligation to family vs desire to leave, work responsibility vs personal dream..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Quem É vs Quem Quer Ser</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">A distância entre a realidade e o ideal.</p>
-          <textarea value={data.internal?.whoTheyAreVsWant || ''} onChange={(e) => update('internal', 'whoTheyAreVsWant', e.target.value)} placeholder="Ex: É tímido mas quer ser confiante, é medroso mas quer ser corajoso, é egoísta mas quer ser generoso..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎭 Quem É vs Quem Quer Ser</h4>
+          <p className={STYLES.SUBTITLE}>A distância entre a realidade e o ideal.</p>
+          <textarea value={data.internal?.whoTheyAreVsWant || ''} onChange={(e) => update('internal', 'whoTheyAreVsWant', e.target.value)} placeholder="e.g. Is shy but wants to be confident, is fearful but wants to be brave, is selfish but wants to be generous..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
       </div>
     ),
@@ -19392,22 +19497,22 @@ const GoalsContent = ({ data, updateData, subtab }) => {
           <p className="font-mono text-xs text-red-800 leading-relaxed">Obstáculos, inimigos e forças que trabalham contra o personagem.</p>
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔥 Problemas Atuais</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Situações difíceis que está enfrentando agora.</p>
-          <textarea value={data.external?.currentProblems || ''} onChange={(e) => update('external', 'currentProblems', e.target.value)} placeholder="Ex: Dívidas, processo judicial, doença na família, conflito no trabalho, ameaça física..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🔥 Problemas Atuais</h4>
+          <p className={STYLES.SUBTITLE}>Situações difíceis que está enfrentando agora.</p>
+          <textarea value={data.external?.currentProblems || ''} onChange={(e) => update('external', 'currentProblems', e.target.value)} placeholder="e.g. Debts, lawsuit, family illness, work conflict, physical threat..." className={`${STYLES.TEXTAREA} h-28`} />
         </div>
 
         <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-2">👿 Inimigos / Antagonistas</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Pessoas ou grupos que ativamente trabalham contra ele.</p>
-          <textarea value={data.external?.enemies || ''} onChange={(e) => update('external', 'enemies', e.target.value)} placeholder="Nomes, descrições, motivos do conflito, quão perigosos são..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+          <p className={STYLES.SUBTITLE}>Pessoas ou grupos que ativamente trabalham contra ele.</p>
+          <textarea value={data.external?.enemies || ''} onChange={(e) => update('external', 'enemies', e.target.value)} placeholder="Names, descriptions, conflict motives, how dangerous they are..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🏛️ Obstáculos Sistêmicos</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Forças maiores que limitam suas opções.</p>
-          <textarea value={data.external?.systemicObstacles || ''} onChange={(e) => update('external', 'systemicObstacles', e.target.value)} placeholder="Ex: Discriminação, pobreza, sistema político, leis injustas, barreiras sociais, localização geográfica..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🏛️ Obstáculos Sistêmicos</h4>
+          <p className={STYLES.SUBTITLE}>Forças maiores que limitam suas opções.</p>
+          <textarea value={data.external?.systemicObstacles || ''} onChange={(e) => update('external', 'systemicObstacles', e.target.value)} placeholder="e.g. Discrimination, poverty, political system, unjust laws, social barriers, geographic location..." className={`${STYLES.TEXTAREA} h-24`} />
         </div>
       </div>
     ),
@@ -19415,6 +19520,7 @@ const GoalsContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const GoalsContent = memo(GoalsContentBase);
 
 
 // ============================================================================
@@ -20031,7 +20137,7 @@ const MAX_PROACTIVE_CHARS = 300;
 const MAX_DIRECTIVE_CHARS = 250;
 const MAX_RULER_CHARS = 750;
 
-const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
+const DirectiveResponsesContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('directives', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -20235,7 +20341,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
     return (
       <div className="border border-purple-200 rounded-sm p-3 bg-white">
         <label className="block font-mono text-xs font-bold text-purple-800 mb-2">{config.label}</label>
-        <div className="flex flex-wrap gap-2">
+        <div className={STYLES.FLEX_WRAP}>
           {config.options.map((option) => {
             const isSelected = currentValue === option.id;
             const wouldExceed = !isSelected && wouldExceedLimit(option.text);
@@ -20308,7 +20414,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
   const sections = {
     // ========== SUBTAB 0: FORMATTING ==========
     0: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <CharacterCounter />
         
         <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-sm p-4">
@@ -20329,7 +20435,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 1: WRITING STYLE ==========
     1: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <CharacterCounter />
         
         <div className="bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 rounded-sm p-4">
@@ -20349,7 +20455,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 2: NARRATIVE APPROACH ==========
     2: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <CharacterCounter />
         
         <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-sm p-4">
@@ -20389,7 +20495,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 3: CONTENT & LIMITS ==========
     3: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <CharacterCounter />
         
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-sm p-4">
@@ -20409,7 +20515,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 4: OUTPUT PREVIEW ==========
     4: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-white mb-2">📋 OUTPUT PREVIEW</h3>
           <p className="font-mono text-xs text-gray-300">Final directive text that will be used.</p>
@@ -20445,8 +20551,8 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
         {/* Custom directive input */}
         <div className="border border-gray-200 rounded-sm p-4 bg-white">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">Custom Directive</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Add any custom instruction not covered by the options above.</p>
+          <h4 className={STYLES.SECTION_TITLE}>Custom Directive</h4>
+          <p className={STYLES.SUBTITLE}>Add any custom instruction not covered by the options above.</p>
           <textarea
             value={data?.customDirective || ''}
             onChange={(e) => updateDirect('customDirective', e.target.value)}
@@ -20503,7 +20609,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 5: RULER BUILDER ==========
     5: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         {/* Ruler Character Counter */}
         <div className={`sticky top-0 z-20 p-3 rounded-sm mb-4 ${isRulerOverLimit ? 'bg-red-100 border-2 border-red-400' : 'bg-teal-100 border border-teal-300'}`}>
           <div className="flex items-center justify-between mb-2">
@@ -20542,7 +20648,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-teal-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.plotRole.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.plotRole.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {RULER_OPTIONS.plotRole.options.map((option) => {
               const isSelected = data?.ruler?.plotRole === option.id;
               const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20571,7 +20677,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-teal-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.responseStructure.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.responseStructure.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {RULER_OPTIONS.responseStructure.options.map((option) => {
               const isSelected = data?.ruler?.responseStructure === option.id;
               const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20600,7 +20706,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-teal-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.pacing.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.pacing.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {RULER_OPTIONS.pacing.options.map((option) => {
               const isSelected = data?.ruler?.pacing === option.id;
               const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20629,7 +20735,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-teal-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.consistency.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.consistency.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {RULER_OPTIONS.consistency.options.map((option) => {
               const isSelected = data?.ruler?.consistency === option.id;
               const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20658,7 +20764,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-teal-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.boundaries.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.boundaries.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {RULER_OPTIONS.boundaries.options.map((option) => {
               const isSelected = data?.ruler?.boundaries === option.id;
               const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20687,7 +20793,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-teal-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-teal-800 mb-1">{RULER_OPTIONS.interaction.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.interaction.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {RULER_OPTIONS.interaction.options.map((option) => {
               const isSelected = data?.ruler?.interaction === option.id;
               const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20716,7 +20822,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-300 rounded-sm p-4 bg-blue-50">
           <label className="block font-mono text-xs font-bold text-blue-800 mb-1">🧠 {RULER_OPTIONS.autonomyBehavior.label}</label>
           <p className="font-mono text-[9px] text-blue-700 mb-3">{RULER_OPTIONS.autonomyBehavior.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {RULER_OPTIONS.autonomyBehavior.options.map((option) => {
               const isSelected = data?.ruler?.autonomyBehavior === option.id;
               const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20749,7 +20855,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
           <div className="mb-4">
             <label className="block font-mono text-[10px] font-bold text-purple-700 mb-1">☕ {RULER_OPTIONS.sliceOfLife.label}</label>
             <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.sliceOfLife.description}</p>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {RULER_OPTIONS.sliceOfLife.options.map((option) => {
                 const isSelected = data?.ruler?.sliceOfLife === option.id;
                 const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20778,7 +20884,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
           <div className="mb-4">
             <label className="block font-mono text-[10px] font-bold text-purple-700 mb-1">⚔️ {RULER_OPTIONS.adventureRules.label}</label>
             <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.adventureRules.description}</p>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {RULER_OPTIONS.adventureRules.options.map((option) => {
                 const isSelected = data?.ruler?.adventureRules === option.id;
                 const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20807,7 +20913,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
           <div>
             <label className="block font-mono text-[10px] font-bold text-purple-700 mb-1">🎈 {RULER_OPTIONS.casualRules.label}</label>
             <p className="font-mono text-[9px] text-gray-500 mb-2">{RULER_OPTIONS.casualRules.description}</p>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {RULER_OPTIONS.casualRules.options.map((option) => {
                 const isSelected = data?.ruler?.casualRules === option.id;
                 const wouldExceed = !isSelected && wouldExceedRulerLimit(option.text);
@@ -20837,7 +20943,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-300 rounded-sm p-4 bg-amber-50">
           <label className="block font-mono text-xs font-bold text-amber-800 mb-1">⚡ IMPORTANT RULES [IMPT:]</label>
           <p className="font-mono text-[9px] text-amber-700 mb-3">High-priority rules that get special emphasis. Use sparingly!</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {IMPORTANT_RULES.map((rule) => {
               const isSelected = data?.ruler?.importantRules?.includes(rule.id);
               const wouldExceed = !isSelected && wouldExceedRulerLimit(rule.text);
@@ -20864,8 +20970,8 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
         {/* Custom Rules */}
         <div className="border border-gray-200 rounded-sm p-4 bg-white">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📝 Custom Rules</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Add custom rules not covered above. Use # prefix for each rule.</p>
+          <h4 className={STYLES.SECTION_TITLE}>📝 Custom Rules</h4>
+          <p className={STYLES.SUBTITLE}>Add custom rules not covered above. Use # prefix for each rule.</p>
           <textarea
             value={data?.ruler?.customRules || ''}
             onChange={(e) => updateRuler('customRules', e.target.value)}
@@ -20882,7 +20988,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 6: RULER PREVIEW ==========
     6: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-white mb-2">📋 RULER PREVIEW</h3>
           <p className="font-mono text-xs text-gray-300">Final ruler text ready for use.</p>
@@ -21044,7 +21150,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 7: PROACTIVE MODE ==========
     7: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         {/* Proactive Character Counter */}
         <div className={`sticky top-0 z-20 p-3 rounded-sm mb-4 ${isProactiveOverLimit ? 'bg-red-100 border-2 border-red-400' : 'bg-orange-100 border border-orange-300'}`}>
           <div className="flex items-center justify-between mb-2">
@@ -21083,7 +21189,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-orange-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-orange-800 mb-1">🕐 {PROACTIVE_OPTIONS.timing.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.timing.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.timing.options.map((option) => {
               const isSelected = data?.proactive?.timing === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21112,7 +21218,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-orange-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-orange-800 mb-1">📊 {PROACTIVE_OPTIONS.frequency.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.frequency.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.frequency.options.map((option) => {
               const isSelected = data?.proactive?.frequency === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21141,7 +21247,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-3 bg-blue-50/30">
           <label className="block font-mono text-xs font-bold text-blue-800 mb-1">🌙 {PROACTIVE_OPTIONS.quietHours.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.quietHours.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.quietHours.options.map((option) => {
               const isSelected = data?.proactive?.quietHours === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21171,7 +21277,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
           <label className="block font-mono text-xs font-bold text-green-800 mb-1">📱 {PROACTIVE_OPTIONS.actionTypes.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.actionTypes.description}</p>
           <p className="font-mono text-[9px] text-green-600 mb-2">✓ Select multiple options</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.actionTypes.options.map((option) => {
               const isSelected = data?.proactive?.actionTypes?.includes(option.id);
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21200,7 +21306,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-orange-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-orange-800 mb-1">🎯 {PROACTIVE_OPTIONS.triggers.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.triggers.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.triggers.options.map((option) => {
               const isSelected = data?.proactive?.triggers === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21229,7 +21335,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-red-200 rounded-sm p-3 bg-red-50/30">
           <label className="block font-mono text-xs font-bold text-red-800 mb-1">🚫 {PROACTIVE_OPTIONS.limits.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.limits.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.limits.options.map((option) => {
               const isSelected = data?.proactive?.limits === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21258,7 +21364,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-purple-200 rounded-sm p-3 bg-purple-50/30">
           <label className="block font-mono text-xs font-bold text-purple-800 mb-1">💬 {PROACTIVE_OPTIONS.personality.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.personality.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.personality.options.map((option) => {
               const isSelected = data?.proactive?.personality === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21287,7 +21393,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-orange-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-orange-800 mb-1">📅 {PROACTIVE_OPTIONS.calendarAware.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.calendarAware.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.calendarAware.options.map((option) => {
               const isSelected = data?.proactive?.calendarAware === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21316,7 +21422,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
         <div className="border border-orange-200 rounded-sm p-3 bg-white">
           <label className="block font-mono text-xs font-bold text-orange-800 mb-1">💤 {PROACTIVE_OPTIONS.inactivityResponse.label}</label>
           <p className="font-mono text-[9px] text-gray-500 mb-2">{PROACTIVE_OPTIONS.inactivityResponse.description}</p>
-          <div className="flex flex-wrap gap-2">
+          <div className={STYLES.FLEX_WRAP}>
             {PROACTIVE_OPTIONS.inactivityResponse.options.map((option) => {
               const isSelected = data?.proactive?.inactivityResponse === option.id;
               const wouldExceed = !isSelected && wouldExceedProactiveLimit(option.text);
@@ -21343,8 +21449,8 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
         {/* Custom Directive */}
         <div className="border border-gray-200 rounded-sm p-4 bg-white">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📝 Custom Proactive Directive</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Add specific timing or behavior instructions.</p>
+          <h4 className={STYLES.SECTION_TITLE}>📝 Custom Proactive Directive</h4>
+          <p className={STYLES.SUBTITLE}>Add specific timing or behavior instructions.</p>
           <textarea
             value={data?.proactive?.customDirective || ''}
             onChange={(e) => updateProactive('customDirective', e.target.value)}
@@ -21361,7 +21467,7 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
     // ========== SUBTAB 8: PROACTIVE PREVIEW ==========
     8: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <div className="bg-gradient-to-br from-gray-800 to-gray-900 border border-gray-600 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-white mb-2">📋 PROACTIVE PREVIEW</h3>
           <p className="font-mono text-xs text-gray-300">Final proactive directive ready for use.</p>
@@ -21547,13 +21653,14 @@ const DirectiveResponsesContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const DirectiveResponsesContent = memo(DirectiveResponsesContentBase);
 
 
 // ============================================================================
 // INTIMACY CONTENT - Complete Implementation (18+ Only)
 // ============================================================================
 
-const IntimacyContent = ({ data, updateData, subtab }) => {
+const IntimacyContentBase = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('intimacy', { ...data, [section]: { ...data[section], [field]: value } });
   };
@@ -21647,7 +21754,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
                 { value: 'x', label: 'X — Asexual / No socio-sexual contacts' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <IntimacySelect label="Orientation Certainty" value={data.orientation?.orientationCertainty} onChange={(e) => update('orientation', 'orientationCertainty', e.target.value)}
               options={[
                 { value: 'absolute', label: 'Absolute — 100% certain' },
@@ -21704,7 +21811,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
                 { value: 'aromantic', label: 'Aromantic — No romantic relationships' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <IntimacySelect label="Love Language (Primary)" value={data.orientation?.loveLangPrimary} onChange={(e) => update('orientation', 'loveLangPrimary', e.target.value)}
               options={[
                 { value: 'words', label: 'Words of Affirmation — Verbal expressions' },
@@ -21778,7 +21885,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
                 { value: 'its-complicated', label: 'It\'s Complicated' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <IntimacySelect label="Number of Past Partners" value={data.orientation?.partnerCount} onChange={(e) => update('orientation', 'partnerCount', e.target.value)}
               options={[
                 { value: '0', label: '0 — None' },
@@ -21972,7 +22079,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
                 { value: 'selfishness', label: 'Selfishness — Self-centered' }
               ]} />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             <IntimacyTextarea label="Specific Turn-Ons" value={data.preferences?.turnOns} onChange={(e) => update('preferences', 'turnOns', e.target.value)} 
               placeholder="Specific things that attract or excite them..." />
             <IntimacyTextarea label="Specific Turn-Offs" value={data.preferences?.turnOffs} onChange={(e) => update('preferences', 'turnOffs', e.target.value)} 
@@ -22062,7 +22169,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
                 { value: 'silent-treatment', label: 'Silent Treatment — Shuts down' }
               ]} />
           </div>
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <IntimacySlider label="Initiative/Pursuing" value={data.behavior?.initiativeLevel} onChange={(e) => update('behavior', 'initiativeLevel', parseInt(e.target.value))} 
               leftLabel="Waits to be pursued" rightLabel="Always initiates" />
             <IntimacySlider label="Vulnerability Level" value={data.behavior?.vulnerabilityLevel} onChange={(e) => update('behavior', 'vulnerabilityLevel', parseInt(e.target.value))} 
@@ -22133,7 +22240,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
                 { value: 'no-preference', label: 'No Preference' }
               ]} />
           </div>
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <IntimacySlider label="Intensity Level" value={data.behavior?.intensityLevel} onChange={(e) => update('behavior', 'intensityLevel', parseInt(e.target.value))} 
               leftLabel="Gentle/Soft" rightLabel="Rough/Intense" />
             <IntimacySlider label="Noise Level" value={data.behavior?.noiseLevel} onChange={(e) => update('behavior', 'noiseLevel', parseInt(e.target.value))} 
@@ -22554,6 +22661,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const IntimacyContent = memo(IntimacyContentBase);
 
 // ============================================================================
 // GENERIC TAB CONTENT (Placeholder)
@@ -22562,7 +22670,7 @@ const IntimacyContent = ({ data, updateData, subtab }) => {
 // OCCUPATION CONTENT - Complete Implementation
 // ============================================================================
 
-const OccupationContent = ({ data, updateData, subtab }) => {
+const OccupationContentBase = ({ data, updateData, subtab }) => {
   const [editingJobIndex, setEditingJobIndex] = React.useState(null);
   
   // ========== SISTEMA DE CÁLCULO SALARIAL ==========
@@ -22918,10 +23026,10 @@ const OccupationContent = ({ data, updateData, subtab }) => {
       {/* EMPLOYMENT STATUS */}
       <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
         <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">📊 Status de Emprego</h4>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={STYLES.GRID_2}>
           <div>
-            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status Atual</label>
-            <select value={job.employmentStatus || ''} onChange={(e) => updateJob(index, 'employmentStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+            <label className={STYLES.LABEL}>Status Atual</label>
+            <select value={job.employmentStatus || ''} onChange={(e) => updateJob(index, 'employmentStatus', e.target.value)} className={STYLES.INPUT}>
               <option value="">-- Selecione --</option>
               <optgroup label="Employed">
                 <option value="full-time">Full-Time Employee — Tempo integral CLT</option>
@@ -22959,8 +23067,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
             </select>
           </div>
           <div>
-            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Regime de Trabalho</label>
-            <select value={job.workArrangement || ''} onChange={(e) => updateJob(index, 'workArrangement', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+            <label className={STYLES.LABEL}>Regime de Trabalho</label>
+            <select value={job.workArrangement || ''} onChange={(e) => updateJob(index, 'workArrangement', e.target.value)} className={STYLES.INPUT}>
               <option value="">-- Selecione --</option>
               <option value="office-full">100% Office — Presencial todos os dias</option>
               <option value="office-mostly">Mostly Office — Presencial maioria dos dias</option>
@@ -22986,15 +23094,15 @@ const OccupationContent = ({ data, updateData, subtab }) => {
       <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
         <h4 className="font-mono text-sm font-bold text-emerald-800 mb-3">👔 Cargo & Função</h4>
         
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={STYLES.SPACE_Y}>
+          <div className={STYLES.GRID_2}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Cargo/Título</label>
-              <input type="text" value={job.jobTitle || ''} onChange={(e) => updateJob(index, 'jobTitle', e.target.value)} placeholder="Ex: Software Engineer, Marketing Manager..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              <label className={STYLES.LABEL}>Cargo/Título</label>
+              <input type="text" value={job.jobTitle || ''} onChange={(e) => updateJob(index, 'jobTitle', e.target.value)} placeholder="Ex: Software Engineer, Marketing Manager..." className={STYLES.INPUT} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nível de Senioridade</label>
-              <select value={job.seniorityLevel || ''} onChange={(e) => updateJob(index, 'seniorityLevel', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Nível de Senioridade</label>
+              <select value={job.seniorityLevel || ''} onChange={(e) => updateJob(index, 'seniorityLevel', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <optgroup label="Entry Level">
                   <option value="intern">Intern/Estagiário</option>
@@ -23046,14 +23154,14 @@ const OccupationContent = ({ data, updateData, subtab }) => {
           </div>
 
           <div>
-            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Descrição do Trabalho</label>
-            <textarea value={job.jobDescription || ''} onChange={(e) => updateJob(index, 'jobDescription', e.target.value)} placeholder="O que faz no dia-a-dia? Responsabilidades principais..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+            <label className={STYLES.LABEL}>Descrição do Trabalho</label>
+            <textarea value={job.jobDescription || ''} onChange={(e) => updateJob(index, 'jobDescription', e.target.value)} placeholder="O que faz no dia-a-dia? Responsabilidades principais..." className={`${STYLES.TEXTAREA} h-20`} />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tempo no Cargo</label>
-              <select value={job.timeInRole || ''} onChange={(e) => updateJob(index, 'timeInRole', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Tempo no Cargo</label>
+              <select value={job.timeInRole || ''} onChange={(e) => updateJob(index, 'timeInRole', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="less-3m">Menos de 3 meses</option>
                 <option value="3-6m">3-6 meses</option>
@@ -23067,8 +23175,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </select>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tempo na Empresa</label>
-              <select value={job.timeAtCompany || ''} onChange={(e) => updateJob(index, 'timeAtCompany', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Tempo na Empresa</label>
+              <select value={job.timeAtCompany || ''} onChange={(e) => updateJob(index, 'timeAtCompany', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="less-3m">Menos de 3 meses</option>
                 <option value="3-6m">3-6 meses</option>
@@ -23083,8 +23191,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </select>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Gerencia Pessoas?</label>
-              <select value={job.managesPeople || ''} onChange={(e) => updateJob(index, 'managesPeople', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Gerencia Pessoas?</label>
+              <select value={job.managesPeople || ''} onChange={(e) => updateJob(index, 'managesPeople', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="no">Não — Contribuidor individual</option>
                 <option value="informal">Informal — Mentoria, sem cargo</option>
@@ -23097,8 +23205,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </select>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Horas por Semana</label>
-              <select value={job.hoursPerWeek || ''} onChange={(e) => updateJob(index, 'hoursPerWeek', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Horas por Semana</label>
+              <select value={job.hoursPerWeek || ''} onChange={(e) => updateJob(index, 'hoursPerWeek', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="less-10">Menos de 10h</option>
                 <option value="10-20">10-20h (part-time)</option>
@@ -23119,10 +23227,10 @@ const OccupationContent = ({ data, updateData, subtab }) => {
       <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
         <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">🏭 Indústria & Setor</h4>
         
-        <div className="space-y-4">
+        <div className={STYLES.SPACE_Y}>
           <div>
-            <label className="font-mono text-[10px] text-gray-600 mb-1 block">Indústria Principal</label>
-            <select value={job.industry || ''} onChange={(e) => updateJob(index, 'industry', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+            <label className={STYLES.LABEL}>Indústria Principal</label>
+            <select value={job.industry || ''} onChange={(e) => updateJob(index, 'industry', e.target.value)} className={STYLES.INPUT}>
               <option value="">-- Selecione --</option>
               <optgroup label="Technology">
                 <option value="tech-software">Software Development</option>
@@ -23194,7 +23302,7 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
           <div>
             <label className="font-mono text-[10px] text-gray-600 mb-2 block">Áreas Funcionais (até 3)</label>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {['Engineering','Software Development','Data Science','Product Management','Project Management','Design/UX','Marketing','Sales','Business Development','Customer Success','Operations','Finance','Accounting','HR/People','Legal','Strategy','Analytics','Research','QA/Testing','DevOps','IT/Infrastructure','Supply Chain','Manufacturing','Admin/Assistant','Communications','Content/Writing','Social Media','Consulting','General Management','Executive Leadership','Founder','Creative Direction','Teaching/Education','Healthcare/Clinical','Scientific Research','Manual Labor','Skilled Trades','Food Service','Retail Sales','Security','Military/Defense','Religious/Ministry','Freelance/Gig','Other'].map(area => (
                 <button key={area} onClick={() => toggleJobArrayItem(index, 'functionalAreas', area, 3)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(job.functionalAreas || []).includes(area) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{area}</button>
               ))}
@@ -23207,15 +23315,15 @@ const OccupationContent = ({ data, updateData, subtab }) => {
       <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
         <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🏢 Empresa / Organização</h4>
         
-        <div className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className={STYLES.SPACE_Y}>
+          <div className={STYLES.GRID_2}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nome da Empresa</label>
-              <input type="text" value={job.companyName || ''} onChange={(e) => updateJob(index, 'companyName', e.target.value)} placeholder="Nome da empresa ou 'Self-Employed'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              <label className={STYLES.LABEL}>Nome da Empresa</label>
+              <input type="text" value={job.companyName || ''} onChange={(e) => updateJob(index, 'companyName', e.target.value)} placeholder="Nome da empresa ou 'Self-Employed'..." className={STYLES.INPUT} />
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tipo de Organização</label>
-              <select value={job.companyType || ''} onChange={(e) => updateJob(index, 'companyType', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Tipo de Organização</label>
+              <select value={job.companyType || ''} onChange={(e) => updateJob(index, 'companyType', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <optgroup label="Private Sector">
                   <option value="startup-early">Startup - Early Stage</option>
@@ -23258,8 +23366,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Tamanho</label>
-              <select value={job.companySize || ''} onChange={(e) => updateJob(index, 'companySize', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Tamanho</label>
+              <select value={job.companySize || ''} onChange={(e) => updateJob(index, 'companySize', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="1">Solo (1)</option>
                 <option value="2-10">Micro (2-10)</option>
@@ -23271,8 +23379,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </select>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Presença</label>
-              <select value={job.companyReach || ''} onChange={(e) => updateJob(index, 'companyReach', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Presença</label>
+              <select value={job.companyReach || ''} onChange={(e) => updateJob(index, 'companyReach', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="local">Local</option>
                 <option value="regional">Regional</option>
@@ -23281,8 +23389,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </select>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Idade</label>
-              <select value={job.companyAge || ''} onChange={(e) => updateJob(index, 'companyAge', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Idade</label>
+              <select value={job.companyAge || ''} onChange={(e) => updateJob(index, 'companyAge', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="less-1">&lt;1 ano</option>
                 <option value="1-5">1-5 anos</option>
@@ -23293,8 +23401,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </select>
             </div>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Reputação</label>
-              <select value={job.companyReputation || ''} onChange={(e) => updateJob(index, 'companyReputation', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Reputação</label>
+              <select value={job.companyReputation || ''} onChange={(e) => updateJob(index, 'companyReputation', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="prestigious">Prestigious</option>
                 <option value="well-known">Well-Known</option>
@@ -23309,7 +23417,7 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
           <div>
             <label className="font-mono text-[10px] text-gray-600 mb-2 block">Cultura da Empresa (até 4)</label>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {['Fast-Paced','Slow & Steady','Competitive','Collaborative','Innovative','Traditional','Formal','Casual','Results-Driven','Process-Oriented','Mission-Driven','Profit-Focused','Work Hard Play Hard','Work-Life Balance','Hierarchical','Flat Structure','Political','Meritocratic','Inclusive','Transparent','Micromanaging','Autonomous','Supportive','Sink or Swim','Learning Culture','Startup Vibes','Corporate Feel','Family-Like','Toxic','Healthy','Burnout Culture'].map(culture => (
                 <button key={culture} onClick={() => toggleJobArrayItem(index, 'companyCulture', culture, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(job.companyCulture || []).includes(culture) ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{culture}</button>
               ))}
@@ -23524,16 +23632,16 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
           <h4 className="font-mono text-sm font-bold text-pink-800 mb-3">🌟 Origens da Carreira</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Sonho de Infância — O que queria ser quando crescesse?</label>
-              <input type="text" value={data.career?.childhoodDream || ''} onChange={(e) => update('career', 'childhoodDream', e.target.value)} placeholder="Ex: Astronauta, médico, jogador de futebol, bombeiro..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              <label className={STYLES.LABEL}>Sonho de Infância — O que queria ser quando crescesse?</label>
+              <input type="text" value={data.career?.childhoodDream || ''} onChange={(e) => update('career', 'childhoodDream', e.target.value)} placeholder="e.g. Astronaut, doctor, soccer player, firefighter..." className={STYLES.INPUT} />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Como Entrou na Carreira Atual?</label>
-                <select value={data.career?.careerEntry || ''} onChange={(e) => update('career', 'careerEntry', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Como Entrou na Carreira Atual?</label>
+                <select value={data.career?.careerEntry || ''} onChange={(e) => update('career', 'careerEntry', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="planned">Planned — Sempre soube o que queria</option>
                   <option value="education">Education — Natural da formação</option>
@@ -23550,14 +23658,14 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Primeiro Emprego</label>
-                <input type="text" value={data.career?.firstJob || ''} onChange={(e) => update('career', 'firstJob', e.target.value)} placeholder="Ex: Estagiário em banco, garçom, babá..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Primeiro Emprego</label>
+                <input type="text" value={data.career?.firstJob || ''} onChange={(e) => update('career', 'firstJob', e.target.value)} placeholder="e.g. Bank intern, waiter, babysitter..." className={STYLES.INPUT} />
               </div>
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Empregos/Cargos Anteriores Relevantes</label>
-              <textarea value={data.career?.previousJobs || ''} onChange={(e) => update('career', 'previousJobs', e.target.value)} placeholder="Liste cargos anteriores importantes, empresas, e quanto tempo ficou..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+              <label className={STYLES.LABEL}>Empregos/Cargos Anteriores Relevantes</label>
+              <textarea value={data.career?.previousJobs || ''} onChange={(e) => update('career', 'previousJobs', e.target.value)} placeholder="Liste cargos anteriores importantes, empresas, e quanto tempo ficou..." className={`${STYLES.TEXTAREA} h-20`} />
             </div>
           </div>
         </div>
@@ -23566,11 +23674,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
           <h4 className="font-mono text-sm font-bold text-indigo-800 mb-3">📊 Trajetória & Padrões</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Anos de Experiência Total</label>
-                <select value={data.career?.totalExperience || ''} onChange={(e) => update('career', 'totalExperience', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Anos de Experiência Total</label>
+                <select value={data.career?.totalExperience || ''} onChange={(e) => update('career', 'totalExperience', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="0">Sem experiência</option>
                   <option value="less-1">Menos de 1 ano</option>
@@ -23584,8 +23692,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Padrão de Carreira</label>
-                <select value={data.career?.careerPattern || ''} onChange={(e) => update('career', 'careerPattern', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Padrão de Carreira</label>
+                <select value={data.career?.careerPattern || ''} onChange={(e) => update('career', 'careerPattern', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="linear-up">Linear Up — Crescimento constante</option>
                   <option value="meteoric">Meteoric Rise — Subiu muito rápido</option>
@@ -23606,14 +23714,14 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maior Conquista Profissional</label>
-                <input type="text" value={data.career?.biggestAchievement || ''} onChange={(e) => update('career', 'biggestAchievement', e.target.value)} placeholder="Ex: Promovido a diretor aos 30, fundou empresa de sucesso..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Maior Conquista Profissional</label>
+                <input type="text" value={data.career?.biggestAchievement || ''} onChange={(e) => update('career', 'biggestAchievement', e.target.value)} placeholder="Ex: Promovido a diretor aos 30, fundou empresa de sucesso..." className={STYLES.INPUT} />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Maior Fracasso/Desafio Profissional</label>
-                <input type="text" value={data.career?.biggestSetback || ''} onChange={(e) => update('career', 'biggestSetback', e.target.value)} placeholder="Ex: Demitido, empresa faliu, projeto fracassou..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+                <label className={STYLES.LABEL}>Maior Fracasso/Desafio Profissional</label>
+                <input type="text" value={data.career?.biggestSetback || ''} onChange={(e) => update('career', 'biggestSetback', e.target.value)} placeholder="Ex: Demitido, empresa faliu, projeto fracassou..." className={STYLES.INPUT} />
               </div>
             </div>
           </div>
@@ -23623,11 +23731,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
           <h4 className="font-mono text-sm font-bold text-green-800 mb-3">🏆 Reputação Profissional</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Status na Indústria</label>
-                <select value={data.career?.industryStatus || ''} onChange={(e) => update('career', 'industryStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Status na Indústria</label>
+                <select value={data.career?.industryStatus || ''} onChange={(e) => update('career', 'industryStatus', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="legend">Legend — Lendário, referência histórica</option>
                   <option value="thought-leader">Thought Leader — Líder de opinião</option>
@@ -23644,8 +23752,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Network Profissional</label>
-                <select value={data.career?.networkStrength || ''} onChange={(e) => update('career', 'networkStrength', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Network Profissional</label>
+                <select value={data.career?.networkStrength || ''} onChange={(e) => update('career', 'networkStrength', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="exceptional">Exceptional — Conhece todo mundo</option>
                   <option value="strong">Strong — Boa rede de contatos</option>
@@ -23660,7 +23768,7 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Conhecido(a) por... (até 4)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Technical Excellence','Leadership','Innovation','Creativity','Problem-Solving','Communication','Negotiation','Sales Skills','Strategic Thinking','Attention to Detail','Speed/Efficiency','Quality Work','Reliability','Meeting Deadlines','Team Building','Mentoring','Networking','Public Speaking','Writing','Design Sense','Data-Driven','Customer Focus','Business Acumen','Industry Knowledge','Political Savvy','Crisis Management','Turnaround Expert','Growth Hacker','Deal Maker','Visionary','Executor','Perfectionist','Workaholic','Work-Life Balance','Being Nice','Being Tough','Being Fair','Being Funny','Being Controversial','Being Difficult','Being Genius','Being Lucky'].map(rep => (
                   <button key={rep} onClick={() => toggleArrayItem('career', 'knownFor', rep, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.career?.knownFor || []).includes(rep) ? 'bg-green-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{rep}</button>
                 ))}
@@ -23673,11 +23781,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">🎯 Ambições & Futuro</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ambição de Carreira</label>
-                <select value={data.career?.careerAmbition || ''} onChange={(e) => update('career', 'careerAmbition', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Ambição de Carreira</label>
+                <select value={data.career?.careerAmbition || ''} onChange={(e) => update('career', 'careerAmbition', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="ceo">CEO/Top Executive — Quer chegar ao topo</option>
                   <option value="founder">Founder — Quer ter próprio negócio</option>
@@ -23698,8 +23806,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Atitude sobre Carreira</label>
-                <select value={data.career?.careerAttitude || ''} onChange={(e) => update('career', 'careerAttitude', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Atitude sobre Carreira</label>
+                <select value={data.career?.careerAttitude || ''} onChange={(e) => update('career', 'careerAttitude', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="passionate">Passionate — Ama o que faz</option>
                   <option value="driven">Driven — Muito motivado</option>
@@ -23717,13 +23825,13 @@ const OccupationContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Cargo/Posição dos Sonhos</label>
-              <input type="text" value={data.career?.dreamPosition || ''} onChange={(e) => update('career', 'dreamPosition', e.target.value)} placeholder="Ex: CEO de empresa Fortune 500, artista independente, aposentado numa praia..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+              <label className={STYLES.LABEL}>Cargo/Posição dos Sonhos</label>
+              <input type="text" value={data.career?.dreamPosition || ''} onChange={(e) => update('career', 'dreamPosition', e.target.value)} placeholder="Ex: CEO de empresa Fortune 500, artista independente, aposentado numa praia..." className={STYLES.INPUT} />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Plano de 5 Anos</label>
-              <textarea value={data.career?.fiveYearPlan || ''} onChange={(e) => update('career', 'fiveYearPlan', e.target.value)} placeholder="O que espera estar fazendo em 5 anos? Tem planos concretos?" className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-16 resize-none" />
+              <label className={STYLES.LABEL}>Plano de 5 Anos</label>
+              <textarea value={data.career?.fiveYearPlan || ''} onChange={(e) => update('career', 'fiveYearPlan', e.target.value)} placeholder="O que espera estar fazendo em 5 anos? Tem planos concretos?" className={`${STYLES.TEXTAREA} h-16`} />
             </div>
           </div>
         </div>
@@ -23741,8 +23849,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         {/* HARD SKILLS */}
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">💻 Hard Skills (até 10)</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades técnicas e conhecimentos específicos.</p>
-          <div className="flex flex-wrap gap-2">
+          <p className={STYLES.SUBTITLE}>Habilidades técnicas e conhecimentos específicos.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Programming/Coding','Python','JavaScript','Java','C++','C#','Ruby','Go','Rust','Swift','Kotlin','PHP','SQL','R','MATLAB','HTML/CSS','React','Angular','Vue.js','Node.js','Django','Flask','Spring','.NET','Machine Learning','Deep Learning','Data Science','Data Analysis','Data Visualization','Statistics','Big Data','Cloud Computing','AWS','Azure','GCP','DevOps','CI/CD','Docker','Kubernetes','Linux/Unix','Networking','Cybersecurity','Database Management','System Administration','Mobile Development','iOS Development','Android Development','Web Development','Frontend Development','Backend Development','Full-Stack Development','API Development','Microservices','Blockchain','Smart Contracts','Game Development','Unity','Unreal Engine','3D Modeling','CAD','AutoCAD','SolidWorks','Revit','BIM','GIS','Photoshop','Illustrator','InDesign','Figma','Sketch','After Effects','Premiere Pro','Final Cut','Video Editing','Audio Production','Motion Graphics','UI Design','UX Design','Graphic Design','Industrial Design','Product Design','Interior Design','Architecture','Fashion Design','Animation','Photography','Videography','Writing','Copywriting','Technical Writing','Content Writing','Journalism','Editing','Proofreading','Translation','SEO','SEM','Google Ads','Facebook Ads','Social Media Marketing','Email Marketing','Content Marketing','Marketing Analytics','CRM','Salesforce','HubSpot','SAP','Oracle','Tableau','Power BI','Excel Advanced','Financial Modeling','Accounting','Bookkeeping','Auditing','Tax Preparation','Financial Analysis','Investment Analysis','Risk Management','Project Management','Agile/Scrum','Waterfall','PRINCE2','PMP','Six Sigma','Lean','Quality Assurance','Testing','Research','Lab Techniques','Scientific Writing','Clinical Research','Legal Research','Market Research','User Research','Surveying','Interviewing','Medical/Clinical Skills','Nursing','Surgery','Diagnosis','Pharmacy','Physical Therapy','Mental Health Counseling','Teaching','Curriculum Design','Training','Public Speaking','Presentation','Negotiation','Sales','Cold Calling','Account Management','Customer Service','Technical Support','Event Planning','Hospitality','Cooking/Culinary','Baking','Bartending','Barista','Driving','Heavy Machinery','Welding','Electrical Work','Plumbing','Carpentry','HVAC','Masonry','Landscaping','Farming','Animal Care','Music Performance','Music Production','Sound Engineering','Acting','Dancing','Sports Coaching','Personal Training','Massage Therapy','Hair Styling','Makeup Artistry','Tailoring/Sewing','Jewelry Making','Woodworking','Metalworking','Foreign Languages','Sign Language','Braille','First Aid/CPR','Security','Investigation','Military Training','Piloting','Navigation','Seamanship'].map(skill => (
               <button key={skill} onClick={() => toggleArrayItem('skills', 'hardSkills', skill, 10)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.skills?.hardSkills || []).includes(skill) ? 'bg-blue-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{skill}</button>
             ))}
@@ -23752,8 +23860,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         {/* SOFT SKILLS */}
         <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
           <h4 className="font-mono text-sm font-bold text-green-800 mb-3">🤝 Soft Skills (até 8)</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Habilidades interpessoais e comportamentais.</p>
-          <div className="flex flex-wrap gap-2">
+          <p className={STYLES.SUBTITLE}>Habilidades interpessoais e comportamentais.</p>
+          <div className={STYLES.FLEX_WRAP}>
             {['Communication','Written Communication','Verbal Communication','Active Listening','Public Speaking','Presentation Skills','Storytelling','Persuasion','Negotiation','Conflict Resolution','Diplomacy','Empathy','Emotional Intelligence','Self-Awareness','Self-Regulation','Social Skills','Relationship Building','Networking','Collaboration','Teamwork','Leadership','People Management','Mentoring','Coaching','Delegation','Motivation','Inspiration','Decision Making','Problem Solving','Critical Thinking','Analytical Thinking','Strategic Thinking','Creative Thinking','Innovation','Lateral Thinking','Systems Thinking','Adaptability','Flexibility','Resilience','Stress Management','Time Management','Organization','Prioritization','Planning','Goal Setting','Self-Discipline','Focus','Attention to Detail','Initiative','Proactivity','Self-Motivation','Drive','Ambition','Work Ethic','Reliability','Accountability','Integrity','Honesty','Ethics','Professionalism','Customer Focus','Service Orientation','Cultural Sensitivity','Diversity Awareness','Inclusivity','Patience','Tolerance','Open-Mindedness','Curiosity','Learning Agility','Growth Mindset','Coachability','Feedback Reception','Self-Improvement','Positive Attitude','Optimism','Enthusiasm','Energy','Charisma','Influence','Confidence','Assertiveness','Courage','Risk-Taking','Entrepreneurial Mindset','Business Acumen','Political Savvy','Situational Awareness','Reading the Room','Humor','Wit','Grace Under Pressure','Crisis Management','Resourcefulness','Pragmatism','Common Sense','Street Smarts','Intuition','Instinct','Vision','Big Picture Thinking','Detail Orientation','Follow-Through','Execution','Results Orientation','Quality Focus','Perfectionism','Speed','Efficiency','Multitasking','Single-Tasking','Deep Work','Boundary Setting','Work-Life Balance','Self-Care','Mindfulness','Presence'].map(skill => (
               <button key={skill} onClick={() => toggleArrayItem('skills', 'softSkills', skill, 8)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.skills?.softSkills || []).includes(skill) ? 'bg-green-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{skill}</button>
             ))}
@@ -23764,21 +23872,21 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">📊 Níveis de Competência</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Competência Técnica Geral</label>
+              <label className={STYLES.LABEL}>Competência Técnica Geral</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Iniciante</span><span>Expert Mundial</span></div>
               <input type="range" min="1" max="9" value={data.skills?.technicalLevel || 5} onChange={(e) => update('skills', 'technicalLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 via-yellow-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Competência Interpessoal</label>
+              <label className={STYLES.LABEL}>Competência Interpessoal</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Difícil de lidar</span><span>Extremamente hábil</span></div>
               <input type="range" min="1" max="9" value={data.skills?.interpersonalLevel || 5} onChange={(e) => update('skills', 'interpersonalLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 via-yellow-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Competência de Liderança</label>
+              <label className={STYLES.LABEL}>Competência de Liderança</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Não lidera</span><span>Líder nato</span></div>
               <input type="range" min="1" max="9" value={data.skills?.leadershipLevel || 5} onChange={(e) => update('skills', 'leadershipLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 via-yellow-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
             </div>
@@ -23786,14 +23894,14 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* HIDDEN TALENTS & WEAKNESSES */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">✨ Talentos Ocultos</h4>
-            <textarea value={data.skills?.hiddenTalents || ''} onChange={(e) => update('skills', 'hiddenTalents', e.target.value)} placeholder="Habilidades que poucos sabem que tem, talentos subutilizados..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        <div className={STYLES.GRID_2}>
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>✨ Talentos Ocultos</h4>
+            <textarea value={data.skills?.hiddenTalents || ''} onChange={(e) => update('skills', 'hiddenTalents', e.target.value)} placeholder="Habilidades que poucos sabem que tem, talentos subutilizados..." className={`${STYLES.TEXTAREA} h-24`} />
           </div>
-          <div className="border border-gray-200 rounded-sm p-4">
-            <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">⚠️ Fraquezas & Gaps</h4>
-            <textarea value={data.skills?.weaknesses || ''} onChange={(e) => update('skills', 'weaknesses', e.target.value)} placeholder="Áreas onde precisa melhorar, gaps de conhecimento, pontos fracos conhecidos..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+          <div className={STYLES.SECTION}>
+            <h4 className={STYLES.SECTION_TITLE}>⚠️ Fraquezas & Gaps</h4>
+            <textarea value={data.skills?.weaknesses || ''} onChange={(e) => update('skills', 'weaknesses', e.target.value)} placeholder="Areas for improvement, knowledge gaps, known weaknesses..." className={`${STYLES.TEXTAREA} h-24`} />
           </div>
         </div>
       </div>
@@ -23811,31 +23919,31 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">😊 Satisfação no Trabalho</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Satisfação Geral com o Trabalho</label>
+              <label className={STYLES.LABEL}>Satisfação Geral com o Trabalho</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>😫 Odeia</span><span>🤩 Ama</span></div>
               <input type="range" min="1" max="9" value={data.workLife?.jobSatisfaction || 5} onChange={(e) => update('workLife', 'jobSatisfaction', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-400 via-yellow-400 to-green-400 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Com o Salário</label>
+                <label className={STYLES.LABEL}>Com o Salário</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Insatisfeito</span><span>Muito satisfeito</span></div>
                 <input type="range" min="1" max="9" value={data.workLife?.salarySatisfaction || 5} onChange={(e) => update('workLife', 'salarySatisfaction', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Com o Chefe</label>
+                <label className={STYLES.LABEL}>Com o Chefe</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Péssimo</span><span>Excelente</span></div>
                 <input type="range" min="1" max="9" value={data.workLife?.bossSatisfaction || 5} onChange={(e) => update('workLife', 'bossSatisfaction', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Com os Colegas</label>
+                <label className={STYLES.LABEL}>Com os Colegas</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Tóxico</span><span>Adoráveis</span></div>
                 <input type="range" min="1" max="9" value={data.workLife?.colleaguesSatisfaction || 5} onChange={(e) => update('workLife', 'colleaguesSatisfaction', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Com o Trabalho em Si</label>
+                <label className={STYLES.LABEL}>Com o Trabalho em Si</label>
                 <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>Tedioso</span><span>Apaixonante</span></div>
                 <input type="range" min="1" max="9" value={data.workLife?.workContentSatisfaction || 5} onChange={(e) => update('workLife', 'workContentSatisfaction', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 to-green-400 rounded-lg appearance-none cursor-pointer" />
               </div>
@@ -23843,7 +23951,7 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Maiores Frustrações no Trabalho (até 4)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Low Pay','No Growth','Bad Boss','Toxic Coworkers','Boring Work','Too Much Work','Too Little Work','No Recognition','Office Politics','Micromanagement','No Autonomy','Poor Communication','Unclear Expectations','Constant Change','No Change','Bad Culture','Long Hours','Commute','No Remote Option','Too Much Remote','No Benefits','Job Insecurity','Ethical Concerns','Meaningless Work','Too Much Stress','No Challenge','Too Challenging','Work-Life Imbalance','No Flexibility','Bureaucracy','Bad Tools/Tech','Physical Conditions','Discrimination','Harassment','No Friends at Work','Loneliness','None - Happy'].map(frustration => (
                   <button key={frustration} onClick={() => toggleArrayItem('workLife', 'frustrations', frustration, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.workLife?.frustrations || []).includes(frustration) ? 'bg-red-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{frustration}</button>
                 ))}
@@ -23856,9 +23964,9 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
           <h4 className="font-mono text-sm font-bold text-green-800 mb-3">⚖️ Equilíbrio Vida-Trabalho</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Work-Life Balance Atual</label>
+              <label className={STYLES.LABEL}>Work-Life Balance Atual</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>🔥 Só trabalho</span><span>🏖️ Só vida pessoal</span></div>
               <input type="range" min="1" max="9" value={data.workLife?.workLifeBalance || 5} onChange={(e) => update('workLife', 'workLifeBalance', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-orange-400 via-green-400 to-blue-400 rounded-lg appearance-none cursor-pointer" />
               <p className="font-mono text-[9px] text-gray-500 mt-1 text-center italic">
@@ -23872,10 +23980,10 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Leva Trabalho para Casa?</label>
-                <select value={data.workLife?.workAtHome || ''} onChange={(e) => update('workLife', 'workAtHome', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Leva Trabalho para Casa?</label>
+                <select value={data.workLife?.workAtHome || ''} onChange={(e) => update('workLife', 'workAtHome', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="never">Never — Separa completamente</option>
                   <option value="rarely">Rarely — Só em emergências</option>
@@ -23886,8 +23994,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Consegue Desconectar?</label>
-                <select value={data.workLife?.abilityToDisconnect || ''} onChange={(e) => update('workLife', 'abilityToDisconnect', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Consegue Desconectar?</label>
+                <select value={data.workLife?.abilityToDisconnect || ''} onChange={(e) => update('workLife', 'abilityToDisconnect', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="excellent">Excellent — Desliga completamente fora do horário</option>
                   <option value="good">Good — Consegue desconectar bem</option>
@@ -23900,7 +24008,7 @@ const OccupationContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Nível de Stress no Trabalho</label>
+              <label className={STYLES.LABEL}>Nível de Stress no Trabalho</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>😌 Zero stress</span><span>🤯 Burnout</span></div>
               <input type="range" min="1" max="9" value={data.workLife?.stressLevel || 5} onChange={(e) => update('workLife', 'stressLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 rounded-lg appearance-none cursor-pointer" />
             </div>
@@ -23911,11 +24019,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
           <h4 className="font-mono text-sm font-bold text-purple-800 mb-3">👥 Relacionamentos no Trabalho</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relação com Chefe/Supervisor</label>
-                <select value={data.workLife?.bossRelationship || ''} onChange={(e) => update('workLife', 'bossRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Relação com Chefe/Supervisor</label>
+                <select value={data.workLife?.bossRelationship || ''} onChange={(e) => update('workLife', 'bossRelationship', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="mentor">Mentor — Chefe é mentor e protetor</option>
                   <option value="friend">Friendly — Relação de amizade</option>
@@ -23929,8 +24037,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Relação com Colegas</label>
-                <select value={data.workLife?.colleagueRelationship || ''} onChange={(e) => update('workLife', 'colleagueRelationship', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Relação com Colegas</label>
+                <select value={data.workLife?.colleagueRelationship || ''} onChange={(e) => update('workLife', 'colleagueRelationship', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="best-friends">Best Friends — Melhores amigos</option>
                   <option value="friends">Friends — São amigos</option>
@@ -23948,7 +24056,7 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Papel Social no Trabalho (até 3)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Leader','Follower','Mediator','Mentor','Mentee','Social Butterfly','Loner','Gossip','Confidant','Comedian','Serious One','Go-To Expert','Newbie','Veteran','Office Mom/Dad','Rebel','Yes-Person','Devil\'s Advocate','Peacemaker','Instigator','Hard Worker','Slacker','Overachiever','Underachiever','Teacher','Student','Innovator','Maintainer','Cheerleader','Critic','Invisible','Center of Attention','Political Player','Neutral Party','Union Rep','Outsider','Insider','Bridge Builder','Gatekeeper'].map(role => (
                   <button key={role} onClick={() => toggleArrayItem('workLife', 'socialRole', role, 3)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.workLife?.socialRole || []).includes(role) ? 'bg-purple-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{role}</button>
                 ))}
@@ -23956,8 +24064,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Amigos no Trabalho</label>
-              <select value={data.workLife?.workFriends || ''} onChange={(e) => update('workLife', 'workFriends', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Amigos no Trabalho</label>
+              <select value={data.workLife?.workFriends || ''} onChange={(e) => update('workLife', 'workFriends', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="best-friends">Best Friends — Melhores amigos são do trabalho</option>
                 <option value="many">Many — Vários amigos do trabalho</option>
@@ -23985,11 +24093,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-green-200 rounded-sm p-4 bg-green-50/30">
           <h4 className="font-mono text-sm font-bold text-green-800 mb-3">💵 Renda & Patrimônio</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Faixa de Renda (relativa ao custo de vida local)</label>
-                <select value={data.financial?.incomeLevel || ''} onChange={(e) => update('financial', 'incomeLevel', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Faixa de Renda (relativa ao custo de vida local)</label>
+                <select value={data.financial?.incomeLevel || ''} onChange={(e) => update('financial', 'incomeLevel', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="poverty">Poverty — Abaixo da linha da pobreza</option>
                   <option value="struggling">Struggling — Dificuldade para sobreviver</option>
@@ -24008,8 +24116,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Fonte Principal de Renda</label>
-                <select value={data.financial?.incomeSource || ''} onChange={(e) => update('financial', 'incomeSource', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Fonte Principal de Renda</label>
+                <select value={data.financial?.incomeSource || ''} onChange={(e) => update('financial', 'incomeSource', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="salary">Salary — Salário de emprego</option>
                   <option value="hourly">Hourly Wage — Por hora</option>
@@ -24037,10 +24145,10 @@ const OccupationContent = ({ data, updateData, subtab }) => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Situação de Patrimônio</label>
-                <select value={data.financial?.wealthStatus || ''} onChange={(e) => update('financial', 'wealthStatus', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Situação de Patrimônio</label>
+                <select value={data.financial?.wealthStatus || ''} onChange={(e) => update('financial', 'wealthStatus', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="negative">Negative Net Worth — Deve mais do que tem</option>
                   <option value="zero">Zero — Empata</option>
@@ -24053,8 +24161,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estabilidade de Renda</label>
-                <select value={data.financial?.incomeStability || ''} onChange={(e) => update('financial', 'incomeStability', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Estabilidade de Renda</label>
+                <select value={data.financial?.incomeStability || ''} onChange={(e) => update('financial', 'incomeStability', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="rock-solid">Rock Solid — Extremamente estável</option>
                   <option value="stable">Stable — Estável e previsível</option>
@@ -24075,11 +24183,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
           <h4 className="font-mono text-sm font-bold text-blue-800 mb-3">🧠 Relação com Dinheiro</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Atitude Geral com Dinheiro</label>
-                <select value={data.financial?.moneyAttitude || ''} onChange={(e) => update('financial', 'moneyAttitude', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Atitude Geral com Dinheiro</label>
+                <select value={data.financial?.moneyAttitude || ''} onChange={(e) => update('financial', 'moneyAttitude', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="obsessed">Obsessed — Dinheiro é tudo</option>
                   <option value="motivated">Motivated — Dinheiro é grande motivador</option>
@@ -24095,8 +24203,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Estilo de Gastar</label>
-                <select value={data.financial?.spendingStyle || ''} onChange={(e) => update('financial', 'spendingStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Estilo de Gastar</label>
+                <select value={data.financial?.spendingStyle || ''} onChange={(e) => update('financial', 'spendingStyle', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="extreme-saver">Extreme Saver — Não gasta quase nada</option>
                   <option value="frugal">Frugal — Muito econômico</option>
@@ -24115,13 +24223,13 @@ const OccupationContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Ansiedade Financeira</label>
+              <label className={STYLES.LABEL}>Ansiedade Financeira</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>😌 Zero preocupação</span><span>😰 Pânico constante</span></div>
               <input type="range" min="1" max="9" value={data.financial?.financialAnxiety || 5} onChange={(e) => update('financial', 'financialAnxiety', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-green-400 via-yellow-400 to-red-500 rounded-lg appearance-none cursor-pointer" />
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Importância do Dinheiro vs Outras Coisas</label>
+              <label className={STYLES.LABEL}>Importância do Dinheiro vs Outras Coisas</label>
               <div className="flex justify-between font-mono text-[9px] text-gray-400"><span>💭 Dinheiro irrelevante</span><span>💰 Dinheiro é prioridade</span></div>
               <input type="range" min="1" max="9" value={data.financial?.moneyImportance || 5} onChange={(e) => update('financial', 'moneyImportance', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-blue-400 to-yellow-500 rounded-lg appearance-none cursor-pointer" />
             </div>
@@ -24132,11 +24240,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
           <h4 className="font-mono text-sm font-bold text-amber-800 mb-3">📊 Hábitos Financeiros</h4>
           
-          <div className="space-y-4">
+          <div className={STYLES.SPACE_Y}>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Faz Orçamento?</label>
-                <select value={data.financial?.budgeting || ''} onChange={(e) => update('financial', 'budgeting', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Faz Orçamento?</label>
+                <select value={data.financial?.budgeting || ''} onChange={(e) => update('financial', 'budgeting', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="meticulous">Meticulous — Cada centavo rastreado</option>
                   <option value="detailed">Detailed — Orçamento detalhado</option>
@@ -24148,8 +24256,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Hábito de Poupar</label>
-                <select value={data.financial?.savingHabit || ''} onChange={(e) => update('financial', 'savingHabit', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Hábito de Poupar</label>
+                <select value={data.financial?.savingHabit || ''} onChange={(e) => update('financial', 'savingHabit', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="aggressive">Aggressive — Poupa muito (30%+)</option>
                   <option value="strong">Strong — Poupa bem (15-30%)</option>
@@ -24161,8 +24269,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Conhecimento Financeiro</label>
-                <select value={data.financial?.financialLiteracy || ''} onChange={(e) => update('financial', 'financialLiteracy', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Conhecimento Financeiro</label>
+                <select value={data.financial?.financialLiteracy || ''} onChange={(e) => update('financial', 'financialLiteracy', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="expert">Expert — Expertise profissional</option>
                   <option value="sophisticated">Sophisticated — Muito conhecimento</option>
@@ -24177,7 +24285,7 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
             <div>
               <label className="font-mono text-[10px] text-gray-600 mb-2 block">Onde Gasta Mais (até 4)</label>
-              <div className="flex flex-wrap gap-2">
+              <div className={STYLES.FLEX_WRAP}>
                 {['Housing/Rent','Mortgage','Food/Groceries','Restaurants/Dining','Transportation','Car Expenses','Public Transit','Health/Medical','Insurance','Education','Student Loans','Childcare','Entertainment','Streaming Services','Gaming','Hobbies','Travel/Vacation','Shopping/Clothes','Electronics/Gadgets','Beauty/Personal Care','Fitness/Gym','Alcohol/Bars','Coffee','Pets','Gifts','Charity/Donations','Investments','Savings','Debt Payments','Credit Card Interest','Utilities','Phone/Internet','Subscriptions','Books/Courses','Art/Collectibles','Home Decor','Garden','Tools/Equipment','Experiences','Concerts/Events','Sports','Gambling','Vices','Family Support','Alimony/Child Support','Taxes','Legal Fees','Business Expenses','Miscellaneous'].map(expense => (
                   <button key={expense} onClick={() => toggleArrayItem('financial', 'majorExpenses', expense, 4)} className={`px-2 py-1 rounded-full font-mono text-[9px] transition-all ${(data.financial?.majorExpenses || []).includes(expense) ? 'bg-amber-500 text-white' : 'bg-gray-100 hover:bg-gray-200'}`}>{expense}</button>
                 ))}
@@ -24190,11 +24298,11 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
           <h4 className="font-mono text-sm font-bold text-red-800 mb-3">⚠️ Dívidas & Problemas Financeiros</h4>
           
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.SPACE_Y}>
+            <div className={STYLES.GRID_2}>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Situação de Dívida</label>
-                <select value={data.financial?.debtSituation || ''} onChange={(e) => update('financial', 'debtSituation', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Situação de Dívida</label>
+                <select value={data.financial?.debtSituation || ''} onChange={(e) => update('financial', 'debtSituation', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="debt-free">Debt-Free — Sem nenhuma dívida</option>
                   <option value="mortgage-only">Mortgage Only — Só financiamento de imóvel</option>
@@ -24209,8 +24317,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
                 </select>
               </div>
               <div>
-                <label className="font-mono text-[10px] text-gray-600 mb-1 block">Histórico de Crédito</label>
-                <select value={data.financial?.creditHistory || ''} onChange={(e) => update('financial', 'creditHistory', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+                <label className={STYLES.LABEL}>Histórico de Crédito</label>
+                <select value={data.financial?.creditHistory || ''} onChange={(e) => update('financial', 'creditHistory', e.target.value)} className={STYLES.INPUT}>
                   <option value="">-- Selecione --</option>
                   <option value="excellent">Excellent — Score excelente</option>
                   <option value="good">Good — Bom histórico</option>
@@ -24224,8 +24332,8 @@ const OccupationContent = ({ data, updateData, subtab }) => {
             </div>
 
             <div>
-              <label className="font-mono text-[10px] text-gray-600 mb-1 block">Reserva de Emergência</label>
-              <select value={data.financial?.emergencyFund || ''} onChange={(e) => update('financial', 'emergencyFund', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+              <label className={STYLES.LABEL}>Reserva de Emergência</label>
+              <select value={data.financial?.emergencyFund || ''} onChange={(e) => update('financial', 'emergencyFund', e.target.value)} className={STYLES.INPUT}>
                 <option value="">-- Selecione --</option>
                 <option value="none">None — Nenhuma reserva</option>
                 <option value="less-1m">Less than 1 month — Menos de 1 mês de despesas</option>
@@ -24241,9 +24349,9 @@ const OccupationContent = ({ data, updateData, subtab }) => {
         </div>
 
         {/* FINANCIAL GOALS */}
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎯 Objetivos Financeiros</h4>
-          <textarea value={data.financial?.financialGoals || ''} onChange={(e) => update('financial', 'financialGoals', e.target.value)} placeholder="Quais são os objetivos financeiros? Comprar casa, aposentar cedo, pagar dívidas, viajar..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        <div className={STYLES.SECTION}>
+          <h4 className={STYLES.SECTION_TITLE}>🎯 Objetivos Financeiros</h4>
+          <textarea value={data.financial?.financialGoals || ''} onChange={(e) => update('financial', 'financialGoals', e.target.value)} placeholder="What are the financial goals? Buy a house, retire early, pay off debts, travel..." className={`${STYLES.TEXTAREA} h-20`} />
         </div>
       </div>
     ),
@@ -24251,8 +24359,9 @@ const OccupationContent = ({ data, updateData, subtab }) => {
 
   return sections[subtab] || sections[0];
 };
+const OccupationContent = memo(OccupationContentBase);
 
-const GenericTabContent = ({ tabId, data, updateData, subtab, subtabs }) => {
+const GenericTabContentBase = ({ tabId, data, updateData, subtab, subtabs }) => {
   return (
     <div className="text-center py-12">
       <div className="text-gray-300 mb-4">
@@ -24267,11 +24376,12 @@ const GenericTabContent = ({ tabId, data, updateData, subtab, subtabs }) => {
     </div>
   );
 };
+const GenericTabContent = memo(GenericTabContentBase);
 
 // ============================================================================
 // DATABASE CONTENT - Complete with subtabs
 // ============================================================================
-const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
+const DatabaseContentBase = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
   const [viewMode, setViewMode] = useState('visual');
   const [expandedSections, setExpandedSections] = useState({});
   const [searchTerm, setSearchTerm] = useState('');
@@ -24607,7 +24717,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
 
     // SUBTAB 1: Browse Data
     1: (
-      <div className="space-y-4">
+      <div className={STYLES.SPACE_Y}>
         <div className="bg-gradient-to-br from-teal-900 to-cyan-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">🔍 BROWSE DATA</h3>
           <p className="font-mono text-xs text-teal-200">Search and explore all character data.</p>
@@ -24968,7 +25078,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
           <div>
             <label className="block font-mono text-[10px] text-gray-500 mb-2">Personality Traits</label>
-            <div className="flex flex-wrap gap-2">
+            <div className={STYLES.FLEX_WRAP}>
               {characterData.psychology?.core?.personalityTraits?.length > 0 
                 ? characterData.psychology.core.personalityTraits.map((trait, i) => (
                     <span key={i} className="px-2 py-1 bg-blue-100 text-blue-700 rounded-sm font-mono text-xs">{trait}</span>
@@ -25218,11 +25328,12 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     </div>
   );
 };
+const DatabaseContent = memo(DatabaseContentBase);
 
 // ============================================================================
 // EXPORT CONTENT - Complete with multiple formats
 // ============================================================================
-const ExportContent = ({ characterData, onCopy, onDownload, updateData, subtab = 0 }) => {
+const ExportContentBase = ({ characterData, onCopy, onDownload, updateData, subtab = 0 }) => {
   const [exportFormat, setExportFormat] = useState('json');
   const [selectedSections, setSelectedSections] = useState(['all']);
   const [importText, setImportText] = useState('');
@@ -25628,7 +25739,7 @@ const ExportContent = ({ characterData, onCopy, onDownload, updateData, subtab =
         {/* TTS Platforms */}
         <div className="bg-white border border-gray-200 rounded-sm p-4">
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🎙️ Text-to-Speech Platforms</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             {/* ElevenLabs */}
             <div className="border border-purple-200 rounded-sm p-4 bg-purple-50/30">
               <div className="flex items-center gap-3 mb-3">
@@ -25684,7 +25795,7 @@ const ExportContent = ({ characterData, onCopy, onDownload, updateData, subtab =
         {/* RP Platforms */}
         <div className="bg-white border border-gray-200 rounded-sm p-4">
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">🎭 RP Platforms</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             {/* Kindroid */}
             <div className="border border-pink-200 rounded-sm p-4 bg-pink-50/30">
               <div className="flex items-center gap-3 mb-3">
@@ -25790,9 +25901,9 @@ const ExportContent = ({ characterData, onCopy, onDownload, updateData, subtab =
         {/* Documentation Formats */}
         <div className="bg-white border border-gray-200 rounded-sm p-4">
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📄 Documentation Formats</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className={STYLES.GRID_2}>
             {/* Markdown */}
-            <div className="border border-gray-200 rounded-sm p-4">
+            <div className={STYLES.SECTION}>
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-2xl">📋</span>
                 <div>
@@ -25817,7 +25928,7 @@ const ExportContent = ({ characterData, onCopy, onDownload, updateData, subtab =
             </div>
 
             {/* Directives */}
-            <div className="border border-gray-200 rounded-sm p-4">
+            <div className={STYLES.SECTION}>
               <div className="flex items-center gap-3 mb-3">
                 <span className="text-2xl">⚙️</span>
                 <div>
@@ -26309,6 +26420,7 @@ Created with Persona Loom v6 🎭`}
     </div>
   );
 };
+const ExportContent = memo(ExportContentBase);
 // ============================================================================
 // MAIN APP
 // ============================================================================
