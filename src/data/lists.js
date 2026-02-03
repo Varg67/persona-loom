@@ -1,0 +1,16 @@
+export const generationOptions = [
+  'Gen Beta (2025+)',
+  'Gen Alpha (2013-2024)',
+  'Zalpha ✦ (2010-2013)',
+  'Gen Z (1997-2012)',
+  'Zennial ✦ (1993-1998)',
+  'Millennial / Gen Y (1981-1996)',
+  'Xennial ✦ (1977-1983)',
+  'Gen X (1965-1980)',
+  'Generation Jones ✦ (1954-1965)',
+  'Baby Boomer (1946-1964)',
+  'Silent Generation (1928-1945)',
+  'Greatest Generation (1901-1927)',
+  'Lost Generation (1883-1900)',
+  'Victorian Era (pre-1883)',
+];
