@@ -970,7 +970,7 @@ const IdentityContent = ({ data, updateData, subtab }) => {
   ];
 
   const sections = {
-    0: ( // Core Identity
+    0: subtab === 0 && ( // Core Identity
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         <ArchiveInput label="First Name" value={data.core.firstName} onChange={(e) => update('core', 'firstName', e.target.value)} placeholder="Given name" />
         <ArchiveInput label="Middle Name(s)" value={data.core.middleName} onChange={(e) => update('core', 'middleName', e.target.value)} placeholder="Middle name(s)" />
@@ -981,7 +981,7 @@ const IdentityContent = ({ data, updateData, subtab }) => {
           options={['The Hero', 'The Mentor', 'The Outlaw', 'The Magician', 'The Lover', 'The Jester', 'The Everyman', 'The Caregiver', 'The Ruler', 'The Creator', 'The Innocent', 'The Sage', 'The Explorer']} />
       </div>
     ),
-    1: ( // Vital Statistics
+    1: subtab === 1 && ( // Vital Statistics
       <div className="space-y-6">
         {/* Roleplay Year - Important for generation calculation */}
         <div className="bg-amber-50 border border-amber-200 p-4 rounded-sm">
@@ -1185,7 +1185,7 @@ const IdentityContent = ({ data, updateData, subtab }) => {
         )}
       </div>
     ),
-    2: ( // Origins
+    2: subtab === 2 && ( // Origins
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         {/* Nationality - All countries organized by continent */}
         <div className="flex flex-col gap-1 mb-4">
@@ -1978,7 +1978,7 @@ const IdentityContent = ({ data, updateData, subtab }) => {
           options={['Only Child', 'Oldest Sibling', 'Middle Child', 'Youngest Sibling', 'Twin', 'Orphan', 'Adopted', 'Foster Child', 'Raised by Single Parent', 'Raised by Grandparents']} />
       </div>
     ),
-    3: ( // Cultural Background
+    3: subtab === 3 && ( // Cultural Background
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         {/* Primary Culture - Comprehensive dropdown */}
         <div className="flex flex-col gap-1 mb-4">
@@ -3565,7 +3565,7 @@ const IdentityContent = ({ data, updateData, subtab }) => {
     ),
   };
 
-  return sections[subtab] || sections[0];
+  return sections[subtab];
 };
 
 const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGender }) => {
@@ -3641,7 +3641,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
   ];
 
   const sections = {
-    0: (
+    0: subtab === 0 && (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-rose-900 mb-2">FACE — Complete Detail</h3>
@@ -3966,7 +3966,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
       </div>
     ),
 
-    1: (
+    1: subtab === 1 && (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">HAIR — Complete Detail</h3>
@@ -4452,7 +4452,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
       </div>
     ),
 
-    2: (
+    2: subtab === 2 && (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-emerald-900 mb-2">BODY — Physical Structure</h3>
@@ -5267,7 +5267,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
       </div>
     ),
 
-    3: (
+    3: subtab === 3 && (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">STYLE & PRESENTATION — Complete</h3>
@@ -5855,7 +5855,7 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
     ),
   };
 
-  return sections[subtab] || sections[0];
+  return sections[subtab];
 };
 
 const PsychologyContent = ({ data, updateData, subtab }) => {
