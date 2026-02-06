@@ -1,0 +1,3 @@
+## 2024-05-23 - [Eager Evaluation of Tab Content]
+**Learning:** The application uses a pattern where all subtabs of a component are instantiated as a map `const sections = { 0: <JSX>, 1: <JSX> ... }` on every render. This causes eager evaluation of thousands of components (e.g., `<option>` in large lists) even for hidden subtabs. This is a significant bottleneck in monolithic components.
+**Action:** Use short-circuiting `key: activeTab === key && ( <JSX> )` to prevent React element creation for hidden tabs. This is a targeted optimization that avoids refactoring the entire component structure while yielding significant performance gains.
