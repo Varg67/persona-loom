@@ -1,0 +1,3 @@
+## 2026-02-07 - Monolithic Component Rendering
+**Learning:** The application uses a monolithic structure where tab content was defined in a large object (`subtabContent`), causing eager evaluation of all subtabs on every render, even for hidden tabs. This led to significant performance overhead, especially with heavy calculations like data traversal in the 'Database' tab.
+**Action:** Use conditional rendering (e.g., `switch` statement or functions) for tab content instead of object mapping to ensure only the active tab is evaluated. Extract inner components and helper functions to module scope to avoid re-creation on every render.
