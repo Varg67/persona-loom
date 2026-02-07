@@ -24218,6 +24218,209 @@ const GenericTabContent = ({ tabId, data, updateData, subtab, subtabs }) => {
 // ============================================================================
 // DATABASE CONTENT - Complete with subtabs
 // ============================================================================
+// Count fields per section
+const countSectionFields = (obj) => {
+  let filled = 0, total = 0;
+  const count = (o) => {
+    if (!o) return;
+    Object.values(o).forEach(v => {
+      if (typeof v === 'object' && v !== null && !Array.isArray(v)) count(v);
+      else {
+        total++;
+        if (Array.isArray(v)) { if (v.length > 0) filled++; }
+        else if (v !== '' && v !== null && v !== undefined && v !== 5) filled++;
+      }
+    });
+  };
+  count(obj);
+  return { filled, total, percent: total > 0 ? Math.round((filled / total) * 100) : 0 };
+};
+
+// Get filled fields from object
+const getFilledFields = (obj, prefix = '') => {
+  const fields = [];
+  if (!obj) return fields;
+
+  Object.entries(obj).forEach(([key, value]) => {
+    const fieldName = prefix ? `${prefix}.${key}` : key;
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      fields.push(...getFilledFields(value, fieldName));
+    } else if (Array.isArray(value)) {
+      if (value.length > 0) {
+        fields.push({ key: fieldName, value: value.join(', '), isArray: true, count: value.length });
+      }
+    } else if (value !== '' && value !== null && value !== undefined && value !== 5) {
+      fields.push({ key: fieldName, value: String(value) });
+    }
+  });
+  return fields;
+};
+
+// Get ALL fields (including empty)
+const getAllFields = (obj, prefix = '') => {
+  const fields = [];
+  if (!obj) return fields;
+
+  Object.entries(obj).forEach(([key, value]) => {
+    const fieldName = prefix ? `${prefix}.${key}` : key;
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      fields.push(...getAllFields(value, fieldName));
+    } else {
+      const isFilled = Array.isArray(value) ? value.length > 0 : (value !== '' && value !== null && value !== undefined && value !== 5);
+      fields.push({
+        key: fieldName,
+        value: Array.isArray(value) ? value.join(', ') : String(value || ''),
+        isFilled,
+        isArray: Array.isArray(value)
+      });
+    }
+  });
+  return fields;
+};
+
+// Format field name for display
+const formatFieldName = (key) => {
+  return key
+    .split('.')
+    .pop()
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
+    .replace(/([a-z])([A-Z])/g, '$1 $2');
+};
+
+const DatabaseQuickSummary = ({ characterData, totalStats }) => {
+  const identity = characterData.identity || {};
+  const core = identity.core || {};
+  const vitals = identity.vitals || {};
+  const psychology = characterData.psychology || {};
+
+  return (
+    <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-6 text-white mb-6">
+      <div className="flex items-start gap-6">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-3xl font-bold">
+          {core.firstName ? core.firstName.charAt(0).toUpperCase() : '?'}
+        </div>
+        <div className="flex-1">
+          <h2 className="text-2xl font-bold mb-1">
+            {core.firstName || 'Unnamed'} {core.middleName || ''} {core.lastName || ''}
+          </h2>
+          {core.nickname && <p className="text-slate-400 text-sm mb-2">"{core.nickname}"</p>}
+          <div className="flex flex-wrap gap-2 mt-2">
+            {vitals.age && (
+              <span className="px-2 py-1 bg-blue-500/20 rounded text-xs">{vitals.age} years old</span>
+            )}
+            {vitals.genderIdentity && (
+              <span className="px-2 py-1 bg-pink-500/20 rounded text-xs">{vitals.genderIdentity}</span>
+            )}
+            {vitals.nationality && (
+              <span className="px-2 py-1 bg-green-500/20 rounded text-xs">{vitals.nationality}</span>
+            )}
+            {psychology.core?.mbtiType && (
+              <span className="px-2 py-1 bg-purple-500/20 rounded text-xs">{psychology.core.mbtiType}</span>
+            )}
+            {characterData.occupation?.jobs?.[0]?.title && (
+              <span className="px-2 py-1 bg-amber-500/20 rounded text-xs">{characterData.occupation.jobs[0].title}</span>
+            )}
+          </div>
+        </div>
+        <div className="text-right">
+          <div className="text-4xl font-black">{totalStats.percent}%</div>
+          <div className="text-xs text-slate-400">Complete</div>
+          <div className="text-xs text-slate-500">{totalStats.filled}/{totalStats.total} fields</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const DatabaseSectionCard = ({ section, expandedSections, toggleSection, searchTerm }) => {
+  const stats = countSectionFields(section.data);
+  const fields = getFilledFields(section.data);
+  const isExpanded = expandedSections[section.id];
+
+  // Filter fields by search term
+  const filteredFields = searchTerm
+    ? fields.filter(f => f.key.toLowerCase().includes(searchTerm.toLowerCase()) || f.value.toLowerCase().includes(searchTerm.toLowerCase()))
+    : fields;
+
+  const colorClasses = {
+    blue: 'border-blue-300 bg-blue-50',
+    pink: 'border-pink-300 bg-pink-50',
+    purple: 'border-purple-300 bg-purple-50',
+    amber: 'border-amber-300 bg-amber-50',
+    orange: 'border-orange-300 bg-orange-50',
+    teal: 'border-teal-300 bg-teal-50',
+    red: 'border-red-300 bg-red-50',
+    fuchsia: 'border-fuchsia-300 bg-fuchsia-50',
+    green: 'border-green-300 bg-green-50',
+    indigo: 'border-indigo-300 bg-indigo-50',
+    cyan: 'border-cyan-300 bg-cyan-50',
+    yellow: 'border-yellow-300 bg-yellow-50',
+    rose: 'border-rose-300 bg-rose-50',
+    slate: 'border-slate-300 bg-slate-50',
+    emerald: 'border-emerald-300 bg-emerald-50',
+    violet: 'border-violet-300 bg-violet-50',
+  };
+
+  const headerColors = {
+    blue: 'bg-blue-600',
+    pink: 'bg-pink-600',
+    purple: 'bg-purple-600',
+    amber: 'bg-amber-600',
+    orange: 'bg-orange-600',
+    teal: 'bg-teal-600',
+    red: 'bg-red-600',
+    fuchsia: 'bg-fuchsia-600',
+    green: 'bg-green-600',
+    indigo: 'bg-indigo-600',
+    cyan: 'bg-cyan-600',
+    yellow: 'bg-yellow-600',
+    rose: 'bg-rose-600',
+    slate: 'bg-slate-600',
+    emerald: 'bg-emerald-600',
+    violet: 'bg-violet-600',
+  };
+
+  if (stats.filled === 0 && !searchTerm) return null;
+  if (searchTerm && filteredFields.length === 0) return null;
+
+  return (
+    <div className={`border-2 rounded-lg overflow-hidden ${colorClasses[section.color] || 'border-gray-300 bg-gray-50'}`}>
+      <button
+        onClick={() => toggleSection(section.id)}
+        className={`w-full flex items-center justify-between p-3 ${headerColors[section.color] || 'bg-gray-600'} text-white`}
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-lg">{section.icon}</span>
+          <span className="font-mono text-sm font-bold">{section.label}</span>
+          <span className="font-mono text-xs opacity-75">({filteredFields.length} fields)</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="w-24 h-2 bg-white/30 rounded-full overflow-hidden">
+            <div className="h-full bg-white" style={{ width: `${stats.percent}%` }} />
+          </div>
+          <span className="font-mono text-xs">{stats.percent}%</span>
+          <span className="text-lg">{isExpanded ? '▼' : '▶'}</span>
+        </div>
+      </button>
+
+      {isExpanded && (
+        <div className="p-4 space-y-2">
+          {filteredFields.map((field, idx) => (
+            <div key={idx} className="flex justify-between items-start py-1 border-b border-white/50 last:border-0">
+              <span className="font-mono text-xs text-gray-600">{formatFieldName(field.key)}</span>
+              <span className="font-mono text-xs text-gray-900 text-right max-w-[60%]">
+                {field.isArray && <span className="text-blue-600">[{field.count}] </span>}
+                {field.value.length > 100 ? field.value.substring(0, 100) + '...' : field.value}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
   const [viewMode, setViewMode] = useState('visual');
   const [expandedSections, setExpandedSections] = useState({});
@@ -24237,81 +24440,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
 
   const collapseAll = () => setExpandedSections({});
 
-  // Count fields per section
-  const countSectionFields = (obj) => {
-    let filled = 0, total = 0;
-    const count = (o) => {
-      if (!o) return;
-      Object.values(o).forEach(v => {
-        if (typeof v === 'object' && v !== null && !Array.isArray(v)) count(v);
-        else {
-          total++;
-          if (Array.isArray(v)) { if (v.length > 0) filled++; }
-          else if (v !== '' && v !== null && v !== undefined && v !== 5) filled++;
-        }
-      });
-    };
-    count(obj);
-    return { filled, total, percent: total > 0 ? Math.round((filled / total) * 100) : 0 };
-  };
+  // Total stats - MEMOIZED
+  const totalStats = React.useMemo(() => countSectionFields(characterData), [characterData]);
 
-  // Get filled fields from object
-  const getFilledFields = (obj, prefix = '') => {
-    const fields = [];
-    if (!obj) return fields;
-    
-    Object.entries(obj).forEach(([key, value]) => {
-      const fieldName = prefix ? `${prefix}.${key}` : key;
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        fields.push(...getFilledFields(value, fieldName));
-      } else if (Array.isArray(value)) {
-        if (value.length > 0) {
-          fields.push({ key: fieldName, value: value.join(', '), isArray: true, count: value.length });
-        }
-      } else if (value !== '' && value !== null && value !== undefined && value !== 5) {
-        fields.push({ key: fieldName, value: String(value) });
-      }
-    });
-    return fields;
-  };
-
-  // Get ALL fields (including empty)
-  const getAllFields = (obj, prefix = '') => {
-    const fields = [];
-    if (!obj) return fields;
-    
-    Object.entries(obj).forEach(([key, value]) => {
-      const fieldName = prefix ? `${prefix}.${key}` : key;
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        fields.push(...getAllFields(value, fieldName));
-      } else {
-        const isFilled = Array.isArray(value) ? value.length > 0 : (value !== '' && value !== null && value !== undefined && value !== 5);
-        fields.push({ 
-          key: fieldName, 
-          value: Array.isArray(value) ? value.join(', ') : String(value || ''),
-          isFilled,
-          isArray: Array.isArray(value)
-        });
-      }
-    });
-    return fields;
-  };
-
-  // Format field name for display
-  const formatFieldName = (key) => {
-    return key
-      .split('.')
-      .pop()
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, str => str.toUpperCase())
-      .replace(/([a-z])([A-Z])/g, '$1 $2');
-  };
-
-  // Total stats
-  const totalStats = countSectionFields(characterData);
-
-  // Section configurations
-  const sections = [
+  // Section configurations - MEMOIZED
+  const sections = React.useMemo(() => [
     { id: 'identity', label: 'Identity', icon: '🪪', color: 'blue', data: characterData.identity },
     { id: 'appearance', label: 'Appearance', icon: '👤', color: 'pink', data: characterData.appearance },
     { id: 'psychology', label: 'Psychology', icon: '🧠', color: 'purple', data: characterData.psychology },
@@ -24328,10 +24461,10 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     { id: 'secrets', label: 'Secrets', icon: '🔒', color: 'slate', data: characterData.secrets },
     { id: 'goals', label: 'Goals', icon: '🎯', color: 'emerald', data: characterData.goals },
     { id: 'directives', label: 'Directives', icon: '⚙️', color: 'violet', data: characterData.directives },
-  ];
+  ], [characterData]);
 
-  // Validation rules
-  const validationRules = [
+  // Validation rules - MEMOIZED
+  const validationRules = React.useMemo(() => [
     { id: 'name', label: 'Character has a name', check: () => !!characterData.identity?.core?.firstName, category: 'Required' },
     { id: 'age', label: 'Age is defined', check: () => !!characterData.identity?.vitals?.age, category: 'Required' },
     { id: 'gender', label: 'Gender identity set', check: () => !!characterData.identity?.vitals?.genderIdentity, category: 'Required' },
@@ -24344,156 +24477,23 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     { id: 'goals_defined', label: 'Character goals set', check: () => !!characterData.goals?.primary?.mainGoal, category: 'For Story' },
     { id: 'relationships', label: 'Relationships defined', check: () => (characterData.relationships?.npcs?.length || 0) > 0, category: 'For Story' },
     { id: 'occupation', label: 'Occupation defined', check: () => (characterData.occupation?.jobs?.length || 0) > 0, category: 'Optional' },
-  ];
-
-  // Quick summary card
-  const QuickSummary = () => {
-    const identity = characterData.identity || {};
-    const core = identity.core || {};
-    const vitals = identity.vitals || {};
-    const psychology = characterData.psychology || {};
-    
-    return (
-      <div className="bg-gradient-to-br from-slate-800 to-slate-900 rounded-lg p-6 text-white mb-6">
-        <div className="flex items-start gap-6">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-3xl font-bold">
-            {core.firstName ? core.firstName.charAt(0).toUpperCase() : '?'}
-          </div>
-          <div className="flex-1">
-            <h2 className="text-2xl font-bold mb-1">
-              {core.firstName || 'Unnamed'} {core.middleName || ''} {core.lastName || ''}
-            </h2>
-            {core.nickname && <p className="text-slate-400 text-sm mb-2">"{core.nickname}"</p>}
-            <div className="flex flex-wrap gap-2 mt-2">
-              {vitals.age && (
-                <span className="px-2 py-1 bg-blue-500/20 rounded text-xs">{vitals.age} years old</span>
-              )}
-              {vitals.genderIdentity && (
-                <span className="px-2 py-1 bg-pink-500/20 rounded text-xs">{vitals.genderIdentity}</span>
-              )}
-              {vitals.nationality && (
-                <span className="px-2 py-1 bg-green-500/20 rounded text-xs">{vitals.nationality}</span>
-              )}
-              {psychology.core?.mbtiType && (
-                <span className="px-2 py-1 bg-purple-500/20 rounded text-xs">{psychology.core.mbtiType}</span>
-              )}
-              {characterData.occupation?.jobs?.[0]?.title && (
-                <span className="px-2 py-1 bg-amber-500/20 rounded text-xs">{characterData.occupation.jobs[0].title}</span>
-              )}
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="text-4xl font-black">{totalStats.percent}%</div>
-            <div className="text-xs text-slate-400">Complete</div>
-            <div className="text-xs text-slate-500">{totalStats.filled}/{totalStats.total} fields</div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  // Section Card Component
-  const SectionCard = ({ section }) => {
-    const stats = countSectionFields(section.data);
-    const fields = getFilledFields(section.data);
-    const isExpanded = expandedSections[section.id];
-    
-    // Filter fields by search term
-    const filteredFields = searchTerm 
-      ? fields.filter(f => f.key.toLowerCase().includes(searchTerm.toLowerCase()) || f.value.toLowerCase().includes(searchTerm.toLowerCase()))
-      : fields;
-    
-    const colorClasses = {
-      blue: 'border-blue-300 bg-blue-50',
-      pink: 'border-pink-300 bg-pink-50',
-      purple: 'border-purple-300 bg-purple-50',
-      amber: 'border-amber-300 bg-amber-50',
-      orange: 'border-orange-300 bg-orange-50',
-      teal: 'border-teal-300 bg-teal-50',
-      red: 'border-red-300 bg-red-50',
-      fuchsia: 'border-fuchsia-300 bg-fuchsia-50',
-      green: 'border-green-300 bg-green-50',
-      indigo: 'border-indigo-300 bg-indigo-50',
-      cyan: 'border-cyan-300 bg-cyan-50',
-      yellow: 'border-yellow-300 bg-yellow-50',
-      rose: 'border-rose-300 bg-rose-50',
-      slate: 'border-slate-300 bg-slate-50',
-      emerald: 'border-emerald-300 bg-emerald-50',
-      violet: 'border-violet-300 bg-violet-50',
-    };
-
-    const headerColors = {
-      blue: 'bg-blue-600',
-      pink: 'bg-pink-600',
-      purple: 'bg-purple-600',
-      amber: 'bg-amber-600',
-      orange: 'bg-orange-600',
-      teal: 'bg-teal-600',
-      red: 'bg-red-600',
-      fuchsia: 'bg-fuchsia-600',
-      green: 'bg-green-600',
-      indigo: 'bg-indigo-600',
-      cyan: 'bg-cyan-600',
-      yellow: 'bg-yellow-600',
-      rose: 'bg-rose-600',
-      slate: 'bg-slate-600',
-      emerald: 'bg-emerald-600',
-      violet: 'bg-violet-600',
-    };
-
-    if (stats.filled === 0 && !searchTerm) return null;
-    if (searchTerm && filteredFields.length === 0) return null;
-
-    return (
-      <div className={`border-2 rounded-lg overflow-hidden ${colorClasses[section.color] || 'border-gray-300 bg-gray-50'}`}>
-        <button
-          onClick={() => toggleSection(section.id)}
-          className={`w-full flex items-center justify-between p-3 ${headerColors[section.color] || 'bg-gray-600'} text-white`}
-        >
-          <div className="flex items-center gap-2">
-            <span className="text-lg">{section.icon}</span>
-            <span className="font-mono text-sm font-bold">{section.label}</span>
-            <span className="font-mono text-xs opacity-75">({filteredFields.length} fields)</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-24 h-2 bg-white/30 rounded-full overflow-hidden">
-              <div className="h-full bg-white" style={{ width: `${stats.percent}%` }} />
-            </div>
-            <span className="font-mono text-xs">{stats.percent}%</span>
-            <span className="text-lg">{isExpanded ? '▼' : '▶'}</span>
-          </div>
-        </button>
-        
-        {isExpanded && (
-          <div className="p-4 space-y-2">
-            {filteredFields.map((field, idx) => (
-              <div key={idx} className="flex justify-between items-start py-1 border-b border-white/50 last:border-0">
-                <span className="font-mono text-xs text-gray-600">{formatFieldName(field.key)}</span>
-                <span className="font-mono text-xs text-gray-900 text-right max-w-[60%]">
-                  {field.isArray && <span className="text-blue-600">[{field.count}] </span>}
-                  {field.value.length > 100 ? field.value.substring(0, 100) + '...' : field.value}
-                </span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-  };
+  ], [characterData]);
 
   // ========== SUBTAB CONTENT ==========
-  const subtabContent = {
-    // SUBTAB 0: Overview
-    0: (
-      <div className="space-y-6">
-        <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-sm p-4 text-white">
-          <h3 className="font-mono text-sm font-bold mb-2">📊 DATABASE OVERVIEW</h3>
-          <p className="font-mono text-xs text-blue-200">Complete view of your character's data structure.</p>
-        </div>
+  const renderSubtabContent = () => {
+    switch (subtab) {
+      // SUBTAB 0: Overview
+      case 0:
+        return (
+          <div className="space-y-6">
+            <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-sm p-4 text-white">
+              <h3 className="font-mono text-sm font-bold mb-2">📊 DATABASE OVERVIEW</h3>
+              <p className="font-mono text-xs text-blue-200">Complete view of your character's data structure.</p>
+            </div>
 
-        <QuickSummary />
+            <DatabaseQuickSummary characterData={characterData} totalStats={totalStats} />
 
-        {/* Section completion grid */}
+            {/* Section completion grid */}
         <div className="bg-white border border-gray-200 rounded-sm p-4">
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📁 Section Completion</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -24550,10 +24550,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </button>
         </div>
       </div>
-    ),
+    );
 
     // SUBTAB 1: Browse Data
-    1: (
+    case 1:
+      return (
       <div className="space-y-4">
         <div className="bg-gradient-to-br from-teal-900 to-cyan-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">🔍 BROWSE DATA</h3>
@@ -24614,7 +24615,13 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
         {viewMode === 'visual' ? (
           <div className="space-y-3">
             {(selectedSection === 'all' ? sections : sections.filter(s => s.id === selectedSection)).map(section => (
-              <SectionCard key={section.id} section={section} />
+              <DatabaseSectionCard
+                key={section.id}
+                section={section}
+                expandedSections={expandedSections}
+                toggleSection={toggleSection}
+                searchTerm={searchTerm}
+              />
             ))}
           </div>
         ) : (
@@ -24628,10 +24635,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         )}
       </div>
-    ),
+    );
 
     // SUBTAB 2: Statistics
-    2: (
+    case 2:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-purple-900 to-pink-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📈 STATISTICS</h3>
@@ -24725,10 +24733,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         </div>
       </div>
-    ),
+    );
 
     // SUBTAB 3: Validation
-    3: (
+    case 3:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-amber-900 to-orange-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">✅ VALIDATION</h3>
@@ -24812,10 +24821,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         </div>
       </div>
-    ),
+    );
 
     // SUBTAB 4: Quick Edit
-    4: (
+    case 4:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-green-900 to-emerald-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">✏️ QUICK EDIT</h3>
@@ -24988,10 +24998,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </p>
         </div>
       </div>
-    ),
+    );
 
     // SUBTAB 5: Compare (Snapshots)
-    5: (
+    case 5:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-violet-900 to-purple-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📸 COMPARE & SNAPSHOTS</h3>
@@ -25150,7 +25161,9 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </ul>
         </div>
       </div>
-    ),
+    );
+    default: return null;
+    }
   };
 
   return (
@@ -25161,7 +25174,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
       <h1 className="font-serif text-4xl font-black italic text-gray-900 mb-4">Character Database</h1>
       <p className="font-mono text-xs text-gray-500 mb-8">View, browse, and analyze your character data.</p>
       
-      {subtabContent[subtab] || subtabContent[0]}
+      {renderSubtabContent()}
     </div>
   );
 };
