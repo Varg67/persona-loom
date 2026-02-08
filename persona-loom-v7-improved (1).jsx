@@ -969,8 +969,8 @@ const IdentityContent = ({ data, updateData, subtab }) => {
     'Victorian Era (pre-1883)',
   ];
 
-  const sections = {
-    0: ( // Core Identity
+  if (subtab !== 1 && subtab !== 2 && subtab !== 3) {
+    return ( // Core Identity
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         <ArchiveInput label="First Name" value={data.core.firstName} onChange={(e) => update('core', 'firstName', e.target.value)} placeholder="Given name" />
         <ArchiveInput label="Middle Name(s)" value={data.core.middleName} onChange={(e) => update('core', 'middleName', e.target.value)} placeholder="Middle name(s)" />
@@ -980,8 +980,11 @@ const IdentityContent = ({ data, updateData, subtab }) => {
         <ArchiveSelect label="Archetype" value={data.core.archetype} onChange={(e) => update('core', 'archetype', e.target.value)} 
           options={['The Hero', 'The Mentor', 'The Outlaw', 'The Magician', 'The Lover', 'The Jester', 'The Everyman', 'The Caregiver', 'The Ruler', 'The Creator', 'The Innocent', 'The Sage', 'The Explorer']} />
       </div>
-    ),
-    1: ( // Vital Statistics
+    );
+  }
+
+  if (subtab === 1) {
+    return ( // Vital Statistics
       <div className="space-y-6">
         {/* Roleplay Year - Important for generation calculation */}
         <div className="bg-amber-50 border border-amber-200 p-4 rounded-sm">
@@ -1184,8 +1187,11 @@ const IdentityContent = ({ data, updateData, subtab }) => {
           </div>
         )}
       </div>
-    ),
-    2: ( // Origins
+    );
+  }
+
+  if (subtab === 2) {
+    return ( // Origins
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         {/* Nationality - All countries organized by continent */}
         <div className="flex flex-col gap-1 mb-4">
@@ -1977,8 +1983,11 @@ const IdentityContent = ({ data, updateData, subtab }) => {
         <ArchiveSelect label="Childhood Trope" value={data.origins.childhoodTrope} onChange={(e) => update('origins', 'childhoodTrope', e.target.value)} 
           options={['Only Child', 'Oldest Sibling', 'Middle Child', 'Youngest Sibling', 'Twin', 'Orphan', 'Adopted', 'Foster Child', 'Raised by Single Parent', 'Raised by Grandparents']} />
       </div>
-    ),
-    3: ( // Cultural Background
+    );
+  }
+
+  if (subtab === 3) {
+    return ( // Cultural Background
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         {/* Primary Culture - Comprehensive dropdown */}
         <div className="flex flex-col gap-1 mb-4">
@@ -3562,10 +3571,10 @@ const IdentityContent = ({ data, updateData, subtab }) => {
           </div>
         </div>
       </div>
-    ),
-  };
+    );
+  }
 
-  return sections[subtab] || sections[0];
+  return null;
 };
 
 const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGender }) => {
