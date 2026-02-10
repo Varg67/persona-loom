@@ -19228,37 +19228,13 @@ const GoalsContent = ({ data, updateData, subtab }) => {
     });
   };
 
-  const sections = {
-    // ========== SUBTAB 0: SHORT-TERM GOALS ==========
-    0: (
-      <div className="space-y-6">
-        <div className="bg-green-50 border border-green-200 rounded-sm p-4">
-          <h3 className="font-mono text-sm font-bold text-green-900 mb-2">🎯 METAS DE CURTO PRAZO</h3>
-          <p className="font-mono text-xs text-green-800 leading-relaxed">O que o personagem quer alcançar no futuro próximo.</p>
-        </div>
+  // Performance optimization: Using conditional rendering instead of creating
+  // a large object with all section components on every render.
+  const currentTab = Number(subtab);
 
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📅 Esta Semana / Este Mês</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Objetivos imediatos, tarefas urgentes.</p>
-          <textarea value={data.shortTerm?.thisWeekMonth || ''} onChange={(e) => update('shortTerm', 'thisWeekMonth', e.target.value)} placeholder="Ex: Terminar projeto, conversar com alguém, resolver problema específico..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
-        </div>
-
-        <div className="border border-gray-200 rounded-sm p-4">
-          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📆 Este Ano</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">Metas para os próximos meses.</p>
-          <textarea value={data.shortTerm?.thisYear || ''} onChange={(e) => update('shortTerm', 'thisYear', e.target.value)} placeholder="Ex: Mudar de emprego, terminar curso, viajar para lugar específico, economizar X..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
-        </div>
-
-        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/50">
-          <h4 className="font-mono text-sm font-bold text-amber-800 mb-2">🚧 Obstáculos Imediatos</h4>
-          <p className="font-mono text-[10px] text-gray-500 mb-3">O que está impedindo de alcançar essas metas?</p>
-          <textarea value={data.shortTerm?.obstacles || ''} onChange={(e) => update('shortTerm', 'obstacles', e.target.value)} placeholder="Ex: Falta de dinheiro, pessoa específica, medo, falta de tempo, habilidade que falta..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
-        </div>
-      </div>
-    ),
-
-    // ========== SUBTAB 1: LONG-TERM ASPIRATIONS ==========
-    1: (
+  // ========== SUBTAB 1: LONG-TERM ASPIRATIONS ==========
+  if (currentTab === 1) {
+    return (
       <div className="space-y-6">
         <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">🌟 ASPIRAÇÕES DE LONGO PRAZO</h3>
@@ -19283,10 +19259,12 @@ const GoalsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.longTerm?.whatSuccessMeans || ''} onChange={(e) => update('longTerm', 'whatSuccessMeans', e.target.value)} placeholder="Ex: Riqueza, família feliz, reconhecimento, paz interior, liberdade, impacto no mundo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
+    );
+  }
 
-    // ========== SUBTAB 2: INTERNAL CONFLICTS ==========
-    2: (
+  // ========== SUBTAB 2: INTERNAL CONFLICTS ==========
+  if (currentTab === 2) {
+    return (
       <div className="space-y-6">
         <div className="bg-purple-50 border border-purple-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">💭 CONFLITOS INTERNOS</h3>
@@ -19311,10 +19289,12 @@ const GoalsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.internal?.whoTheyAreVsWant || ''} onChange={(e) => update('internal', 'whoTheyAreVsWant', e.target.value)} placeholder="Ex: É tímido mas quer ser confiante, é medroso mas quer ser corajoso, é egoísta mas quer ser generoso..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
+    );
+  }
 
-    // ========== SUBTAB 3: EXTERNAL CONFLICTS ==========
-    3: (
+  // ========== SUBTAB 3: EXTERNAL CONFLICTS ==========
+  if (currentTab === 3) {
+    return (
       <div className="space-y-6">
         <div className="bg-red-50 border border-red-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-red-900 mb-2">⚔️ CONFLITOS EXTERNOS</h3>
@@ -19339,10 +19319,36 @@ const GoalsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.external?.systemicObstacles || ''} onChange={(e) => update('external', 'systemicObstacles', e.target.value)} placeholder="Ex: Discriminação, pobreza, sistema político, leis injustas, barreiras sociais, localização geográfica..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
-  };
+    );
+  }
 
-  return sections[subtab] || sections[0];
+  // ========== SUBTAB 0: SHORT-TERM GOALS (Default) ==========
+  return (
+    <div className="space-y-6">
+      <div className="bg-green-50 border border-green-200 rounded-sm p-4">
+        <h3 className="font-mono text-sm font-bold text-green-900 mb-2">🎯 METAS DE CURTO PRAZO</h3>
+        <p className="font-mono text-xs text-green-800 leading-relaxed">O que o personagem quer alcançar no futuro próximo.</p>
+      </div>
+
+      <div className="border border-gray-200 rounded-sm p-4">
+        <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📅 Esta Semana / Este Mês</h4>
+        <p className="font-mono text-[10px] text-gray-500 mb-3">Objetivos imediatos, tarefas urgentes.</p>
+        <textarea value={data.shortTerm?.thisWeekMonth || ''} onChange={(e) => update('shortTerm', 'thisWeekMonth', e.target.value)} placeholder="Ex: Terminar projeto, conversar com alguém, resolver problema específico..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+      </div>
+
+      <div className="border border-gray-200 rounded-sm p-4">
+        <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📆 Este Ano</h4>
+        <p className="font-mono text-[10px] text-gray-500 mb-3">Metas para os próximos meses.</p>
+        <textarea value={data.shortTerm?.thisYear || ''} onChange={(e) => update('shortTerm', 'thisYear', e.target.value)} placeholder="Ex: Mudar de emprego, terminar curso, viajar para lugar específico, economizar X..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+      </div>
+
+      <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/50">
+        <h4 className="font-mono text-sm font-bold text-amber-800 mb-2">🚧 Obstáculos Imediatos</h4>
+        <p className="font-mono text-[10px] text-gray-500 mb-3">O que está impedindo de alcançar essas metas?</p>
+        <textarea value={data.shortTerm?.obstacles || ''} onChange={(e) => update('shortTerm', 'obstacles', e.target.value)} placeholder="Ex: Falta de dinheiro, pessoa específica, medo, falta de tempo, habilidade que falta..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+      </div>
+    </div>
+  );
 };
 
 
