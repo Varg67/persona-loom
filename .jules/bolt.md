@@ -1,0 +1,3 @@
+## 2024-11-28 - [Performance] Eager Evaluation of Tabs
+**Learning:** The application uses a pattern where all tab contents are defined in a `sections` object literal. This causes React to instantiate the component trees for *all* tabs on every render, even though only one is displayed. This is a significant performance bottleneck for heavy components like `AppearanceContent` which contains hundreds of form inputs.
+**Action:** Replace `const sections = { ... }` with conditional `if (subtab === key) return <JSX>` statements. This ensures only the active tab's component tree is created. This pattern should be applied to other content components (`PsychologyContent`, `HistoryContent`, etc.) in future optimizations.
