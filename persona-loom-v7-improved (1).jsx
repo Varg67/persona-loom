@@ -12756,9 +12756,11 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
     </div>
   );
 
-  const sections = {
+  switch (parseInt(subtab) || 0) {
     // ========== SUBTAB 0: PHYSICAL CONDITION ==========
-    0: (
+    default:
+    case 0:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">PHYSICAL CONDITION — Health & Fitness</h3>
@@ -12959,10 +12961,11 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
           </div>
         </div>
       </div>
-    ),
+    );
 
     // ========== SUBTAB 1: SENSES ==========
-    1: (
+    case 1:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">SENSES — Perception & Sensitivity</h3>
@@ -13142,10 +13145,11 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
           </div>
         </div>
       </div>
-    ),
+    );
 
     // ========== SUBTAB 2: MEDICAL HISTORY ==========
-    2: (
+    case 2:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-red-50 to-rose-50 border border-red-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-red-900 mb-2">MEDICAL HISTORY — Health Records</h3>
@@ -13348,10 +13352,11 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
             placeholder="Details about mental health history, triggers, coping mechanisms..." />
         </div>
       </div>
-    ),
+    );
 
     // ========== SUBTAB 3: HABITS & LIFESTYLE ==========
-    3: (
+    case 3:
+      return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-green-900 mb-2">HABITS & LIFESTYLE — Daily Patterns</h3>
@@ -13571,10 +13576,9 @@ const PhysiqueContent = ({ data, updateData, subtab }) => {
           </div>
         </div>
       </div>
-    ),
-  };
+    );
+  }
 
-  return sections[subtab] || sections[0];
 };
 
 const VoiceContent = ({ data, updateData, subtab, characterNationality }) => {
