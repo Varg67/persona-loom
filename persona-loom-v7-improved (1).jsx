@@ -6049,8 +6049,10 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
 
   const selectedMbti = data.framework.mbtiType ? mbtiTypes[data.framework.mbtiType] : null;
 
-  const sections = {
-    0: ( // Personality Framework
+  switch (subtab) {
+    case 0: // Personality Framework
+    default:
+      return (
       <div className="space-y-6">
         {/* MBTI Section */}
         <div className="space-y-3">
@@ -7780,8 +7782,9 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
           </div>
         </div>
       </div>
-    ),
-    1: ( // Core Traits
+      );
+    case 1: // Core Traits
+      return (
       <div className="space-y-6">
         {/* Explanation Header */}
         <div className="bg-violet-50 border border-violet-200 rounded-sm p-4">
@@ -8958,8 +8961,9 @@ const traitsDatabase = {
           );
         })()}
       </div>
-    ),
-    2: ( // Emotional Landscape
+      );
+    case 2: // Emotional Landscape
+      return (
       <div className="space-y-6">
         {/* Header Explanation */}
         <div className="bg-rose-50 border border-rose-200 rounded-sm p-4">
@@ -9551,8 +9555,9 @@ const traitsDatabase = {
           )}
         </div>
       </div>
-    ),
-    3: ( // Inner World
+      );
+    case 3: // Inner World
+      return (
       <div className="space-y-6">
         {/* Header Explanation */}
         <div className="bg-indigo-50 border border-indigo-200 rounded-sm p-4">
@@ -10478,8 +10483,9 @@ const traitsDatabase = {
           })()}
         </div>
       </div>
-    ),
-    4: ( // Mental Health
+      );
+    case 4: // Mental Health
+      return (
       <div className="space-y-6">
         {/* Header Explanation */}
         <div className="bg-teal-50 border border-teal-200 rounded-sm p-4">
@@ -11023,10 +11029,8 @@ const traitsDatabase = {
           </>
         )}
       </div>
-    ),
-  };
-
-  return sections[subtab] || sections[0];
+      );
+  }
 };
 
 // ============================================================================
