@@ -1,0 +1,3 @@
+## 2024-05-23 - Lazy Loading Tab Content
+**Learning:** Large monolithic components often use an object map (e.g., `const sections = { 0: <Component />, 1: <Component /> }`) to manage tab content. This forces React to instantiate *all* tab components on every render, even if only one is displayed. This "eager evaluation" causes significant performance degradation as the application grows.
+**Action:** Replace object maps with `switch` statements or conditional rendering (`if (tab === 0) return <Component />`) to ensure only the active tab's component is instantiated. For large files, use custom scripts to safely refactor this pattern.
