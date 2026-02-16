@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 // ============================================================================
 // PERSONA LOOM v7 - Complete Character Creation Tool
@@ -24218,6 +24218,77 @@ const GenericTabContent = ({ tabId, data, updateData, subtab, subtabs }) => {
 // ============================================================================
 // DATABASE CONTENT - Complete with subtabs
 // ============================================================================
+
+// Count fields per section
+const countSectionFields = (obj) => {
+  let filled = 0, total = 0;
+  const count = (o) => {
+    if (!o) return;
+    Object.values(o).forEach(v => {
+      if (typeof v === 'object' && v !== null && !Array.isArray(v)) count(v);
+      else {
+        total++;
+        if (Array.isArray(v)) { if (v.length > 0) filled++; }
+        else if (v !== '' && v !== null && v !== undefined && v !== 5) filled++;
+      }
+    });
+  };
+  count(obj);
+  return { filled, total, percent: total > 0 ? Math.round((filled / total) * 100) : 0 };
+};
+
+// Get filled fields from object
+const getFilledFields = (obj, prefix = '') => {
+  const fields = [];
+  if (!obj) return fields;
+
+  Object.entries(obj).forEach(([key, value]) => {
+    const fieldName = prefix ? `${prefix}.${key}` : key;
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      fields.push(...getFilledFields(value, fieldName));
+    } else if (Array.isArray(value)) {
+      if (value.length > 0) {
+        fields.push({ key: fieldName, value: value.join(', '), isArray: true, count: value.length });
+      }
+    } else if (value !== '' && value !== null && value !== undefined && value !== 5) {
+      fields.push({ key: fieldName, value: String(value) });
+    }
+  });
+  return fields;
+};
+
+// Get ALL fields (including empty)
+const getAllFields = (obj, prefix = '') => {
+  const fields = [];
+  if (!obj) return fields;
+
+  Object.entries(obj).forEach(([key, value]) => {
+    const fieldName = prefix ? `${prefix}.${key}` : key;
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      fields.push(...getAllFields(value, fieldName));
+    } else {
+      const isFilled = Array.isArray(value) ? value.length > 0 : (value !== '' && value !== null && value !== undefined && value !== 5);
+      fields.push({
+        key: fieldName,
+        value: Array.isArray(value) ? value.join(', ') : String(value || ''),
+        isFilled,
+        isArray: Array.isArray(value)
+      });
+    }
+  });
+  return fields;
+};
+
+// Format field name for display
+const formatFieldName = (key) => {
+  return key
+    .split('.')
+    .pop()
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
+    .replace(/([a-z])([A-Z])/g, '$1 $2');
+};
+
 const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
   const [viewMode, setViewMode] = useState('visual');
   const [expandedSections, setExpandedSections] = useState({});
@@ -24237,81 +24308,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
 
   const collapseAll = () => setExpandedSections({});
 
-  // Count fields per section
-  const countSectionFields = (obj) => {
-    let filled = 0, total = 0;
-    const count = (o) => {
-      if (!o) return;
-      Object.values(o).forEach(v => {
-        if (typeof v === 'object' && v !== null && !Array.isArray(v)) count(v);
-        else {
-          total++;
-          if (Array.isArray(v)) { if (v.length > 0) filled++; }
-          else if (v !== '' && v !== null && v !== undefined && v !== 5) filled++;
-        }
-      });
-    };
-    count(obj);
-    return { filled, total, percent: total > 0 ? Math.round((filled / total) * 100) : 0 };
-  };
-
-  // Get filled fields from object
-  const getFilledFields = (obj, prefix = '') => {
-    const fields = [];
-    if (!obj) return fields;
-    
-    Object.entries(obj).forEach(([key, value]) => {
-      const fieldName = prefix ? `${prefix}.${key}` : key;
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        fields.push(...getFilledFields(value, fieldName));
-      } else if (Array.isArray(value)) {
-        if (value.length > 0) {
-          fields.push({ key: fieldName, value: value.join(', '), isArray: true, count: value.length });
-        }
-      } else if (value !== '' && value !== null && value !== undefined && value !== 5) {
-        fields.push({ key: fieldName, value: String(value) });
-      }
-    });
-    return fields;
-  };
-
-  // Get ALL fields (including empty)
-  const getAllFields = (obj, prefix = '') => {
-    const fields = [];
-    if (!obj) return fields;
-    
-    Object.entries(obj).forEach(([key, value]) => {
-      const fieldName = prefix ? `${prefix}.${key}` : key;
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        fields.push(...getAllFields(value, fieldName));
-      } else {
-        const isFilled = Array.isArray(value) ? value.length > 0 : (value !== '' && value !== null && value !== undefined && value !== 5);
-        fields.push({ 
-          key: fieldName, 
-          value: Array.isArray(value) ? value.join(', ') : String(value || ''),
-          isFilled,
-          isArray: Array.isArray(value)
-        });
-      }
-    });
-    return fields;
-  };
-
-  // Format field name for display
-  const formatFieldName = (key) => {
-    return key
-      .split('.')
-      .pop()
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/^./, str => str.toUpperCase())
-      .replace(/([a-z])([A-Z])/g, '$1 $2');
-  };
-
   // Total stats
-  const totalStats = countSectionFields(characterData);
+  const totalStats = useMemo(() => countSectionFields(characterData), [characterData]);
 
   // Section configurations
-  const sections = [
+  const sections = useMemo(() => [
     { id: 'identity', label: 'Identity', icon: '🪪', color: 'blue', data: characterData.identity },
     { id: 'appearance', label: 'Appearance', icon: '👤', color: 'pink', data: characterData.appearance },
     { id: 'psychology', label: 'Psychology', icon: '🧠', color: 'purple', data: characterData.psychology },
@@ -24328,7 +24329,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     { id: 'secrets', label: 'Secrets', icon: '🔒', color: 'slate', data: characterData.secrets },
     { id: 'goals', label: 'Goals', icon: '🎯', color: 'emerald', data: characterData.goals },
     { id: 'directives', label: 'Directives', icon: '⚙️', color: 'violet', data: characterData.directives },
-  ];
+  ], [characterData]);
 
   // Validation rules
   const validationRules = [
@@ -24482,9 +24483,12 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
   };
 
   // ========== SUBTAB CONTENT ==========
-  const subtabContent = {
-    // SUBTAB 0: Overview
-    0: (
+  const renderSubtabContent = () => {
+    switch (subtab) {
+      // SUBTAB 0: Overview
+      case 0:
+      default:
+        return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📊 DATABASE OVERVIEW</h3>
@@ -24550,10 +24554,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </button>
         </div>
       </div>
-    ),
+        );
 
-    // SUBTAB 1: Browse Data
-    1: (
+      // SUBTAB 1: Browse Data
+      case 1:
+        return (
       <div className="space-y-4">
         <div className="bg-gradient-to-br from-teal-900 to-cyan-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">🔍 BROWSE DATA</h3>
@@ -24628,10 +24633,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         )}
       </div>
-    ),
+        );
 
-    // SUBTAB 2: Statistics
-    2: (
+      // SUBTAB 2: Statistics
+      case 2:
+        return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-purple-900 to-pink-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📈 STATISTICS</h3>
@@ -24725,10 +24731,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         </div>
       </div>
-    ),
+        );
 
-    // SUBTAB 3: Validation
-    3: (
+      // SUBTAB 3: Validation
+      case 3:
+        return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-amber-900 to-orange-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">✅ VALIDATION</h3>
@@ -24812,10 +24819,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         </div>
       </div>
-    ),
+        );
 
-    // SUBTAB 4: Quick Edit
-    4: (
+      // SUBTAB 4: Quick Edit
+      case 4:
+        return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-green-900 to-emerald-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">✏️ QUICK EDIT</h3>
@@ -24988,10 +24996,11 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </p>
         </div>
       </div>
-    ),
+        );
 
-    // SUBTAB 5: Compare (Snapshots)
-    5: (
+      // SUBTAB 5: Compare (Snapshots)
+      case 5:
+        return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-violet-900 to-purple-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📸 COMPARE & SNAPSHOTS</h3>
@@ -25150,7 +25159,8 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </ul>
         </div>
       </div>
-    ),
+        );
+    }
   };
 
   return (
@@ -25161,7 +25171,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
       <h1 className="font-serif text-4xl font-black italic text-gray-900 mb-4">Character Database</h1>
       <p className="font-mono text-xs text-gray-500 mb-8">View, browse, and analyze your character data.</p>
       
-      {subtabContent[subtab] || subtabContent[0]}
+      {renderSubtabContent()}
     </div>
   );
 };
