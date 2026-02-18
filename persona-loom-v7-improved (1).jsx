@@ -18871,9 +18871,10 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
     });
   };
 
-  const sections = {
-    // ========== SUBTAB 0: COMMUNICATION ==========
-    0: (
+  // Performance Optimization: Use switch to avoid eager evaluation of all tabs.
+    switch (subtab) {
+    case 0:
+      return (
       <div className="space-y-6">
         <div className="bg-violet-50 border border-violet-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-violet-900 mb-2">💬 COMUNICAÇÃO</h3>
@@ -18928,10 +18929,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <textarea value={data.communication?.nonVerbalHabits || ''} onChange={(e) => update('communication', 'nonVerbalHabits', e.target.value)} placeholder="Ex: Evita contato visual, gesticula muito, cruza os braços, toca no cabelo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
         </div>
       </div>
-    ),
-
-    // ========== SUBTAB 1: DAILY PATTERNS ==========
-    1: (
+    );
+    case 1:
+      return (
       <div className="space-y-6">
         <div className="bg-amber-50 border border-amber-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">📅 PADRÕES DIÁRIOS</h3>
@@ -18959,10 +18959,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <input type="range" min="1" max="9" value={data.daily?.organizationLevel || 5} onChange={(e) => update('daily', 'organizationLevel', parseInt(e.target.value))} className="w-full h-2 bg-gradient-to-r from-red-300 to-blue-400 rounded-lg appearance-none cursor-pointer" />
         </div>
       </div>
-    ),
-
-    // ========== SUBTAB 2: SOCIAL BEHAVIOR ==========
-    2: (
+    );
+    case 2:
+      return (
       <div className="space-y-6">
         <div className="bg-blue-50 border border-blue-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-blue-900 mb-2">👥 COMPORTAMENTO SOCIAL</h3>
@@ -19010,10 +19009,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <textarea value={data.social?.behaviorUnderStress || ''} onChange={(e) => update('social', 'behaviorUnderStress', e.target.value)} placeholder="Como muda quando estressado: isola-se, fica irritável, busca ajuda..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
         </div>
       </div>
-    ),
-
-    // ========== SUBTAB 3: QUIRKS & HABITS ==========
-    3: (
+    );
+    case 3:
+      return (
       <div className="space-y-6">
         <div className="bg-pink-50 border border-pink-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-pink-900 mb-2">🎭 MANIAS & HÁBITOS</h3>
@@ -19040,10 +19038,9 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <textarea value={data.quirks?.superstitions || ''} onChange={(e) => update('quirks', 'superstitions', e.target.value)} placeholder="Rituais de sorte, manias, 'se eu não fizer X, Y vai acontecer'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
         </div>
       </div>
-    ),
-
-    // ========== SUBTAB 4: UNDER PRESSURE ==========
-    4: (
+    );
+    case 4:
+      return (
       <div className="space-y-6">
         <div className="bg-red-50 border border-red-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-red-900 mb-2">⚡ SOB PRESSÃO</h3>
@@ -19097,10 +19094,65 @@ const BehaviorContent = ({ data, updateData, subtab }) => {
           <textarea value={data.pressure?.handleSuccess || ''} onChange={(e) => update('pressure', 'handleSuccess', e.target.value)} placeholder="Descreva: celebra abertamente, minimiza, fica desconfortável, usa como motivação..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
         </div>
       </div>
-    ),
-  };
+    );
+    default:
+      return (
+      <div className="space-y-6">
+        <div className="bg-violet-50 border border-violet-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-violet-900 mb-2">💬 COMUNICAÇÃO</h3>
+          <p className="font-mono text-xs text-violet-800 leading-relaxed">Como o personagem se comunica verbalmente e não-verbalmente.</p>
+        </div>
 
-  return sections[subtab] || sections[0];
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🗣️ Estilo de Fala</h4>
+          <select value={data.communication?.speakingStyle || ''} onChange={(e) => update('communication', 'speakingStyle', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+            <option value="">-- Selecione --</option>
+            <option value="eloquent">Eloquent — Articulado, escolhe palavras com cuidado</option>
+            <option value="direct">Direct — Vai direto ao ponto, sem rodeios</option>
+            <option value="rambling">Rambling — Divaga, perde o fio da meada</option>
+            <option value="quiet">Quiet — Fala pouco, só quando necessário</option>
+            <option value="loud">Loud — Fala alto, domina conversas</option>
+            <option value="fast">Fast — Fala rápido, atropela palavras</option>
+            <option value="slow">Slow — Fala devagar, pausado</option>
+            <option value="mumbling">Mumbling — Murmura, difícil de entender</option>
+            <option value="animated">Animated — Expressivo, usa muitos gestos</option>
+            <option value="monotone">Monotone — Tom monótono, pouca variação</option>
+            <option value="formal">Formal — Sempre formal, mesmo casualmente</option>
+            <option value="casual">Casual — Sempre informal, gírias</option>
+          </select>
+        </div>
+
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">📚 Nível de Vocabulário</h4>
+          <select value={data.communication?.vocabularyLevel || ''} onChange={(e) => update('communication', 'vocabularyLevel', e.target.value)} className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs">
+            <option value="">-- Selecione --</option>
+            <option value="simple">Simple — Palavras básicas, frases curtas</option>
+            <option value="average">Average — Vocabulário comum, adequado</option>
+            <option value="educated">Educated — Vocabulário amplo, bem articulado</option>
+            <option value="academic">Academic — Jargão técnico, termos específicos</option>
+            <option value="pretentious">Pretentious — Usa palavras difíceis para impressionar</option>
+            <option value="slang-heavy">Slang-Heavy — Muitas gírias e expressões</option>
+            <option value="mixed">Mixed — Varia conforme contexto</option>
+          </select>
+        </div>
+
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🌍 Sotaque / Dialeto</h4>
+          <input type="text" value={data.communication?.accentDialect || ''} onChange={(e) => update('communication', 'accentDialect', e.target.value)} placeholder="Ex: Sotaque nordestino, Inglês britânico, Sem sotaque marcante..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs" />
+        </div>
+
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🔄 Tiques Verbais</h4>
+          <textarea value={data.communication?.verbalTics || ''} onChange={(e) => update('communication', 'verbalTics', e.target.value)} placeholder="Ex: Diz 'tipo' frequentemente, pigarreia antes de falar, termina frases com 'sabe?'..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        </div>
+
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">👐 Hábitos Não-Verbais</h4>
+          <textarea value={data.communication?.nonVerbalHabits || ''} onChange={(e) => update('communication', 'nonVerbalHabits', e.target.value)} placeholder="Ex: Evita contato visual, gesticula muito, cruza os braços, toca no cabelo..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-20 resize-none" />
+        </div>
+      </div>
+    );
+  }
 };
 
 
@@ -19118,9 +19170,10 @@ const SecretsContent = ({ data, updateData, subtab }) => {
     });
   };
 
-  const sections = {
-    // ========== SUBTAB 0: HIDDEN TRUTHS ==========
-    0: (
+  // Performance Optimization: Use switch to avoid eager evaluation of all tabs.
+    switch (subtab) {
+    case 0:
+      return (
       <div className="space-y-6">
         <div className="bg-gray-900 border border-gray-700 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-red-400 mb-2">🔒 VERDADES OCULTAS</h3>
@@ -19151,10 +19204,9 @@ const SecretsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.hidden?.secretDesires || ''} onChange={(e) => update('hidden', 'secretDesires', e.target.value)} placeholder="Ex: Quer largar tudo e sumir, fantasia com a vida de outra pessoa, inveja alguém..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
-
-    // ========== SUBTAB 1: CONTRADICTIONS ==========
-    1: (
+    );
+    case 1:
+      return (
       <div className="space-y-6">
         <div className="bg-amber-50 border border-amber-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">⚖️ CONTRADIÇÕES</h3>
@@ -19179,10 +19231,9 @@ const SecretsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.contradictions?.unawareHypocrisy || ''} onChange={(e) => update('contradictions', 'unawareHypocrisy', e.target.value)} placeholder="Ex: Reclama de fofoca mas fofoca, critica preconceito mas tem preconceitos, etc..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
-
-    // ========== SUBTAB 2: SKELETONS ==========
-    2: (
+    );
+    case 2:
+      return (
       <div className="space-y-6">
         <div className="bg-slate-800 border border-slate-600 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-slate-200 mb-2">💀 ESQUELETOS NO ARMÁRIO</h3>
@@ -19207,10 +19258,41 @@ const SecretsContent = ({ data, updateData, subtab }) => {
           <textarea value={data.skeletons?.couldDestroyThem || ''} onChange={(e) => update('skeletons', 'couldDestroyThem', e.target.value)} placeholder="Nomes de pessoas que têm informação comprometedora, ex-parceiros vingativos, testemunhas..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
         </div>
       </div>
-    ),
-  };
+    );
+    default:
+      return (
+      <div className="space-y-6">
+        <div className="bg-gray-900 border border-gray-700 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-red-400 mb-2">🔒 VERDADES OCULTAS</h3>
+          <p className="font-mono text-xs text-gray-400 leading-relaxed">Os segredos mais profundos que o personagem guarda.</p>
+        </div>
 
-  return sections[subtab] || sections[0];
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-2">💀 O Maior Segredo</h4>
+          <p className="font-mono text-[10px] text-gray-500 mb-3">O que destruiria a vida dele se fosse revelado?</p>
+          <textarea value={data.hidden?.biggestSecret || ''} onChange={(e) => update('hidden', 'biggestSecret', e.target.value)} placeholder="O segredo que carrega, que pouquíssimas pessoas (ou ninguém) sabem..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-28 resize-none" />
+        </div>
+
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🎭 Mentiras Mantidas</h4>
+          <p className="font-mono text-[10px] text-gray-500 mb-3">Mentiras que conta regularmente ou há muito tempo.</p>
+          <textarea value={data.hidden?.liesMaintained || ''} onChange={(e) => update('hidden', 'liesMaintained', e.target.value)} placeholder="Ex: Finge que se formou na faculdade, diz que os pais morreram, esconde vício..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        </div>
+
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">🚫 Nunca Admitiria</h4>
+          <p className="font-mono text-[10px] text-gray-500 mb-3">Coisas que nunca confessaria, mesmo sob tortura.</p>
+          <textarea value={data.hidden?.neverAdmit || ''} onChange={(e) => update('hidden', 'neverAdmit', e.target.value)} placeholder="Verdades que nega até para si mesmo, coisas que morreria sem revelar..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        </div>
+
+        <div className="border border-gray-200 rounded-sm p-4">
+          <h4 className="font-mono text-sm font-bold text-gray-800 mb-2">💭 Desejos Secretos</h4>
+          <p className="font-mono text-[10px] text-gray-500 mb-3">Vontades que tem vergonha de admitir.</p>
+          <textarea value={data.hidden?.secretDesires || ''} onChange={(e) => update('hidden', 'secretDesires', e.target.value)} placeholder="Ex: Quer largar tudo e sumir, fantasia com a vida de outra pessoa, inveja alguém..." className="w-full bg-white border border-gray-200 rounded-sm py-2 px-3 font-mono text-xs h-24 resize-none" />
+        </div>
+      </div>
+    );
+  }
 };
 
 
