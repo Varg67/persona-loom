@@ -969,19 +969,8 @@ const IdentityContent = ({ data, updateData, subtab }) => {
     'Victorian Era (pre-1883)',
   ];
 
-  const sections = {
-    0: ( // Core Identity
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
-        <ArchiveInput label="First Name" value={data.core.firstName} onChange={(e) => update('core', 'firstName', e.target.value)} placeholder="Given name" />
-        <ArchiveInput label="Middle Name(s)" value={data.core.middleName} onChange={(e) => update('core', 'middleName', e.target.value)} placeholder="Middle name(s)" />
-        <ArchiveInput label="Last Name" value={data.core.lastName} onChange={(e) => update('core', 'lastName', e.target.value)} placeholder="Family name" />
-        <ArchiveInput label="Nicknames / Aliases" value={data.core.nicknames} onChange={(e) => update('core', 'nicknames', e.target.value)} placeholder="Known aliases" />
-        <ArchiveInput label="Date of Birth" value={data.core.dateOfBirth} onChange={(e) => update('core', 'dateOfBirth', e.target.value)} type="date" />
-        <ArchiveSelect label="Archetype" value={data.core.archetype} onChange={(e) => update('core', 'archetype', e.target.value)} 
-          options={['The Hero', 'The Mentor', 'The Outlaw', 'The Magician', 'The Lover', 'The Jester', 'The Everyman', 'The Caregiver', 'The Ruler', 'The Creator', 'The Innocent', 'The Sage', 'The Explorer']} />
-      </div>
-    ),
-    1: ( // Vital Statistics
+  switch (Number(subtab)) {
+    case 1: return ( // Vital Statistics
       <div className="space-y-6">
         {/* Roleplay Year - Important for generation calculation */}
         <div className="bg-amber-50 border border-amber-200 p-4 rounded-sm">
@@ -1184,8 +1173,8 @@ const IdentityContent = ({ data, updateData, subtab }) => {
           </div>
         )}
       </div>
-    ),
-    2: ( // Origins
+    );
+    case 2: return ( // Origins
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         {/* Nationality - All countries organized by continent */}
         <div className="flex flex-col gap-1 mb-4">
@@ -1977,8 +1966,8 @@ const IdentityContent = ({ data, updateData, subtab }) => {
         <ArchiveSelect label="Childhood Trope" value={data.origins.childhoodTrope} onChange={(e) => update('origins', 'childhoodTrope', e.target.value)} 
           options={['Only Child', 'Oldest Sibling', 'Middle Child', 'Youngest Sibling', 'Twin', 'Orphan', 'Adopted', 'Foster Child', 'Raised by Single Parent', 'Raised by Grandparents']} />
       </div>
-    ),
-    3: ( // Cultural Background
+    );
+    case 3: return ( // Cultural Background
       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
         {/* Primary Culture - Comprehensive dropdown */}
         <div className="flex flex-col gap-1 mb-4">
@@ -3562,10 +3551,20 @@ const IdentityContent = ({ data, updateData, subtab }) => {
           </div>
         </div>
       </div>
-    ),
-  };
-
-  return sections[subtab] || sections[0];
+    );
+    case 0:
+    default: return ( // Core Identity
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8">
+        <ArchiveInput label="First Name" value={data.core.firstName} onChange={(e) => update('core', 'firstName', e.target.value)} placeholder="Given name" />
+        <ArchiveInput label="Middle Name(s)" value={data.core.middleName} onChange={(e) => update('core', 'middleName', e.target.value)} placeholder="Middle name(s)" />
+        <ArchiveInput label="Last Name" value={data.core.lastName} onChange={(e) => update('core', 'lastName', e.target.value)} placeholder="Family name" />
+        <ArchiveInput label="Nicknames / Aliases" value={data.core.nicknames} onChange={(e) => update('core', 'nicknames', e.target.value)} placeholder="Known aliases" />
+        <ArchiveInput label="Date of Birth" value={data.core.dateOfBirth} onChange={(e) => update('core', 'dateOfBirth', e.target.value)} type="date" />
+        <ArchiveSelect label="Archetype" value={data.core.archetype} onChange={(e) => update('core', 'archetype', e.target.value)}
+          options={['The Hero', 'The Mentor', 'The Outlaw', 'The Magician', 'The Lover', 'The Jester', 'The Everyman', 'The Caregiver', 'The Ruler', 'The Creator', 'The Innocent', 'The Sage', 'The Explorer']} />
+      </div>
+    );
+  }
 };
 
 const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGender }) => {
@@ -3640,333 +3639,8 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
     { value: 'olive', label: 'Olive — Green-yellow' }
   ];
 
-  const sections = {
-    0: (
-      <div className="space-y-6">
-        <div className="bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-sm p-4">
-          <h3 className="font-mono text-sm font-bold text-rose-900 mb-2">FACE — Complete Detail</h3>
-          <p className="font-mono text-xs text-rose-700">Define every aspect of the character's face for precise visual description.</p>
-        </div>
-
-        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
-          <h4 className="font-mono text-sm font-bold text-amber-800 mb-4">Face Shape</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FaceSelect label="Overall Shape" value={data.face?.faceShape} onChange={(e) => update('face', 'faceShape', e.target.value)}
-              options={[
-                { value: 'oval', label: 'Oval — Balanced, slightly wider forehead' },
-                { value: 'round', label: 'Round — Full cheeks, no defined angles' },
-                { value: 'square', label: 'Square — Strong jaw, wide forehead' },
-                { value: 'heart', label: 'Heart — Wide forehead, pointed chin' },
-                { value: 'diamond', label: 'Diamond — Wide cheekbones, narrow forehead/chin' },
-                { value: 'oblong', label: 'Oblong — Elongated, high forehead' },
-                { value: 'triangle', label: 'Triangle — Wide jaw, narrow forehead' }
-              ]} />
-            <FaceSelect label="Face Length" value={data.face?.faceLength} onChange={(e) => update('face', 'faceLength', e.target.value)}
-              options={[
-                { value: 'short', label: 'Short — Compact face' },
-                { value: 'average', label: 'Average — Standard proportion' },
-                { value: 'long', label: 'Long — Elongated' }
-              ]} />
-            <FaceSelect label="Face Width" value={data.face?.faceWidth} onChange={(e) => update('face', 'faceWidth', e.target.value)}
-              options={[
-                { value: 'narrow', label: 'Narrow — Thin face' },
-                { value: 'average', label: 'Average — Standard width' },
-                { value: 'wide', label: 'Wide — Broad face' }
-              ]} />
-          </div>
-        </div>
-
-        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
-          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">Skin</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Skin Tone" value={data.face?.skinTone} onChange={(e) => update('face', 'skinTone', e.target.value)} options={skinToneOptions} />
-            <FaceSelect label="Skin Undertone" value={data.face?.skinUndertone} onChange={(e) => update('face', 'skinUndertone', e.target.value)} options={skinUndertoneOptions} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FaceSelect label="Skin Texture" value={data.face?.skinTexture} onChange={(e) => update('face', 'skinTexture', e.target.value)}
-              options={[
-                { value: 'smooth', label: 'Smooth — No visible texture' },
-                { value: 'normal', label: 'Normal — Common texture' },
-                { value: 'rough', label: 'Rough — Noticeable texture' },
-                { value: 'porous', label: 'Porous — Visible pores' },
-                { value: 'scarred', label: 'Scarred — Acne scars' },
-                { value: 'weathered', label: 'Weathered — Sun/time damage' }
-              ]} />
-            <FaceSelect label="Skin Condition" value={data.face?.skinCondition} onChange={(e) => update('face', 'skinCondition', e.target.value)}
-              options={[
-                { value: 'flawless', label: 'Flawless — No imperfections' },
-                { value: 'clear', label: 'Clear — Few imperfections' },
-                { value: 'normal', label: 'Normal — Occasional imperfections' },
-                { value: 'oily', label: 'Oily — Visible shine' },
-                { value: 'dry', label: 'Dry — Slight flaking' },
-                { value: 'combination', label: 'Combination — Oily T-zone' },
-                { value: 'acne-prone', label: 'Acne-Prone — Prone to breakouts' }
-              ]} />
-          </div>
-        </div>
-
-        <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
-          <h4 className="font-mono text-sm font-bold text-yellow-800 mb-4">Forehead</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FaceSelect label="Forehead Height" value={data.face?.foreheadHeight} onChange={(e) => update('face', 'foreheadHeight', e.target.value)}
-              options={[
-                { value: 'low', label: 'Low — Short forehead' },
-                { value: 'average', label: 'Average — Normal proportion' },
-                { value: 'high', label: 'High — Prominent forehead' }
-              ]} />
-            <FaceSelect label="Forehead Width" value={data.face?.foreheadWidth} onChange={(e) => update('face', 'foreheadWidth', e.target.value)}
-              options={[
-                { value: 'narrow', label: 'Narrow — Close temples' },
-                { value: 'average', label: 'Average — Normal width' },
-                { value: 'wide', label: 'Wide — Distant temples' }
-              ]} />
-            <FaceSelect label="Forehead Shape" value={data.face?.foreheadShape} onChange={(e) => update('face', 'foreheadShape', e.target.value)}
-              options={[
-                { value: 'flat', label: 'Flat — No curvature' },
-                { value: 'rounded', label: 'Rounded — Soft curve' },
-                { value: 'sloped', label: 'Sloped — Recedes backward' },
-                { value: 'prominent', label: 'Prominent — Projects forward' }
-              ]} />
-          </div>
-        </div>
-
-        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
-          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-4">Eyebrows</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Eyebrow Shape" value={data.face?.eyebrowShape} onChange={(e) => update('face', 'eyebrowShape', e.target.value)}
-              options={[
-                { value: 'straight', label: 'Straight — Horizontal line' },
-                { value: 'soft-angled', label: 'Soft Angled — Slight peak' },
-                { value: 'hard-angled', label: 'Hard Angled — Defined peak' },
-                { value: 'high-arch', label: 'High Arch — Elevated curve' },
-                { value: 'soft-arch', label: 'Soft Arch — Gentle curve' },
-                { value: 'curved', label: 'Curved — Continuous arc' },
-                { value: 's-shaped', label: 'S-Shaped — Wavy' },
-                { value: 'rounded', label: 'Rounded — No angles' }
-              ]} />
-            <FaceSelect label="Eyebrow Thickness" value={data.face?.eyebrowThickness} onChange={(e) => update('face', 'eyebrowThickness', e.target.value)}
-              options={[
-                { value: 'very-thin', label: 'Very Thin — Almost invisible' },
-                { value: 'thin', label: 'Thin — Delicate' },
-                { value: 'medium', label: 'Medium — Normal thickness' },
-                { value: 'thick', label: 'Thick — Full' },
-                { value: 'very-thick', label: 'Very Thick — Bold' },
-                { value: 'bushy', label: 'Bushy — Untrimmed, wild' }
-              ]} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FaceSelect label="Eyebrow Arch" value={data.face?.eyebrowArch} onChange={(e) => update('face', 'eyebrowArch', e.target.value)}
-              options={[
-                { value: 'no-arch', label: 'No Arch — Completely straight' },
-                { value: 'low', label: 'Low Arch — Minimal curve' },
-                { value: 'medium', label: 'Medium Arch — Standard curve' },
-                { value: 'high', label: 'High Arch — Elevated curve' },
-                { value: 'dramatic', label: 'Dramatic Arch — Very pronounced' }
-              ]} />
-            <FaceSelect label="Eyebrow Color" value={data.face?.eyebrowColor} onChange={(e) => update('face', 'eyebrowColor', e.target.value)}
-              options={['Platinum', 'Blonde', 'Light Brown', 'Medium Brown', 'Dark Brown', 'Black', 'Auburn', 'Red', 'Gray', 'White']} />
-          </div>
-        </div>
-
-        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
-          <h4 className="font-mono text-sm font-bold text-blue-800 mb-4">Eyes</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Eye Color" value={data.face?.eyeColor} onChange={(e) => update('face', 'eyeColor', e.target.value)}
-              options={[
-                { value: 'light-blue', label: 'Light Blue' },
-                { value: 'blue', label: 'Blue' },
-                { value: 'dark-blue', label: 'Dark Blue' },
-                { value: 'light-green', label: 'Light Green' },
-                { value: 'green', label: 'Green' },
-                { value: 'hazel-green', label: 'Hazel-Green' },
-                { value: 'hazel-brown', label: 'Hazel-Brown' },
-                { value: 'light-brown', label: 'Light Brown (Honey)' },
-                { value: 'medium-brown', label: 'Medium Brown' },
-                { value: 'dark-brown', label: 'Dark Brown' },
-                { value: 'black', label: 'Black' },
-                { value: 'amber', label: 'Amber (Golden)' },
-                { value: 'gray', label: 'Gray' },
-                { value: 'heterochromia', label: 'Heterochromia — Different colors' }
-              ]} />
-            <FaceSelect label="Eye Shape" value={data.face?.eyeShape} onChange={(e) => update('face', 'eyeShape', e.target.value)}
-              options={[
-                { value: 'almond', label: 'Almond — Classic shape' },
-                { value: 'round', label: 'Round — Open and circular' },
-                { value: 'monolid', label: 'Monolid — No crease' },
-                { value: 'hooded', label: 'Hooded — Hidden lid' },
-                { value: 'downturned', label: 'Downturned — Outer corners down' },
-                { value: 'upturned', label: 'Upturned — Outer corners up' },
-                { value: 'deep-set', label: 'Deep-Set — Recessed' },
-                { value: 'protruding', label: 'Protruding — Prominent' }
-              ]} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FaceSelect label="Eye Size" value={data.face?.eyeSize} onChange={(e) => update('face', 'eyeSize', e.target.value)}
-              options={['Very Small', 'Small', 'Medium', 'Large', 'Very Large']} />
-            <FaceSelect label="Eyelashes" value={data.face?.eyeLashes} onChange={(e) => update('face', 'eyeLashes', e.target.value)}
-              options={[
-                { value: 'sparse', label: 'Sparse — Few lashes' },
-                { value: 'short', label: 'Short' },
-                { value: 'average', label: 'Average' },
-                { value: 'long', label: 'Long' },
-                { value: 'very-long', label: 'Very Long' },
-                { value: 'thick', label: 'Thick/Dense' }
-              ]} />
-          </div>
-        </div>
-
-        <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
-          <h4 className="font-mono text-sm font-bold text-indigo-800 mb-4">Nose</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Nose Type" value={data.face?.noseType} onChange={(e) => update('face', 'noseType', e.target.value)}
-              options={[
-                { value: 'greek', label: 'Greek — Straight, no curve' },
-                { value: 'roman', label: 'Roman — Convex bridge' },
-                { value: 'aquiline', label: 'Aquiline — Eagle-like curve' },
-                { value: 'button', label: 'Button — Small and rounded' },
-                { value: 'snub', label: 'Snub — Upturned tip' },
-                { value: 'hawk', label: 'Hawk — High curved bridge' },
-                { value: 'nubian', label: 'Nubian — Wide with downward tip' },
-                { value: 'bulbous', label: 'Bulbous — Rounded wide tip' },
-                { value: 'flat', label: 'Flat — Low bridge' },
-                { value: 'crooked', label: 'Crooked — Deviated' }
-              ]} />
-            <FaceSelect label="Nose Size" value={data.face?.noseSize} onChange={(e) => update('face', 'noseSize', e.target.value)}
-              options={['Petite', 'Small', 'Medium', 'Large', 'Prominent']} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FaceSelect label="Nose Bridge" value={data.face?.noseBridge} onChange={(e) => update('face', 'noseBridge', e.target.value)}
-              options={['Low', 'Medium', 'High', 'Bumpy']} />
-            <FaceSelect label="Nose Tip" value={data.face?.noseTip} onChange={(e) => update('face', 'noseTip', e.target.value)}
-              options={['Pointed', 'Rounded', 'Bulbous', 'Upturned', 'Downturned']} />
-            <FaceSelect label="Nostrils" value={data.face?.nostrilSize} onChange={(e) => update('face', 'nostrilSize', e.target.value)}
-              options={['Small', 'Medium', 'Wide', 'Flared']} />
-          </div>
-        </div>
-
-        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
-          <h4 className="font-mono text-sm font-bold text-pink-800 mb-4">Cheeks</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FaceSelect label="Cheekbone Height" value={data.face?.cheekboneHeight} onChange={(e) => update('face', 'cheekboneHeight', e.target.value)}
-              options={['Low', 'Medium', 'High', 'Very High']} />
-            <FaceSelect label="Cheekbone Prominence" value={data.face?.cheekboneProminence} onChange={(e) => update('face', 'cheekboneProminence', e.target.value)}
-              options={['Flat', 'Subtle', 'Defined', 'Prominent', 'Very Prominent']} />
-            <FaceSelect label="Cheek Fullness" value={data.face?.cheekFullness} onChange={(e) => update('face', 'cheekFullness', e.target.value)}
-              options={['Hollow', 'Sunken', 'Slim', 'Average', 'Full', 'Chubby']} />
-          </div>
-        </div>
-
-        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
-          <h4 className="font-mono text-sm font-bold text-red-800 mb-4">Lips</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Lip Shape" value={data.face?.lipShape} onChange={(e) => update('face', 'lipShape', e.target.value)}
-              options={[
-                { value: 'heart', label: 'Heart — Defined cupids bow' },
-                { value: 'bow', label: 'Bow — Classic bow shape' },
-                { value: 'round', label: 'Round — Curved' },
-                { value: 'wide', label: 'Wide — Extend horizontally' },
-                { value: 'thin', label: 'Thin — Little volume' },
-                { value: 'full', label: 'Full — Balanced volume' },
-                { value: 'pouty', label: 'Pouty — Projected lower lip' },
-                { value: 'downturned', label: 'Downturned — Corners down' },
-                { value: 'upturned', label: 'Upturned — Corners up' }
-              ]} />
-            <FaceSelect label="Lip Thickness" value={data.face?.lipThickness} onChange={(e) => update('face', 'lipThickness', e.target.value)}
-              options={[
-                { value: 'very-thin', label: 'Very Thin' },
-                { value: 'thin', label: 'Thin' },
-                { value: 'medium', label: 'Medium' },
-                { value: 'full', label: 'Full' },
-                { value: 'very-full', label: 'Very Full' },
-                { value: 'plump', label: 'Plump' }
-              ]} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FaceSelect label="Upper/Lower Ratio" value={data.face?.lipUpperLower} onChange={(e) => update('face', 'lipUpperLower', e.target.value)}
-              options={['Upper Larger', 'Balanced', 'Lower Slightly Larger', 'Lower Much Larger']} />
-            <FaceSelect label="Natural Lip Color" value={data.face?.lipColor} onChange={(e) => update('face', 'lipColor', e.target.value)}
-              options={['Pale', 'Light Pink', 'Pink', 'Dark Pink', 'Rose', 'Coral', 'Berry', 'Red', 'Brown-Pink', 'Brown']} />
-            <FaceSelect label="Cupids Bow" value={data.face?.cupidsBow} onChange={(e) => update('face', 'cupidsBow', e.target.value)}
-              options={['Undefined', 'Subtle', 'Moderate', 'Defined', 'Pronounced']} />
-          </div>
-        </div>
-
-        <div className="border-2 border-slate-200 rounded-sm p-4 bg-slate-50/30">
-          <h4 className="font-mono text-sm font-bold text-slate-800 mb-4">Jaw and Chin</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Jawline Shape" value={data.face?.jawlineShape} onChange={(e) => update('face', 'jawlineShape', e.target.value)}
-              options={['Square', 'Angular', 'Rounded', 'Soft', 'Tapered', 'V-Shaped', 'Wide', 'Narrow']} />
-            <FaceSelect label="Jawline Definition" value={data.face?.jawlineDefinition} onChange={(e) => update('face', 'jawlineDefinition', e.target.value)}
-              options={['Undefined', 'Soft', 'Moderate', 'Defined', 'Sharp', 'Chiseled']} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FaceSelect label="Chin Shape" value={data.face?.chinShape} onChange={(e) => update('face', 'chinShape', e.target.value)}
-              options={['Pointed', 'Rounded', 'Square', 'Cleft', 'Dimpled', 'Receding', 'Protruding', 'Double']} />
-            <FaceSelect label="Chin Size" value={data.face?.chinSize} onChange={(e) => update('face', 'chinSize', e.target.value)}
-              options={['Small', 'Medium', 'Large', 'Long', 'Short']} />
-          </div>
-        </div>
-
-        <div className="border-2 border-stone-200 rounded-sm p-4 bg-stone-50/30">
-          <h4 className="font-mono text-sm font-bold text-stone-800 mb-4">Facial Hair</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Facial Hair Type" value={data.face?.facialHairType} onChange={(e) => update('face', 'facialHairType', e.target.value)}
-              options={[
-                { value: 'none', label: 'None — Smooth face' },
-                { value: 'clean-shaven', label: 'Clean-Shaven' },
-                { value: 'stubble-light', label: 'Light Stubble (1-2 days)' },
-                { value: 'stubble-heavy', label: 'Heavy Stubble (3-5 days)' },
-                { value: 'goatee', label: 'Goatee' },
-                { value: 'mustache', label: 'Mustache' },
-                { value: 'short-beard', label: 'Short Beard' },
-                { value: 'medium-beard', label: 'Medium Beard' },
-                { value: 'full-beard', label: 'Full Beard' },
-                { value: 'long-beard', label: 'Long Beard' }
-              ]} />
-            <FaceSelect label="Hair Density" value={data.face?.facialHairDensity} onChange={(e) => update('face', 'facialHairDensity', e.target.value)}
-              options={['None', 'Sparse', 'Patchy', 'Moderate', 'Full', 'Thick', 'Very Thick']} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FaceSelect label="Facial Hair Color" value={data.face?.facialHairColor} onChange={(e) => update('face', 'facialHairColor', e.target.value)}
-              options={['Blonde', 'Light Brown', 'Brown', 'Dark Brown', 'Black', 'Red', 'Auburn', 'Gray', 'White', 'Salt and Pepper']} />
-            <FaceSelect label="Style" value={data.face?.facialHairStyle} onChange={(e) => update('face', 'facialHairStyle', e.target.value)}
-              options={['Natural', 'Groomed', 'Shaped', 'Wild', 'Styled']} />
-            <FaceSelect label="Length" value={data.face?.facialHairLength} onChange={(e) => update('face', 'facialHairLength', e.target.value)}
-              options={['N/A', 'Shadow', 'Stubble', 'Short', 'Medium', 'Long', 'Very Long']} />
-          </div>
-        </div>
-
-        <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
-          <h4 className="font-mono text-sm font-bold text-cyan-800 mb-4">Ears</h4>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <FaceSelect label="Ear Size" value={data.face?.earSize} onChange={(e) => update('face', 'earSize', e.target.value)}
-              options={['Small', 'Medium', 'Large', 'Very Large']} />
-            <FaceSelect label="Ear Shape" value={data.face?.earShape} onChange={(e) => update('face', 'earShape', e.target.value)}
-              options={['Round', 'Oval', 'Pointed', 'Flat', 'Protruding']} />
-            <FaceSelect label="Earlobe" value={data.face?.earLobe} onChange={(e) => update('face', 'earLobe', e.target.value)}
-              options={['Attached', 'Detached', 'Stretched']} />
-          </div>
-        </div>
-
-        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
-          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">Details and Marks</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <FaceSelect label="Freckles" value={data.face?.freckles} onChange={(e) => update('face', 'freckles', e.target.value)}
-              options={['None', 'Few', 'Light', 'Moderate', 'Heavy', 'Concentrated (nose/cheeks)']} />
-            <FaceSelect label="Dimples" value={data.face?.dimples} onChange={(e) => update('face', 'dimples', e.target.value)}
-              options={['None', 'Cheeks', 'Chin', 'One Cheek', 'Cheeks and Chin']} />
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FaceSelect label="Wrinkles" value={data.face?.wrinkles} onChange={(e) => update('face', 'wrinkles', e.target.value)}
-              options={['None', 'Expression Lines', 'Fine Lines', 'Moderate', 'Pronounced', 'Deep', 'Forehead Lines', 'Crows Feet', 'Smile Lines']} />
-            <FaceInput label="Distinctive Marks" value={data.face?.distinctiveMarks} onChange={(e) => update('face', 'distinctiveMarks', e.target.value)}
-              placeholder="Scars, moles, birthmarks..." />
-          </div>
-        </div>
-      </div>
-    ),
-
-    1: (
+  switch (Number(subtab)) {
+    case 1: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-amber-900 mb-2">HAIR — Complete Detail</h3>
@@ -4450,9 +4124,8 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
           </div>
         </div>
       </div>
-    ),
-
-    2: (
+    );
+    case 2: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-emerald-900 mb-2">BODY — Physical Structure</h3>
@@ -5265,9 +4938,8 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
           </div>
         </div>
       </div>
-    ),
-
-    3: (
+    );
+    case 3: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-sm p-4">
           <h3 className="font-mono text-sm font-bold text-purple-900 mb-2">STYLE & PRESENTATION — Complete</h3>
@@ -5852,10 +5524,333 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
           </div>
         </div>
       </div>
-    ),
-  };
+    );
+    case 0:
+    default: return (
+      <div className="space-y-6">
+        <div className="bg-gradient-to-br from-rose-50 to-pink-50 border border-rose-200 rounded-sm p-4">
+          <h3 className="font-mono text-sm font-bold text-rose-900 mb-2">FACE — Complete Detail</h3>
+          <p className="font-mono text-xs text-rose-700">Define every aspect of the character's face for precise visual description.</p>
+        </div>
 
-  return sections[subtab] || sections[0];
+        <div className="border-2 border-amber-200 rounded-sm p-4 bg-amber-50/30">
+          <h4 className="font-mono text-sm font-bold text-amber-800 mb-4">Face Shape</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Overall Shape" value={data.face?.faceShape} onChange={(e) => update('face', 'faceShape', e.target.value)}
+              options={[
+                { value: 'oval', label: 'Oval — Balanced, slightly wider forehead' },
+                { value: 'round', label: 'Round — Full cheeks, no defined angles' },
+                { value: 'square', label: 'Square — Strong jaw, wide forehead' },
+                { value: 'heart', label: 'Heart — Wide forehead, pointed chin' },
+                { value: 'diamond', label: 'Diamond — Wide cheekbones, narrow forehead/chin' },
+                { value: 'oblong', label: 'Oblong — Elongated, high forehead' },
+                { value: 'triangle', label: 'Triangle — Wide jaw, narrow forehead' }
+              ]} />
+            <FaceSelect label="Face Length" value={data.face?.faceLength} onChange={(e) => update('face', 'faceLength', e.target.value)}
+              options={[
+                { value: 'short', label: 'Short — Compact face' },
+                { value: 'average', label: 'Average — Standard proportion' },
+                { value: 'long', label: 'Long — Elongated' }
+              ]} />
+            <FaceSelect label="Face Width" value={data.face?.faceWidth} onChange={(e) => update('face', 'faceWidth', e.target.value)}
+              options={[
+                { value: 'narrow', label: 'Narrow — Thin face' },
+                { value: 'average', label: 'Average — Standard width' },
+                { value: 'wide', label: 'Wide — Broad face' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-rose-200 rounded-sm p-4 bg-rose-50/30">
+          <h4 className="font-mono text-sm font-bold text-rose-800 mb-4">Skin</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Skin Tone" value={data.face?.skinTone} onChange={(e) => update('face', 'skinTone', e.target.value)} options={skinToneOptions} />
+            <FaceSelect label="Skin Undertone" value={data.face?.skinUndertone} onChange={(e) => update('face', 'skinUndertone', e.target.value)} options={skinUndertoneOptions} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Skin Texture" value={data.face?.skinTexture} onChange={(e) => update('face', 'skinTexture', e.target.value)}
+              options={[
+                { value: 'smooth', label: 'Smooth — No visible texture' },
+                { value: 'normal', label: 'Normal — Common texture' },
+                { value: 'rough', label: 'Rough — Noticeable texture' },
+                { value: 'porous', label: 'Porous — Visible pores' },
+                { value: 'scarred', label: 'Scarred — Acne scars' },
+                { value: 'weathered', label: 'Weathered — Sun/time damage' }
+              ]} />
+            <FaceSelect label="Skin Condition" value={data.face?.skinCondition} onChange={(e) => update('face', 'skinCondition', e.target.value)}
+              options={[
+                { value: 'flawless', label: 'Flawless — No imperfections' },
+                { value: 'clear', label: 'Clear — Few imperfections' },
+                { value: 'normal', label: 'Normal — Occasional imperfections' },
+                { value: 'oily', label: 'Oily — Visible shine' },
+                { value: 'dry', label: 'Dry — Slight flaking' },
+                { value: 'combination', label: 'Combination — Oily T-zone' },
+                { value: 'acne-prone', label: 'Acne-Prone — Prone to breakouts' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-yellow-200 rounded-sm p-4 bg-yellow-50/30">
+          <h4 className="font-mono text-sm font-bold text-yellow-800 mb-4">Forehead</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Forehead Height" value={data.face?.foreheadHeight} onChange={(e) => update('face', 'foreheadHeight', e.target.value)}
+              options={[
+                { value: 'low', label: 'Low — Short forehead' },
+                { value: 'average', label: 'Average — Normal proportion' },
+                { value: 'high', label: 'High — Prominent forehead' }
+              ]} />
+            <FaceSelect label="Forehead Width" value={data.face?.foreheadWidth} onChange={(e) => update('face', 'foreheadWidth', e.target.value)}
+              options={[
+                { value: 'narrow', label: 'Narrow — Close temples' },
+                { value: 'average', label: 'Average — Normal width' },
+                { value: 'wide', label: 'Wide — Distant temples' }
+              ]} />
+            <FaceSelect label="Forehead Shape" value={data.face?.foreheadShape} onChange={(e) => update('face', 'foreheadShape', e.target.value)}
+              options={[
+                { value: 'flat', label: 'Flat — No curvature' },
+                { value: 'rounded', label: 'Rounded — Soft curve' },
+                { value: 'sloped', label: 'Sloped — Recedes backward' },
+                { value: 'prominent', label: 'Prominent — Projects forward' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-emerald-200 rounded-sm p-4 bg-emerald-50/30">
+          <h4 className="font-mono text-sm font-bold text-emerald-800 mb-4">Eyebrows</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Eyebrow Shape" value={data.face?.eyebrowShape} onChange={(e) => update('face', 'eyebrowShape', e.target.value)}
+              options={[
+                { value: 'straight', label: 'Straight — Horizontal line' },
+                { value: 'soft-angled', label: 'Soft Angled — Slight peak' },
+                { value: 'hard-angled', label: 'Hard Angled — Defined peak' },
+                { value: 'high-arch', label: 'High Arch — Elevated curve' },
+                { value: 'soft-arch', label: 'Soft Arch — Gentle curve' },
+                { value: 'curved', label: 'Curved — Continuous arc' },
+                { value: 's-shaped', label: 'S-Shaped — Wavy' },
+                { value: 'rounded', label: 'Rounded — No angles' }
+              ]} />
+            <FaceSelect label="Eyebrow Thickness" value={data.face?.eyebrowThickness} onChange={(e) => update('face', 'eyebrowThickness', e.target.value)}
+              options={[
+                { value: 'very-thin', label: 'Very Thin — Almost invisible' },
+                { value: 'thin', label: 'Thin — Delicate' },
+                { value: 'medium', label: 'Medium — Normal thickness' },
+                { value: 'thick', label: 'Thick — Full' },
+                { value: 'very-thick', label: 'Very Thick — Bold' },
+                { value: 'bushy', label: 'Bushy — Untrimmed, wild' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Eyebrow Arch" value={data.face?.eyebrowArch} onChange={(e) => update('face', 'eyebrowArch', e.target.value)}
+              options={[
+                { value: 'no-arch', label: 'No Arch — Completely straight' },
+                { value: 'low', label: 'Low Arch — Minimal curve' },
+                { value: 'medium', label: 'Medium Arch — Standard curve' },
+                { value: 'high', label: 'High Arch — Elevated curve' },
+                { value: 'dramatic', label: 'Dramatic Arch — Very pronounced' }
+              ]} />
+            <FaceSelect label="Eyebrow Color" value={data.face?.eyebrowColor} onChange={(e) => update('face', 'eyebrowColor', e.target.value)}
+              options={['Platinum', 'Blonde', 'Light Brown', 'Medium Brown', 'Dark Brown', 'Black', 'Auburn', 'Red', 'Gray', 'White']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-blue-200 rounded-sm p-4 bg-blue-50/30">
+          <h4 className="font-mono text-sm font-bold text-blue-800 mb-4">Eyes</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Eye Color" value={data.face?.eyeColor} onChange={(e) => update('face', 'eyeColor', e.target.value)}
+              options={[
+                { value: 'light-blue', label: 'Light Blue' },
+                { value: 'blue', label: 'Blue' },
+                { value: 'dark-blue', label: 'Dark Blue' },
+                { value: 'light-green', label: 'Light Green' },
+                { value: 'green', label: 'Green' },
+                { value: 'hazel-green', label: 'Hazel-Green' },
+                { value: 'hazel-brown', label: 'Hazel-Brown' },
+                { value: 'light-brown', label: 'Light Brown (Honey)' },
+                { value: 'medium-brown', label: 'Medium Brown' },
+                { value: 'dark-brown', label: 'Dark Brown' },
+                { value: 'black', label: 'Black' },
+                { value: 'amber', label: 'Amber (Golden)' },
+                { value: 'gray', label: 'Gray' },
+                { value: 'heterochromia', label: 'Heterochromia — Different colors' }
+              ]} />
+            <FaceSelect label="Eye Shape" value={data.face?.eyeShape} onChange={(e) => update('face', 'eyeShape', e.target.value)}
+              options={[
+                { value: 'almond', label: 'Almond — Classic shape' },
+                { value: 'round', label: 'Round — Open and circular' },
+                { value: 'monolid', label: 'Monolid — No crease' },
+                { value: 'hooded', label: 'Hooded — Hidden lid' },
+                { value: 'downturned', label: 'Downturned — Outer corners down' },
+                { value: 'upturned', label: 'Upturned — Outer corners up' },
+                { value: 'deep-set', label: 'Deep-Set — Recessed' },
+                { value: 'protruding', label: 'Protruding — Prominent' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Eye Size" value={data.face?.eyeSize} onChange={(e) => update('face', 'eyeSize', e.target.value)}
+              options={['Very Small', 'Small', 'Medium', 'Large', 'Very Large']} />
+            <FaceSelect label="Eyelashes" value={data.face?.eyeLashes} onChange={(e) => update('face', 'eyeLashes', e.target.value)}
+              options={[
+                { value: 'sparse', label: 'Sparse — Few lashes' },
+                { value: 'short', label: 'Short' },
+                { value: 'average', label: 'Average' },
+                { value: 'long', label: 'Long' },
+                { value: 'very-long', label: 'Very Long' },
+                { value: 'thick', label: 'Thick/Dense' }
+              ]} />
+          </div>
+        </div>
+
+        <div className="border-2 border-indigo-200 rounded-sm p-4 bg-indigo-50/30">
+          <h4 className="font-mono text-sm font-bold text-indigo-800 mb-4">Nose</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Nose Type" value={data.face?.noseType} onChange={(e) => update('face', 'noseType', e.target.value)}
+              options={[
+                { value: 'greek', label: 'Greek — Straight, no curve' },
+                { value: 'roman', label: 'Roman — Convex bridge' },
+                { value: 'aquiline', label: 'Aquiline — Eagle-like curve' },
+                { value: 'button', label: 'Button — Small and rounded' },
+                { value: 'snub', label: 'Snub — Upturned tip' },
+                { value: 'hawk', label: 'Hawk — High curved bridge' },
+                { value: 'nubian', label: 'Nubian — Wide with downward tip' },
+                { value: 'bulbous', label: 'Bulbous — Rounded wide tip' },
+                { value: 'flat', label: 'Flat — Low bridge' },
+                { value: 'crooked', label: 'Crooked — Deviated' }
+              ]} />
+            <FaceSelect label="Nose Size" value={data.face?.noseSize} onChange={(e) => update('face', 'noseSize', e.target.value)}
+              options={['Petite', 'Small', 'Medium', 'Large', 'Prominent']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Nose Bridge" value={data.face?.noseBridge} onChange={(e) => update('face', 'noseBridge', e.target.value)}
+              options={['Low', 'Medium', 'High', 'Bumpy']} />
+            <FaceSelect label="Nose Tip" value={data.face?.noseTip} onChange={(e) => update('face', 'noseTip', e.target.value)}
+              options={['Pointed', 'Rounded', 'Bulbous', 'Upturned', 'Downturned']} />
+            <FaceSelect label="Nostrils" value={data.face?.nostrilSize} onChange={(e) => update('face', 'nostrilSize', e.target.value)}
+              options={['Small', 'Medium', 'Wide', 'Flared']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-pink-200 rounded-sm p-4 bg-pink-50/30">
+          <h4 className="font-mono text-sm font-bold text-pink-800 mb-4">Cheeks</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Cheekbone Height" value={data.face?.cheekboneHeight} onChange={(e) => update('face', 'cheekboneHeight', e.target.value)}
+              options={['Low', 'Medium', 'High', 'Very High']} />
+            <FaceSelect label="Cheekbone Prominence" value={data.face?.cheekboneProminence} onChange={(e) => update('face', 'cheekboneProminence', e.target.value)}
+              options={['Flat', 'Subtle', 'Defined', 'Prominent', 'Very Prominent']} />
+            <FaceSelect label="Cheek Fullness" value={data.face?.cheekFullness} onChange={(e) => update('face', 'cheekFullness', e.target.value)}
+              options={['Hollow', 'Sunken', 'Slim', 'Average', 'Full', 'Chubby']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-red-200 rounded-sm p-4 bg-red-50/30">
+          <h4 className="font-mono text-sm font-bold text-red-800 mb-4">Lips</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Lip Shape" value={data.face?.lipShape} onChange={(e) => update('face', 'lipShape', e.target.value)}
+              options={[
+                { value: 'heart', label: 'Heart — Defined cupids bow' },
+                { value: 'bow', label: 'Bow — Classic bow shape' },
+                { value: 'round', label: 'Round — Curved' },
+                { value: 'wide', label: 'Wide — Extend horizontally' },
+                { value: 'thin', label: 'Thin — Little volume' },
+                { value: 'full', label: 'Full — Balanced volume' },
+                { value: 'pouty', label: 'Pouty — Projected lower lip' },
+                { value: 'downturned', label: 'Downturned — Corners down' },
+                { value: 'upturned', label: 'Upturned — Corners up' }
+              ]} />
+            <FaceSelect label="Lip Thickness" value={data.face?.lipThickness} onChange={(e) => update('face', 'lipThickness', e.target.value)}
+              options={[
+                { value: 'very-thin', label: 'Very Thin' },
+                { value: 'thin', label: 'Thin' },
+                { value: 'medium', label: 'Medium' },
+                { value: 'full', label: 'Full' },
+                { value: 'very-full', label: 'Very Full' },
+                { value: 'plump', label: 'Plump' }
+              ]} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Upper/Lower Ratio" value={data.face?.lipUpperLower} onChange={(e) => update('face', 'lipUpperLower', e.target.value)}
+              options={['Upper Larger', 'Balanced', 'Lower Slightly Larger', 'Lower Much Larger']} />
+            <FaceSelect label="Natural Lip Color" value={data.face?.lipColor} onChange={(e) => update('face', 'lipColor', e.target.value)}
+              options={['Pale', 'Light Pink', 'Pink', 'Dark Pink', 'Rose', 'Coral', 'Berry', 'Red', 'Brown-Pink', 'Brown']} />
+            <FaceSelect label="Cupids Bow" value={data.face?.cupidsBow} onChange={(e) => update('face', 'cupidsBow', e.target.value)}
+              options={['Undefined', 'Subtle', 'Moderate', 'Defined', 'Pronounced']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-slate-200 rounded-sm p-4 bg-slate-50/30">
+          <h4 className="font-mono text-sm font-bold text-slate-800 mb-4">Jaw and Chin</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Jawline Shape" value={data.face?.jawlineShape} onChange={(e) => update('face', 'jawlineShape', e.target.value)}
+              options={['Square', 'Angular', 'Rounded', 'Soft', 'Tapered', 'V-Shaped', 'Wide', 'Narrow']} />
+            <FaceSelect label="Jawline Definition" value={data.face?.jawlineDefinition} onChange={(e) => update('face', 'jawlineDefinition', e.target.value)}
+              options={['Undefined', 'Soft', 'Moderate', 'Defined', 'Sharp', 'Chiseled']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Chin Shape" value={data.face?.chinShape} onChange={(e) => update('face', 'chinShape', e.target.value)}
+              options={['Pointed', 'Rounded', 'Square', 'Cleft', 'Dimpled', 'Receding', 'Protruding', 'Double']} />
+            <FaceSelect label="Chin Size" value={data.face?.chinSize} onChange={(e) => update('face', 'chinSize', e.target.value)}
+              options={['Small', 'Medium', 'Large', 'Long', 'Short']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-stone-200 rounded-sm p-4 bg-stone-50/30">
+          <h4 className="font-mono text-sm font-bold text-stone-800 mb-4">Facial Hair</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Facial Hair Type" value={data.face?.facialHairType} onChange={(e) => update('face', 'facialHairType', e.target.value)}
+              options={[
+                { value: 'none', label: 'None — Smooth face' },
+                { value: 'clean-shaven', label: 'Clean-Shaven' },
+                { value: 'stubble-light', label: 'Light Stubble (1-2 days)' },
+                { value: 'stubble-heavy', label: 'Heavy Stubble (3-5 days)' },
+                { value: 'goatee', label: 'Goatee' },
+                { value: 'mustache', label: 'Mustache' },
+                { value: 'short-beard', label: 'Short Beard' },
+                { value: 'medium-beard', label: 'Medium Beard' },
+                { value: 'full-beard', label: 'Full Beard' },
+                { value: 'long-beard', label: 'Long Beard' }
+              ]} />
+            <FaceSelect label="Hair Density" value={data.face?.facialHairDensity} onChange={(e) => update('face', 'facialHairDensity', e.target.value)}
+              options={['None', 'Sparse', 'Patchy', 'Moderate', 'Full', 'Thick', 'Very Thick']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Facial Hair Color" value={data.face?.facialHairColor} onChange={(e) => update('face', 'facialHairColor', e.target.value)}
+              options={['Blonde', 'Light Brown', 'Brown', 'Dark Brown', 'Black', 'Red', 'Auburn', 'Gray', 'White', 'Salt and Pepper']} />
+            <FaceSelect label="Style" value={data.face?.facialHairStyle} onChange={(e) => update('face', 'facialHairStyle', e.target.value)}
+              options={['Natural', 'Groomed', 'Shaped', 'Wild', 'Styled']} />
+            <FaceSelect label="Length" value={data.face?.facialHairLength} onChange={(e) => update('face', 'facialHairLength', e.target.value)}
+              options={['N/A', 'Shadow', 'Stubble', 'Short', 'Medium', 'Long', 'Very Long']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-cyan-200 rounded-sm p-4 bg-cyan-50/30">
+          <h4 className="font-mono text-sm font-bold text-cyan-800 mb-4">Ears</h4>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <FaceSelect label="Ear Size" value={data.face?.earSize} onChange={(e) => update('face', 'earSize', e.target.value)}
+              options={['Small', 'Medium', 'Large', 'Very Large']} />
+            <FaceSelect label="Ear Shape" value={data.face?.earShape} onChange={(e) => update('face', 'earShape', e.target.value)}
+              options={['Round', 'Oval', 'Pointed', 'Flat', 'Protruding']} />
+            <FaceSelect label="Earlobe" value={data.face?.earLobe} onChange={(e) => update('face', 'earLobe', e.target.value)}
+              options={['Attached', 'Detached', 'Stretched']} />
+          </div>
+        </div>
+
+        <div className="border-2 border-purple-200 rounded-sm p-4 bg-purple-50/30">
+          <h4 className="font-mono text-sm font-bold text-purple-800 mb-4">Details and Marks</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <FaceSelect label="Freckles" value={data.face?.freckles} onChange={(e) => update('face', 'freckles', e.target.value)}
+              options={['None', 'Few', 'Light', 'Moderate', 'Heavy', 'Concentrated (nose/cheeks)']} />
+            <FaceSelect label="Dimples" value={data.face?.dimples} onChange={(e) => update('face', 'dimples', e.target.value)}
+              options={['None', 'Cheeks', 'Chin', 'One Cheek', 'Cheeks and Chin']} />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FaceSelect label="Wrinkles" value={data.face?.wrinkles} onChange={(e) => update('face', 'wrinkles', e.target.value)}
+              options={['None', 'Expression Lines', 'Fine Lines', 'Moderate', 'Pronounced', 'Deep', 'Forehead Lines', 'Crows Feet', 'Smile Lines']} />
+            <FaceInput label="Distinctive Marks" value={data.face?.distinctiveMarks} onChange={(e) => update('face', 'distinctiveMarks', e.target.value)}
+              placeholder="Scars, moles, birthmarks..." />
+          </div>
+        </div>
+      </div>
+    );
+  }
 };
 
 const PsychologyContent = ({ data, updateData, subtab }) => {
