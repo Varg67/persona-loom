@@ -24218,26 +24218,6 @@ const GenericTabContent = ({ tabId, data, updateData, subtab, subtabs }) => {
 // ============================================================================
 // DATABASE CONTENT - Complete with subtabs
 // ============================================================================
-const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
-  const [viewMode, setViewMode] = useState('visual');
-  const [expandedSections, setExpandedSections] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedSection, setSelectedSection] = useState('all');
-
-  const toggleSection = (section) => {
-    setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
-  };
-
-  const expandAll = () => {
-    const allSections = ['identity', 'appearance', 'psychology', 'physique', 'voice', 'history', 'relationships', 'intimacy', 'occupation', 'intelligence', 'worldview', 'favorites', 'behavior', 'secrets', 'goals', 'directives'];
-    const expanded = {};
-    allSections.forEach(s => expanded[s] = true);
-    setExpandedSections(expanded);
-  };
-
-  const collapseAll = () => setExpandedSections({});
-
-  // Count fields per section
   const countSectionFields = (obj) => {
     let filled = 0, total = 0;
     const count = (o) => {
@@ -24255,7 +24235,6 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     return { filled, total, percent: total > 0 ? Math.round((filled / total) * 100) : 0 };
   };
 
-  // Get filled fields from object
   const getFilledFields = (obj, prefix = '') => {
     const fields = [];
     if (!obj) return fields;
@@ -24275,7 +24254,6 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     return fields;
   };
 
-  // Get ALL fields (including empty)
   const getAllFields = (obj, prefix = '') => {
     const fields = [];
     if (!obj) return fields;
@@ -24297,7 +24275,6 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     return fields;
   };
 
-  // Format field name for display
   const formatFieldName = (key) => {
     return key
       .split('.')
@@ -24307,47 +24284,48 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
       .replace(/([a-z])([A-Z])/g, '$1 $2');
   };
 
-  // Total stats
-  const totalStats = countSectionFields(characterData);
+// ============================================================================
+// DATABASE CONSTANTS
+// ============================================================================
+const DATABASE_COLOR_CLASSES = {
+  blue: 'border-blue-300 bg-blue-50',
+  pink: 'border-pink-300 bg-pink-50',
+  purple: 'border-purple-300 bg-purple-50',
+  amber: 'border-amber-300 bg-amber-50',
+  orange: 'border-orange-300 bg-orange-50',
+  teal: 'border-teal-300 bg-teal-50',
+  red: 'border-red-300 bg-red-50',
+  fuchsia: 'border-fuchsia-300 bg-fuchsia-50',
+  green: 'border-green-300 bg-green-50',
+  indigo: 'border-indigo-300 bg-indigo-50',
+  cyan: 'border-cyan-300 bg-cyan-50',
+  yellow: 'border-yellow-300 bg-yellow-50',
+  rose: 'border-rose-300 bg-rose-50',
+  slate: 'border-slate-300 bg-slate-50',
+  emerald: 'border-emerald-300 bg-emerald-50',
+  violet: 'border-violet-300 bg-violet-50',
+};
 
-  // Section configurations
-  const sections = [
-    { id: 'identity', label: 'Identity', icon: '🪪', color: 'blue', data: characterData.identity },
-    { id: 'appearance', label: 'Appearance', icon: '👤', color: 'pink', data: characterData.appearance },
-    { id: 'psychology', label: 'Psychology', icon: '🧠', color: 'purple', data: characterData.psychology },
-    { id: 'physique', label: 'Physique', icon: '💪', color: 'amber', data: characterData.physique },
-    { id: 'voice', label: 'Voice', icon: '🎤', color: 'orange', data: characterData.voice },
-    { id: 'history', label: 'History', icon: '📖', color: 'teal', data: characterData.history },
-    { id: 'relationships', label: 'Relationships', icon: '👥', color: 'red', data: characterData.relationships },
-    { id: 'intimacy', label: 'Intimacy', icon: '💜', color: 'fuchsia', data: characterData.intimacy },
-    { id: 'occupation', label: 'Occupation', icon: '💼', color: 'green', data: characterData.occupation },
-    { id: 'intelligence', label: 'Intelligence', icon: '📚', color: 'indigo', data: characterData.intelligence },
-    { id: 'worldview', label: 'Worldview', icon: '🌍', color: 'cyan', data: characterData.worldview },
-    { id: 'favorites', label: 'Favorites', icon: '⭐', color: 'yellow', data: characterData.favorites },
-    { id: 'behavior', label: 'Behavior', icon: '🎭', color: 'rose', data: characterData.behavior },
-    { id: 'secrets', label: 'Secrets', icon: '🔒', color: 'slate', data: characterData.secrets },
-    { id: 'goals', label: 'Goals', icon: '🎯', color: 'emerald', data: characterData.goals },
-    { id: 'directives', label: 'Directives', icon: '⚙️', color: 'violet', data: characterData.directives },
-  ];
+const DATABASE_HEADER_COLORS = {
+  blue: 'bg-blue-600',
+  pink: 'bg-pink-600',
+  purple: 'bg-purple-600',
+  amber: 'bg-amber-600',
+  orange: 'bg-orange-600',
+  teal: 'bg-teal-600',
+  red: 'bg-red-600',
+  fuchsia: 'bg-fuchsia-600',
+  green: 'bg-green-600',
+  indigo: 'bg-indigo-600',
+  cyan: 'bg-cyan-600',
+  yellow: 'bg-yellow-600',
+  rose: 'bg-rose-600',
+  slate: 'bg-slate-600',
+  emerald: 'bg-emerald-600',
+  violet: 'bg-violet-600',
+};
 
-  // Validation rules
-  const validationRules = [
-    { id: 'name', label: 'Character has a name', check: () => !!characterData.identity?.core?.firstName, category: 'Required' },
-    { id: 'age', label: 'Age is defined', check: () => !!characterData.identity?.vitals?.age, category: 'Required' },
-    { id: 'gender', label: 'Gender identity set', check: () => !!characterData.identity?.vitals?.genderIdentity, category: 'Required' },
-    { id: 'appearance_basic', label: 'Basic appearance defined', check: () => !!characterData.appearance?.face?.faceShape || !!characterData.appearance?.hair?.color, category: 'Recommended' },
-    { id: 'personality', label: 'Personality traits set', check: () => (characterData.psychology?.core?.personalityTraits?.length || 0) > 0, category: 'Recommended' },
-    { id: 'backstory', label: 'Has backstory/history', check: () => !!characterData.history?.childhood?.childhoodSummary || !!characterData.history?.formative?.formativeEvent, category: 'Recommended' },
-    { id: 'voice_basic', label: 'Voice characteristics set', check: () => !!characterData.voice?.design?.voiceGender || characterData.voice?.design?.pitch !== 5, category: 'For TTS' },
-    { id: 'voice_accent', label: 'Accent defined', check: () => !!characterData.voice?.languages?.accent, category: 'For TTS' },
-    { id: 'directives_set', label: 'Directives configured', check: () => !!characterData.directives?.formatting?.responseLength, category: 'For RP' },
-    { id: 'goals_defined', label: 'Character goals set', check: () => !!characterData.goals?.primary?.mainGoal, category: 'For Story' },
-    { id: 'relationships', label: 'Relationships defined', check: () => (characterData.relationships?.npcs?.length || 0) > 0, category: 'For Story' },
-    { id: 'occupation', label: 'Occupation defined', check: () => (characterData.occupation?.jobs?.length || 0) > 0, category: 'Optional' },
-  ];
-
-  // Quick summary card
-  const QuickSummary = () => {
+  const QuickSummary = ({ characterData, totalStats }) => {
     const identity = characterData.identity || {};
     const core = identity.core || {};
     const vitals = identity.vitals || {};
@@ -24392,63 +24370,27 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     );
   };
 
-  // Section Card Component
-  const SectionCard = ({ section }) => {
-    const stats = countSectionFields(section.data);
-    const fields = getFilledFields(section.data);
-    const isExpanded = expandedSections[section.id];
+  const SectionCard = ({ section, isExpanded, onToggle, searchTerm, stats }) => {
+    const fields = React.useMemo(() => {
+      if (!searchTerm && !isExpanded) return [];
+      return getFilledFields(section.data);
+    }, [section.data, searchTerm, isExpanded]);
     
     // Filter fields by search term
-    const filteredFields = searchTerm 
+    const filteredFields = React.useMemo(() => searchTerm
       ? fields.filter(f => f.key.toLowerCase().includes(searchTerm.toLowerCase()) || f.value.toLowerCase().includes(searchTerm.toLowerCase()))
-      : fields;
+      : fields, [fields, searchTerm]);
     
-    const colorClasses = {
-      blue: 'border-blue-300 bg-blue-50',
-      pink: 'border-pink-300 bg-pink-50',
-      purple: 'border-purple-300 bg-purple-50',
-      amber: 'border-amber-300 bg-amber-50',
-      orange: 'border-orange-300 bg-orange-50',
-      teal: 'border-teal-300 bg-teal-50',
-      red: 'border-red-300 bg-red-50',
-      fuchsia: 'border-fuchsia-300 bg-fuchsia-50',
-      green: 'border-green-300 bg-green-50',
-      indigo: 'border-indigo-300 bg-indigo-50',
-      cyan: 'border-cyan-300 bg-cyan-50',
-      yellow: 'border-yellow-300 bg-yellow-50',
-      rose: 'border-rose-300 bg-rose-50',
-      slate: 'border-slate-300 bg-slate-50',
-      emerald: 'border-emerald-300 bg-emerald-50',
-      violet: 'border-violet-300 bg-violet-50',
-    };
 
-    const headerColors = {
-      blue: 'bg-blue-600',
-      pink: 'bg-pink-600',
-      purple: 'bg-purple-600',
-      amber: 'bg-amber-600',
-      orange: 'bg-orange-600',
-      teal: 'bg-teal-600',
-      red: 'bg-red-600',
-      fuchsia: 'bg-fuchsia-600',
-      green: 'bg-green-600',
-      indigo: 'bg-indigo-600',
-      cyan: 'bg-cyan-600',
-      yellow: 'bg-yellow-600',
-      rose: 'bg-rose-600',
-      slate: 'bg-slate-600',
-      emerald: 'bg-emerald-600',
-      violet: 'bg-violet-600',
-    };
 
     if (stats.filled === 0 && !searchTerm) return null;
     if (searchTerm && filteredFields.length === 0) return null;
 
     return (
-      <div className={`border-2 rounded-lg overflow-hidden ${colorClasses[section.color] || 'border-gray-300 bg-gray-50'}`}>
+      <div className={`border-2 rounded-lg overflow-hidden ${DATABASE_COLOR_CLASSES[section.color] || 'border-gray-300 bg-gray-50'}`}>
         <button
-          onClick={() => toggleSection(section.id)}
-          className={`w-full flex items-center justify-between p-3 ${headerColors[section.color] || 'bg-gray-600'} text-white`}
+          onClick={() => onToggle(section.id)}
+          className={`w-full flex items-center justify-between p-3 ${DATABASE_HEADER_COLORS[section.color] || 'bg-gray-600'} text-white`}
         >
           <div className="flex items-center gap-2">
             <span className="text-lg">{section.icon}</span>
@@ -24481,23 +24423,71 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     );
   };
 
-  // ========== SUBTAB CONTENT ==========
-  const subtabContent = {
+const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
+  const [viewMode, setViewMode] = useState('visual');
+  const [expandedSections, setExpandedSections] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSection, setSelectedSection] = useState('all');
+
+  // Memoized stats and rules
+  const totalStats = React.useMemo(() => countSectionFields(characterData), [characterData]);
+
+  const sections = React.useMemo(() => [
+    { id: 'identity', label: 'Identity', icon: '🪪', color: 'blue', data: characterData.identity },
+    { id: 'appearance', label: 'Appearance', icon: '👤', color: 'pink', data: characterData.appearance },
+    { id: 'psychology', label: 'Psychology', icon: '🧠', color: 'purple', data: characterData.psychology },
+    { id: 'physique', label: 'Physique', icon: '💪', color: 'amber', data: characterData.physique },
+    { id: 'voice', label: 'Voice', icon: '🎤', color: 'orange', data: characterData.voice },
+    { id: 'history', label: 'History', icon: '📖', color: 'teal', data: characterData.history },
+    { id: 'relationships', label: 'Relationships', icon: '👥', color: 'red', data: characterData.relationships },
+    { id: 'intimacy', label: 'Intimacy', icon: '💜', color: 'fuchsia', data: characterData.intimacy },
+    { id: 'occupation', label: 'Occupation', icon: '💼', color: 'green', data: characterData.occupation },
+    { id: 'intelligence', label: 'Intelligence', icon: '📚', color: 'indigo', data: characterData.intelligence },
+    { id: 'worldview', label: 'Worldview', icon: '🌍', color: 'cyan', data: characterData.worldview },
+    { id: 'favorites', label: 'Favorites', icon: '⭐', color: 'yellow', data: characterData.favorites },
+    { id: 'behavior', label: 'Behavior', icon: '🎭', color: 'rose', data: characterData.behavior },
+    { id: 'secrets', label: 'Secrets', icon: '🔒', color: 'slate', data: characterData.secrets },
+    { id: 'goals', label: 'Goals', icon: '🎯', color: 'emerald', data: characterData.goals },
+    { id: 'directives', label: 'Directives', icon: '⚙️', color: 'violet', data: characterData.directives },
+  ], [characterData]);
+
+  const sectionsWithStats = React.useMemo(() => sections.map(s => ({
+    ...s,
+    stats: countSectionFields(s.data)
+  })), [sections]);
+
+  const validationRules = React.useMemo(() => [
+    { id: 'name', label: 'Character has a name', check: () => !!characterData.identity?.core?.firstName, category: 'Required' },
+    { id: 'age', label: 'Age is defined', check: () => !!characterData.identity?.vitals?.age, category: 'Required' },
+    { id: 'gender', label: 'Gender identity set', check: () => !!characterData.identity?.vitals?.genderIdentity, category: 'Required' },
+    { id: 'appearance_basic', label: 'Basic appearance defined', check: () => !!characterData.appearance?.face?.faceShape || !!characterData.appearance?.hair?.color, category: 'Recommended' },
+    { id: 'personality', label: 'Personality traits set', check: () => (characterData.psychology?.core?.personalityTraits?.length || 0) > 0, category: 'Recommended' },
+    { id: 'backstory', label: 'Has backstory/history', check: () => !!characterData.history?.childhood?.childhoodSummary || !!characterData.history?.formative?.formativeEvent, category: 'Recommended' },
+    { id: 'voice_basic', label: 'Voice characteristics set', check: () => !!characterData.voice?.design?.voiceGender || characterData.voice?.design?.pitch !== 5, category: 'For TTS' },
+    { id: 'voice_accent', label: 'Accent defined', check: () => !!characterData.voice?.languages?.accent, category: 'For TTS' },
+    { id: 'directives_set', label: 'Directives configured', check: () => !!characterData.directives?.formatting?.responseLength, category: 'For RP' },
+    { id: 'goals_defined', label: 'Character goals set', check: () => !!characterData.goals?.primary?.mainGoal, category: 'For Story' },
+    { id: 'relationships', label: 'Relationships defined', check: () => (characterData.relationships?.npcs?.length || 0) > 0, category: 'For Story' },
+    { id: 'occupation', label: 'Occupation defined', check: () => (characterData.occupation?.jobs?.length || 0) > 0, category: 'Optional' },
+  ], [characterData]);
+
+  const renderSubtabContent = () => {
+    switch (subtab) {
     // SUBTAB 0: Overview
-    0: (
+    case 0: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-blue-900 to-indigo-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📊 DATABASE OVERVIEW</h3>
           <p className="font-mono text-xs text-blue-200">Complete view of your character's data structure.</p>
         </div>
 
-        <QuickSummary />
+        <QuickSummary characterData={characterData} totalStats={totalStats} />
 
         {/* Section completion grid */}
         <div className="bg-white border border-gray-200 rounded-sm p-4">
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📁 Section Completion</h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {sections.map(section => {
+            {sectionsWithStats.map(section => {
               const stats = countSectionFields(section.data);
               return (
                 <div key={section.id} className="p-3 rounded border border-gray-200 bg-gray-50">
@@ -24550,10 +24540,9 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </button>
         </div>
       </div>
-    ),
-
+    );
     // SUBTAB 1: Browse Data
-    1: (
+    case 1: return (
       <div className="space-y-4">
         <div className="bg-gradient-to-br from-teal-900 to-cyan-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">🔍 BROWSE DATA</h3>
@@ -24578,7 +24567,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
             className="px-3 py-2 border border-gray-300 rounded-sm font-mono text-xs"
           >
             <option value="all">All Sections</option>
-            {sections.map(s => (
+            {sectionsWithStats.map(s => (
               <option key={s.id} value={s.id}>{s.label}</option>
             ))}
           </select>
@@ -24614,7 +24603,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
         {viewMode === 'visual' ? (
           <div className="space-y-3">
             {(selectedSection === 'all' ? sections : sections.filter(s => s.id === selectedSection)).map(section => (
-              <SectionCard key={section.id} section={section} />
+              <SectionCard key={section.id} section={section} isExpanded={expandedSections[section.id]} onToggle={toggleSection} searchTerm={searchTerm} stats={section.stats} />
             ))}
           </div>
         ) : (
@@ -24628,10 +24617,9 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         )}
       </div>
-    ),
-
+    );
     // SUBTAB 2: Statistics
-    2: (
+    case 2: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-purple-900 to-pink-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📈 STATISTICS</h3>
@@ -24658,7 +24646,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
         <div className="bg-white border border-gray-200 rounded-sm p-4">
           <h4 className="font-mono text-sm font-bold text-gray-800 mb-4">📊 Completion by Section</h4>
           <div className="space-y-3">
-            {sections.map(section => {
+            {sectionsWithStats.map(section => {
               const stats = countSectionFields(section.data);
               return (
                 <div key={section.id} className="flex items-center gap-3">
@@ -24725,10 +24713,9 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         </div>
       </div>
-    ),
-
+    );
     // SUBTAB 3: Validation
-    3: (
+    case 3: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-amber-900 to-orange-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">✅ VALIDATION</h3>
@@ -24812,10 +24799,9 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </div>
         </div>
       </div>
-    ),
-
+    );
     // SUBTAB 4: Quick Edit
-    4: (
+    case 4: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-green-900 to-emerald-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">✏️ QUICK EDIT</h3>
@@ -24988,10 +24974,9 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </p>
         </div>
       </div>
-    ),
-
+    );
     // SUBTAB 5: Compare (Snapshots)
-    5: (
+    case 5: return (
       <div className="space-y-6">
         <div className="bg-gradient-to-br from-violet-900 to-purple-900 rounded-sm p-4 text-white">
           <h3 className="font-mono text-sm font-bold mb-2">📸 COMPARE & SNAPSHOTS</h3>
@@ -25006,10 +24991,8 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
             <button 
               onClick={() => {
                 const snapshot = {
-                  timestamp: new Date().toISOString(),
-                  name: characterData.identity?.core?.firstName || 'Unnamed',
-                  data: JSON.stringify(characterData),
-                  stats: totalStats
+                  timestamp: new Date().toISOString(),                  name: characterData.identity?.core?.firstName || 'Unnamed',
+                  data: JSON.stringify(characterData),                  stats: totalStats
                 };
                 const existing = JSON.parse(localStorage.getItem('personaLoomSnapshots') || '[]');
                 existing.push(snapshot);
@@ -25150,8 +25133,35 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           </ul>
         </div>
       </div>
-    ),
+    );      default: return null;
+    }
   };
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const expandAll = () => {
+    const allSections = ['identity', 'appearance', 'psychology', 'physique', 'voice', 'history', 'relationships', 'intimacy', 'occupation', 'intelligence', 'worldview', 'favorites', 'behavior', 'secrets', 'goals', 'directives'];
+    const expanded = {};
+    allSections.forEach(s => expanded[s] = true);
+    setExpandedSections(expanded);
+  };
+
+  const collapseAll = () => setExpandedSections({});
+
+  // Count fields per section
+
+
+
+
+
+
+  // Quick summary card
+
+  // Section Card Component
+
+  // ========== SUBTAB CONTENT ==========
 
   return (
     <div className="animate-fadeIn">
@@ -25161,7 +25171,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
       <h1 className="font-serif text-4xl font-black italic text-gray-900 mb-4">Character Database</h1>
       <p className="font-mono text-xs text-gray-500 mb-8">View, browse, and analyze your character data.</p>
       
-      {subtabContent[subtab] || subtabContent[0]}
+      {renderSubtabContent()}
     </div>
   );
 };
