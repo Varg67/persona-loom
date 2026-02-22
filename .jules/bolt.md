@@ -1,0 +1,3 @@
+## 2024-05-23 - Inline Component Definition in Monolithic Files
+**Learning:** Defining components inside other components (e.g., `QuickSummary` and `SectionCard` inside `DatabaseContent`) forces React to re-create them on every render. In large monolithic files like `persona-loom-v7-improved (1).jsx`, this pattern is easy to miss but causes significant performance degradation (unnecessary reconciliation/remounting) and focus loss issues.
+**Action:** Always extract helper components to module scope. When refactoring large monolithic files, use scripted extraction (Python) to safely move these components and their dependencies (helper functions) while ensuring props are correctly passed.
