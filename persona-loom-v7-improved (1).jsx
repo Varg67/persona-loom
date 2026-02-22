@@ -24218,27 +24218,9 @@ const GenericTabContent = ({ tabId, data, updateData, subtab, subtabs }) => {
 // ============================================================================
 // DATABASE CONTENT - Complete with subtabs
 // ============================================================================
-const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
-  const [viewMode, setViewMode] = useState('visual');
-  const [expandedSections, setExpandedSections] = useState({});
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedSection, setSelectedSection] = useState('all');
 
-  const toggleSection = (section) => {
-    setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
-  };
 
-  const expandAll = () => {
-    const allSections = ['identity', 'appearance', 'psychology', 'physique', 'voice', 'history', 'relationships', 'intimacy', 'occupation', 'intelligence', 'worldview', 'favorites', 'behavior', 'secrets', 'goals', 'directives'];
-    const expanded = {};
-    allSections.forEach(s => expanded[s] = true);
-    setExpandedSections(expanded);
-  };
-
-  const collapseAll = () => setExpandedSections({});
-
-  // Count fields per section
-  const countSectionFields = (obj) => {
+const countSectionFields = (obj) => {
     let filled = 0, total = 0;
     const count = (o) => {
       if (!o) return;
@@ -24255,8 +24237,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     return { filled, total, percent: total > 0 ? Math.round((filled / total) * 100) : 0 };
   };
 
-  // Get filled fields from object
-  const getFilledFields = (obj, prefix = '') => {
+const getFilledFields = (obj, prefix = '') => {
     const fields = [];
     if (!obj) return fields;
     
@@ -24275,8 +24256,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     return fields;
   };
 
-  // Get ALL fields (including empty)
-  const getAllFields = (obj, prefix = '') => {
+const getAllFields = (obj, prefix = '') => {
     const fields = [];
     if (!obj) return fields;
     
@@ -24297,8 +24277,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     return fields;
   };
 
-  // Format field name for display
-  const formatFieldName = (key) => {
+const formatFieldName = (key) => {
     return key
       .split('.')
       .pop()
@@ -24307,47 +24286,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
       .replace(/([a-z])([A-Z])/g, '$1 $2');
   };
 
-  // Total stats
-  const totalStats = countSectionFields(characterData);
-
-  // Section configurations
-  const sections = [
-    { id: 'identity', label: 'Identity', icon: '🪪', color: 'blue', data: characterData.identity },
-    { id: 'appearance', label: 'Appearance', icon: '👤', color: 'pink', data: characterData.appearance },
-    { id: 'psychology', label: 'Psychology', icon: '🧠', color: 'purple', data: characterData.psychology },
-    { id: 'physique', label: 'Physique', icon: '💪', color: 'amber', data: characterData.physique },
-    { id: 'voice', label: 'Voice', icon: '🎤', color: 'orange', data: characterData.voice },
-    { id: 'history', label: 'History', icon: '📖', color: 'teal', data: characterData.history },
-    { id: 'relationships', label: 'Relationships', icon: '👥', color: 'red', data: characterData.relationships },
-    { id: 'intimacy', label: 'Intimacy', icon: '💜', color: 'fuchsia', data: characterData.intimacy },
-    { id: 'occupation', label: 'Occupation', icon: '💼', color: 'green', data: characterData.occupation },
-    { id: 'intelligence', label: 'Intelligence', icon: '📚', color: 'indigo', data: characterData.intelligence },
-    { id: 'worldview', label: 'Worldview', icon: '🌍', color: 'cyan', data: characterData.worldview },
-    { id: 'favorites', label: 'Favorites', icon: '⭐', color: 'yellow', data: characterData.favorites },
-    { id: 'behavior', label: 'Behavior', icon: '🎭', color: 'rose', data: characterData.behavior },
-    { id: 'secrets', label: 'Secrets', icon: '🔒', color: 'slate', data: characterData.secrets },
-    { id: 'goals', label: 'Goals', icon: '🎯', color: 'emerald', data: characterData.goals },
-    { id: 'directives', label: 'Directives', icon: '⚙️', color: 'violet', data: characterData.directives },
-  ];
-
-  // Validation rules
-  const validationRules = [
-    { id: 'name', label: 'Character has a name', check: () => !!characterData.identity?.core?.firstName, category: 'Required' },
-    { id: 'age', label: 'Age is defined', check: () => !!characterData.identity?.vitals?.age, category: 'Required' },
-    { id: 'gender', label: 'Gender identity set', check: () => !!characterData.identity?.vitals?.genderIdentity, category: 'Required' },
-    { id: 'appearance_basic', label: 'Basic appearance defined', check: () => !!characterData.appearance?.face?.faceShape || !!characterData.appearance?.hair?.color, category: 'Recommended' },
-    { id: 'personality', label: 'Personality traits set', check: () => (characterData.psychology?.core?.personalityTraits?.length || 0) > 0, category: 'Recommended' },
-    { id: 'backstory', label: 'Has backstory/history', check: () => !!characterData.history?.childhood?.childhoodSummary || !!characterData.history?.formative?.formativeEvent, category: 'Recommended' },
-    { id: 'voice_basic', label: 'Voice characteristics set', check: () => !!characterData.voice?.design?.voiceGender || characterData.voice?.design?.pitch !== 5, category: 'For TTS' },
-    { id: 'voice_accent', label: 'Accent defined', check: () => !!characterData.voice?.languages?.accent, category: 'For TTS' },
-    { id: 'directives_set', label: 'Directives configured', check: () => !!characterData.directives?.formatting?.responseLength, category: 'For RP' },
-    { id: 'goals_defined', label: 'Character goals set', check: () => !!characterData.goals?.primary?.mainGoal, category: 'For Story' },
-    { id: 'relationships', label: 'Relationships defined', check: () => (characterData.relationships?.npcs?.length || 0) > 0, category: 'For Story' },
-    { id: 'occupation', label: 'Occupation defined', check: () => (characterData.occupation?.jobs?.length || 0) > 0, category: 'Optional' },
-  ];
-
-  // Quick summary card
-  const QuickSummary = () => {
+const QuickSummary = ({ characterData, totalStats }) => {
     const identity = characterData.identity || {};
     const core = identity.core || {};
     const vitals = identity.vitals || {};
@@ -24392,8 +24331,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     );
   };
 
-  // Section Card Component
-  const SectionCard = ({ section }) => {
+const SectionCard = ({ section, expandedSections, toggleSection, searchTerm }) => {
     const stats = countSectionFields(section.data);
     const fields = getFilledFields(section.data);
     const isExpanded = expandedSections[section.id];
@@ -24481,6 +24419,82 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
     );
   };
 
+const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0 }) => {
+  const [viewMode, setViewMode] = useState('visual');
+  const [expandedSections, setExpandedSections] = useState({});
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedSection, setSelectedSection] = useState('all');
+
+  const toggleSection = (section) => {
+    setExpandedSections(prev => ({ ...prev, [section]: !prev[section] }));
+  };
+
+  const expandAll = () => {
+    const allSections = ['identity', 'appearance', 'psychology', 'physique', 'voice', 'history', 'relationships', 'intimacy', 'occupation', 'intelligence', 'worldview', 'favorites', 'behavior', 'secrets', 'goals', 'directives'];
+    const expanded = {};
+    allSections.forEach(s => expanded[s] = true);
+    setExpandedSections(expanded);
+  };
+
+  const collapseAll = () => setExpandedSections({});
+
+  // Count fields per section
+
+
+  // Get filled fields from object
+
+
+  // Get ALL fields (including empty)
+
+
+  // Format field name for display
+
+
+  // Total stats
+  const totalStats = React.useMemo(() => countSectionFields(characterData), [characterData]);
+
+  // Section configurations
+  const sections = [
+    { id: 'identity', label: 'Identity', icon: '🪪', color: 'blue', data: characterData.identity },
+    { id: 'appearance', label: 'Appearance', icon: '👤', color: 'pink', data: characterData.appearance },
+    { id: 'psychology', label: 'Psychology', icon: '🧠', color: 'purple', data: characterData.psychology },
+    { id: 'physique', label: 'Physique', icon: '💪', color: 'amber', data: characterData.physique },
+    { id: 'voice', label: 'Voice', icon: '🎤', color: 'orange', data: characterData.voice },
+    { id: 'history', label: 'History', icon: '📖', color: 'teal', data: characterData.history },
+    { id: 'relationships', label: 'Relationships', icon: '👥', color: 'red', data: characterData.relationships },
+    { id: 'intimacy', label: 'Intimacy', icon: '💜', color: 'fuchsia', data: characterData.intimacy },
+    { id: 'occupation', label: 'Occupation', icon: '💼', color: 'green', data: characterData.occupation },
+    { id: 'intelligence', label: 'Intelligence', icon: '📚', color: 'indigo', data: characterData.intelligence },
+    { id: 'worldview', label: 'Worldview', icon: '🌍', color: 'cyan', data: characterData.worldview },
+    { id: 'favorites', label: 'Favorites', icon: '⭐', color: 'yellow', data: characterData.favorites },
+    { id: 'behavior', label: 'Behavior', icon: '🎭', color: 'rose', data: characterData.behavior },
+    { id: 'secrets', label: 'Secrets', icon: '🔒', color: 'slate', data: characterData.secrets },
+    { id: 'goals', label: 'Goals', icon: '🎯', color: 'emerald', data: characterData.goals },
+    { id: 'directives', label: 'Directives', icon: '⚙️', color: 'violet', data: characterData.directives },
+  ];
+
+  // Validation rules
+  const validationRules = [
+    { id: 'name', label: 'Character has a name', check: () => !!characterData.identity?.core?.firstName, category: 'Required' },
+    { id: 'age', label: 'Age is defined', check: () => !!characterData.identity?.vitals?.age, category: 'Required' },
+    { id: 'gender', label: 'Gender identity set', check: () => !!characterData.identity?.vitals?.genderIdentity, category: 'Required' },
+    { id: 'appearance_basic', label: 'Basic appearance defined', check: () => !!characterData.appearance?.face?.faceShape || !!characterData.appearance?.hair?.color, category: 'Recommended' },
+    { id: 'personality', label: 'Personality traits set', check: () => (characterData.psychology?.core?.personalityTraits?.length || 0) > 0, category: 'Recommended' },
+    { id: 'backstory', label: 'Has backstory/history', check: () => !!characterData.history?.childhood?.childhoodSummary || !!characterData.history?.formative?.formativeEvent, category: 'Recommended' },
+    { id: 'voice_basic', label: 'Voice characteristics set', check: () => !!characterData.voice?.design?.voiceGender || characterData.voice?.design?.pitch !== 5, category: 'For TTS' },
+    { id: 'voice_accent', label: 'Accent defined', check: () => !!characterData.voice?.languages?.accent, category: 'For TTS' },
+    { id: 'directives_set', label: 'Directives configured', check: () => !!characterData.directives?.formatting?.responseLength, category: 'For RP' },
+    { id: 'goals_defined', label: 'Character goals set', check: () => !!characterData.goals?.primary?.mainGoal, category: 'For Story' },
+    { id: 'relationships', label: 'Relationships defined', check: () => (characterData.relationships?.npcs?.length || 0) > 0, category: 'For Story' },
+    { id: 'occupation', label: 'Occupation defined', check: () => (characterData.occupation?.jobs?.length || 0) > 0, category: 'Optional' },
+  ];
+
+  // Quick summary card
+
+
+  // Section Card Component
+
+
   // ========== SUBTAB CONTENT ==========
   const subtabContent = {
     // SUBTAB 0: Overview
@@ -24491,7 +24505,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
           <p className="font-mono text-xs text-blue-200">Complete view of your character's data structure.</p>
         </div>
 
-        <QuickSummary />
+        <QuickSummary characterData={characterData} totalStats={totalStats} />
 
         {/* Section completion grid */}
         <div className="bg-white border border-gray-200 rounded-sm p-4">
@@ -24614,7 +24628,7 @@ const DatabaseContent = ({ characterData, onCopy, onDownload, copied, subtab = 0
         {viewMode === 'visual' ? (
           <div className="space-y-3">
             {(selectedSection === 'all' ? sections : sections.filter(s => s.id === selectedSection)).map(section => (
-              <SectionCard key={section.id} section={section} />
+              <SectionCard key={section.id} section={section}  expandedSections={expandedSections} toggleSection={toggleSection} searchTerm={searchTerm} />
             ))}
           </div>
         ) : (
