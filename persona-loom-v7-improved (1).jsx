@@ -5858,6 +5858,719 @@ const AppearanceContent = ({ data, updateData, subtab, characterAge, characterGe
   return sections[subtab] || sections[0];
 };
 
+const traitsDatabase = {
+  positive: [
+    // Caring (12)
+    { id: 'compassionate', label: 'Compassionate', cat: 'Caring', desc: 'Deeply cares about others\' suffering' },
+    { id: 'empathetic', label: 'Empathetic', cat: 'Caring', desc: 'Feels and understands others\' emotions' },
+    { id: 'sympathetic', label: 'Sympathetic', cat: 'Caring', desc: 'Shows concern for others\' hardships' },
+    { id: 'nurturing', label: 'Nurturing', cat: 'Caring', desc: 'Cares for and encourages growth' },
+    { id: 'gentle', label: 'Gentle', cat: 'Caring', desc: 'Kind and soft in manner' },
+    { id: 'tender', label: 'Tender', cat: 'Caring', desc: 'Shows gentleness and affection' },
+    { id: 'caring', label: 'Caring', cat: 'Caring', desc: 'Shows kindness and concern' },
+    { id: 'attentive', label: 'Attentive', cat: 'Caring', desc: 'Pays close attention to others\' needs' },
+    { id: 'considerate', label: 'Considerate', cat: 'Caring', desc: 'Thoughtful of others\' feelings' },
+    { id: 'thoughtful', label: 'Thoughtful', cat: 'Caring', desc: 'Shows consideration for others' },
+    { id: 'understanding', label: 'Understanding', cat: 'Caring', desc: 'Shows comprehension and tolerance' },
+    { id: 'comforting', label: 'Comforting', cat: 'Caring', desc: 'Provides solace and reassurance' },
+
+    // Giving (10)
+    { id: 'generous', label: 'Generous', cat: 'Giving', desc: 'Freely gives time, resources, attention' },
+    { id: 'altruistic', label: 'Altruistic', cat: 'Giving', desc: 'Selflessly concerned for others' },
+    { id: 'charitable', label: 'Charitable', cat: 'Giving', desc: 'Generous to those in need' },
+    { id: 'selfless', label: 'Selfless', cat: 'Giving', desc: 'Puts others before self' },
+    { id: 'helpful', label: 'Helpful', cat: 'Giving', desc: 'Willing to assist others' },
+    { id: 'supportive', label: 'Supportive', cat: 'Giving', desc: 'Provides encouragement and help' },
+    { id: 'accommodating', label: 'Accommodating', cat: 'Giving', desc: 'Willing to adjust for others' },
+    { id: 'hospitable', label: 'Hospitable', cat: 'Giving', desc: 'Welcomes guests warmly' },
+    { id: 'magnanimous', label: 'Magnanimous', cat: 'Giving', desc: 'Generous in forgiving' },
+    { id: 'benevolent', label: 'Benevolent', cat: 'Giving', desc: 'Well-meaning and kindly' },
+
+    // Loyalty (10)
+    { id: 'loyal', label: 'Loyal', cat: 'Loyalty', desc: 'Steadfast in allegiance' },
+    { id: 'faithful', label: 'Faithful', cat: 'Loyalty', desc: 'True to commitments' },
+    { id: 'devoted', label: 'Devoted', cat: 'Loyalty', desc: 'Deeply dedicated to others' },
+    { id: 'dependable', label: 'Dependable', cat: 'Loyalty', desc: 'Can be relied upon' },
+    { id: 'trustworthy', label: 'Trustworthy', cat: 'Loyalty', desc: 'Worthy of confidence' },
+    { id: 'reliable', label: 'Reliable', cat: 'Loyalty', desc: 'Consistently good in quality' },
+    { id: 'committed', label: 'Committed', cat: 'Loyalty', desc: 'Dedicated to a cause or person' },
+    { id: 'steadfast', label: 'Steadfast', cat: 'Loyalty', desc: 'Firmly loyal and constant' },
+    { id: 'true', label: 'True', cat: 'Loyalty', desc: 'Genuine and loyal' },
+    { id: 'dedicated', label: 'Dedicated', cat: 'Loyalty', desc: 'Devoted to a task or purpose' },
+
+    // Harmony (10)
+    { id: 'forgiving', label: 'Forgiving', cat: 'Harmony', desc: 'Lets go of grudges' },
+    { id: 'diplomatic', label: 'Diplomatic', cat: 'Harmony', desc: 'Tactful in difficult situations' },
+    { id: 'peacemaking', label: 'Peacemaking', cat: 'Harmony', desc: 'Works to resolve conflicts' },
+    { id: 'tolerant', label: 'Tolerant', cat: 'Harmony', desc: 'Accepts differences in others' },
+    { id: 'accepting', label: 'Accepting', cat: 'Harmony', desc: 'Receives others without judgment' },
+    { id: 'patient', label: 'Patient', cat: 'Harmony', desc: 'Tolerates delays calmly' },
+    { id: 'cooperative', label: 'Cooperative', cat: 'Harmony', desc: 'Works well with others' },
+    { id: 'agreeable', label: 'Agreeable', cat: 'Harmony', desc: 'Pleasant and easy to work with' },
+    { id: 'easygoing', label: 'Easygoing', cat: 'Harmony', desc: 'Relaxed and tolerant' },
+    { id: 'flexible', label: 'Flexible', cat: 'Harmony', desc: 'Willing to compromise' },
+
+    // Integrity (15)
+    { id: 'honest', label: 'Honest', cat: 'Integrity', desc: 'Truthful and sincere' },
+    { id: 'sincere', label: 'Sincere', cat: 'Integrity', desc: 'Free from pretense' },
+    { id: 'truthful', label: 'Truthful', cat: 'Integrity', desc: 'Speaks only truth' },
+    { id: 'genuine', label: 'Genuine', cat: 'Integrity', desc: 'Authentic and real' },
+    { id: 'authentic', label: 'Authentic', cat: 'Integrity', desc: 'True to oneself' },
+    { id: 'transparent', label: 'Transparent', cat: 'Integrity', desc: 'Open and honest' },
+    { id: 'forthright', label: 'Forthright', cat: 'Integrity', desc: 'Direct and outspoken honestly' },
+    { id: 'candid', label: 'Candid', cat: 'Integrity', desc: 'Frank and unreserved' },
+    { id: 'principled', label: 'Principled', cat: 'Integrity', desc: 'Acts on moral code' },
+    { id: 'ethical', label: 'Ethical', cat: 'Integrity', desc: 'Morally correct' },
+    { id: 'moral', label: 'Moral', cat: 'Integrity', desc: 'Concerned with right and wrong' },
+    { id: 'virtuous', label: 'Virtuous', cat: 'Integrity', desc: 'Having high moral standards' },
+    { id: 'honorable', label: 'Honorable', cat: 'Integrity', desc: 'Worthy of respect' },
+    { id: 'noble', label: 'Noble', cat: 'Integrity', desc: 'Having high moral qualities' },
+    { id: 'righteous', label: 'Righteous', cat: 'Integrity', desc: 'Morally right and just' },
+
+    // Courage (10)
+    { id: 'courageous', label: 'Courageous', cat: 'Courage', desc: 'Faces fear bravely' },
+    { id: 'brave', label: 'Brave', cat: 'Courage', desc: 'Ready to face danger' },
+    { id: 'bold', label: 'Bold', cat: 'Courage', desc: 'Willing to take risks' },
+    { id: 'fearless', label: 'Fearless', cat: 'Courage', desc: 'Lacking fear' },
+    { id: 'daring', label: 'Daring', cat: 'Courage', desc: 'Adventurous and bold' },
+    { id: 'valiant', label: 'Valiant', cat: 'Courage', desc: 'Brave and determined' },
+    { id: 'heroic', label: 'Heroic', cat: 'Courage', desc: 'Extremely brave' },
+    { id: 'gallant', label: 'Gallant', cat: 'Courage', desc: 'Brave and noble' },
+    { id: 'audacious', label: 'Audacious', cat: 'Courage', desc: 'Willingness to take bold risks' },
+    { id: 'intrepid', label: 'Intrepid', cat: 'Courage', desc: 'Fearless and adventurous' },
+
+    // Humility (8)
+    { id: 'humble', label: 'Humble', cat: 'Humility', desc: 'Modest about achievements' },
+    { id: 'modest', label: 'Modest', cat: 'Humility', desc: 'Unassuming about abilities' },
+    { id: 'unassuming', label: 'Unassuming', cat: 'Humility', desc: 'Not pretentious' },
+    { id: 'unpretentious', label: 'Unpretentious', cat: 'Humility', desc: 'Not trying to impress' },
+    { id: 'down-to-earth', label: 'Down-to-earth', cat: 'Humility', desc: 'Practical and realistic' },
+    { id: 'grounded', label: 'Grounded', cat: 'Humility', desc: 'Well-balanced and sensible' },
+    { id: 'self-effacing', label: 'Self-effacing', cat: 'Humility', desc: 'Not claiming attention' },
+    { id: 'gracious', label: 'Gracious', cat: 'Humility', desc: 'Courteous, kind, and pleasant' },
+
+    // Resilience (10)
+    { id: 'resilient', label: 'Resilient', cat: 'Resilience', desc: 'Recovers quickly from setbacks' },
+    { id: 'strong', label: 'Strong', cat: 'Resilience', desc: 'Able to withstand hardship' },
+    { id: 'tough', label: 'Tough', cat: 'Resilience', desc: 'Able to endure difficulty' },
+    { id: 'tenacious', label: 'Tenacious', cat: 'Resilience', desc: 'Persistent and determined' },
+    { id: 'persevering', label: 'Persevering', cat: 'Resilience', desc: 'Continues despite difficulty' },
+    { id: 'persistent', label: 'Persistent', cat: 'Resilience', desc: 'Refuses to give up' },
+    { id: 'enduring', label: 'Enduring', cat: 'Resilience', desc: 'Lasting through hardship' },
+    { id: 'indomitable', label: 'Indomitable', cat: 'Resilience', desc: 'Impossible to defeat' },
+    { id: 'unbreakable', label: 'Unbreakable', cat: 'Resilience', desc: 'Cannot be broken' },
+    { id: 'adaptable', label: 'Adaptable', cat: 'Resilience', desc: 'Adjusts to new conditions' },
+
+    // Intelligence (12)
+    { id: 'intelligent', label: 'Intelligent', cat: 'Intelligence', desc: 'Quick to learn and understand' },
+    { id: 'smart', label: 'Smart', cat: 'Intelligence', desc: 'Having sharp mental ability' },
+    { id: 'clever', label: 'Clever', cat: 'Intelligence', desc: 'Quick-witted and resourceful' },
+    { id: 'brilliant', label: 'Brilliant', cat: 'Intelligence', desc: 'Exceptionally intelligent' },
+    { id: 'sharp', label: 'Sharp', cat: 'Intelligence', desc: 'Quick and keen mentally' },
+    { id: 'quick-witted', label: 'Quick-witted', cat: 'Intelligence', desc: 'Fast thinking and responses' },
+    { id: 'astute', label: 'Astute', cat: 'Intelligence', desc: 'Shrewd and perceptive' },
+    { id: 'wise', label: 'Wise', cat: 'Intelligence', desc: 'Having good judgment' },
+    { id: 'knowledgeable', label: 'Knowledgeable', cat: 'Intelligence', desc: 'Well-informed' },
+    { id: 'learned', label: 'Learned', cat: 'Intelligence', desc: 'Having much knowledge' },
+    { id: 'intellectual', label: 'Intellectual', cat: 'Intelligence', desc: 'Engaged in mental activity' },
+    { id: 'scholarly', label: 'Scholarly', cat: 'Intelligence', desc: 'Academic and studious' },
+
+    // Creativity (10)
+    { id: 'creative', label: 'Creative', cat: 'Creativity', desc: 'Original and imaginative' },
+    { id: 'imaginative', label: 'Imaginative', cat: 'Creativity', desc: 'Has vivid imagination' },
+    { id: 'innovative', label: 'Innovative', cat: 'Creativity', desc: 'Introduces new ideas' },
+    { id: 'inventive', label: 'Inventive', cat: 'Creativity', desc: 'Creates new things' },
+    { id: 'original', label: 'Original', cat: 'Creativity', desc: 'Unique and novel' },
+    { id: 'artistic', label: 'Artistic', cat: 'Creativity', desc: 'Has creative skill' },
+    { id: 'visionary', label: 'Visionary', cat: 'Creativity', desc: 'Thinks about the future' },
+    { id: 'inspired', label: 'Inspired', cat: 'Creativity', desc: 'Filled with creative urge' },
+    { id: 'ingenious', label: 'Ingenious', cat: 'Creativity', desc: 'Cleverly inventive' },
+    { id: 'resourceful', label: 'Resourceful', cat: 'Creativity', desc: 'Finds clever solutions' },
+
+    // Curiosity (7)
+    { id: 'curious', label: 'Curious', cat: 'Curiosity', desc: 'Eager to learn' },
+    { id: 'inquisitive', label: 'Inquisitive', cat: 'Curiosity', desc: 'Asks many questions' },
+    { id: 'questioning', label: 'Questioning', cat: 'Curiosity', desc: 'Tends to ask questions' },
+    { id: 'exploratory', label: 'Exploratory', cat: 'Curiosity', desc: 'Likes to explore' },
+    { id: 'investigative', label: 'Investigative', cat: 'Curiosity', desc: 'Researches deeply' },
+    { id: 'studious', label: 'Studious', cat: 'Curiosity', desc: 'Devoted to study' },
+    { id: 'open-minded', label: 'Open-minded', cat: 'Curiosity', desc: 'Receptive to new ideas' },
+
+    // Analysis (10)
+    { id: 'analytical', label: 'Analytical', cat: 'Analysis', desc: 'Examines methodically' },
+    { id: 'logical', label: 'Logical', cat: 'Analysis', desc: 'Uses clear reasoning' },
+    { id: 'rational', label: 'Rational', cat: 'Analysis', desc: 'Based on reason' },
+    { id: 'systematic', label: 'Systematic', cat: 'Analysis', desc: 'Methodical and organized' },
+    { id: 'methodical', label: 'Methodical', cat: 'Analysis', desc: 'Done in ordered way' },
+    { id: 'critical-thinker', label: 'Critical Thinker', cat: 'Analysis', desc: 'Analyzes objectively' },
+    { id: 'objective', label: 'Objective', cat: 'Analysis', desc: 'Not influenced by emotions' },
+    { id: 'discerning', label: 'Discerning', cat: 'Analysis', desc: 'Shows good judgment' },
+    { id: 'perceptive', label: 'Perceptive', cat: 'Analysis', desc: 'Quick to notice things' },
+    { id: 'insightful', label: 'Insightful', cat: 'Analysis', desc: 'Shows deep understanding' },
+
+    // Ambition (9)
+    { id: 'ambitious', label: 'Ambitious', cat: 'Ambition', desc: 'Strong desire to succeed' },
+    { id: 'driven', label: 'Driven', cat: 'Ambition', desc: 'Compelled to achieve' },
+    { id: 'motivated', label: 'Motivated', cat: 'Ambition', desc: 'Has drive to act' },
+    { id: 'aspiring', label: 'Aspiring', cat: 'Ambition', desc: 'Seeking to achieve' },
+    { id: 'goal-oriented', label: 'Goal-oriented', cat: 'Ambition', desc: 'Focused on objectives' },
+    { id: 'determined', label: 'Determined', cat: 'Ambition', desc: 'Firm in purpose' },
+    { id: 'resolute', label: 'Resolute', cat: 'Ambition', desc: 'Admirably purposeful' },
+    { id: 'focused', label: 'Focused', cat: 'Ambition', desc: 'Concentrated on goals' },
+    { id: 'purposeful', label: 'Purposeful', cat: 'Ambition', desc: 'Having clear purpose' },
+
+    // Work Ethic (10)
+    { id: 'hardworking', label: 'Hardworking', cat: 'Work Ethic', desc: 'Puts in consistent effort' },
+    { id: 'diligent', label: 'Diligent', cat: 'Work Ethic', desc: 'Careful and persistent' },
+    { id: 'industrious', label: 'Industrious', cat: 'Work Ethic', desc: 'Hard-working' },
+    { id: 'conscientious', label: 'Conscientious', cat: 'Work Ethic', desc: 'Wishes to do right' },
+    { id: 'thorough', label: 'Thorough', cat: 'Work Ethic', desc: 'Complete and careful' },
+    { id: 'meticulous', label: 'Meticulous', cat: 'Work Ethic', desc: 'Very careful and precise' },
+    { id: 'disciplined', label: 'Disciplined', cat: 'Work Ethic', desc: 'Controlled and orderly' },
+    { id: 'organized', label: 'Organized', cat: 'Work Ethic', desc: 'Arranged systematically' },
+    { id: 'efficient', label: 'Efficient', cat: 'Work Ethic', desc: 'Achieves maximum productivity' },
+    { id: 'proactive', label: 'Proactive', cat: 'Work Ethic', desc: 'Takes initiative' },
+
+    // Warmth (10)
+    { id: 'warm', label: 'Warm', cat: 'Warmth', desc: 'Friendly and affectionate' },
+    { id: 'friendly', label: 'Friendly', cat: 'Warmth', desc: 'Kind and pleasant' },
+    { id: 'affectionate', label: 'Affectionate', cat: 'Warmth', desc: 'Shows fondness' },
+    { id: 'loving', label: 'Loving', cat: 'Warmth', desc: 'Full of love' },
+    { id: 'kind', label: 'Kind', cat: 'Warmth', desc: 'Considerate and helpful' },
+    { id: 'sweet', label: 'Sweet', cat: 'Warmth', desc: 'Pleasant and kind' },
+    { id: 'good-natured', label: 'Good-natured', cat: 'Warmth', desc: 'Kind and cheerful' },
+    { id: 'amiable', label: 'Amiable', cat: 'Warmth', desc: 'Friendly and pleasant' },
+    { id: 'approachable', label: 'Approachable', cat: 'Warmth', desc: 'Easy to talk to' },
+    { id: 'welcoming', label: 'Welcoming', cat: 'Warmth', desc: 'Receives warmly' },
+
+    // Charisma (10)
+    { id: 'charismatic', label: 'Charismatic', cat: 'Charisma', desc: 'Naturally attracts others' },
+    { id: 'charming', label: 'Charming', cat: 'Charisma', desc: 'Delightful and attractive' },
+    { id: 'magnetic', label: 'Magnetic', cat: 'Charisma', desc: 'Very attractive personality' },
+    { id: 'captivating', label: 'Captivating', cat: 'Charisma', desc: 'Attracts and holds attention' },
+    { id: 'engaging', label: 'Engaging', cat: 'Charisma', desc: 'Charming and attractive' },
+    { id: 'likeable', label: 'Likeable', cat: 'Charisma', desc: 'Easy to like' },
+    { id: 'personable', label: 'Personable', cat: 'Charisma', desc: 'Pleasant appearance and manner' },
+    { id: 'sociable', label: 'Sociable', cat: 'Charisma', desc: 'Enjoys company of others' },
+    { id: 'outgoing', label: 'Outgoing', cat: 'Charisma', desc: 'Friendly and socially confident' },
+    { id: 'gregarious', label: 'Gregarious', cat: 'Charisma', desc: 'Fond of company' },
+
+    // Communication (8)
+    { id: 'articulate', label: 'Articulate', cat: 'Communication', desc: 'Expresses clearly' },
+    { id: 'eloquent', label: 'Eloquent', cat: 'Communication', desc: 'Fluent and persuasive' },
+    { id: 'expressive', label: 'Expressive', cat: 'Communication', desc: 'Conveys thoughts well' },
+    { id: 'persuasive', label: 'Persuasive', cat: 'Communication', desc: 'Good at convincing' },
+    { id: 'witty', label: 'Witty', cat: 'Communication', desc: 'Clever and amusing' },
+    { id: 'humorous', label: 'Humorous', cat: 'Communication', desc: 'Has sense of humor' },
+    { id: 'funny', label: 'Funny', cat: 'Communication', desc: 'Causes laughter' },
+    { id: 'entertaining', label: 'Entertaining', cat: 'Communication', desc: 'Provides amusement' },
+
+    // Positivity (10)
+    { id: 'optimistic', label: 'Optimistic', cat: 'Positivity', desc: 'Hopeful and positive' },
+    { id: 'hopeful', label: 'Hopeful', cat: 'Positivity', desc: 'Full of hope' },
+    { id: 'positive', label: 'Positive', cat: 'Positivity', desc: 'Constructive and optimistic' },
+    { id: 'cheerful', label: 'Cheerful', cat: 'Positivity', desc: 'Happy and positive' },
+    { id: 'joyful', label: 'Joyful', cat: 'Positivity', desc: 'Full of joy' },
+    { id: 'happy', label: 'Happy', cat: 'Positivity', desc: 'Feeling pleasure' },
+    { id: 'upbeat', label: 'Upbeat', cat: 'Positivity', desc: 'Cheerful and positive' },
+    { id: 'buoyant', label: 'Buoyant', cat: 'Positivity', desc: 'Cheerful and optimistic' },
+    { id: 'lighthearted', label: 'Lighthearted', cat: 'Positivity', desc: 'Carefree and cheerful' },
+    { id: 'playful', label: 'Playful', cat: 'Positivity', desc: 'Fun-loving and light' },
+
+    // Calm (10)
+    { id: 'calm', label: 'Calm', cat: 'Calm', desc: 'Peaceful and untroubled' },
+    { id: 'serene', label: 'Serene', cat: 'Calm', desc: 'Calm and peaceful' },
+    { id: 'tranquil', label: 'Tranquil', cat: 'Calm', desc: 'Free from disturbance' },
+    { id: 'peaceful', label: 'Peaceful', cat: 'Calm', desc: 'Free from conflict' },
+    { id: 'composed', label: 'Composed', cat: 'Calm', desc: 'Calm and in control' },
+    { id: 'collected', label: 'Collected', cat: 'Calm', desc: 'Calm and controlled' },
+    { id: 'unflappable', label: 'Unflappable', cat: 'Calm', desc: 'Remains calm under pressure' },
+    { id: 'level-headed', label: 'Level-headed', cat: 'Calm', desc: 'Calm and sensible' },
+    { id: 'even-tempered', label: 'Even-tempered', cat: 'Calm', desc: 'Not easily upset' },
+    { id: 'cool-headed', label: 'Cool-headed', cat: 'Calm', desc: 'Calm in difficult situations' },
+
+    // Passion (10)
+    { id: 'passionate', label: 'Passionate', cat: 'Passion', desc: 'Shows strong feeling' },
+    { id: 'enthusiastic', label: 'Enthusiastic', cat: 'Passion', desc: 'Eager and excited' },
+    { id: 'zealous', label: 'Zealous', cat: 'Passion', desc: 'Full of zeal' },
+    { id: 'ardent', label: 'Ardent', cat: 'Passion', desc: 'Enthusiastic and passionate' },
+    { id: 'fervent', label: 'Fervent', cat: 'Passion', desc: 'Having intense feeling' },
+    { id: 'spirited', label: 'Spirited', cat: 'Passion', desc: 'Full of energy and courage' },
+    { id: 'vivacious', label: 'Vivacious', cat: 'Passion', desc: 'Lively and animated' },
+    { id: 'energetic', label: 'Energetic', cat: 'Passion', desc: 'Full of energy' },
+    { id: 'dynamic', label: 'Dynamic', cat: 'Passion', desc: 'Full of energy and new ideas' },
+    { id: 'vibrant', label: 'Vibrant', cat: 'Passion', desc: 'Full of life and energy' },
+
+    // Leadership (10)
+    { id: 'leader', label: 'Leader', cat: 'Leadership', desc: 'Guides and directs others' },
+    { id: 'assertive', label: 'Assertive', cat: 'Leadership', desc: 'Confident and forceful' },
+    { id: 'confident', label: 'Confident', cat: 'Leadership', desc: 'Self-assured' },
+    { id: 'decisive', label: 'Decisive', cat: 'Leadership', desc: 'Makes decisions quickly' },
+    { id: 'commanding', label: 'Commanding', cat: 'Leadership', desc: 'Projects authority' },
+    { id: 'authoritative', label: 'Authoritative', cat: 'Leadership', desc: 'Commanding and self-confident' },
+    { id: 'influential', label: 'Influential', cat: 'Leadership', desc: 'Has great influence' },
+    { id: 'inspiring', label: 'Inspiring', cat: 'Leadership', desc: 'Motivates others' },
+    { id: 'empowering', label: 'Empowering', cat: 'Leadership', desc: 'Gives power to others' },
+    { id: 'mentoring', label: 'Mentoring', cat: 'Leadership', desc: 'Guides and teaches others' },
+  ],
+
+  neutral: [
+    // Energy (8)
+    { id: 'introverted', label: 'Introverted', cat: 'Energy', desc: 'Energized by solitude' },
+    { id: 'extroverted', label: 'Extroverted', cat: 'Energy', desc: 'Energized by people' },
+    { id: 'ambiverted', label: 'Ambiverted', cat: 'Energy', desc: 'Mix of intro/extrovert' },
+    { id: 'high-energy', label: 'High-energy', cat: 'Energy', desc: 'Always active' },
+    { id: 'low-energy', label: 'Low-energy', cat: 'Energy', desc: 'Calm and slow-paced' },
+    { id: 'restless', label: 'Restless', cat: 'Energy', desc: 'Unable to stay still' },
+    { id: 'hyperactive', label: 'Hyperactive', cat: 'Energy', desc: 'Extremely active' },
+    { id: 'mellow', label: 'Mellow', cat: 'Energy', desc: 'Relaxed and unhurried' },
+
+    // Expression (10)
+    { id: 'reserved', label: 'Reserved', cat: 'Expression', desc: 'Restrained in expression' },
+    { id: 'quiet', label: 'Quiet', cat: 'Expression', desc: 'Speaks little' },
+    { id: 'soft-spoken', label: 'Soft-spoken', cat: 'Expression', desc: 'Speaks quietly' },
+    { id: 'loud', label: 'Loud', cat: 'Expression', desc: 'Makes much noise' },
+    { id: 'talkative', label: 'Talkative', cat: 'Expression', desc: 'Talks a lot' },
+    { id: 'verbose', label: 'Verbose', cat: 'Expression', desc: 'Uses many words' },
+    { id: 'laconic', label: 'Laconic', cat: 'Expression', desc: 'Uses few words' },
+    { id: 'demonstrative', label: 'Demonstrative', cat: 'Expression', desc: 'Shows feelings openly' },
+    { id: 'animated', label: 'Animated', cat: 'Expression', desc: 'Full of life in expression' },
+    { id: 'understated', label: 'Understated', cat: 'Expression', desc: 'Deliberately restrained' },
+
+    // Mood (10)
+    { id: 'serious', label: 'Serious', cat: 'Mood', desc: 'Solemn, not frivolous' },
+    { id: 'intense', label: 'Intense', cat: 'Mood', desc: 'Deeply focused' },
+    { id: 'laid-back', label: 'Laid-back', cat: 'Mood', desc: 'Relaxed and easygoing' },
+    { id: 'stoic', label: 'Stoic', cat: 'Mood', desc: 'Endures without complaint' },
+    { id: 'emotional', label: 'Emotional', cat: 'Mood', desc: 'Expresses feelings openly' },
+    { id: 'detached', label: 'Detached', cat: 'Mood', desc: 'Emotionally distant' },
+    { id: 'brooding', label: 'Brooding', cat: 'Mood', desc: 'Thinks moodily' },
+    { id: 'melancholic', label: 'Melancholic', cat: 'Mood', desc: 'Tends toward sadness' },
+    { id: 'mercurial', label: 'Mercurial', cat: 'Mood', desc: 'Quick-changing moods' },
+    { id: 'temperamental', label: 'Temperamental', cat: 'Mood', desc: 'Subject to mood changes' },
+
+    // Decisions (10)
+    { id: 'pragmatic', label: 'Pragmatic', cat: 'Decisions', desc: 'Practical over idealistic' },
+    { id: 'idealistic', label: 'Idealistic', cat: 'Decisions', desc: 'Pursues high principles' },
+    { id: 'realistic', label: 'Realistic', cat: 'Decisions', desc: 'Accepts things as they are' },
+    { id: 'cautious', label: 'Cautious', cat: 'Decisions', desc: 'Careful to avoid risk' },
+    { id: 'risk-taking', label: 'Risk-taking', cat: 'Decisions', desc: 'Willing to take chances' },
+    { id: 'calculated', label: 'Calculated', cat: 'Decisions', desc: 'Carefully considered' },
+    { id: 'deliberate', label: 'Deliberate', cat: 'Decisions', desc: 'Done consciously' },
+    { id: 'spontaneous', label: 'Spontaneous', cat: 'Decisions', desc: 'Acts without planning' },
+    { id: 'impulsive', label: 'Impulsive', cat: 'Decisions', desc: 'Acts on impulse' },
+    { id: 'indecisive', label: 'Indecisive', cat: 'Decisions', desc: 'Has trouble deciding' },
+
+    // Thinking (10)
+    { id: 'skeptical', label: 'Skeptical', cat: 'Thinking', desc: 'Questions claims' },
+    { id: 'credulous', label: 'Credulous', cat: 'Thinking', desc: 'Too ready to believe' },
+    { id: 'cynical', label: 'Cynical', cat: 'Thinking', desc: 'Distrusts motives' },
+    { id: 'trusting', label: 'Trusting', cat: 'Thinking', desc: 'Inclined to trust' },
+    { id: 'literal', label: 'Literal', cat: 'Thinking', desc: 'Takes things at face value' },
+    { id: 'abstract', label: 'Abstract', cat: 'Thinking', desc: 'Thinks in concepts' },
+    { id: 'concrete', label: 'Concrete', cat: 'Thinking', desc: 'Thinks in specifics' },
+    { id: 'daydreamer', label: 'Daydreamer', cat: 'Thinking', desc: 'Lost in fantasy' },
+    { id: 'realist', label: 'Realist', cat: 'Thinking', desc: 'Accepts reality' },
+    { id: 'philosophical', label: 'Philosophical', cat: 'Thinking', desc: 'Ponders deep questions' },
+
+    // Values (12)
+    { id: 'traditional', label: 'Traditional', cat: 'Values', desc: 'Values established customs' },
+    { id: 'progressive', label: 'Progressive', cat: 'Values', desc: 'Favors change' },
+    { id: 'conservative', label: 'Conservative', cat: 'Values', desc: 'Prefers tradition' },
+    { id: 'unconventional', label: 'Unconventional', cat: 'Values', desc: 'Does things differently' },
+    { id: 'nonconformist', label: 'Nonconformist', cat: 'Values', desc: 'Rejects accepted behavior' },
+    { id: 'conformist', label: 'Conformist', cat: 'Values', desc: 'Follows conventions' },
+    { id: 'rebellious', label: 'Rebellious', cat: 'Values', desc: 'Resists authority' },
+    { id: 'spiritual', label: 'Spiritual', cat: 'Values', desc: 'Concerned with the spirit' },
+    { id: 'materialistic', label: 'Materialistic', cat: 'Values', desc: 'Values possessions' },
+    { id: 'minimalist', label: 'Minimalist', cat: 'Values', desc: 'Prefers simplicity' },
+    { id: 'hedonistic', label: 'Hedonistic', cat: 'Values', desc: 'Pursues pleasure' },
+    { id: 'ascetic', label: 'Ascetic', cat: 'Values', desc: 'Practices self-denial' },
+
+    // Social Style (10)
+    { id: 'formal', label: 'Formal', cat: 'Social Style', desc: 'Proper and ceremonious' },
+    { id: 'informal', label: 'Informal', cat: 'Social Style', desc: 'Casual and relaxed' },
+    { id: 'private', label: 'Private', cat: 'Social Style', desc: 'Keeps life hidden' },
+    { id: 'open-book', label: 'Open Book', cat: 'Social Style', desc: 'Shares everything' },
+    { id: 'mysterious', label: 'Mysterious', cat: 'Social Style', desc: 'Hard to understand' },
+    { id: 'enigmatic', label: 'Enigmatic', cat: 'Social Style', desc: 'Puzzling and mysterious' },
+    { id: 'flamboyant', label: 'Flamboyant', cat: 'Social Style', desc: 'Showy and dramatic' },
+    { id: 'eccentric', label: 'Eccentric', cat: 'Social Style', desc: 'Unconventional and peculiar' },
+    { id: 'bohemian', label: 'Bohemian', cat: 'Social Style', desc: 'Artistic and unconventional' },
+    { id: 'mainstream', label: 'Mainstream', cat: 'Social Style', desc: 'Follows popular trends' },
+
+    // Communication Style (10)
+    { id: 'blunt', label: 'Blunt', cat: 'Comm Style', desc: 'Direct without softening' },
+    { id: 'tactful', label: 'Tactful', cat: 'Comm Style', desc: 'Careful not to offend' },
+    { id: 'sarcastic', label: 'Sarcastic', cat: 'Comm Style', desc: 'Uses ironic remarks' },
+    { id: 'dry', label: 'Dry', cat: 'Comm Style', desc: 'Subtle, deadpan humor' },
+    { id: 'deadpan', label: 'Deadpan', cat: 'Comm Style', desc: 'Expressionless delivery' },
+    { id: 'dramatic', label: 'Dramatic', cat: 'Comm Style', desc: 'Theatrical expression' },
+    { id: 'matter-of-fact', label: 'Matter-of-fact', cat: 'Comm Style', desc: 'Unemotional and practical' },
+    { id: 'flowery', label: 'Flowery', cat: 'Comm Style', desc: 'Elaborate language' },
+    { id: 'plain-spoken', label: 'Plain-spoken', cat: 'Comm Style', desc: 'Simple and direct' },
+    { id: 'diplomatic', label: 'Diplomatic', cat: 'Comm Style', desc: 'Handles delicately' },
+
+    // Focus (8)
+    { id: 'detail-oriented', label: 'Detail-oriented', cat: 'Focus', desc: 'Attends to small things' },
+    { id: 'big-picture', label: 'Big-picture', cat: 'Focus', desc: 'Sees overall pattern' },
+    { id: 'perfectionist', label: 'Perfectionist', cat: 'Focus', desc: 'Demands perfection' },
+    { id: 'present-focused', label: 'Present-focused', cat: 'Focus', desc: 'Lives in the now' },
+    { id: 'future-focused', label: 'Future-focused', cat: 'Focus', desc: 'Plans ahead' },
+    { id: 'past-focused', label: 'Past-focused', cat: 'Focus', desc: 'Dwells on past' },
+    { id: 'nostalgic', label: 'Nostalgic', cat: 'Focus', desc: 'Attached to the past' },
+    { id: 'forward-thinking', label: 'Forward-thinking', cat: 'Focus', desc: 'Plans for the future' },
+
+    // Independence (8)
+    { id: 'independent', label: 'Independent', cat: 'Independence', desc: 'Self-reliant' },
+    { id: 'dependent', label: 'Dependent', cat: 'Independence', desc: 'Relies on others' },
+    { id: 'self-sufficient', label: 'Self-sufficient', cat: 'Independence', desc: 'Needs no help' },
+    { id: 'collaborative', label: 'Collaborative', cat: 'Independence', desc: 'Works with others' },
+    { id: 'lone-wolf', label: 'Lone Wolf', cat: 'Independence', desc: 'Prefers working alone' },
+    { id: 'team-player', label: 'Team Player', cat: 'Independence', desc: 'Works well in groups' },
+    { id: 'competitive', label: 'Competitive', cat: 'Independence', desc: 'Driven to win' },
+    { id: 'cooperative', label: 'Cooperative', cat: 'Independence', desc: 'Works with others' },
+
+    // Quirks (15)
+    { id: 'superstitious', label: 'Superstitious', cat: 'Quirks', desc: 'Believes in luck/omens' },
+    { id: 'habitual', label: 'Habitual', cat: 'Quirks', desc: 'Follows routines' },
+    { id: 'ritualistic', label: 'Ritualistic', cat: 'Quirks', desc: 'Performs rituals' },
+    { id: 'absent-minded', label: 'Absent-minded', cat: 'Quirks', desc: 'Forgetful, distracted' },
+    { id: 'scatterbrained', label: 'Scatterbrained', cat: 'Quirks', desc: 'Disorganized thinking' },
+    { id: 'hyperfocused', label: 'Hyperfocused', cat: 'Quirks', desc: 'Intensely concentrated' },
+    { id: 'night-owl', label: 'Night Owl', cat: 'Quirks', desc: 'Active at night' },
+    { id: 'early-bird', label: 'Early Bird', cat: 'Quirks', desc: 'Active in morning' },
+    { id: 'workaholic', label: 'Workaholic', cat: 'Quirks', desc: 'Obsessed with work' },
+    { id: 'thrill-seeker', label: 'Thrill-seeker', cat: 'Quirks', desc: 'Seeks excitement' },
+    { id: 'homebody', label: 'Homebody', cat: 'Quirks', desc: 'Prefers staying home' },
+    { id: 'wanderer', label: 'Wanderer', cat: 'Quirks', desc: 'Loves to travel' },
+    { id: 'collector', label: 'Collector', cat: 'Quirks', desc: 'Gathers items' },
+    { id: 'neat-freak', label: 'Neat Freak', cat: 'Quirks', desc: 'Obsessed with cleanliness' },
+    { id: 'messy', label: 'Messy', cat: 'Quirks', desc: 'Disorganized surroundings' },
+  ],
+
+  negative: [
+    // Selfishness (10)
+    { id: 'selfish', label: 'Selfish', cat: 'Selfishness', desc: 'Prioritizes self over others' },
+    { id: 'self-centered', label: 'Self-centered', cat: 'Selfishness', desc: 'Focused on self' },
+    { id: 'egotistical', label: 'Egotistical', cat: 'Selfishness', desc: 'Excessively conceited' },
+    { id: 'narcissistic', label: 'Narcissistic', cat: 'Selfishness', desc: 'Excessive self-love' },
+    { id: 'self-absorbed', label: 'Self-absorbed', cat: 'Selfishness', desc: 'Preoccupied with self' },
+    { id: 'entitled', label: 'Entitled', cat: 'Selfishness', desc: 'Believes deserves special treatment' },
+    { id: 'greedy', label: 'Greedy', cat: 'Selfishness', desc: 'Excessive desire for more' },
+    { id: 'stingy', label: 'Stingy', cat: 'Selfishness', desc: 'Unwilling to give' },
+    { id: 'miserly', label: 'Miserly', cat: 'Selfishness', desc: 'Hoards wealth' },
+    { id: 'ungrateful', label: 'Ungrateful', cat: 'Selfishness', desc: 'Not thankful' },
+
+    // Hostility (18)
+    { id: 'hostile', label: 'Hostile', cat: 'Hostility', desc: 'Unfriendly and aggressive' },
+    { id: 'aggressive', label: 'Aggressive', cat: 'Hostility', desc: 'Ready to attack' },
+    { id: 'antagonistic', label: 'Antagonistic', cat: 'Hostility', desc: 'Actively hostile' },
+    { id: 'belligerent', label: 'Belligerent', cat: 'Hostility', desc: 'Hostile and aggressive' },
+    { id: 'combative', label: 'Combative', cat: 'Hostility', desc: 'Ready to fight' },
+    { id: 'confrontational', label: 'Confrontational', cat: 'Hostility', desc: 'Tends to confront' },
+    { id: 'quarrelsome', label: 'Quarrelsome', cat: 'Hostility', desc: 'Given to arguing' },
+    { id: 'argumentative', label: 'Argumentative', cat: 'Hostility', desc: 'Loves to argue' },
+    { id: 'spiteful', label: 'Spiteful', cat: 'Hostility', desc: 'Wanting to hurt' },
+    { id: 'malicious', label: 'Malicious', cat: 'Hostility', desc: 'Intending harm' },
+    { id: 'vindictive', label: 'Vindictive', cat: 'Hostility', desc: 'Seeks revenge' },
+    { id: 'vengeful', label: 'Vengeful', cat: 'Hostility', desc: 'Seeking vengeance' },
+    { id: 'cruel', label: 'Cruel', cat: 'Hostility', desc: 'Willfully causes pain' },
+    { id: 'sadistic', label: 'Sadistic', cat: 'Hostility', desc: 'Enjoys others\' pain' },
+    { id: 'brutal', label: 'Brutal', cat: 'Hostility', desc: 'Savagely violent' },
+    { id: 'ruthless', label: 'Ruthless', cat: 'Hostility', desc: 'Without pity' },
+    { id: 'merciless', label: 'Merciless', cat: 'Hostility', desc: 'Shows no mercy' },
+    { id: 'vicious', label: 'Vicious', cat: 'Hostility', desc: 'Deliberately cruel' },
+
+    // Manipulation (10)
+    { id: 'manipulative', label: 'Manipulative', cat: 'Manipulation', desc: 'Controls others deceptively' },
+    { id: 'deceitful', label: 'Deceitful', cat: 'Manipulation', desc: 'Deceives others' },
+    { id: 'deceptive', label: 'Deceptive', cat: 'Manipulation', desc: 'Misleads others' },
+    { id: 'scheming', label: 'Scheming', cat: 'Manipulation', desc: 'Makes secret plans' },
+    { id: 'conniving', label: 'Conniving', cat: 'Manipulation', desc: 'Secretly plans harm' },
+    { id: 'calculating', label: 'Calculating', cat: 'Manipulation', desc: 'Coldly plans' },
+    { id: 'exploitative', label: 'Exploitative', cat: 'Manipulation', desc: 'Uses others unfairly' },
+    { id: 'opportunistic', label: 'Opportunistic', cat: 'Manipulation', desc: 'Exploits circumstances' },
+    { id: 'two-faced', label: 'Two-faced', cat: 'Manipulation', desc: 'Insincere and deceitful' },
+    { id: 'backstabbing', label: 'Backstabbing', cat: 'Manipulation', desc: 'Betrays trust' },
+
+    // Coldness (10)
+    { id: 'cold', label: 'Cold', cat: 'Coldness', desc: 'Emotionally distant' },
+    { id: 'aloof', label: 'Aloof', cat: 'Coldness', desc: 'Distant and uninvolved' },
+    { id: 'distant', label: 'Distant', cat: 'Coldness', desc: 'Emotionally remote' },
+    { id: 'unfeeling', label: 'Unfeeling', cat: 'Coldness', desc: 'Lacks sympathy' },
+    { id: 'callous', label: 'Callous', cat: 'Coldness', desc: 'Insensitive and cruel' },
+    { id: 'heartless', label: 'Heartless', cat: 'Coldness', desc: 'Lacking compassion' },
+    { id: 'indifferent', label: 'Indifferent', cat: 'Coldness', desc: 'No interest or concern' },
+    { id: 'apathetic', label: 'Apathetic', cat: 'Coldness', desc: 'Lacking enthusiasm' },
+    { id: 'unsympathetic', label: 'Unsympathetic', cat: 'Coldness', desc: 'Not showing sympathy' },
+    { id: 'dismissive', label: 'Dismissive', cat: 'Coldness', desc: 'Treats as unworthy' },
+
+    // Dishonesty (10)
+    { id: 'dishonest', label: 'Dishonest', cat: 'Dishonesty', desc: 'Lies and deceives' },
+    { id: 'liar', label: 'Liar', cat: 'Dishonesty', desc: 'Tells lies habitually' },
+    { id: 'untruthful', label: 'Untruthful', cat: 'Dishonesty', desc: 'Not truthful' },
+    { id: 'insincere', label: 'Insincere', cat: 'Dishonesty', desc: 'Not genuine' },
+    { id: 'hypocritical', label: 'Hypocritical', cat: 'Dishonesty', desc: 'Says one thing, does another' },
+    { id: 'phony', label: 'Phony', cat: 'Dishonesty', desc: 'Not genuine' },
+    { id: 'fake', label: 'Fake', cat: 'Dishonesty', desc: 'Not authentic' },
+    { id: 'treacherous', label: 'Treacherous', cat: 'Dishonesty', desc: 'Guilty of betrayal' },
+    { id: 'disloyal', label: 'Disloyal', cat: 'Dishonesty', desc: 'Betrays allegiance' },
+    { id: 'unfaithful', label: 'Unfaithful', cat: 'Dishonesty', desc: 'Not true to commitments' },
+
+    // Pride (12)
+    { id: 'arrogant', label: 'Arrogant', cat: 'Pride', desc: 'Exaggerated self-importance' },
+    { id: 'proud', label: 'Proud', cat: 'Pride', desc: 'Excessively proud' },
+    { id: 'haughty', label: 'Haughty', cat: 'Pride', desc: 'Arrogantly superior' },
+    { id: 'pompous', label: 'Pompous', cat: 'Pride', desc: 'Self-important' },
+    { id: 'conceited', label: 'Conceited', cat: 'Pride', desc: 'Excessively proud of oneself' },
+    { id: 'vain', label: 'Vain', cat: 'Pride', desc: 'Excessive pride in appearance' },
+    { id: 'smug', label: 'Smug', cat: 'Pride', desc: 'Excessively pleased with self' },
+    { id: 'snobbish', label: 'Snobbish', cat: 'Pride', desc: 'Looks down on others' },
+    { id: 'condescending', label: 'Condescending', cat: 'Pride', desc: 'Patronizingly superior' },
+    { id: 'pretentious', label: 'Pretentious', cat: 'Pride', desc: 'Claims undeserved importance' },
+    { id: 'boastful', label: 'Boastful', cat: 'Pride', desc: 'Brags excessively' },
+    { id: 'show-off', label: 'Show-off', cat: 'Pride', desc: 'Displays abilities excessively' },
+
+    // Weakness (9)
+    { id: 'cowardly', label: 'Cowardly', cat: 'Weakness', desc: 'Lacks courage' },
+    { id: 'fearful', label: 'Fearful', cat: 'Weakness', desc: 'Afraid of things' },
+    { id: 'timid', label: 'Timid', cat: 'Weakness', desc: 'Lacking courage' },
+    { id: 'spineless', label: 'Spineless', cat: 'Weakness', desc: 'Lacks courage or willpower' },
+    { id: 'weak-willed', label: 'Weak-willed', cat: 'Weakness', desc: 'Easily influenced' },
+    { id: 'pushover', label: 'Pushover', cat: 'Weakness', desc: 'Easily persuaded' },
+    { id: 'submissive', label: 'Submissive', cat: 'Weakness', desc: 'Yields to others' },
+    { id: 'doormat', label: 'Doormat', cat: 'Weakness', desc: 'Lets others walk over them' },
+    { id: 'passive', label: 'Passive', cat: 'Weakness', desc: 'Accepts without resistance' },
+
+    // Irresponsibility (10)
+    { id: 'lazy', label: 'Lazy', cat: 'Irresponsibility', desc: 'Avoids work' },
+    { id: 'slothful', label: 'Slothful', cat: 'Irresponsibility', desc: 'Reluctant to work' },
+    { id: 'negligent', label: 'Negligent', cat: 'Irresponsibility', desc: 'Fails to take care' },
+    { id: 'careless', label: 'Careless', cat: 'Irresponsibility', desc: 'Not careful' },
+    { id: 'reckless', label: 'Reckless', cat: 'Irresponsibility', desc: 'Disregards consequences' },
+    { id: 'irresponsible', label: 'Irresponsible', cat: 'Irresponsibility', desc: 'Not responsible' },
+    { id: 'unreliable', label: 'Unreliable', cat: 'Irresponsibility', desc: 'Cannot be depended on' },
+    { id: 'flaky', label: 'Flaky', cat: 'Irresponsibility', desc: 'Unreliable' },
+    { id: 'inconsistent', label: 'Inconsistent', cat: 'Irresponsibility', desc: 'Not consistent' },
+    { id: 'procrastinator', label: 'Procrastinator', cat: 'Irresponsibility', desc: 'Delays tasks' },
+
+    // Anger (10)
+    { id: 'angry', label: 'Angry', cat: 'Anger', desc: 'Easily angered' },
+    { id: 'hot-tempered', label: 'Hot-tempered', cat: 'Anger', desc: 'Quick to anger' },
+    { id: 'short-tempered', label: 'Short-tempered', cat: 'Anger', desc: 'Easily angered' },
+    { id: 'irritable', label: 'Irritable', cat: 'Anger', desc: 'Easily annoyed' },
+    { id: 'volatile', label: 'Volatile', cat: 'Anger', desc: 'Explosive temperament' },
+    { id: 'explosive', label: 'Explosive', cat: 'Anger', desc: 'Bursts into anger' },
+    { id: 'rageful', label: 'Rageful', cat: 'Anger', desc: 'Full of rage' },
+    { id: 'resentful', label: 'Resentful', cat: 'Anger', desc: 'Feels bitterness' },
+    { id: 'bitter', label: 'Bitter', cat: 'Anger', desc: 'Angry and resentful' },
+    { id: 'wrathful', label: 'Wrathful', cat: 'Anger', desc: 'Full of wrath' },
+
+    // Fear/Anxiety (10)
+    { id: 'anxious', label: 'Anxious', cat: 'Fear', desc: 'Constantly worried' },
+    { id: 'nervous', label: 'Nervous', cat: 'Fear', desc: 'Easily agitated' },
+    { id: 'worried', label: 'Worried', cat: 'Fear', desc: 'Troubled by concerns' },
+    { id: 'paranoid', label: 'Paranoid', cat: 'Fear', desc: 'Irrationally suspicious' },
+    { id: 'suspicious', label: 'Suspicious', cat: 'Fear', desc: 'Distrustful' },
+    { id: 'distrustful', label: 'Distrustful', cat: 'Fear', desc: 'Doesn\'t trust' },
+    { id: 'insecure', label: 'Insecure', cat: 'Fear', desc: 'Lacks confidence' },
+    { id: 'self-doubting', label: 'Self-doubting', cat: 'Fear', desc: 'Doubts own abilities' },
+    { id: 'phobic', label: 'Phobic', cat: 'Fear', desc: 'Has irrational fears' },
+    { id: 'neurotic', label: 'Neurotic', cat: 'Fear', desc: 'Prone to anxiety' },
+
+    // Sadness (10)
+    { id: 'pessimistic', label: 'Pessimistic', cat: 'Sadness', desc: 'Expects the worst' },
+    { id: 'negative', label: 'Negative', cat: 'Sadness', desc: 'Focuses on bad' },
+    { id: 'cynical', label: 'Cynical', cat: 'Sadness', desc: 'Distrusts motives' },
+    { id: 'depressive', label: 'Depressive', cat: 'Sadness', desc: 'Prone to depression' },
+    { id: 'gloomy', label: 'Gloomy', cat: 'Sadness', desc: 'Dark and depressing' },
+    { id: 'morose', label: 'Morose', cat: 'Sadness', desc: 'Sullen and ill-tempered' },
+    { id: 'sullen', label: 'Sullen', cat: 'Sadness', desc: 'Bad-tempered and sulky' },
+    { id: 'moody', label: 'Moody', cat: 'Sadness', desc: 'Given to moods' },
+    { id: 'brooding', label: 'Brooding', cat: 'Sadness', desc: 'Dark and threatening' },
+    { id: 'melancholy', label: 'Melancholy', cat: 'Sadness', desc: 'Deep sadness' },
+
+    // Jealousy (6)
+    { id: 'jealous', label: 'Jealous', cat: 'Jealousy', desc: 'Envious of others' },
+    { id: 'envious', label: 'Envious', cat: 'Jealousy', desc: 'Wants what others have' },
+    { id: 'covetous', label: 'Covetous', cat: 'Jealousy', desc: 'Wants others\' possessions' },
+    { id: 'possessive', label: 'Possessive', cat: 'Jealousy', desc: 'Overly controlling' },
+    { id: 'territorial', label: 'Territorial', cat: 'Jealousy', desc: 'Protective of territory' },
+    { id: 'resentful', label: 'Resentful', cat: 'Jealousy', desc: 'Feels bitterness at others' },
+
+    // Control (8)
+    { id: 'controlling', label: 'Controlling', cat: 'Control', desc: 'Needs to dominate' },
+    { id: 'domineering', label: 'Domineering', cat: 'Control', desc: 'Overbearing' },
+    { id: 'authoritarian', label: 'Authoritarian', cat: 'Control', desc: 'Demands obedience' },
+    { id: 'bossy', label: 'Bossy', cat: 'Control', desc: 'Gives orders' },
+    { id: 'overbearing', label: 'Overbearing', cat: 'Control', desc: 'Unpleasantly dominant' },
+    { id: 'micromanaging', label: 'Micromanaging', cat: 'Control', desc: 'Controls every detail' },
+    { id: 'tyrannical', label: 'Tyrannical', cat: 'Control', desc: 'Exercises power cruelly' },
+    { id: 'dictatorial', label: 'Dictatorial', cat: 'Control', desc: 'Like a dictator' },
+
+    // Stubbornness (8)
+    { id: 'stubborn', label: 'Stubborn', cat: 'Stubbornness', desc: 'Refuses to change' },
+    { id: 'obstinate', label: 'Obstinate', cat: 'Stubbornness', desc: 'Stubbornly refuses' },
+    { id: 'pig-headed', label: 'Pig-headed', cat: 'Stubbornness', desc: 'Stupidly stubborn' },
+    { id: 'inflexible', label: 'Inflexible', cat: 'Stubbornness', desc: 'Unwilling to change' },
+    { id: 'rigid', label: 'Rigid', cat: 'Stubbornness', desc: 'Not flexible' },
+    { id: 'unyielding', label: 'Unyielding', cat: 'Stubbornness', desc: 'Not giving way' },
+    { id: 'uncompromising', label: 'Uncompromising', cat: 'Stubbornness', desc: 'Refuses to compromise' },
+    { id: 'close-minded', label: 'Close-minded', cat: 'Stubbornness', desc: 'Not open to new ideas' },
+
+    // Impulsivity (8)
+    { id: 'impulsive', label: 'Impulsive', cat: 'Impulsivity', desc: 'Acts without thinking' },
+    { id: 'rash', label: 'Rash', cat: 'Impulsivity', desc: 'Acts hastily' },
+    { id: 'hasty', label: 'Hasty', cat: 'Impulsivity', desc: 'Done too quickly' },
+    { id: 'impatient', label: 'Impatient', cat: 'Impulsivity', desc: 'Unable to wait' },
+    { id: 'erratic', label: 'Erratic', cat: 'Impulsivity', desc: 'Unpredictable' },
+    { id: 'unpredictable', label: 'Unpredictable', cat: 'Impulsivity', desc: 'Cannot be predicted' },
+    { id: 'chaotic', label: 'Chaotic', cat: 'Impulsivity', desc: 'Complete disorder' },
+    { id: 'wild', label: 'Wild', cat: 'Impulsivity', desc: 'Uncontrolled and unruly' },
+
+    // Obsession (6)
+    { id: 'obsessive', label: 'Obsessive', cat: 'Obsession', desc: 'Unhealthily fixated' },
+    { id: 'compulsive', label: 'Compulsive', cat: 'Obsession', desc: 'Driven by urges' },
+    { id: 'addictive', label: 'Addictive', cat: 'Obsession', desc: 'Prone to addiction' },
+    { id: 'fanatical', label: 'Fanatical', cat: 'Obsession', desc: 'Excessively enthusiastic' },
+    { id: 'fixated', label: 'Fixated', cat: 'Obsession', desc: 'Focused obsessively' },
+    { id: 'manic', label: 'Manic', cat: 'Obsession', desc: 'Frenzied and obsessive' },
+
+    // Social Flaws (10)
+    { id: 'socially-awkward', label: 'Socially Awkward', cat: 'Social', desc: 'Uncomfortable socially' },
+    { id: 'awkward', label: 'Awkward', cat: 'Social', desc: 'Lacking grace' },
+    { id: 'shy', label: 'Shy', cat: 'Social', desc: 'Nervous around others' },
+    { id: 'withdrawn', label: 'Withdrawn', cat: 'Social', desc: 'Not sociable' },
+    { id: 'reclusive', label: 'Reclusive', cat: 'Social', desc: 'Avoids others' },
+    { id: 'antisocial', label: 'Antisocial', cat: 'Social', desc: 'Contrary to society' },
+    { id: 'misanthropic', label: 'Misanthropic', cat: 'Social', desc: 'Dislikes humanity' },
+    { id: 'attention-seeking', label: 'Attention-seeking', cat: 'Social', desc: 'Craves spotlight' },
+    { id: 'clingy', label: 'Clingy', cat: 'Social', desc: 'Overly dependent' },
+    { id: 'needy', label: 'Needy', cat: 'Social', desc: 'Requires constant attention' },
+
+    // Rudeness (10)
+    { id: 'rude', label: 'Rude', cat: 'Rudeness', desc: 'Offensively impolite' },
+    { id: 'impolite', label: 'Impolite', cat: 'Rudeness', desc: 'Not polite' },
+    { id: 'disrespectful', label: 'Disrespectful', cat: 'Rudeness', desc: 'Lacking respect' },
+    { id: 'tactless', label: 'Tactless', cat: 'Rudeness', desc: 'Lacks tact' },
+    { id: 'inconsiderate', label: 'Inconsiderate', cat: 'Rudeness', desc: 'Not thoughtful' },
+    { id: 'insensitive', label: 'Insensitive', cat: 'Rudeness', desc: 'Not aware of feelings' },
+    { id: 'abrasive', label: 'Abrasive', cat: 'Rudeness', desc: 'Rough manner' },
+    { id: 'obnoxious', label: 'Obnoxious', cat: 'Rudeness', desc: 'Extremely unpleasant' },
+    { id: 'insufferable', label: 'Insufferable', cat: 'Rudeness', desc: 'Unbearable' },
+    { id: 'offensive', label: 'Offensive', cat: 'Rudeness', desc: 'Causing offense' },
+
+    // Judgment (9)
+    { id: 'judgmental', label: 'Judgmental', cat: 'Judgment', desc: 'Critically judges others' },
+    { id: 'critical', label: 'Critical', cat: 'Judgment', desc: 'Finds fault' },
+    { id: 'harsh', label: 'Harsh', cat: 'Judgment', desc: 'Cruelly critical' },
+    { id: 'unforgiving', label: 'Unforgiving', cat: 'Judgment', desc: 'Doesn\'t forgive' },
+    { id: 'intolerant', label: 'Intolerant', cat: 'Judgment', desc: 'Not tolerant' },
+    { id: 'prejudiced', label: 'Prejudiced', cat: 'Judgment', desc: 'Has unfair opinions' },
+    { id: 'biased', label: 'Biased', cat: 'Judgment', desc: 'Unfairly prejudiced' },
+    { id: 'narrow-minded', label: 'Narrow-minded', cat: 'Judgment', desc: 'Not open to other views' },
+    { id: 'bigoted', label: 'Bigoted', cat: 'Judgment', desc: 'Intolerant toward others' },
+  ]
+};
+
+
+          const TraitSelector = ({ type, traits, selected, color, toggleTrait }) => {
+            const [expanded, setExpanded] = React.useState(false);
+            const categories = [...new Set(traits.map(t => t.cat))];
+
+            return (
+              <div className={`border-2 rounded-sm overflow-hidden ${
+                type === 'positive' ? 'border-green-300' :
+                type === 'neutral' ? 'border-gray-300' :
+                'border-red-300'
+              }`}>
+                {/* Header */}
+                <div className={`px-4 py-3 ${
+                  type === 'positive' ? 'bg-green-100' :
+                  type === 'neutral' ? 'bg-gray-100' :
+                  'bg-red-100'
+                }`}>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-mono text-sm font-bold">
+                        {type === 'positive' && '✦ POSITIVE TRAITS'}
+                        {type === 'neutral' && '◈ NEUTRAL TRAITS'}
+                        {type === 'negative' && '✗ NEGATIVE TRAITS / FLAWS'}
+                      </span>
+                      <span className={`ml-2 font-mono text-xs ${
+                        selected.length < 2 ? 'text-red-600' :
+                        selected.length > 4 ? 'text-red-600' :
+                        'text-gray-500'
+                      }`}>
+                        ({selected.length}/4) {selected.length < 2 && '⚠️ min 2'}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => setExpanded(!expanded)}
+                      className="font-mono text-xs px-2 py-1 bg-white rounded border hover:bg-gray-50"
+                    >
+                      {expanded ? '▼ Fechar' : '▶ Selecionar'}
+                    </button>
+                  </div>
+
+                  {/* Selected Tags */}
+                  {selected.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {selected.map(traitId => {
+                        const trait = traits.find(t => t.id === traitId);
+                        return trait ? (
+                          <span
+                            key={traitId}
+                            onClick={() => toggleTrait(type, traitId)}
+                            className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-mono cursor-pointer hover:opacity-75 ${
+                              type === 'positive' ? 'bg-green-200 text-green-800' :
+                              type === 'neutral' ? 'bg-gray-200 text-gray-800' :
+                              'bg-red-200 text-red-800'
+                            }`}
+                          >
+                            {trait.label} <span className="text-[10px]">×</span>
+                          </span>
+                        ) : null;
+                      })}
+                    </div>
+                  )}
+                </div>
+
+                {/* Expanded Selection */}
+                {expanded && (
+                  <div className="p-4 bg-white max-h-64 overflow-y-auto">
+                    {categories.map(cat => (
+                      <div key={cat} className="mb-3">
+                        <h5 className="font-mono text-[10px] uppercase text-gray-500 mb-2">{cat}</h5>
+                        <div className="flex flex-wrap gap-1">
+                          {traits.filter(t => t.cat === cat).map(trait => (
+                            <button
+                              key={trait.id}
+                              onClick={() => toggleTrait(type, trait.id)}
+                              disabled={!selected.includes(trait.id) && selected.length >= 4}
+                              title={trait.desc}
+                              className={`px-2 py-1 rounded text-xs font-mono transition-all ${
+                                selected.includes(trait.id)
+                                  ? type === 'positive' ? 'bg-green-500 text-white' :
+                                    type === 'neutral' ? 'bg-gray-500 text-white' :
+                                    'bg-red-500 text-white'
+                                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                              } ${!selected.includes(trait.id) && selected.length >= 4 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+                            >
+                              {trait.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          };
+
+
 const PsychologyContent = ({ data, updateData, subtab }) => {
   const update = (section, field, value) => {
     updateData('psychology', { 
@@ -7796,621 +8509,6 @@ const PsychologyContent = ({ data, updateData, subtab }) => {
         {(() => {
           // Massive Traits Database
 // EXPANDED TRAITS DATABASE - ~400+ traits
-const traitsDatabase = {
-  positive: [
-    // Caring (12)
-    { id: 'compassionate', label: 'Compassionate', cat: 'Caring', desc: 'Deeply cares about others\' suffering' },
-    { id: 'empathetic', label: 'Empathetic', cat: 'Caring', desc: 'Feels and understands others\' emotions' },
-    { id: 'sympathetic', label: 'Sympathetic', cat: 'Caring', desc: 'Shows concern for others\' hardships' },
-    { id: 'nurturing', label: 'Nurturing', cat: 'Caring', desc: 'Cares for and encourages growth' },
-    { id: 'gentle', label: 'Gentle', cat: 'Caring', desc: 'Kind and soft in manner' },
-    { id: 'tender', label: 'Tender', cat: 'Caring', desc: 'Shows gentleness and affection' },
-    { id: 'caring', label: 'Caring', cat: 'Caring', desc: 'Shows kindness and concern' },
-    { id: 'attentive', label: 'Attentive', cat: 'Caring', desc: 'Pays close attention to others\' needs' },
-    { id: 'considerate', label: 'Considerate', cat: 'Caring', desc: 'Thoughtful of others\' feelings' },
-    { id: 'thoughtful', label: 'Thoughtful', cat: 'Caring', desc: 'Shows consideration for others' },
-    { id: 'understanding', label: 'Understanding', cat: 'Caring', desc: 'Shows comprehension and tolerance' },
-    { id: 'comforting', label: 'Comforting', cat: 'Caring', desc: 'Provides solace and reassurance' },
-    
-    // Giving (10)
-    { id: 'generous', label: 'Generous', cat: 'Giving', desc: 'Freely gives time, resources, attention' },
-    { id: 'altruistic', label: 'Altruistic', cat: 'Giving', desc: 'Selflessly concerned for others' },
-    { id: 'charitable', label: 'Charitable', cat: 'Giving', desc: 'Generous to those in need' },
-    { id: 'selfless', label: 'Selfless', cat: 'Giving', desc: 'Puts others before self' },
-    { id: 'helpful', label: 'Helpful', cat: 'Giving', desc: 'Willing to assist others' },
-    { id: 'supportive', label: 'Supportive', cat: 'Giving', desc: 'Provides encouragement and help' },
-    { id: 'accommodating', label: 'Accommodating', cat: 'Giving', desc: 'Willing to adjust for others' },
-    { id: 'hospitable', label: 'Hospitable', cat: 'Giving', desc: 'Welcomes guests warmly' },
-    { id: 'magnanimous', label: 'Magnanimous', cat: 'Giving', desc: 'Generous in forgiving' },
-    { id: 'benevolent', label: 'Benevolent', cat: 'Giving', desc: 'Well-meaning and kindly' },
-    
-    // Loyalty (10)
-    { id: 'loyal', label: 'Loyal', cat: 'Loyalty', desc: 'Steadfast in allegiance' },
-    { id: 'faithful', label: 'Faithful', cat: 'Loyalty', desc: 'True to commitments' },
-    { id: 'devoted', label: 'Devoted', cat: 'Loyalty', desc: 'Deeply dedicated to others' },
-    { id: 'dependable', label: 'Dependable', cat: 'Loyalty', desc: 'Can be relied upon' },
-    { id: 'trustworthy', label: 'Trustworthy', cat: 'Loyalty', desc: 'Worthy of confidence' },
-    { id: 'reliable', label: 'Reliable', cat: 'Loyalty', desc: 'Consistently good in quality' },
-    { id: 'committed', label: 'Committed', cat: 'Loyalty', desc: 'Dedicated to a cause or person' },
-    { id: 'steadfast', label: 'Steadfast', cat: 'Loyalty', desc: 'Firmly loyal and constant' },
-    { id: 'true', label: 'True', cat: 'Loyalty', desc: 'Genuine and loyal' },
-    { id: 'dedicated', label: 'Dedicated', cat: 'Loyalty', desc: 'Devoted to a task or purpose' },
-    
-    // Harmony (10)
-    { id: 'forgiving', label: 'Forgiving', cat: 'Harmony', desc: 'Lets go of grudges' },
-    { id: 'diplomatic', label: 'Diplomatic', cat: 'Harmony', desc: 'Tactful in difficult situations' },
-    { id: 'peacemaking', label: 'Peacemaking', cat: 'Harmony', desc: 'Works to resolve conflicts' },
-    { id: 'tolerant', label: 'Tolerant', cat: 'Harmony', desc: 'Accepts differences in others' },
-    { id: 'accepting', label: 'Accepting', cat: 'Harmony', desc: 'Receives others without judgment' },
-    { id: 'patient', label: 'Patient', cat: 'Harmony', desc: 'Tolerates delays calmly' },
-    { id: 'cooperative', label: 'Cooperative', cat: 'Harmony', desc: 'Works well with others' },
-    { id: 'agreeable', label: 'Agreeable', cat: 'Harmony', desc: 'Pleasant and easy to work with' },
-    { id: 'easygoing', label: 'Easygoing', cat: 'Harmony', desc: 'Relaxed and tolerant' },
-    { id: 'flexible', label: 'Flexible', cat: 'Harmony', desc: 'Willing to compromise' },
-    
-    // Integrity (15)
-    { id: 'honest', label: 'Honest', cat: 'Integrity', desc: 'Truthful and sincere' },
-    { id: 'sincere', label: 'Sincere', cat: 'Integrity', desc: 'Free from pretense' },
-    { id: 'truthful', label: 'Truthful', cat: 'Integrity', desc: 'Speaks only truth' },
-    { id: 'genuine', label: 'Genuine', cat: 'Integrity', desc: 'Authentic and real' },
-    { id: 'authentic', label: 'Authentic', cat: 'Integrity', desc: 'True to oneself' },
-    { id: 'transparent', label: 'Transparent', cat: 'Integrity', desc: 'Open and honest' },
-    { id: 'forthright', label: 'Forthright', cat: 'Integrity', desc: 'Direct and outspoken honestly' },
-    { id: 'candid', label: 'Candid', cat: 'Integrity', desc: 'Frank and unreserved' },
-    { id: 'principled', label: 'Principled', cat: 'Integrity', desc: 'Acts on moral code' },
-    { id: 'ethical', label: 'Ethical', cat: 'Integrity', desc: 'Morally correct' },
-    { id: 'moral', label: 'Moral', cat: 'Integrity', desc: 'Concerned with right and wrong' },
-    { id: 'virtuous', label: 'Virtuous', cat: 'Integrity', desc: 'Having high moral standards' },
-    { id: 'honorable', label: 'Honorable', cat: 'Integrity', desc: 'Worthy of respect' },
-    { id: 'noble', label: 'Noble', cat: 'Integrity', desc: 'Having high moral qualities' },
-    { id: 'righteous', label: 'Righteous', cat: 'Integrity', desc: 'Morally right and just' },
-    
-    // Courage (10)
-    { id: 'courageous', label: 'Courageous', cat: 'Courage', desc: 'Faces fear bravely' },
-    { id: 'brave', label: 'Brave', cat: 'Courage', desc: 'Ready to face danger' },
-    { id: 'bold', label: 'Bold', cat: 'Courage', desc: 'Willing to take risks' },
-    { id: 'fearless', label: 'Fearless', cat: 'Courage', desc: 'Lacking fear' },
-    { id: 'daring', label: 'Daring', cat: 'Courage', desc: 'Adventurous and bold' },
-    { id: 'valiant', label: 'Valiant', cat: 'Courage', desc: 'Brave and determined' },
-    { id: 'heroic', label: 'Heroic', cat: 'Courage', desc: 'Extremely brave' },
-    { id: 'gallant', label: 'Gallant', cat: 'Courage', desc: 'Brave and noble' },
-    { id: 'audacious', label: 'Audacious', cat: 'Courage', desc: 'Willingness to take bold risks' },
-    { id: 'intrepid', label: 'Intrepid', cat: 'Courage', desc: 'Fearless and adventurous' },
-    
-    // Humility (8)
-    { id: 'humble', label: 'Humble', cat: 'Humility', desc: 'Modest about achievements' },
-    { id: 'modest', label: 'Modest', cat: 'Humility', desc: 'Unassuming about abilities' },
-    { id: 'unassuming', label: 'Unassuming', cat: 'Humility', desc: 'Not pretentious' },
-    { id: 'unpretentious', label: 'Unpretentious', cat: 'Humility', desc: 'Not trying to impress' },
-    { id: 'down-to-earth', label: 'Down-to-earth', cat: 'Humility', desc: 'Practical and realistic' },
-    { id: 'grounded', label: 'Grounded', cat: 'Humility', desc: 'Well-balanced and sensible' },
-    { id: 'self-effacing', label: 'Self-effacing', cat: 'Humility', desc: 'Not claiming attention' },
-    { id: 'gracious', label: 'Gracious', cat: 'Humility', desc: 'Courteous, kind, and pleasant' },
-    
-    // Resilience (10)
-    { id: 'resilient', label: 'Resilient', cat: 'Resilience', desc: 'Recovers quickly from setbacks' },
-    { id: 'strong', label: 'Strong', cat: 'Resilience', desc: 'Able to withstand hardship' },
-    { id: 'tough', label: 'Tough', cat: 'Resilience', desc: 'Able to endure difficulty' },
-    { id: 'tenacious', label: 'Tenacious', cat: 'Resilience', desc: 'Persistent and determined' },
-    { id: 'persevering', label: 'Persevering', cat: 'Resilience', desc: 'Continues despite difficulty' },
-    { id: 'persistent', label: 'Persistent', cat: 'Resilience', desc: 'Refuses to give up' },
-    { id: 'enduring', label: 'Enduring', cat: 'Resilience', desc: 'Lasting through hardship' },
-    { id: 'indomitable', label: 'Indomitable', cat: 'Resilience', desc: 'Impossible to defeat' },
-    { id: 'unbreakable', label: 'Unbreakable', cat: 'Resilience', desc: 'Cannot be broken' },
-    { id: 'adaptable', label: 'Adaptable', cat: 'Resilience', desc: 'Adjusts to new conditions' },
-    
-    // Intelligence (12)
-    { id: 'intelligent', label: 'Intelligent', cat: 'Intelligence', desc: 'Quick to learn and understand' },
-    { id: 'smart', label: 'Smart', cat: 'Intelligence', desc: 'Having sharp mental ability' },
-    { id: 'clever', label: 'Clever', cat: 'Intelligence', desc: 'Quick-witted and resourceful' },
-    { id: 'brilliant', label: 'Brilliant', cat: 'Intelligence', desc: 'Exceptionally intelligent' },
-    { id: 'sharp', label: 'Sharp', cat: 'Intelligence', desc: 'Quick and keen mentally' },
-    { id: 'quick-witted', label: 'Quick-witted', cat: 'Intelligence', desc: 'Fast thinking and responses' },
-    { id: 'astute', label: 'Astute', cat: 'Intelligence', desc: 'Shrewd and perceptive' },
-    { id: 'wise', label: 'Wise', cat: 'Intelligence', desc: 'Having good judgment' },
-    { id: 'knowledgeable', label: 'Knowledgeable', cat: 'Intelligence', desc: 'Well-informed' },
-    { id: 'learned', label: 'Learned', cat: 'Intelligence', desc: 'Having much knowledge' },
-    { id: 'intellectual', label: 'Intellectual', cat: 'Intelligence', desc: 'Engaged in mental activity' },
-    { id: 'scholarly', label: 'Scholarly', cat: 'Intelligence', desc: 'Academic and studious' },
-    
-    // Creativity (10)
-    { id: 'creative', label: 'Creative', cat: 'Creativity', desc: 'Original and imaginative' },
-    { id: 'imaginative', label: 'Imaginative', cat: 'Creativity', desc: 'Has vivid imagination' },
-    { id: 'innovative', label: 'Innovative', cat: 'Creativity', desc: 'Introduces new ideas' },
-    { id: 'inventive', label: 'Inventive', cat: 'Creativity', desc: 'Creates new things' },
-    { id: 'original', label: 'Original', cat: 'Creativity', desc: 'Unique and novel' },
-    { id: 'artistic', label: 'Artistic', cat: 'Creativity', desc: 'Has creative skill' },
-    { id: 'visionary', label: 'Visionary', cat: 'Creativity', desc: 'Thinks about the future' },
-    { id: 'inspired', label: 'Inspired', cat: 'Creativity', desc: 'Filled with creative urge' },
-    { id: 'ingenious', label: 'Ingenious', cat: 'Creativity', desc: 'Cleverly inventive' },
-    { id: 'resourceful', label: 'Resourceful', cat: 'Creativity', desc: 'Finds clever solutions' },
-    
-    // Curiosity (7)
-    { id: 'curious', label: 'Curious', cat: 'Curiosity', desc: 'Eager to learn' },
-    { id: 'inquisitive', label: 'Inquisitive', cat: 'Curiosity', desc: 'Asks many questions' },
-    { id: 'questioning', label: 'Questioning', cat: 'Curiosity', desc: 'Tends to ask questions' },
-    { id: 'exploratory', label: 'Exploratory', cat: 'Curiosity', desc: 'Likes to explore' },
-    { id: 'investigative', label: 'Investigative', cat: 'Curiosity', desc: 'Researches deeply' },
-    { id: 'studious', label: 'Studious', cat: 'Curiosity', desc: 'Devoted to study' },
-    { id: 'open-minded', label: 'Open-minded', cat: 'Curiosity', desc: 'Receptive to new ideas' },
-    
-    // Analysis (10)
-    { id: 'analytical', label: 'Analytical', cat: 'Analysis', desc: 'Examines methodically' },
-    { id: 'logical', label: 'Logical', cat: 'Analysis', desc: 'Uses clear reasoning' },
-    { id: 'rational', label: 'Rational', cat: 'Analysis', desc: 'Based on reason' },
-    { id: 'systematic', label: 'Systematic', cat: 'Analysis', desc: 'Methodical and organized' },
-    { id: 'methodical', label: 'Methodical', cat: 'Analysis', desc: 'Done in ordered way' },
-    { id: 'critical-thinker', label: 'Critical Thinker', cat: 'Analysis', desc: 'Analyzes objectively' },
-    { id: 'objective', label: 'Objective', cat: 'Analysis', desc: 'Not influenced by emotions' },
-    { id: 'discerning', label: 'Discerning', cat: 'Analysis', desc: 'Shows good judgment' },
-    { id: 'perceptive', label: 'Perceptive', cat: 'Analysis', desc: 'Quick to notice things' },
-    { id: 'insightful', label: 'Insightful', cat: 'Analysis', desc: 'Shows deep understanding' },
-    
-    // Ambition (9)
-    { id: 'ambitious', label: 'Ambitious', cat: 'Ambition', desc: 'Strong desire to succeed' },
-    { id: 'driven', label: 'Driven', cat: 'Ambition', desc: 'Compelled to achieve' },
-    { id: 'motivated', label: 'Motivated', cat: 'Ambition', desc: 'Has drive to act' },
-    { id: 'aspiring', label: 'Aspiring', cat: 'Ambition', desc: 'Seeking to achieve' },
-    { id: 'goal-oriented', label: 'Goal-oriented', cat: 'Ambition', desc: 'Focused on objectives' },
-    { id: 'determined', label: 'Determined', cat: 'Ambition', desc: 'Firm in purpose' },
-    { id: 'resolute', label: 'Resolute', cat: 'Ambition', desc: 'Admirably purposeful' },
-    { id: 'focused', label: 'Focused', cat: 'Ambition', desc: 'Concentrated on goals' },
-    { id: 'purposeful', label: 'Purposeful', cat: 'Ambition', desc: 'Having clear purpose' },
-    
-    // Work Ethic (10)
-    { id: 'hardworking', label: 'Hardworking', cat: 'Work Ethic', desc: 'Puts in consistent effort' },
-    { id: 'diligent', label: 'Diligent', cat: 'Work Ethic', desc: 'Careful and persistent' },
-    { id: 'industrious', label: 'Industrious', cat: 'Work Ethic', desc: 'Hard-working' },
-    { id: 'conscientious', label: 'Conscientious', cat: 'Work Ethic', desc: 'Wishes to do right' },
-    { id: 'thorough', label: 'Thorough', cat: 'Work Ethic', desc: 'Complete and careful' },
-    { id: 'meticulous', label: 'Meticulous', cat: 'Work Ethic', desc: 'Very careful and precise' },
-    { id: 'disciplined', label: 'Disciplined', cat: 'Work Ethic', desc: 'Controlled and orderly' },
-    { id: 'organized', label: 'Organized', cat: 'Work Ethic', desc: 'Arranged systematically' },
-    { id: 'efficient', label: 'Efficient', cat: 'Work Ethic', desc: 'Achieves maximum productivity' },
-    { id: 'proactive', label: 'Proactive', cat: 'Work Ethic', desc: 'Takes initiative' },
-    
-    // Warmth (10)
-    { id: 'warm', label: 'Warm', cat: 'Warmth', desc: 'Friendly and affectionate' },
-    { id: 'friendly', label: 'Friendly', cat: 'Warmth', desc: 'Kind and pleasant' },
-    { id: 'affectionate', label: 'Affectionate', cat: 'Warmth', desc: 'Shows fondness' },
-    { id: 'loving', label: 'Loving', cat: 'Warmth', desc: 'Full of love' },
-    { id: 'kind', label: 'Kind', cat: 'Warmth', desc: 'Considerate and helpful' },
-    { id: 'sweet', label: 'Sweet', cat: 'Warmth', desc: 'Pleasant and kind' },
-    { id: 'good-natured', label: 'Good-natured', cat: 'Warmth', desc: 'Kind and cheerful' },
-    { id: 'amiable', label: 'Amiable', cat: 'Warmth', desc: 'Friendly and pleasant' },
-    { id: 'approachable', label: 'Approachable', cat: 'Warmth', desc: 'Easy to talk to' },
-    { id: 'welcoming', label: 'Welcoming', cat: 'Warmth', desc: 'Receives warmly' },
-    
-    // Charisma (10)
-    { id: 'charismatic', label: 'Charismatic', cat: 'Charisma', desc: 'Naturally attracts others' },
-    { id: 'charming', label: 'Charming', cat: 'Charisma', desc: 'Delightful and attractive' },
-    { id: 'magnetic', label: 'Magnetic', cat: 'Charisma', desc: 'Very attractive personality' },
-    { id: 'captivating', label: 'Captivating', cat: 'Charisma', desc: 'Attracts and holds attention' },
-    { id: 'engaging', label: 'Engaging', cat: 'Charisma', desc: 'Charming and attractive' },
-    { id: 'likeable', label: 'Likeable', cat: 'Charisma', desc: 'Easy to like' },
-    { id: 'personable', label: 'Personable', cat: 'Charisma', desc: 'Pleasant appearance and manner' },
-    { id: 'sociable', label: 'Sociable', cat: 'Charisma', desc: 'Enjoys company of others' },
-    { id: 'outgoing', label: 'Outgoing', cat: 'Charisma', desc: 'Friendly and socially confident' },
-    { id: 'gregarious', label: 'Gregarious', cat: 'Charisma', desc: 'Fond of company' },
-    
-    // Communication (8)
-    { id: 'articulate', label: 'Articulate', cat: 'Communication', desc: 'Expresses clearly' },
-    { id: 'eloquent', label: 'Eloquent', cat: 'Communication', desc: 'Fluent and persuasive' },
-    { id: 'expressive', label: 'Expressive', cat: 'Communication', desc: 'Conveys thoughts well' },
-    { id: 'persuasive', label: 'Persuasive', cat: 'Communication', desc: 'Good at convincing' },
-    { id: 'witty', label: 'Witty', cat: 'Communication', desc: 'Clever and amusing' },
-    { id: 'humorous', label: 'Humorous', cat: 'Communication', desc: 'Has sense of humor' },
-    { id: 'funny', label: 'Funny', cat: 'Communication', desc: 'Causes laughter' },
-    { id: 'entertaining', label: 'Entertaining', cat: 'Communication', desc: 'Provides amusement' },
-    
-    // Positivity (10)
-    { id: 'optimistic', label: 'Optimistic', cat: 'Positivity', desc: 'Hopeful and positive' },
-    { id: 'hopeful', label: 'Hopeful', cat: 'Positivity', desc: 'Full of hope' },
-    { id: 'positive', label: 'Positive', cat: 'Positivity', desc: 'Constructive and optimistic' },
-    { id: 'cheerful', label: 'Cheerful', cat: 'Positivity', desc: 'Happy and positive' },
-    { id: 'joyful', label: 'Joyful', cat: 'Positivity', desc: 'Full of joy' },
-    { id: 'happy', label: 'Happy', cat: 'Positivity', desc: 'Feeling pleasure' },
-    { id: 'upbeat', label: 'Upbeat', cat: 'Positivity', desc: 'Cheerful and positive' },
-    { id: 'buoyant', label: 'Buoyant', cat: 'Positivity', desc: 'Cheerful and optimistic' },
-    { id: 'lighthearted', label: 'Lighthearted', cat: 'Positivity', desc: 'Carefree and cheerful' },
-    { id: 'playful', label: 'Playful', cat: 'Positivity', desc: 'Fun-loving and light' },
-    
-    // Calm (10)
-    { id: 'calm', label: 'Calm', cat: 'Calm', desc: 'Peaceful and untroubled' },
-    { id: 'serene', label: 'Serene', cat: 'Calm', desc: 'Calm and peaceful' },
-    { id: 'tranquil', label: 'Tranquil', cat: 'Calm', desc: 'Free from disturbance' },
-    { id: 'peaceful', label: 'Peaceful', cat: 'Calm', desc: 'Free from conflict' },
-    { id: 'composed', label: 'Composed', cat: 'Calm', desc: 'Calm and in control' },
-    { id: 'collected', label: 'Collected', cat: 'Calm', desc: 'Calm and controlled' },
-    { id: 'unflappable', label: 'Unflappable', cat: 'Calm', desc: 'Remains calm under pressure' },
-    { id: 'level-headed', label: 'Level-headed', cat: 'Calm', desc: 'Calm and sensible' },
-    { id: 'even-tempered', label: 'Even-tempered', cat: 'Calm', desc: 'Not easily upset' },
-    { id: 'cool-headed', label: 'Cool-headed', cat: 'Calm', desc: 'Calm in difficult situations' },
-    
-    // Passion (10)
-    { id: 'passionate', label: 'Passionate', cat: 'Passion', desc: 'Shows strong feeling' },
-    { id: 'enthusiastic', label: 'Enthusiastic', cat: 'Passion', desc: 'Eager and excited' },
-    { id: 'zealous', label: 'Zealous', cat: 'Passion', desc: 'Full of zeal' },
-    { id: 'ardent', label: 'Ardent', cat: 'Passion', desc: 'Enthusiastic and passionate' },
-    { id: 'fervent', label: 'Fervent', cat: 'Passion', desc: 'Having intense feeling' },
-    { id: 'spirited', label: 'Spirited', cat: 'Passion', desc: 'Full of energy and courage' },
-    { id: 'vivacious', label: 'Vivacious', cat: 'Passion', desc: 'Lively and animated' },
-    { id: 'energetic', label: 'Energetic', cat: 'Passion', desc: 'Full of energy' },
-    { id: 'dynamic', label: 'Dynamic', cat: 'Passion', desc: 'Full of energy and new ideas' },
-    { id: 'vibrant', label: 'Vibrant', cat: 'Passion', desc: 'Full of life and energy' },
-    
-    // Leadership (10)
-    { id: 'leader', label: 'Leader', cat: 'Leadership', desc: 'Guides and directs others' },
-    { id: 'assertive', label: 'Assertive', cat: 'Leadership', desc: 'Confident and forceful' },
-    { id: 'confident', label: 'Confident', cat: 'Leadership', desc: 'Self-assured' },
-    { id: 'decisive', label: 'Decisive', cat: 'Leadership', desc: 'Makes decisions quickly' },
-    { id: 'commanding', label: 'Commanding', cat: 'Leadership', desc: 'Projects authority' },
-    { id: 'authoritative', label: 'Authoritative', cat: 'Leadership', desc: 'Commanding and self-confident' },
-    { id: 'influential', label: 'Influential', cat: 'Leadership', desc: 'Has great influence' },
-    { id: 'inspiring', label: 'Inspiring', cat: 'Leadership', desc: 'Motivates others' },
-    { id: 'empowering', label: 'Empowering', cat: 'Leadership', desc: 'Gives power to others' },
-    { id: 'mentoring', label: 'Mentoring', cat: 'Leadership', desc: 'Guides and teaches others' },
-  ],
-  
-  neutral: [
-    // Energy (8)
-    { id: 'introverted', label: 'Introverted', cat: 'Energy', desc: 'Energized by solitude' },
-    { id: 'extroverted', label: 'Extroverted', cat: 'Energy', desc: 'Energized by people' },
-    { id: 'ambiverted', label: 'Ambiverted', cat: 'Energy', desc: 'Mix of intro/extrovert' },
-    { id: 'high-energy', label: 'High-energy', cat: 'Energy', desc: 'Always active' },
-    { id: 'low-energy', label: 'Low-energy', cat: 'Energy', desc: 'Calm and slow-paced' },
-    { id: 'restless', label: 'Restless', cat: 'Energy', desc: 'Unable to stay still' },
-    { id: 'hyperactive', label: 'Hyperactive', cat: 'Energy', desc: 'Extremely active' },
-    { id: 'mellow', label: 'Mellow', cat: 'Energy', desc: 'Relaxed and unhurried' },
-    
-    // Expression (10)
-    { id: 'reserved', label: 'Reserved', cat: 'Expression', desc: 'Restrained in expression' },
-    { id: 'quiet', label: 'Quiet', cat: 'Expression', desc: 'Speaks little' },
-    { id: 'soft-spoken', label: 'Soft-spoken', cat: 'Expression', desc: 'Speaks quietly' },
-    { id: 'loud', label: 'Loud', cat: 'Expression', desc: 'Makes much noise' },
-    { id: 'talkative', label: 'Talkative', cat: 'Expression', desc: 'Talks a lot' },
-    { id: 'verbose', label: 'Verbose', cat: 'Expression', desc: 'Uses many words' },
-    { id: 'laconic', label: 'Laconic', cat: 'Expression', desc: 'Uses few words' },
-    { id: 'demonstrative', label: 'Demonstrative', cat: 'Expression', desc: 'Shows feelings openly' },
-    { id: 'animated', label: 'Animated', cat: 'Expression', desc: 'Full of life in expression' },
-    { id: 'understated', label: 'Understated', cat: 'Expression', desc: 'Deliberately restrained' },
-    
-    // Mood (10)
-    { id: 'serious', label: 'Serious', cat: 'Mood', desc: 'Solemn, not frivolous' },
-    { id: 'intense', label: 'Intense', cat: 'Mood', desc: 'Deeply focused' },
-    { id: 'laid-back', label: 'Laid-back', cat: 'Mood', desc: 'Relaxed and easygoing' },
-    { id: 'stoic', label: 'Stoic', cat: 'Mood', desc: 'Endures without complaint' },
-    { id: 'emotional', label: 'Emotional', cat: 'Mood', desc: 'Expresses feelings openly' },
-    { id: 'detached', label: 'Detached', cat: 'Mood', desc: 'Emotionally distant' },
-    { id: 'brooding', label: 'Brooding', cat: 'Mood', desc: 'Thinks moodily' },
-    { id: 'melancholic', label: 'Melancholic', cat: 'Mood', desc: 'Tends toward sadness' },
-    { id: 'mercurial', label: 'Mercurial', cat: 'Mood', desc: 'Quick-changing moods' },
-    { id: 'temperamental', label: 'Temperamental', cat: 'Mood', desc: 'Subject to mood changes' },
-    
-    // Decisions (10)
-    { id: 'pragmatic', label: 'Pragmatic', cat: 'Decisions', desc: 'Practical over idealistic' },
-    { id: 'idealistic', label: 'Idealistic', cat: 'Decisions', desc: 'Pursues high principles' },
-    { id: 'realistic', label: 'Realistic', cat: 'Decisions', desc: 'Accepts things as they are' },
-    { id: 'cautious', label: 'Cautious', cat: 'Decisions', desc: 'Careful to avoid risk' },
-    { id: 'risk-taking', label: 'Risk-taking', cat: 'Decisions', desc: 'Willing to take chances' },
-    { id: 'calculated', label: 'Calculated', cat: 'Decisions', desc: 'Carefully considered' },
-    { id: 'deliberate', label: 'Deliberate', cat: 'Decisions', desc: 'Done consciously' },
-    { id: 'spontaneous', label: 'Spontaneous', cat: 'Decisions', desc: 'Acts without planning' },
-    { id: 'impulsive', label: 'Impulsive', cat: 'Decisions', desc: 'Acts on impulse' },
-    { id: 'indecisive', label: 'Indecisive', cat: 'Decisions', desc: 'Has trouble deciding' },
-    
-    // Thinking (10)
-    { id: 'skeptical', label: 'Skeptical', cat: 'Thinking', desc: 'Questions claims' },
-    { id: 'credulous', label: 'Credulous', cat: 'Thinking', desc: 'Too ready to believe' },
-    { id: 'cynical', label: 'Cynical', cat: 'Thinking', desc: 'Distrusts motives' },
-    { id: 'trusting', label: 'Trusting', cat: 'Thinking', desc: 'Inclined to trust' },
-    { id: 'literal', label: 'Literal', cat: 'Thinking', desc: 'Takes things at face value' },
-    { id: 'abstract', label: 'Abstract', cat: 'Thinking', desc: 'Thinks in concepts' },
-    { id: 'concrete', label: 'Concrete', cat: 'Thinking', desc: 'Thinks in specifics' },
-    { id: 'daydreamer', label: 'Daydreamer', cat: 'Thinking', desc: 'Lost in fantasy' },
-    { id: 'realist', label: 'Realist', cat: 'Thinking', desc: 'Accepts reality' },
-    { id: 'philosophical', label: 'Philosophical', cat: 'Thinking', desc: 'Ponders deep questions' },
-    
-    // Values (12)
-    { id: 'traditional', label: 'Traditional', cat: 'Values', desc: 'Values established customs' },
-    { id: 'progressive', label: 'Progressive', cat: 'Values', desc: 'Favors change' },
-    { id: 'conservative', label: 'Conservative', cat: 'Values', desc: 'Prefers tradition' },
-    { id: 'unconventional', label: 'Unconventional', cat: 'Values', desc: 'Does things differently' },
-    { id: 'nonconformist', label: 'Nonconformist', cat: 'Values', desc: 'Rejects accepted behavior' },
-    { id: 'conformist', label: 'Conformist', cat: 'Values', desc: 'Follows conventions' },
-    { id: 'rebellious', label: 'Rebellious', cat: 'Values', desc: 'Resists authority' },
-    { id: 'spiritual', label: 'Spiritual', cat: 'Values', desc: 'Concerned with the spirit' },
-    { id: 'materialistic', label: 'Materialistic', cat: 'Values', desc: 'Values possessions' },
-    { id: 'minimalist', label: 'Minimalist', cat: 'Values', desc: 'Prefers simplicity' },
-    { id: 'hedonistic', label: 'Hedonistic', cat: 'Values', desc: 'Pursues pleasure' },
-    { id: 'ascetic', label: 'Ascetic', cat: 'Values', desc: 'Practices self-denial' },
-    
-    // Social Style (10)
-    { id: 'formal', label: 'Formal', cat: 'Social Style', desc: 'Proper and ceremonious' },
-    { id: 'informal', label: 'Informal', cat: 'Social Style', desc: 'Casual and relaxed' },
-    { id: 'private', label: 'Private', cat: 'Social Style', desc: 'Keeps life hidden' },
-    { id: 'open-book', label: 'Open Book', cat: 'Social Style', desc: 'Shares everything' },
-    { id: 'mysterious', label: 'Mysterious', cat: 'Social Style', desc: 'Hard to understand' },
-    { id: 'enigmatic', label: 'Enigmatic', cat: 'Social Style', desc: 'Puzzling and mysterious' },
-    { id: 'flamboyant', label: 'Flamboyant', cat: 'Social Style', desc: 'Showy and dramatic' },
-    { id: 'eccentric', label: 'Eccentric', cat: 'Social Style', desc: 'Unconventional and peculiar' },
-    { id: 'bohemian', label: 'Bohemian', cat: 'Social Style', desc: 'Artistic and unconventional' },
-    { id: 'mainstream', label: 'Mainstream', cat: 'Social Style', desc: 'Follows popular trends' },
-    
-    // Communication Style (10)
-    { id: 'blunt', label: 'Blunt', cat: 'Comm Style', desc: 'Direct without softening' },
-    { id: 'tactful', label: 'Tactful', cat: 'Comm Style', desc: 'Careful not to offend' },
-    { id: 'sarcastic', label: 'Sarcastic', cat: 'Comm Style', desc: 'Uses ironic remarks' },
-    { id: 'dry', label: 'Dry', cat: 'Comm Style', desc: 'Subtle, deadpan humor' },
-    { id: 'deadpan', label: 'Deadpan', cat: 'Comm Style', desc: 'Expressionless delivery' },
-    { id: 'dramatic', label: 'Dramatic', cat: 'Comm Style', desc: 'Theatrical expression' },
-    { id: 'matter-of-fact', label: 'Matter-of-fact', cat: 'Comm Style', desc: 'Unemotional and practical' },
-    { id: 'flowery', label: 'Flowery', cat: 'Comm Style', desc: 'Elaborate language' },
-    { id: 'plain-spoken', label: 'Plain-spoken', cat: 'Comm Style', desc: 'Simple and direct' },
-    { id: 'diplomatic', label: 'Diplomatic', cat: 'Comm Style', desc: 'Handles delicately' },
-    
-    // Focus (8)
-    { id: 'detail-oriented', label: 'Detail-oriented', cat: 'Focus', desc: 'Attends to small things' },
-    { id: 'big-picture', label: 'Big-picture', cat: 'Focus', desc: 'Sees overall pattern' },
-    { id: 'perfectionist', label: 'Perfectionist', cat: 'Focus', desc: 'Demands perfection' },
-    { id: 'present-focused', label: 'Present-focused', cat: 'Focus', desc: 'Lives in the now' },
-    { id: 'future-focused', label: 'Future-focused', cat: 'Focus', desc: 'Plans ahead' },
-    { id: 'past-focused', label: 'Past-focused', cat: 'Focus', desc: 'Dwells on past' },
-    { id: 'nostalgic', label: 'Nostalgic', cat: 'Focus', desc: 'Attached to the past' },
-    { id: 'forward-thinking', label: 'Forward-thinking', cat: 'Focus', desc: 'Plans for the future' },
-    
-    // Independence (8)
-    { id: 'independent', label: 'Independent', cat: 'Independence', desc: 'Self-reliant' },
-    { id: 'dependent', label: 'Dependent', cat: 'Independence', desc: 'Relies on others' },
-    { id: 'self-sufficient', label: 'Self-sufficient', cat: 'Independence', desc: 'Needs no help' },
-    { id: 'collaborative', label: 'Collaborative', cat: 'Independence', desc: 'Works with others' },
-    { id: 'lone-wolf', label: 'Lone Wolf', cat: 'Independence', desc: 'Prefers working alone' },
-    { id: 'team-player', label: 'Team Player', cat: 'Independence', desc: 'Works well in groups' },
-    { id: 'competitive', label: 'Competitive', cat: 'Independence', desc: 'Driven to win' },
-    { id: 'cooperative', label: 'Cooperative', cat: 'Independence', desc: 'Works with others' },
-    
-    // Quirks (15)
-    { id: 'superstitious', label: 'Superstitious', cat: 'Quirks', desc: 'Believes in luck/omens' },
-    { id: 'habitual', label: 'Habitual', cat: 'Quirks', desc: 'Follows routines' },
-    { id: 'ritualistic', label: 'Ritualistic', cat: 'Quirks', desc: 'Performs rituals' },
-    { id: 'absent-minded', label: 'Absent-minded', cat: 'Quirks', desc: 'Forgetful, distracted' },
-    { id: 'scatterbrained', label: 'Scatterbrained', cat: 'Quirks', desc: 'Disorganized thinking' },
-    { id: 'hyperfocused', label: 'Hyperfocused', cat: 'Quirks', desc: 'Intensely concentrated' },
-    { id: 'night-owl', label: 'Night Owl', cat: 'Quirks', desc: 'Active at night' },
-    { id: 'early-bird', label: 'Early Bird', cat: 'Quirks', desc: 'Active in morning' },
-    { id: 'workaholic', label: 'Workaholic', cat: 'Quirks', desc: 'Obsessed with work' },
-    { id: 'thrill-seeker', label: 'Thrill-seeker', cat: 'Quirks', desc: 'Seeks excitement' },
-    { id: 'homebody', label: 'Homebody', cat: 'Quirks', desc: 'Prefers staying home' },
-    { id: 'wanderer', label: 'Wanderer', cat: 'Quirks', desc: 'Loves to travel' },
-    { id: 'collector', label: 'Collector', cat: 'Quirks', desc: 'Gathers items' },
-    { id: 'neat-freak', label: 'Neat Freak', cat: 'Quirks', desc: 'Obsessed with cleanliness' },
-    { id: 'messy', label: 'Messy', cat: 'Quirks', desc: 'Disorganized surroundings' },
-  ],
-  
-  negative: [
-    // Selfishness (10)
-    { id: 'selfish', label: 'Selfish', cat: 'Selfishness', desc: 'Prioritizes self over others' },
-    { id: 'self-centered', label: 'Self-centered', cat: 'Selfishness', desc: 'Focused on self' },
-    { id: 'egotistical', label: 'Egotistical', cat: 'Selfishness', desc: 'Excessively conceited' },
-    { id: 'narcissistic', label: 'Narcissistic', cat: 'Selfishness', desc: 'Excessive self-love' },
-    { id: 'self-absorbed', label: 'Self-absorbed', cat: 'Selfishness', desc: 'Preoccupied with self' },
-    { id: 'entitled', label: 'Entitled', cat: 'Selfishness', desc: 'Believes deserves special treatment' },
-    { id: 'greedy', label: 'Greedy', cat: 'Selfishness', desc: 'Excessive desire for more' },
-    { id: 'stingy', label: 'Stingy', cat: 'Selfishness', desc: 'Unwilling to give' },
-    { id: 'miserly', label: 'Miserly', cat: 'Selfishness', desc: 'Hoards wealth' },
-    { id: 'ungrateful', label: 'Ungrateful', cat: 'Selfishness', desc: 'Not thankful' },
-    
-    // Hostility (18)
-    { id: 'hostile', label: 'Hostile', cat: 'Hostility', desc: 'Unfriendly and aggressive' },
-    { id: 'aggressive', label: 'Aggressive', cat: 'Hostility', desc: 'Ready to attack' },
-    { id: 'antagonistic', label: 'Antagonistic', cat: 'Hostility', desc: 'Actively hostile' },
-    { id: 'belligerent', label: 'Belligerent', cat: 'Hostility', desc: 'Hostile and aggressive' },
-    { id: 'combative', label: 'Combative', cat: 'Hostility', desc: 'Ready to fight' },
-    { id: 'confrontational', label: 'Confrontational', cat: 'Hostility', desc: 'Tends to confront' },
-    { id: 'quarrelsome', label: 'Quarrelsome', cat: 'Hostility', desc: 'Given to arguing' },
-    { id: 'argumentative', label: 'Argumentative', cat: 'Hostility', desc: 'Loves to argue' },
-    { id: 'spiteful', label: 'Spiteful', cat: 'Hostility', desc: 'Wanting to hurt' },
-    { id: 'malicious', label: 'Malicious', cat: 'Hostility', desc: 'Intending harm' },
-    { id: 'vindictive', label: 'Vindictive', cat: 'Hostility', desc: 'Seeks revenge' },
-    { id: 'vengeful', label: 'Vengeful', cat: 'Hostility', desc: 'Seeking vengeance' },
-    { id: 'cruel', label: 'Cruel', cat: 'Hostility', desc: 'Willfully causes pain' },
-    { id: 'sadistic', label: 'Sadistic', cat: 'Hostility', desc: 'Enjoys others\' pain' },
-    { id: 'brutal', label: 'Brutal', cat: 'Hostility', desc: 'Savagely violent' },
-    { id: 'ruthless', label: 'Ruthless', cat: 'Hostility', desc: 'Without pity' },
-    { id: 'merciless', label: 'Merciless', cat: 'Hostility', desc: 'Shows no mercy' },
-    { id: 'vicious', label: 'Vicious', cat: 'Hostility', desc: 'Deliberately cruel' },
-    
-    // Manipulation (10)
-    { id: 'manipulative', label: 'Manipulative', cat: 'Manipulation', desc: 'Controls others deceptively' },
-    { id: 'deceitful', label: 'Deceitful', cat: 'Manipulation', desc: 'Deceives others' },
-    { id: 'deceptive', label: 'Deceptive', cat: 'Manipulation', desc: 'Misleads others' },
-    { id: 'scheming', label: 'Scheming', cat: 'Manipulation', desc: 'Makes secret plans' },
-    { id: 'conniving', label: 'Conniving', cat: 'Manipulation', desc: 'Secretly plans harm' },
-    { id: 'calculating', label: 'Calculating', cat: 'Manipulation', desc: 'Coldly plans' },
-    { id: 'exploitative', label: 'Exploitative', cat: 'Manipulation', desc: 'Uses others unfairly' },
-    { id: 'opportunistic', label: 'Opportunistic', cat: 'Manipulation', desc: 'Exploits circumstances' },
-    { id: 'two-faced', label: 'Two-faced', cat: 'Manipulation', desc: 'Insincere and deceitful' },
-    { id: 'backstabbing', label: 'Backstabbing', cat: 'Manipulation', desc: 'Betrays trust' },
-    
-    // Coldness (10)
-    { id: 'cold', label: 'Cold', cat: 'Coldness', desc: 'Emotionally distant' },
-    { id: 'aloof', label: 'Aloof', cat: 'Coldness', desc: 'Distant and uninvolved' },
-    { id: 'distant', label: 'Distant', cat: 'Coldness', desc: 'Emotionally remote' },
-    { id: 'unfeeling', label: 'Unfeeling', cat: 'Coldness', desc: 'Lacks sympathy' },
-    { id: 'callous', label: 'Callous', cat: 'Coldness', desc: 'Insensitive and cruel' },
-    { id: 'heartless', label: 'Heartless', cat: 'Coldness', desc: 'Lacking compassion' },
-    { id: 'indifferent', label: 'Indifferent', cat: 'Coldness', desc: 'No interest or concern' },
-    { id: 'apathetic', label: 'Apathetic', cat: 'Coldness', desc: 'Lacking enthusiasm' },
-    { id: 'unsympathetic', label: 'Unsympathetic', cat: 'Coldness', desc: 'Not showing sympathy' },
-    { id: 'dismissive', label: 'Dismissive', cat: 'Coldness', desc: 'Treats as unworthy' },
-    
-    // Dishonesty (10)
-    { id: 'dishonest', label: 'Dishonest', cat: 'Dishonesty', desc: 'Lies and deceives' },
-    { id: 'liar', label: 'Liar', cat: 'Dishonesty', desc: 'Tells lies habitually' },
-    { id: 'untruthful', label: 'Untruthful', cat: 'Dishonesty', desc: 'Not truthful' },
-    { id: 'insincere', label: 'Insincere', cat: 'Dishonesty', desc: 'Not genuine' },
-    { id: 'hypocritical', label: 'Hypocritical', cat: 'Dishonesty', desc: 'Says one thing, does another' },
-    { id: 'phony', label: 'Phony', cat: 'Dishonesty', desc: 'Not genuine' },
-    { id: 'fake', label: 'Fake', cat: 'Dishonesty', desc: 'Not authentic' },
-    { id: 'treacherous', label: 'Treacherous', cat: 'Dishonesty', desc: 'Guilty of betrayal' },
-    { id: 'disloyal', label: 'Disloyal', cat: 'Dishonesty', desc: 'Betrays allegiance' },
-    { id: 'unfaithful', label: 'Unfaithful', cat: 'Dishonesty', desc: 'Not true to commitments' },
-    
-    // Pride (12)
-    { id: 'arrogant', label: 'Arrogant', cat: 'Pride', desc: 'Exaggerated self-importance' },
-    { id: 'proud', label: 'Proud', cat: 'Pride', desc: 'Excessively proud' },
-    { id: 'haughty', label: 'Haughty', cat: 'Pride', desc: 'Arrogantly superior' },
-    { id: 'pompous', label: 'Pompous', cat: 'Pride', desc: 'Self-important' },
-    { id: 'conceited', label: 'Conceited', cat: 'Pride', desc: 'Excessively proud of oneself' },
-    { id: 'vain', label: 'Vain', cat: 'Pride', desc: 'Excessive pride in appearance' },
-    { id: 'smug', label: 'Smug', cat: 'Pride', desc: 'Excessively pleased with self' },
-    { id: 'snobbish', label: 'Snobbish', cat: 'Pride', desc: 'Looks down on others' },
-    { id: 'condescending', label: 'Condescending', cat: 'Pride', desc: 'Patronizingly superior' },
-    { id: 'pretentious', label: 'Pretentious', cat: 'Pride', desc: 'Claims undeserved importance' },
-    { id: 'boastful', label: 'Boastful', cat: 'Pride', desc: 'Brags excessively' },
-    { id: 'show-off', label: 'Show-off', cat: 'Pride', desc: 'Displays abilities excessively' },
-    
-    // Weakness (9)
-    { id: 'cowardly', label: 'Cowardly', cat: 'Weakness', desc: 'Lacks courage' },
-    { id: 'fearful', label: 'Fearful', cat: 'Weakness', desc: 'Afraid of things' },
-    { id: 'timid', label: 'Timid', cat: 'Weakness', desc: 'Lacking courage' },
-    { id: 'spineless', label: 'Spineless', cat: 'Weakness', desc: 'Lacks courage or willpower' },
-    { id: 'weak-willed', label: 'Weak-willed', cat: 'Weakness', desc: 'Easily influenced' },
-    { id: 'pushover', label: 'Pushover', cat: 'Weakness', desc: 'Easily persuaded' },
-    { id: 'submissive', label: 'Submissive', cat: 'Weakness', desc: 'Yields to others' },
-    { id: 'doormat', label: 'Doormat', cat: 'Weakness', desc: 'Lets others walk over them' },
-    { id: 'passive', label: 'Passive', cat: 'Weakness', desc: 'Accepts without resistance' },
-    
-    // Irresponsibility (10)
-    { id: 'lazy', label: 'Lazy', cat: 'Irresponsibility', desc: 'Avoids work' },
-    { id: 'slothful', label: 'Slothful', cat: 'Irresponsibility', desc: 'Reluctant to work' },
-    { id: 'negligent', label: 'Negligent', cat: 'Irresponsibility', desc: 'Fails to take care' },
-    { id: 'careless', label: 'Careless', cat: 'Irresponsibility', desc: 'Not careful' },
-    { id: 'reckless', label: 'Reckless', cat: 'Irresponsibility', desc: 'Disregards consequences' },
-    { id: 'irresponsible', label: 'Irresponsible', cat: 'Irresponsibility', desc: 'Not responsible' },
-    { id: 'unreliable', label: 'Unreliable', cat: 'Irresponsibility', desc: 'Cannot be depended on' },
-    { id: 'flaky', label: 'Flaky', cat: 'Irresponsibility', desc: 'Unreliable' },
-    { id: 'inconsistent', label: 'Inconsistent', cat: 'Irresponsibility', desc: 'Not consistent' },
-    { id: 'procrastinator', label: 'Procrastinator', cat: 'Irresponsibility', desc: 'Delays tasks' },
-    
-    // Anger (10)
-    { id: 'angry', label: 'Angry', cat: 'Anger', desc: 'Easily angered' },
-    { id: 'hot-tempered', label: 'Hot-tempered', cat: 'Anger', desc: 'Quick to anger' },
-    { id: 'short-tempered', label: 'Short-tempered', cat: 'Anger', desc: 'Easily angered' },
-    { id: 'irritable', label: 'Irritable', cat: 'Anger', desc: 'Easily annoyed' },
-    { id: 'volatile', label: 'Volatile', cat: 'Anger', desc: 'Explosive temperament' },
-    { id: 'explosive', label: 'Explosive', cat: 'Anger', desc: 'Bursts into anger' },
-    { id: 'rageful', label: 'Rageful', cat: 'Anger', desc: 'Full of rage' },
-    { id: 'resentful', label: 'Resentful', cat: 'Anger', desc: 'Feels bitterness' },
-    { id: 'bitter', label: 'Bitter', cat: 'Anger', desc: 'Angry and resentful' },
-    { id: 'wrathful', label: 'Wrathful', cat: 'Anger', desc: 'Full of wrath' },
-    
-    // Fear/Anxiety (10)
-    { id: 'anxious', label: 'Anxious', cat: 'Fear', desc: 'Constantly worried' },
-    { id: 'nervous', label: 'Nervous', cat: 'Fear', desc: 'Easily agitated' },
-    { id: 'worried', label: 'Worried', cat: 'Fear', desc: 'Troubled by concerns' },
-    { id: 'paranoid', label: 'Paranoid', cat: 'Fear', desc: 'Irrationally suspicious' },
-    { id: 'suspicious', label: 'Suspicious', cat: 'Fear', desc: 'Distrustful' },
-    { id: 'distrustful', label: 'Distrustful', cat: 'Fear', desc: 'Doesn\'t trust' },
-    { id: 'insecure', label: 'Insecure', cat: 'Fear', desc: 'Lacks confidence' },
-    { id: 'self-doubting', label: 'Self-doubting', cat: 'Fear', desc: 'Doubts own abilities' },
-    { id: 'phobic', label: 'Phobic', cat: 'Fear', desc: 'Has irrational fears' },
-    { id: 'neurotic', label: 'Neurotic', cat: 'Fear', desc: 'Prone to anxiety' },
-    
-    // Sadness (10)
-    { id: 'pessimistic', label: 'Pessimistic', cat: 'Sadness', desc: 'Expects the worst' },
-    { id: 'negative', label: 'Negative', cat: 'Sadness', desc: 'Focuses on bad' },
-    { id: 'cynical', label: 'Cynical', cat: 'Sadness', desc: 'Distrusts motives' },
-    { id: 'depressive', label: 'Depressive', cat: 'Sadness', desc: 'Prone to depression' },
-    { id: 'gloomy', label: 'Gloomy', cat: 'Sadness', desc: 'Dark and depressing' },
-    { id: 'morose', label: 'Morose', cat: 'Sadness', desc: 'Sullen and ill-tempered' },
-    { id: 'sullen', label: 'Sullen', cat: 'Sadness', desc: 'Bad-tempered and sulky' },
-    { id: 'moody', label: 'Moody', cat: 'Sadness', desc: 'Given to moods' },
-    { id: 'brooding', label: 'Brooding', cat: 'Sadness', desc: 'Dark and threatening' },
-    { id: 'melancholy', label: 'Melancholy', cat: 'Sadness', desc: 'Deep sadness' },
-    
-    // Jealousy (6)
-    { id: 'jealous', label: 'Jealous', cat: 'Jealousy', desc: 'Envious of others' },
-    { id: 'envious', label: 'Envious', cat: 'Jealousy', desc: 'Wants what others have' },
-    { id: 'covetous', label: 'Covetous', cat: 'Jealousy', desc: 'Wants others\' possessions' },
-    { id: 'possessive', label: 'Possessive', cat: 'Jealousy', desc: 'Overly controlling' },
-    { id: 'territorial', label: 'Territorial', cat: 'Jealousy', desc: 'Protective of territory' },
-    { id: 'resentful', label: 'Resentful', cat: 'Jealousy', desc: 'Feels bitterness at others' },
-    
-    // Control (8)
-    { id: 'controlling', label: 'Controlling', cat: 'Control', desc: 'Needs to dominate' },
-    { id: 'domineering', label: 'Domineering', cat: 'Control', desc: 'Overbearing' },
-    { id: 'authoritarian', label: 'Authoritarian', cat: 'Control', desc: 'Demands obedience' },
-    { id: 'bossy', label: 'Bossy', cat: 'Control', desc: 'Gives orders' },
-    { id: 'overbearing', label: 'Overbearing', cat: 'Control', desc: 'Unpleasantly dominant' },
-    { id: 'micromanaging', label: 'Micromanaging', cat: 'Control', desc: 'Controls every detail' },
-    { id: 'tyrannical', label: 'Tyrannical', cat: 'Control', desc: 'Exercises power cruelly' },
-    { id: 'dictatorial', label: 'Dictatorial', cat: 'Control', desc: 'Like a dictator' },
-    
-    // Stubbornness (8)
-    { id: 'stubborn', label: 'Stubborn', cat: 'Stubbornness', desc: 'Refuses to change' },
-    { id: 'obstinate', label: 'Obstinate', cat: 'Stubbornness', desc: 'Stubbornly refuses' },
-    { id: 'pig-headed', label: 'Pig-headed', cat: 'Stubbornness', desc: 'Stupidly stubborn' },
-    { id: 'inflexible', label: 'Inflexible', cat: 'Stubbornness', desc: 'Unwilling to change' },
-    { id: 'rigid', label: 'Rigid', cat: 'Stubbornness', desc: 'Not flexible' },
-    { id: 'unyielding', label: 'Unyielding', cat: 'Stubbornness', desc: 'Not giving way' },
-    { id: 'uncompromising', label: 'Uncompromising', cat: 'Stubbornness', desc: 'Refuses to compromise' },
-    { id: 'close-minded', label: 'Close-minded', cat: 'Stubbornness', desc: 'Not open to new ideas' },
-    
-    // Impulsivity (8)
-    { id: 'impulsive', label: 'Impulsive', cat: 'Impulsivity', desc: 'Acts without thinking' },
-    { id: 'rash', label: 'Rash', cat: 'Impulsivity', desc: 'Acts hastily' },
-    { id: 'hasty', label: 'Hasty', cat: 'Impulsivity', desc: 'Done too quickly' },
-    { id: 'impatient', label: 'Impatient', cat: 'Impulsivity', desc: 'Unable to wait' },
-    { id: 'erratic', label: 'Erratic', cat: 'Impulsivity', desc: 'Unpredictable' },
-    { id: 'unpredictable', label: 'Unpredictable', cat: 'Impulsivity', desc: 'Cannot be predicted' },
-    { id: 'chaotic', label: 'Chaotic', cat: 'Impulsivity', desc: 'Complete disorder' },
-    { id: 'wild', label: 'Wild', cat: 'Impulsivity', desc: 'Uncontrolled and unruly' },
-    
-    // Obsession (6)
-    { id: 'obsessive', label: 'Obsessive', cat: 'Obsession', desc: 'Unhealthily fixated' },
-    { id: 'compulsive', label: 'Compulsive', cat: 'Obsession', desc: 'Driven by urges' },
-    { id: 'addictive', label: 'Addictive', cat: 'Obsession', desc: 'Prone to addiction' },
-    { id: 'fanatical', label: 'Fanatical', cat: 'Obsession', desc: 'Excessively enthusiastic' },
-    { id: 'fixated', label: 'Fixated', cat: 'Obsession', desc: 'Focused obsessively' },
-    { id: 'manic', label: 'Manic', cat: 'Obsession', desc: 'Frenzied and obsessive' },
-    
-    // Social Flaws (10)
-    { id: 'socially-awkward', label: 'Socially Awkward', cat: 'Social', desc: 'Uncomfortable socially' },
-    { id: 'awkward', label: 'Awkward', cat: 'Social', desc: 'Lacking grace' },
-    { id: 'shy', label: 'Shy', cat: 'Social', desc: 'Nervous around others' },
-    { id: 'withdrawn', label: 'Withdrawn', cat: 'Social', desc: 'Not sociable' },
-    { id: 'reclusive', label: 'Reclusive', cat: 'Social', desc: 'Avoids others' },
-    { id: 'antisocial', label: 'Antisocial', cat: 'Social', desc: 'Contrary to society' },
-    { id: 'misanthropic', label: 'Misanthropic', cat: 'Social', desc: 'Dislikes humanity' },
-    { id: 'attention-seeking', label: 'Attention-seeking', cat: 'Social', desc: 'Craves spotlight' },
-    { id: 'clingy', label: 'Clingy', cat: 'Social', desc: 'Overly dependent' },
-    { id: 'needy', label: 'Needy', cat: 'Social', desc: 'Requires constant attention' },
-    
-    // Rudeness (10)
-    { id: 'rude', label: 'Rude', cat: 'Rudeness', desc: 'Offensively impolite' },
-    { id: 'impolite', label: 'Impolite', cat: 'Rudeness', desc: 'Not polite' },
-    { id: 'disrespectful', label: 'Disrespectful', cat: 'Rudeness', desc: 'Lacking respect' },
-    { id: 'tactless', label: 'Tactless', cat: 'Rudeness', desc: 'Lacks tact' },
-    { id: 'inconsiderate', label: 'Inconsiderate', cat: 'Rudeness', desc: 'Not thoughtful' },
-    { id: 'insensitive', label: 'Insensitive', cat: 'Rudeness', desc: 'Not aware of feelings' },
-    { id: 'abrasive', label: 'Abrasive', cat: 'Rudeness', desc: 'Rough manner' },
-    { id: 'obnoxious', label: 'Obnoxious', cat: 'Rudeness', desc: 'Extremely unpleasant' },
-    { id: 'insufferable', label: 'Insufferable', cat: 'Rudeness', desc: 'Unbearable' },
-    { id: 'offensive', label: 'Offensive', cat: 'Rudeness', desc: 'Causing offense' },
-    
-    // Judgment (9)
-    { id: 'judgmental', label: 'Judgmental', cat: 'Judgment', desc: 'Critically judges others' },
-    { id: 'critical', label: 'Critical', cat: 'Judgment', desc: 'Finds fault' },
-    { id: 'harsh', label: 'Harsh', cat: 'Judgment', desc: 'Cruelly critical' },
-    { id: 'unforgiving', label: 'Unforgiving', cat: 'Judgment', desc: 'Doesn\'t forgive' },
-    { id: 'intolerant', label: 'Intolerant', cat: 'Judgment', desc: 'Not tolerant' },
-    { id: 'prejudiced', label: 'Prejudiced', cat: 'Judgment', desc: 'Has unfair opinions' },
-    { id: 'biased', label: 'Biased', cat: 'Judgment', desc: 'Unfairly prejudiced' },
-    { id: 'narrow-minded', label: 'Narrow-minded', cat: 'Judgment', desc: 'Not open to other views' },
-    { id: 'bigoted', label: 'Bigoted', cat: 'Judgment', desc: 'Intolerant toward others' },
-  ]
-};
 
           const positiveTraits = data.traits.positiveTraits || [];
           const neutralTraits = data.traits.neutralTraits || [];
@@ -8440,100 +8538,6 @@ const traitsDatabase = {
             }
           };
 
-          const TraitSelector = ({ type, traits, selected, color }) => {
-            const [expanded, setExpanded] = React.useState(false);
-            const categories = [...new Set(traits.map(t => t.cat))];
-            
-            return (
-              <div className={`border-2 rounded-sm overflow-hidden ${
-                type === 'positive' ? 'border-green-300' :
-                type === 'neutral' ? 'border-gray-300' :
-                'border-red-300'
-              }`}>
-                {/* Header */}
-                <div className={`px-4 py-3 ${
-                  type === 'positive' ? 'bg-green-100' :
-                  type === 'neutral' ? 'bg-gray-100' :
-                  'bg-red-100'
-                }`}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-mono text-sm font-bold">
-                        {type === 'positive' && '✦ POSITIVE TRAITS'}
-                        {type === 'neutral' && '◈ NEUTRAL TRAITS'}
-                        {type === 'negative' && '✗ NEGATIVE TRAITS / FLAWS'}
-                      </span>
-                      <span className={`ml-2 font-mono text-xs ${
-                        selected.length < 2 ? 'text-red-600' :
-                        selected.length > 4 ? 'text-red-600' :
-                        'text-gray-500'
-                      }`}>
-                        ({selected.length}/4) {selected.length < 2 && '⚠️ min 2'}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => setExpanded(!expanded)}
-                      className="font-mono text-xs px-2 py-1 bg-white rounded border hover:bg-gray-50"
-                    >
-                      {expanded ? '▼ Fechar' : '▶ Selecionar'}
-                    </button>
-                  </div>
-                  
-                  {/* Selected Tags */}
-                  {selected.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {selected.map(traitId => {
-                        const trait = traits.find(t => t.id === traitId);
-                        return trait ? (
-                          <span
-                            key={traitId}
-                            onClick={() => toggleTrait(type, traitId)}
-                            className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-mono cursor-pointer hover:opacity-75 ${
-                              type === 'positive' ? 'bg-green-200 text-green-800' :
-                              type === 'neutral' ? 'bg-gray-200 text-gray-800' :
-                              'bg-red-200 text-red-800'
-                            }`}
-                          >
-                            {trait.label} <span className="text-[10px]">×</span>
-                          </span>
-                        ) : null;
-                      })}
-                    </div>
-                  )}
-                </div>
-                
-                {/* Expanded Selection */}
-                {expanded && (
-                  <div className="p-4 bg-white max-h-64 overflow-y-auto">
-                    {categories.map(cat => (
-                      <div key={cat} className="mb-3">
-                        <h5 className="font-mono text-[10px] uppercase text-gray-500 mb-2">{cat}</h5>
-                        <div className="flex flex-wrap gap-1">
-                          {traits.filter(t => t.cat === cat).map(trait => (
-                            <button
-                              key={trait.id}
-                              onClick={() => toggleTrait(type, trait.id)}
-                              disabled={!selected.includes(trait.id) && selected.length >= 4}
-                              title={trait.desc}
-                              className={`px-2 py-1 rounded text-xs font-mono transition-all ${
-                                selected.includes(trait.id)
-                                  ? type === 'positive' ? 'bg-green-500 text-white' :
-                                    type === 'neutral' ? 'bg-gray-500 text-white' :
-                                    'bg-red-500 text-white'
-                                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                              } ${!selected.includes(trait.id) && selected.length >= 4 ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                            >
-                              {trait.label}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            );
-          };
 
           return (
             <div className="space-y-4">
@@ -8567,18 +8571,21 @@ const traitsDatabase = {
                 type="positive" 
                 traits={traitsDatabase.positive} 
                 selected={positiveTraits}
+                toggleTrait={toggleTrait}
               />
               
               <TraitSelector 
                 type="neutral" 
                 traits={traitsDatabase.neutral} 
                 selected={neutralTraits}
+                toggleTrait={toggleTrait}
               />
               
               <TraitSelector 
                 type="negative" 
                 traits={traitsDatabase.negative} 
                 selected={negativeTraits}
+                toggleTrait={toggleTrait}
               />
 
               {/* Hidden/Shadow Traits */}
