@@ -1,0 +1,3 @@
+## 2024-05-23 - Performance Anti-Pattern: Inline Components in Large Files
+**Learning:** Defining components inside the render function of a parent component (especially in large monolithic files) causes them to be redefined on every render, leading to full unmounting and remounting of children. This destroys state and DOM nodes, causing performance degradation.
+**Action:** Always extract sub-components to module scope. If they depend on closure variables, pass them as props. Use `React.memo` for the child components and `useCallback` for event handlers passed to them to fully optimize rendering.
